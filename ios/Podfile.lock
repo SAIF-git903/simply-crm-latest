@@ -1,0 +1,97 @@
+PODS:
+  - boost (1.59.0):
+    - boost/graph-includes (= 1.59.0)
+    - boost/math-includes (= 1.59.0)
+    - boost/numeric-includes (= 1.59.0)
+    - boost/pointer_cast-includes (= 1.59.0)
+    - boost/preprocessor-includes (= 1.59.0)
+    - boost/shared_ptr-includes (= 1.59.0)
+    - boost/string_algorithms-includes (= 1.59.0)
+  - boost/graph-includes (1.59.0)
+  - boost/math-includes (1.59.0)
+  - boost/numeric-includes (1.59.0)
+  - boost/pointer_cast-includes (1.59.0)
+  - boost/preprocessor-includes (1.59.0)
+  - boost/shared_ptr-includes (1.59.0)
+  - boost/string_algorithms-includes (1.59.0)
+  - DoubleConversion (1.1.5)
+  - Folly (2016.09.26.00):
+    - boost
+    - DoubleConversion
+    - GLog
+  - GLog (0.3.4)
+  - React/Core (0.50.1):
+    - yoga (= 0.50.1.React)
+  - React/CxxBridge (0.50.1):
+    - Folly (= 2016.09.26.00)
+    - React/Core
+    - React/cxxreact
+  - React/cxxreact (0.50.1):
+    - boost
+    - Folly (= 2016.09.26.00)
+    - React/jschelpers
+  - React/DevSupport (0.50.1):
+    - React/Core
+    - React/RCTWebSocket
+  - React/fishhook (0.50.1)
+  - React/jschelpers (0.50.1):
+    - Folly (= 2016.09.26.00)
+    - React/PrivateDatabase
+  - React/PrivateDatabase (0.50.1)
+  - React/RCTAnimation (0.50.1):
+    - React/Core
+  - React/RCTBlob (0.50.1):
+    - React/Core
+  - React/RCTImage (0.50.1):
+    - React/Core
+    - React/RCTNetwork
+  - React/RCTLinkingIOS (0.50.1):
+    - React/Core
+  - React/RCTNetwork (0.50.1):
+    - React/Core
+  - React/RCTText (0.50.1):
+    - React/Core
+  - React/RCTWebSocket (0.50.1):
+    - React/Core
+    - React/fishhook
+    - React/RCTBlob
+  - yoga (0.50.1.React)
+
+DEPENDENCIES:
+  - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
+  - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
+  - GLog (from `../node_modules/react-native/third-party-podspecs/GLog.podspec`)
+  - React/Core (from `../node_modules/react-native`)
+  - React/CxxBridge (from `../node_modules/react-native`)
+  - React/DevSupport (from `../node_modules/react-native`)
+  - React/RCTAnimation (from `../node_modules/react-native`)
+  - React/RCTImage (from `../node_modules/react-native`)
+  - React/RCTLinkingIOS (from `../node_modules/react-native`)
+  - React/RCTNetwork (from `../node_modules/react-native`)
+  - React/RCTText (from `../node_modules/react-native`)
+  - React/RCTWebSocket (from `../node_modules/react-native`)
+  - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
+
+EXTERNAL SOURCES:
+  DoubleConversion:
+    :podspec: ../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec
+  Folly:
+    :podspec: ../node_modules/react-native/third-party-podspecs/Folly.podspec
+  GLog:
+    :podspec: ../node_modules/react-native/third-party-podspecs/GLog.podspec
+  React:
+    :path: ../node_modules/react-native
+  yoga:
+    :path: ../node_modules/react-native/ReactCommon/yoga
+
+SPEC CHECKSUMS:
+  boost: 30a15ffb6d9aa4646dd3caffc960753f4cb4ca4e
+  DoubleConversion: ebb6747c5b66026ad4f97b789c3ceac6f18e57a6
+  Folly: b7255b29f1d693c375d642d0f04f0592181156d9
+  GLog: 3e4e4ae9746ce6bf6e9420c7fc1e08ad59c8ba1a
+  React: 2b50e9e9151d1b7a5fba4ad593b1393ec3c9654b
+  yoga: f25f45222e44e880cc6e4e26513c24bdc8a5cfd7
+
+PODFILE CHECKSUM: b273a1b10943f832be470e4625769f9da1208835
+
+COCOAPODS: 1.3.1

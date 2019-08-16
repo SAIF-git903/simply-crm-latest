@@ -1,0 +1,2378 @@
+2017-11-09 10:23:47 +0000  Initial pipeline context: <IDEDistributionProcessingPipelineContext: 0x7f8337e2d190; archive(resolved)='<IDEArchive: 0x7f833c65e000>', distributionTask(resolved)='2', distributionMethod(resolved)='<IDEDistributionMethodiOSAppStoreExport: 0x7f83379a22f0>', team(resolved)='<IDEProvisioningBasicTeam 0x7f833b887c90: teamID: 995KLR8FLJ, teamName: Smackcoders Technologies Private Limited>'>
+	Chain (11, self inclusive):
+	<IDEDistributionProcessingPipelineContext: 0x7f8337e2d190; archive = '<IDEArchive: 0x7f833c65e000>', distributionMethod='<IDEDistributionMethodiOSAppStoreExport: 0x7f83379a22f0>', team='<IDEProvisioningBasicTeam 0x7f833b887c90: teamID: 995KLR8FLJ, teamName: Smackcoders Technologies Private Limited>'>
+	<IDEDistributionProcessingPipelineContext: 0x7f833cd33230; archive = '<IDEArchive: 0x7f833c65e000>', distributionMethod='<IDEDistributionMethodiOSAppStoreExport: 0x7f83379a22f0>', team='<IDEProvisioningBasicTeam 0x7f833b887c90: teamID: 995KLR8FLJ, teamName: Smackcoders Technologies Private Limited>'>
+	<IDEDistributionContext: 0x7f833bb701e0; archive = '<IDEArchive: 0x7f833c65e000>', distributionMethod='<IDEDistributionMethodiOSAppStoreExport: 0x7f83379a22f0>', team='<IDEProvisioningBasicTeam 0x7f833b887c90: teamID: 995KLR8FLJ, teamName: Smackcoders Technologies Private Limited>'>
+	<IDEDistributionContext: 0x7f833ca3a570; archive = '<IDEArchive: 0x7f833c65e000>', distributionMethod='<IDEDistributionMethodiOSAppStoreExport: 0x7f83379a22f0>', team='<IDEProvisioningBasicTeam 0x7f833b887c90: teamID: 995KLR8FLJ, teamName: Smackcoders Technologies Private Limited>'>
+	<IDEDistributionContext: 0x7f833d07c850; archive = '<IDEArchive: 0x7f833c65e000>', distributionMethod='<IDEDistributionMethodiOSAppStoreExport: 0x7f83379a22f0>', team='<IDEProvisioningBasicTeam 0x7f833b887c90: teamID: 995KLR8FLJ, teamName: Smackcoders Technologies Private Limited>'>
+	<IDEDistributionContext: 0x7f8337a2d1d0; archive = '<IDEArchive: 0x7f833c65e000>', distributionMethod='<IDEDistributionMethodiOSAppStoreExport: 0x7f83379a22f0>', team='<IDEProvisioningBasicTeam 0x7f833b887c90: teamID: 995KLR8FLJ, teamName: Smackcoders Technologies Private Limited>'>
+	<IDEDistributionContext: 0x7f833d304cf0; archive = '<IDEArchive: 0x7f833c65e000>', distributionMethod='<IDEDistributionMethodiOSAppStoreExport: 0x7f83379a22f0>', team='<IDEProvisioningBasicTeam 0x7f833b887c90: teamID: 995KLR8FLJ, teamName: Smackcoders Technologies Private Limited>'>
+	<IDEDistributionContext: 0x7f833d293e30; archive = '<IDEArchive: 0x7f833c65e000>', distributionMethod='<IDEDistributionMethodiOSAppStoreExport: 0x7f83379a22f0>', team='<IDEProvisioningBasicTeam 0x7f833b887c90: teamID: 995KLR8FLJ, teamName: Smackcoders Technologies Private Limited>'>
+	<IDEDistributionContext: 0x7f833d622470; archive = '<IDEArchive: 0x7f833c65e000>', distributionMethod='<IDEDistributionMethodiOSAppStoreExport: 0x7f83379a22f0>', team='<IDEProvisioningBasicTeam 0x7f833b887c90: teamID: 995KLR8FLJ, teamName: Smackcoders Technologies Private Limited>'>
+	<IDEDistributionContext: 0x7f834af32320; archive = '<IDEArchive: 0x7f833c65e000>', distributionMethod='<IDEDistributionMethodiOSAppStoreExport: 0x7f83379a22f0>', team='(null)'>
+	<IDEDistributionContext: 0x7f833b4c5510; archive = '<IDEArchive: 0x7f833c65e000>', distributionMethod='(null)', team='(null)'>
+</IDEDistributionProcessingPipelineContext: 0x7f8337e2d190>
+2017-11-09 10:23:47 +0000  Processing step: IDEDistributionCreateDestRootStep
+2017-11-09 10:23:48 +0000  Processing step: IDEDistributionCopyItemStep
+2017-11-09 10:23:48 +0000  Running /usr/bin/ditto '-V' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app'
+2017-11-09 10:23:48 +0000  >>> Copying /Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app 
+2017-11-09 10:23:48 +0000  copying file ./_CodeSignature/CodeResources ... 
+2017-11-09 10:23:48 +0000  26873 bytes for ./_CodeSignature/CodeResources
+2017-11-09 10:23:48 +0000  copying file ./Octicons.ttf ... 
+2017-11-09 10:23:48 +0000  27512 bytes for ./Octicons.ttf
+2017-11-09 10:23:48 +0000  copying file ./Feather.ttf ... 
+2017-11-09 10:23:48 +0000  55288 bytes for ./Feather.ttf
+2017-11-09 10:23:48 +0000  copying file ./AppIcon20x20@2x.png ... 
+2017-11-09 10:23:48 +0000  2904 bytes for ./AppIcon20x20@2x.png
+copying file ./AppIcon57x57.png ... 
+2017-11-09 10:23:48 +0000  4215 bytes for ./AppIcon57x57.png
+2017-11-09 10:23:48 +0000  copying file ./Entypo.ttf ... 
+2017-11-09 10:23:48 +0000  65584 bytes for ./Entypo.ttf
+copying file ./AppIcon20x20@3x.png ... 
+2017-11-09 10:23:48 +0000  4297 bytes for ./AppIcon20x20@3x.png
+2017-11-09 10:23:48 +0000  copying file ./AppIcon29x29.png ... 
+2017-11-09 10:23:48 +0000  1970 bytes for ./AppIcon29x29.png
+copying file ./MaterialCommunityIcons.ttf ... 
+2017-11-09 10:23:48 +0000  292556 bytes for ./MaterialCommunityIcons.ttf
+2017-11-09 10:23:48 +0000  copying file ./AppIcon60x60@2x.png ... 
+2017-11-09 10:23:48 +0000  10245 bytes for ./AppIcon60x60@2x.png
+2017-11-09 10:23:48 +0000  copying file ./PocketCRM_for_Vtiger.momd/VersionInfo.plist ... 
+2017-11-09 10:23:48 +0000  181 bytes for ./PocketCRM_for_Vtiger.momd/VersionInfo.plist
+2017-11-09 10:23:48 +0000  copying file ./PocketCRM_for_Vtiger.momd/PocketCRM_for_Vtiger.omo ... 
+2017-11-09 10:23:48 +0000  696 bytes for ./PocketCRM_for_Vtiger.momd/PocketCRM_for_Vtiger.omo
+copying file ./PocketCRM_for_Vtiger.momd/PocketCRM_for_Vtiger.mom ... 
+513 bytes for ./PocketCRM_for_Vtiger.momd/PocketCRM_for_Vtiger.mom
+copying file ./AppIcon72x72@2x~ipad.png ... 
+2017-11-09 10:23:48 +0000  12079 bytes for ./AppIcon72x72@2x~ipad.png
+2017-11-09 10:23:48 +0000  copying file ./AppIcon29x29@2x.png ... 
+2017-11-09 10:23:48 +0000  4221 bytes for ./AppIcon29x29@2x.png
+2017-11-09 10:23:48 +0000  copying file ./PocketCRM for Vtiger ... 
+2017-11-09 10:23:48 +0000  219872 bytes for ./PocketCRM for Vtiger
+2017-11-09 10:23:48 +0000  copying file ./AppIcon40x40@3x.png ... 
+2017-11-09 10:23:48 +0000  10245 bytes for ./AppIcon40x40@3x.png
+2017-11-09 10:23:48 +0000  copying file ./AppIcon57x57@2x.png ... 
+2017-11-09 10:23:48 +0000  9605 bytes for ./AppIcon57x57@2x.png
+copying file ./Foundation.ttf ... 
+2017-11-09 10:23:48 +0000  56976 bytes for ./Foundation.ttf
+2017-11-09 10:23:48 +0000  copying file ./AppIcon29x29~ipad.png ... 
+2017-11-09 10:23:48 +0000  1970 bytes for ./AppIcon29x29~ipad.png
+2017-11-09 10:23:48 +0000  copying file ./Ionicons.ttf ... 
+2017-11-09 10:23:48 +0000  143936 bytes for ./Ionicons.ttf
+2017-11-09 10:23:48 +0000  copying file ./AppIcon40x40@2x.png ... 
+2017-11-09 10:23:48 +0000  6716 bytes for ./AppIcon40x40@2x.png
+copying file ./AppIcon29x29@3x.png ... 
+2017-11-09 10:23:48 +0000  7264 bytes for ./AppIcon29x29@3x.png
+2017-11-09 10:23:48 +0000  copying file ./AppIcon60x60@3x.png ... 
+2017-11-09 10:23:48 +0000  15035 bytes for ./AppIcon60x60@3x.png
+2017-11-09 10:23:48 +0000  copying file ./Base.lproj/Main.storyboardc/UIViewController-BYZ-38-t0r.nib ... 
+2017-11-09 10:23:48 +0000  944 bytes for ./Base.lproj/Main.storyboardc/UIViewController-BYZ-38-t0r.nib
+2017-11-09 10:23:48 +0000  copying file ./Base.lproj/Main.storyboardc/BYZ-38-t0r-view-8bC-Xf-vdC.nib ... 
+2017-11-09 10:23:48 +0000  1986 bytes for ./Base.lproj/Main.storyboardc/BYZ-38-t0r-view-8bC-Xf-vdC.nib
+2017-11-09 10:23:48 +0000  copying file ./Base.lproj/Main.storyboardc/Info.plist ... 
+258 bytes for ./Base.lproj/Main.storyboardc/Info.plist
+copying file ./Base.lproj/LaunchScreen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib ... 
+2017-11-09 10:23:48 +0000  1985 bytes for ./Base.lproj/LaunchScreen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib
+2017-11-09 10:23:48 +0000  copying file ./Base.lproj/LaunchScreen.storyboardc/UIViewController-01J-lp-oVM.nib ... 
+2017-11-09 10:23:48 +0000  832 bytes for ./Base.lproj/LaunchScreen.storyboardc/UIViewController-01J-lp-oVM.nib
+2017-11-09 10:23:48 +0000  copying file ./Base.lproj/LaunchScreen.storyboardc/Info.plist ... 
+2017-11-09 10:23:48 +0000  258 bytes for ./Base.lproj/LaunchScreen.storyboardc/Info.plist
+2017-11-09 10:23:48 +0000  copying file ./FontAwesome.ttf ... 
+2017-11-09 10:23:48 +0000  165548 bytes for ./FontAwesome.ttf
+2017-11-09 10:23:48 +0000  copying file ./archived-expanded-entitlements.xcent ... 
+2017-11-09 10:23:48 +0000  394 bytes for ./archived-expanded-entitlements.xcent
+2017-11-09 10:23:48 +0000  copying file ./Zocial.ttf ... 
+2017-11-09 10:23:48 +0000  25552 bytes for ./Zocial.ttf
+2017-11-09 10:23:48 +0000  copying file ./Assets.car ... 
+2017-11-09 10:23:48 +0000  11214440 bytes for ./Assets.car
+copying file ./AppIcon40x40@2x~ipad.png ... 
+2017-11-09 10:23:48 +0000  6716 bytes for ./AppIcon40x40@2x~ipad.png
+2017-11-09 10:23:48 +0000  copying file ./EvilIcons.ttf ... 
+2017-11-09 10:23:48 +0000  13128 bytes for ./EvilIcons.ttf
+2017-11-09 10:23:48 +0000  copying file ./AppIcon76x76@2x~ipad.png ... 
+2017-11-09 10:23:48 +0000  12781 bytes for ./AppIcon76x76@2x~ipad.png
+2017-11-09 10:23:48 +0000  copying file ./AppIcon72x72~ipad.png ... 
+2017-11-09 10:23:48 +0000  6008 bytes for ./AppIcon72x72~ipad.png
+2017-11-09 10:23:48 +0000  copying file ./AppIcon83.5x83.5@2x~ipad.png ... 
+2017-11-09 10:23:48 +0000  13992 bytes for ./AppIcon83.5x83.5@2x~ipad.png
+copying file ./AppIcon50x50~ipad.png ... 
+2017-11-09 10:23:48 +0000  3675 bytes for ./AppIcon50x50~ipad.png
+2017-11-09 10:23:48 +0000  copying file ./AppIcon29x29@2x~ipad.png ... 
+2017-11-09 10:23:48 +0000  4221 bytes for ./AppIcon29x29@2x~ipad.png
+2017-11-09 10:23:48 +0000  copying file ./AppIcon50x50@2x~ipad.png ... 
+2017-11-09 10:23:48 +0000  8322 bytes for ./AppIcon50x50@2x~ipad.png
+2017-11-09 10:23:48 +0000  copying file ./AppIcon40x40~ipad.png ... 
+2017-11-09 10:23:48 +0000  2904 bytes for ./AppIcon40x40~ipad.png
+2017-11-09 10:23:48 +0000  copying file ./Frameworks/folly.framework/_CodeSignature/CodeResources ... 
+2017-11-09 10:23:48 +0000  2202 bytes for ./Frameworks/folly.framework/_CodeSignature/CodeResources
+2017-11-09 10:23:48 +0000  copying file ./Frameworks/folly.framework/folly ... 
+2017-11-09 10:23:48 +0000  881632 bytes for ./Frameworks/folly.framework/folly
+2017-11-09 10:23:48 +0000  copying file ./Frameworks/folly.framework/Info.plist ... 
+2017-11-09 10:23:48 +0000  734 bytes for ./Frameworks/folly.framework/Info.plist
+2017-11-09 10:23:48 +0000  copying file ./Frameworks/libswiftCoreImage.dylib ... 
+2017-11-09 10:23:48 +0000  258272 bytes for ./Frameworks/libswiftCoreImage.dylib
+2017-11-09 10:23:48 +0000  copying file ./Frameworks/glog.framework/_CodeSignature/CodeResources ... 
+2017-11-09 10:23:48 +0000  2202 bytes for ./Frameworks/glog.framework/_CodeSignature/CodeResources
+2017-11-09 10:23:48 +0000  copying file ./Frameworks/glog.framework/glog ... 
+2017-11-09 10:23:48 +0000  656800 bytes for ./Frameworks/glog.framework/glog
+2017-11-09 10:23:48 +0000  copying file ./Frameworks/glog.framework/Info.plist ... 
+2017-11-09 10:23:48 +0000  728 bytes for ./Frameworks/glog.framework/Info.plist
+2017-11-09 10:23:48 +0000  copying file ./Frameworks/libswiftObjectiveC.dylib ... 
+2017-11-09 10:23:48 +0000  505792 bytes for ./Frameworks/libswiftObjectiveC.dylib
+2017-11-09 10:23:48 +0000  copying file ./Frameworks/libswiftCore.dylib ... 
+2017-11-09 10:23:48 +0000  68838944 bytes for ./Frameworks/libswiftCore.dylib
+2017-11-09 10:23:48 +0000  copying file ./Frameworks/libswiftCoreGraphics.dylib ... 
+2017-11-09 10:23:48 +0000  1268848 bytes for ./Frameworks/libswiftCoreGraphics.dylib
+2017-11-09 10:23:48 +0000  copying file ./Frameworks/libswiftUIKit.dylib ... 
+2017-11-09 10:23:48 +0000  789184 bytes for ./Frameworks/libswiftUIKit.dylib
+2017-11-09 10:23:48 +0000  copying file ./Frameworks/libswiftMetal.dylib ... 
+2017-11-09 10:23:48 +0000  399376 bytes for ./Frameworks/libswiftMetal.dylib
+copying file ./Frameworks/libswiftCoreData.dylib ... 
+2017-11-09 10:23:48 +0000  690560 bytes for ./Frameworks/libswiftCoreData.dylib
+2017-11-09 10:23:48 +0000  copying file ./Frameworks/libswiftDispatch.dylib ... 
+2017-11-09 10:23:48 +0000  2440736 bytes for ./Frameworks/libswiftDispatch.dylib
+2017-11-09 10:23:48 +0000  copying file ./Frameworks/yoga.framework/_CodeSignature/CodeResources ... 
+2017-11-09 10:23:48 +0000  2202 bytes for ./Frameworks/yoga.framework/_CodeSignature/CodeResources
+2017-11-09 10:23:48 +0000  copying file ./Frameworks/yoga.framework/yoga ... 
+2017-11-09 10:23:48 +0000  435728 bytes for ./Frameworks/yoga.framework/yoga
+2017-11-09 10:23:48 +0000  copying file ./Frameworks/yoga.framework/Info.plist ... 
+2017-11-09 10:23:48 +0000  729 bytes for ./Frameworks/yoga.framework/Info.plist
+2017-11-09 10:23:48 +0000  copying file ./Frameworks/libswiftos.dylib ... 
+2017-11-09 10:23:48 +0000  446400 bytes for ./Frameworks/libswiftos.dylib
+2017-11-09 10:23:48 +0000  copying file ./Frameworks/React.framework/_CodeSignature/CodeResources ... 
+2017-11-09 10:23:48 +0000  2202 bytes for ./Frameworks/React.framework/_CodeSignature/CodeResources
+2017-11-09 10:23:48 +0000  copying file ./Frameworks/React.framework/React ... 
+2017-11-09 10:23:48 +0000  9735888 bytes for ./Frameworks/React.framework/React
+2017-11-09 10:23:48 +0000  copying file ./Frameworks/React.framework/Info.plist ... 
+2017-11-09 10:23:48 +0000  731 bytes for ./Frameworks/React.framework/Info.plist
+2017-11-09 10:23:48 +0000  copying file ./Frameworks/libswiftCoreFoundation.dylib ... 
+2017-11-09 10:23:48 +0000  257696 bytes for ./Frameworks/libswiftCoreFoundation.dylib
+2017-11-09 10:23:48 +0000  copying file ./Frameworks/libswiftDarwin.dylib ... 
+2017-11-09 10:23:48 +0000  599280 bytes for ./Frameworks/libswiftDarwin.dylib
+2017-11-09 10:23:48 +0000  copying file ./Frameworks/libswiftQuartzCore.dylib ... 
+2017-11-09 10:23:48 +0000  310976 bytes for ./Frameworks/libswiftQuartzCore.dylib
+2017-11-09 10:23:48 +0000  copying file ./Frameworks/DoubleConversion.framework/_CodeSignature/CodeResources ... 
+2017-11-09 10:23:48 +0000  2202 bytes for ./Frameworks/DoubleConversion.framework/_CodeSignature/CodeResources
+2017-11-09 10:23:48 +0000  copying file ./Frameworks/DoubleConversion.framework/DoubleConversion ... 
+2017-11-09 10:23:48 +0000  364608 bytes for ./Frameworks/DoubleConversion.framework/DoubleConversion
+2017-11-09 10:23:48 +0000  copying file ./Frameworks/DoubleConversion.framework/Info.plist ... 
+2017-11-09 10:23:48 +0000  754 bytes for ./Frameworks/DoubleConversion.framework/Info.plist
+2017-11-09 10:23:48 +0000  copying file ./Frameworks/libswiftAccelerate.dylib ... 
+2017-11-09 10:23:48 +0000  403728 bytes for ./Frameworks/libswiftAccelerate.dylib
+2017-11-09 10:23:48 +0000  copying file ./Frameworks/libswiftFoundation.dylib ... 
+2017-11-09 10:23:48 +0000  27922976 bytes for ./Frameworks/libswiftFoundation.dylib
+2017-11-09 10:23:48 +0000  copying file ./Frameworks/libswiftCoreLocation.dylib ... 
+2017-11-09 10:23:48 +0000  401424 bytes for ./Frameworks/libswiftCoreLocation.dylib
+2017-11-09 10:23:48 +0000  copying file ./AppIcon20x20~ipad.png ... 
+2017-11-09 10:23:48 +0000  1213 bytes for ./AppIcon20x20~ipad.png
+2017-11-09 10:23:48 +0000  copying file ./SimpleLineIcons.ttf ... 
+2017-11-09 10:23:48 +0000  54056 bytes for ./SimpleLineIcons.ttf
+2017-11-09 10:23:48 +0000  copying file ./embedded.mobileprovision ... 
+2017-11-09 10:23:48 +0000  9552 bytes for ./embedded.mobileprovision
+copying file ./AppIcon20x20@2x~ipad.png ... 
+2017-11-09 10:23:48 +0000  2904 bytes for ./AppIcon20x20@2x~ipad.png
+2017-11-09 10:23:48 +0000  copying file ./Info.plist ... 
+2017-11-09 10:23:48 +0000  1837 bytes for ./Info.plist
+copying file ./PkgInfo ... 
+2017-11-09 10:23:48 +0000  8 bytes for ./PkgInfo
+2017-11-09 10:23:48 +0000  copying file ./MaterialIcons.ttf ... 
+2017-11-09 10:23:48 +0000  128180 bytes for ./MaterialIcons.ttf
+copying file ./AppIcon76x76~ipad.png ... 
+2017-11-09 10:23:48 +0000  6384 bytes for ./AppIcon76x76~ipad.png
+2017-11-09 10:23:48 +0000  2017-11-09 10:23:48 +0000  
+
+2017-11-09 10:23:48 +0000  /usr/bin/ditto exited with 0
+2017-11-09 10:23:48 +0000  
+2017-11-09 10:23:48 +0000  Processing step: IDEDistributionEmbedProfileStep
+2017-11-09 10:23:48 +0000  Skipping profile for item: <IDEDistributionItem: 0x7f834af750f0 'org.cocoapods.DoubleConversion' '<DVTFilePath:0x7f833ca705d0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/DoubleConversion.framework'>'>
+2017-11-09 10:23:48 +0000  Skipping profile for item: <IDEDistributionItem: 0x7f8353aa17e0 'org.cocoapods.React' '<DVTFilePath:0x7f8353d9e3c0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/React.framework'>'>
+2017-11-09 10:23:48 +0000  Skipping profile for item: <IDEDistributionItem: 0x7f834ae53110 'org.cocoapods.folly' '<DVTFilePath:0x7f833c3d2cd0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/folly.framework'>'>
+2017-11-09 10:23:48 +0000  Skipping profile for item: <IDEDistributionItem: 0x7f8336adb610 'org.cocoapods.glog' '<DVTFilePath:0x7f833c1bc9a0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/glog.framework'>'>
+2017-11-09 10:23:48 +0000  Skipping profile for item: <IDEDistributionItem: 0x7f833546f220 'com.apple.dt.runtime.swiftAccelerate' '<DVTFilePath:0x7f8337df9640:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftAccelerate.dylib'>'>
+2017-11-09 10:23:48 +0000  Skipping profile for item: <IDEDistributionItem: 0x7f8337d21840 'com.apple.dt.runtime.swiftCore' '<DVTFilePath:0x7f83354d5960:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftCore.dylib'>'>
+2017-11-09 10:23:48 +0000  Skipping profile for item: <IDEDistributionItem: 0x7f834d40e860 'com.apple.dt.runtime.swiftCoreData' '<DVTFilePath:0x7f833b782d00:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftCoreData.dylib'>'>
+2017-11-09 10:23:48 +0000  Skipping profile for item: <IDEDistributionItem: 0x7f8335335930 'com.apple.dt.runtime.swiftCoreFoundation' '<DVTFilePath:0x7f834cdac030:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftCoreFoundation.dylib'>'>
+2017-11-09 10:23:48 +0000  Skipping profile for item: <IDEDistributionItem: 0x7f83538ba970 'com.apple.dt.runtime.swiftCoreGraphics' '<DVTFilePath:0x7f833b8f18c0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftCoreGraphics.dylib'>'>
+2017-11-09 10:23:48 +0000  Skipping profile for item: <IDEDistributionItem: 0x7f8353bd7d80 'com.apple.dt.runtime.swiftCoreImage' '<DVTFilePath:0x7f83350bd500:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftCoreImage.dylib'>'>
+2017-11-09 10:23:48 +0000  Skipping profile for item: <IDEDistributionItem: 0x7f8335156df0 'com.apple.dt.runtime.swiftCoreLocation' '<DVTFilePath:0x7f8347dbf4d0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftCoreLocation.dylib'>'>
+2017-11-09 10:23:48 +0000  Skipping profile for item: <IDEDistributionItem: 0x7f833c4c6020 'com.apple.dt.runtime.swiftDarwin' '<DVTFilePath:0x7f834c108bb0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftDarwin.dylib'>'>
+2017-11-09 10:23:48 +0000  Skipping profile for item: <IDEDistributionItem: 0x7f8337faf7b0 'com.apple.dt.runtime.swiftDispatch' '<DVTFilePath:0x7f8354b6f960:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftDispatch.dylib'>'>
+2017-11-09 10:23:48 +0000  Skipping profile for item: <IDEDistributionItem: 0x7f833c529cd0 'com.apple.dt.runtime.swiftFoundation' '<DVTFilePath:0x7f8352964240:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftFoundation.dylib'>'>
+2017-11-09 10:23:48 +0000  Skipping profile for item: <IDEDistributionItem: 0x7f833c3dafc0 'com.apple.dt.runtime.swiftMetal' '<DVTFilePath:0x7f8337eb1120:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftMetal.dylib'>'>
+2017-11-09 10:23:48 +0000  Skipping profile for item: <IDEDistributionItem: 0x7f833579d470 'com.apple.dt.runtime.swiftObjectiveC' '<DVTFilePath:0x7f833cd30c30:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftObjectiveC.dylib'>'>
+2017-11-09 10:23:48 +0000  Skipping profile for item: <IDEDistributionItem: 0x7f833c3b1c00 'com.apple.dt.runtime.swiftQuartzCore' '<DVTFilePath:0x7f833bd660f0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftQuartzCore.dylib'>'>
+2017-11-09 10:23:48 +0000  Skipping profile for item: <IDEDistributionItem: 0x7f8353ace000 'com.apple.dt.runtime.swiftUIKit' '<DVTFilePath:0x7f833d1aea80:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftUIKit.dylib'>'>
+2017-11-09 10:23:48 +0000  Skipping profile for item: <IDEDistributionItem: 0x7f83538626e0 'com.apple.dt.runtime.swiftos' '<DVTFilePath:0x7f8353cf3800:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftos.dylib'>'>
+2017-11-09 10:23:48 +0000  Skipping profile for item: <IDEDistributionItem: 0x7f833c6b4fa0 'org.cocoapods.yoga' '<DVTFilePath:0x7f833d96f300:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/yoga.framework'>'>
+2017-11-09 10:23:48 +0000  Processing step: IDEDistributionItemRemovalStep
+2017-11-09 10:23:48 +0000  Processing step: IDEDistributionAppThinningPlistStep
+2017-11-09 10:23:48 +0000  Skipping step: IDEDistributionAppThinningPlistStep because it said so
+2017-11-09 10:23:48 +0000  Processing step: IDEDistributionCompileBitcodeStep
+2017-11-09 10:23:48 +0000  Skipping step: IDEDistributionCompileBitcodeStep because it said so
+2017-11-09 10:23:48 +0000  Processing step: IDEDistributionCodeSlimmingStep
+2017-11-09 10:23:49 +0000  Processing step: IDEDistributionCopyBCSymbolMapsStep
+2017-11-09 10:23:49 +0000  Running /usr/bin/ditto '-V' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/BCSymbolMaps/077E54A5-4026-314A-9265-F2324371F1C0.bcsymbolmap' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/BCSymbolMaps/077E54A5-4026-314A-9265-F2324371F1C0.bcsymbolmap'
+2017-11-09 10:23:49 +0000  >>> Copying /Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/BCSymbolMaps/077E54A5-4026-314A-9265-F2324371F1C0.bcsymbolmap 
+2017-11-09 10:23:49 +0000  copying file ./077E54A5-4026-314A-9265-F2324371F1C0.bcsymbolmap ... 
+2017-11-09 10:23:49 +0000  15105 bytes for ./077E54A5-4026-314A-9265-F2324371F1C0.bcsymbolmap
+2017-11-09 10:23:49 +0000  
+2017-11-09 10:23:49 +0000  /usr/bin/ditto exited with 02017-11-09 10:23:49 +0000  
+
+2017-11-09 10:23:49 +0000  Running /usr/bin/ditto '-V' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/BCSymbolMaps/649F039B-5EE9-32B0-B500-EA5884AB1CE8.bcsymbolmap' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/BCSymbolMaps/649F039B-5EE9-32B0-B500-EA5884AB1CE8.bcsymbolmap'
+2017-11-09 10:23:49 +0000  >>> Copying /Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/BCSymbolMaps/649F039B-5EE9-32B0-B500-EA5884AB1CE8.bcsymbolmap 
+2017-11-09 10:23:49 +0000  copying file ./649F039B-5EE9-32B0-B500-EA5884AB1CE8.bcsymbolmap ... 
+2017-11-09 10:23:49 +0000  509215 bytes for ./649F039B-5EE9-32B0-B500-EA5884AB1CE8.bcsymbolmap
+2017-11-09 10:23:49 +0000  
+2017-11-09 10:23:49 +0000  2017-11-09 10:23:49 +0000  /usr/bin/ditto exited with 0
+2017-11-09 10:23:49 +0000  
+
+2017-11-09 10:23:49 +0000  
+2017-11-09 10:23:49 +0000  Running /usr/bin/ditto '-V' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/BCSymbolMaps/DE7B3CD7-E1AF-3D59-B05B-F50AD2F745AB.bcsymbolmap' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/BCSymbolMaps/DE7B3CD7-E1AF-3D59-B05B-F50AD2F745AB.bcsymbolmap'
+2017-11-09 10:23:49 +0000  >>> Copying /Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/BCSymbolMaps/DE7B3CD7-E1AF-3D59-B05B-F50AD2F745AB.bcsymbolmap 
+2017-11-09 10:23:49 +0000  copying file ./DE7B3CD7-E1AF-3D59-B05B-F50AD2F745AB.bcsymbolmap ... 
+2017-11-09 10:23:49 +0000  61237 bytes for ./DE7B3CD7-E1AF-3D59-B05B-F50AD2F745AB.bcsymbolmap
+2017-11-09 10:23:49 +0000  2017-11-09 10:23:49 +0000  /usr/bin/ditto exited with 0
+
+2017-11-09 10:23:49 +0000  
+2017-11-09 10:23:49 +0000  Running /usr/bin/ditto '-V' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/BCSymbolMaps/F775955D-0E97-30F3-AF23-2C2F55FBDE34.bcsymbolmap' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/BCSymbolMaps/F775955D-0E97-30F3-AF23-2C2F55FBDE34.bcsymbolmap'
+2017-11-09 10:23:49 +0000  >>> Copying /Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/BCSymbolMaps/F775955D-0E97-30F3-AF23-2C2F55FBDE34.bcsymbolmap 
+2017-11-09 10:23:49 +0000  copying file ./F775955D-0E97-30F3-AF23-2C2F55FBDE34.bcsymbolmap ... 
+2017-11-09 10:23:49 +0000  26904 bytes for ./F775955D-0E97-30F3-AF23-2C2F55FBDE34.bcsymbolmap
+2017-11-09 10:23:49 +0000  
+2017-11-09 10:23:49 +0000  
+2017-11-09 10:23:49 +0000  2017-11-09 10:23:49 +0000  /usr/bin/ditto exited with 0
+
+2017-11-09 10:23:49 +0000  
+2017-11-09 10:23:50 +0000  Running /usr/bin/ditto '-V' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/BCSymbolMaps/F819817D-51E6-3076-85DC-A409550AFAE3.bcsymbolmap' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/BCSymbolMaps/F819817D-51E6-3076-85DC-A409550AFAE3.bcsymbolmap'
+2017-11-09 10:23:50 +0000  >>> Copying /Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/BCSymbolMaps/F819817D-51E6-3076-85DC-A409550AFAE3.bcsymbolmap 
+2017-11-09 10:23:50 +0000  copying file ./F819817D-51E6-3076-85DC-A409550AFAE3.bcsymbolmap ... 
+2017-11-09 10:23:50 +0000  15160 bytes for ./F819817D-51E6-3076-85DC-A409550AFAE3.bcsymbolmap
+2017-11-09 10:23:50 +0000  
+2017-11-09 10:23:50 +0000  2017-11-09 10:23:50 +0000  /usr/bin/ditto exited with 0
+2017-11-09 10:23:50 +0000  
+
+2017-11-09 10:23:50 +0000  
+2017-11-09 10:23:50 +0000  Running /usr/bin/ditto '-V' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/BCSymbolMaps/220CFDE3-904D-3D4F-88F1-F2F4CDCF2FCA.bcsymbolmap' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/BCSymbolMaps/220CFDE3-904D-3D4F-88F1-F2F4CDCF2FCA.bcsymbolmap'
+2017-11-09 10:23:50 +0000  >>> Copying /Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/BCSymbolMaps/220CFDE3-904D-3D4F-88F1-F2F4CDCF2FCA.bcsymbolmap 
+2017-11-09 10:23:50 +0000  copying file ./220CFDE3-904D-3D4F-88F1-F2F4CDCF2FCA.bcsymbolmap ... 
+2017-11-09 10:23:50 +0000  22302 bytes for ./220CFDE3-904D-3D4F-88F1-F2F4CDCF2FCA.bcsymbolmap
+2017-11-09 10:23:50 +0000  2017-11-09 10:23:50 +0000  
+
+2017-11-09 10:23:50 +0000  /usr/bin/ditto exited with 0
+2017-11-09 10:23:50 +0000  
+2017-11-09 10:23:50 +0000  
+2017-11-09 10:23:50 +0000  Processing step: IDEDistributionSymbolsStep
+2017-11-09 10:23:50 +0000  Excluding symbols for DoubleConversion.framework
+2017-11-09 10:23:50 +0000  Excluding symbols for React.framework
+2017-11-09 10:23:50 +0000  Excluding symbols for folly.framework
+2017-11-09 10:23:50 +0000  Excluding symbols for glog.framework
+2017-11-09 10:23:50 +0000  Processing symbols for libswiftAccelerate.dylib
+2017-11-09 10:23:50 +0000  Running /usr/bin/rsync '-8aPhhE' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftAccelerate.dylib' '--link-dest' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT'
+2017-11-09 10:23:50 +0000  building file list ... 
+2017-11-09 10:23:50 +0000   0 files...2017-11-09 10:23:50 +0000  1 file to consider
+2017-11-09 10:23:50 +0000  
+sent 97 bytes  received 20 bytes  234.00 bytes/sec
+total size is 394.27K  speedup is 3450.67
+2017-11-09 10:23:50 +0000  
+2017-11-09 10:23:50 +0000  2017-11-09 10:23:50 +0000  
+
+2017-11-09 10:23:50 +0000  
+2017-11-09 10:23:50 +0000  
+2017-11-09 10:23:50 +0000  
+2017-11-09 10:23:50 +0000  
+2017-11-09 10:23:50 +0000  
+2017-11-09 10:23:50 +0000  /usr/bin/rsync exited with 0
+2017-11-09 10:23:50 +0000  
+2017-11-09 10:23:50 +0000  Running /usr/bin/rsync '-8aPhhE' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/dSYMs/' '--link-dest' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/dSYMs/' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT'
+2017-11-09 10:23:50 +0000  
+2017-11-09 10:23:50 +0000  building file list ... 
+2017-11-09 10:23:50 +0000   0 files...2017-11-09 10:23:50 +0000  37 files to consider
+2017-11-09 10:23:50 +0000  ./
+2017-11-09 10:23:50 +0000  DoubleConversion.framework.dSYM/
+DoubleConversion.framework.dSYM/Contents/
+2017-11-09 10:23:50 +0000  DoubleConversion.framework.dSYM/Contents/Resources/
+DoubleConversion.framework.dSYM/Contents/Resources/DWARF/
+PocketCRM for Vtiger.app.dSYM/
+PocketCRM for Vtiger.app.dSYM/Contents/
+PocketCRM for Vtiger.app.dSYM/Contents/Resources/
+PocketCRM for Vtiger.app.dSYM/Contents/Resources/DWARF/
+React.framework.dSYM/
+React.framework.dSYM/Contents/
+React.framework.dSYM/Contents/Resources/
+React.framework.dSYM/Contents/Resources/DWARF/
+folly.framework.dSYM/
+folly.framework.dSYM/Contents/
+folly.framework.dSYM/Contents/Resources/
+folly.framework.dSYM/Contents/Resources/DWARF/
+glog.framework.dSYM/
+glog.framework.dSYM/Contents/
+glog.framework.dSYM/Contents/Resources/
+glog.framework.dSYM/Contents/Resources/DWARF/
+yoga.framework.dSYM/
+yoga.framework.dSYM/Contents/
+yoga.framework.dSYM/Contents/Resources/
+yoga.framework.dSYM/Contents/Resources/DWARF/
+2017-11-09 10:23:50 +0000  
+sent 1.21K bytes  received 170 bytes  2.75K bytes/sec
+total size is 25.93M  speedup is 19281.89
+2017-11-09 10:23:50 +0000  2017-11-09 10:23:50 +0000  
+
+2017-11-09 10:23:50 +0000  
+2017-11-09 10:23:50 +0000  
+2017-11-09 10:23:50 +0000  
+2017-11-09 10:23:50 +0000  
+2017-11-09 10:23:50 +0000  
+2017-11-09 10:23:50 +0000  2017-11-09 10:23:50 +0000  /usr/bin/rsync exited with 0
+2017-11-09 10:23:50 +0000  
+
+2017-11-09 10:23:50 +0000  Running /Applications/Xcode.app/Contents/Developer/usr/bin/symbols '-noTextInSOD' '-noDaemon' '-arch' 'all' '-symbolsPackageDir' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Symbols' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftAccelerate.dylib'
+2017-11-09 10:23:50 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftAccelerate.dylib [armv7, 0.003254 seconds]:
+/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftAccelerate.dylib [armv7s, 0.003254 seconds]:
+/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftAccelerate.dylib [arm64, 0.003254 seconds]:
+2017-11-09 10:23:50 +0000  2017-11-09 10:23:50 +0000  
+
+2017-11-09 10:23:50 +0000  
+2017-11-09 10:23:50 +0000  
+2017-11-09 10:23:50 +0000  
+2017-11-09 10:23:50 +0000  
+2017-11-09 10:23:50 +0000  
+2017-11-09 10:23:50 +0000  
+2017-11-09 10:23:50 +0000  
+2017-11-09 10:23:50 +0000  
+2017-11-09 10:23:50 +0000  2017-11-09 10:23:50 +0000  /Applications/Xcode.app/Contents/Developer/usr/bin/symbols exited with 0
+2017-11-09 10:23:50 +0000  
+
+2017-11-09 10:23:50 +0000  Processing symbols for libswiftCore.dylib
+2017-11-09 10:23:50 +0000  Running /usr/bin/rsync '-8aPhhE' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftCore.dylib' '--link-dest' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT'
+2017-11-09 10:23:50 +0000  building file list ... 
+2017-11-09 10:23:50 +0000   0 files...2017-11-09 10:23:50 +0000  1 file to consider
+2017-11-09 10:23:50 +0000  
+sent 91 bytes  received 20 bytes  222.00 bytes/sec
+total size is 65.65M  speedup is 620170.67
+2017-11-09 10:23:50 +0000  2017-11-09 10:23:50 +0000  
+
+2017-11-09 10:23:50 +0000  
+2017-11-09 10:23:50 +0000  
+2017-11-09 10:23:50 +0000  
+2017-11-09 10:23:50 +0000  
+2017-11-09 10:23:50 +0000  
+2017-11-09 10:23:50 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  2017-11-09 10:23:51 +0000  
+
+2017-11-09 10:23:51 +0000  /usr/bin/rsync exited with 0
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  Running /usr/bin/rsync '-8aPhhE' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/dSYMs/' '--link-dest' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/dSYMs/' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT'
+2017-11-09 10:23:51 +0000  building file list ... 
+2017-11-09 10:23:51 +0000   0 files...2017-11-09 10:23:51 +0000  37 files to consider
+2017-11-09 10:23:51 +0000  ./
+2017-11-09 10:23:51 +0000  DoubleConversion.framework.dSYM/
+2017-11-09 10:23:51 +0000  DoubleConversion.framework.dSYM/Contents/
+DoubleConversion.framework.dSYM/Contents/Resources/
+DoubleConversion.framework.dSYM/Contents/Resources/DWARF/
+PocketCRM for Vtiger.app.dSYM/
+PocketCRM for Vtiger.app.dSYM/Contents/
+PocketCRM for Vtiger.app.dSYM/Contents/Resources/
+PocketCRM for Vtiger.app.dSYM/Contents/Resources/DWARF/
+React.framework.dSYM/
+React.framework.dSYM/Contents/
+React.framework.dSYM/Contents/Resources/
+React.framework.dSYM/Contents/Resources/DWARF/
+folly.framework.dSYM/
+folly.framework.dSYM/Contents/
+folly.framework.dSYM/Contents/Resources/
+folly.framework.dSYM/Contents/Resources/DWARF/
+glog.framework.dSYM/
+glog.framework.dSYM/Contents/
+glog.framework.dSYM/Contents/Resources/
+glog.framework.dSYM/Contents/Resources/DWARF/
+yoga.framework.dSYM/
+yoga.framework.dSYM/Contents/
+yoga.framework.dSYM/Contents/Resources/
+yoga.framework.dSYM/Contents/Resources/DWARF/
+2017-11-09 10:23:51 +0000  
+sent 1.28K bytes  received 242 bytes  3.04K bytes/sec
+total size is 25.93M  speedup is 17495.15
+2017-11-09 10:23:51 +0000  2017-11-09 10:23:51 +0000  
+
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  2017-11-09 10:23:51 +0000  /usr/bin/rsync exited with 0
+2017-11-09 10:23:51 +0000  
+
+2017-11-09 10:23:51 +0000  Running /Applications/Xcode.app/Contents/Developer/usr/bin/symbols '-noTextInSOD' '-noDaemon' '-arch' 'all' '-symbolsPackageDir' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Symbols' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftCore.dylib'
+2017-11-09 10:23:51 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftCore.dylib [armv7, 0.634627 seconds]:
+/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftCore.dylib [armv7s, 0.634627 seconds]:
+/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftCore.dylib [arm64, 0.634627 seconds]:
+2017-11-09 10:23:51 +0000  2017-11-09 10:23:51 +0000  
+
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  2017-11-09 10:23:51 +0000  
+
+2017-11-09 10:23:51 +0000  2017-11-09 10:23:51 +0000  /Applications/Xcode.app/Contents/Developer/usr/bin/symbols exited with 02017-11-09 10:23:51 +0000  
+
+
+2017-11-09 10:23:51 +0000  Processing symbols for libswiftCoreData.dylib
+2017-11-09 10:23:51 +0000  Running /usr/bin/rsync '-8aPhhE' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftCoreData.dylib' '--link-dest' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT'
+2017-11-09 10:23:51 +0000  building file list ... 
+2017-11-09 10:23:51 +0000   0 files...2017-11-09 10:23:51 +0000  1 file to consider
+2017-11-09 10:23:51 +0000  
+sent 95 bytes  received 20 bytes  230.00 bytes/sec
+total size is 674.38K  speedup is 6004.87
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  /usr/bin/rsync exited with 0
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  Running /usr/bin/rsync '-8aPhhE' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/dSYMs/' '--link-dest' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/dSYMs/' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT'
+2017-11-09 10:23:51 +0000  building file list ... 
+2017-11-09 10:23:51 +0000   0 files...2017-11-09 10:23:51 +0000  37 files to consider
+2017-11-09 10:23:51 +0000  ./
+2017-11-09 10:23:51 +0000  DoubleConversion.framework.dSYM/
+DoubleConversion.framework.dSYM/Contents/
+DoubleConversion.framework.dSYM/Contents/Resources/
+DoubleConversion.framework.dSYM/Contents/Resources/DWARF/
+PocketCRM for Vtiger.app.dSYM/
+PocketCRM for Vtiger.app.dSYM/Contents/
+2017-11-09 10:23:51 +0000  PocketCRM for Vtiger.app.dSYM/Contents/Resources/
+PocketCRM for Vtiger.app.dSYM/Contents/Resources/DWARF/
+React.framework.dSYM/
+React.framework.dSYM/Contents/
+React.framework.dSYM/Contents/Resources/
+React.framework.dSYM/Contents/Resources/DWARF/
+folly.framework.dSYM/
+folly.framework.dSYM/Contents/
+folly.framework.dSYM/Contents/Resources/
+folly.framework.dSYM/Contents/Resources/DWARF/
+glog.framework.dSYM/
+glog.framework.dSYM/Contents/
+2017-11-09 10:23:51 +0000  glog.framework.dSYM/Contents/Resources/
+glog.framework.dSYM/Contents/Resources/DWARF/
+yoga.framework.dSYM/
+yoga.framework.dSYM/Contents/
+yoga.framework.dSYM/Contents/Resources/
+yoga.framework.dSYM/Contents/Resources/DWARF/
+2017-11-09 10:23:51 +0000  
+sent 1.28K bytes  received 242 bytes  3.04K bytes/sec
+2017-11-09 10:23:51 +0000  total size is 25.93M  speedup is 17495.15
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  /usr/bin/rsync exited with 02017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+
+2017-11-09 10:23:51 +0000  Running /Applications/Xcode.app/Contents/Developer/usr/bin/symbols '-noTextInSOD' '-noDaemon' '-arch' 'all' '-symbolsPackageDir' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Symbols' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftCoreData.dylib'
+2017-11-09 10:23:51 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftCoreData.dylib [armv7, 0.006370 seconds]:
+/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftCoreData.dylib [armv7s, 0.006370 seconds]:
+/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftCoreData.dylib [arm64, 0.006370 seconds]:
+2017-11-09 10:23:51 +0000  2017-11-09 10:23:51 +0000  
+
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  /Applications/Xcode.app/Contents/Developer/usr/bin/symbols exited with 02017-11-09 10:23:51 +0000  
+
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  Processing symbols for libswiftCoreFoundation.dylib
+2017-11-09 10:23:51 +0000  Running /usr/bin/rsync '-8aPhhE' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftCoreFoundation.dylib' '--link-dest' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT'
+2017-11-09 10:23:51 +0000  building file list ... 
+ 0 files...2017-11-09 10:23:51 +0000  1 file to consider
+2017-11-09 10:23:51 +0000  
+sent 101 bytes  received 20 bytes  242.00 bytes/sec
+total size is 251.66K  speedup is 2129.72
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  
+2017-11-09 10:23:51 +0000  2017-11-09 10:23:51 +0000  /usr/bin/rsync exited with 0
+
+2017-11-09 10:23:51 +0000  2017-11-09 10:23:51 +0000  Running /usr/bin/rsync '-8aPhhE' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/dSYMs/' '--link-dest' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/dSYMs/' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT'
+
+2017-11-09 10:23:51 +0000  building file list ... 
+2017-11-09 10:23:51 +0000   0 files...2017-11-09 10:23:51 +0000  37 files to consider
+2017-11-09 10:23:52 +0000  ./
+2017-11-09 10:23:52 +0000  DoubleConversion.framework.dSYM/
+2017-11-09 10:23:52 +0000  DoubleConversion.framework.dSYM/Contents/
+DoubleConversion.framework.dSYM/Contents/Resources/
+DoubleConversion.framework.dSYM/Contents/Resources/DWARF/
+PocketCRM for Vtiger.app.dSYM/
+PocketCRM for Vtiger.app.dSYM/Contents/
+PocketCRM for Vtiger.app.dSYM/Contents/Resources/
+PocketCRM for Vtiger.app.dSYM/Contents/Resources/DWARF/
+React.framework.dSYM/
+React.framework.dSYM/Contents/
+React.framework.dSYM/Contents/Resources/
+React.framework.dSYM/Contents/Resources/DWARF/
+folly.framework.dSYM/
+folly.framework.dSYM/Contents/
+2017-11-09 10:23:52 +0000  folly.framework.dSYM/Contents/Resources/
+folly.framework.dSYM/Contents/Resources/DWARF/
+glog.framework.dSYM/
+glog.framework.dSYM/Contents/
+glog.framework.dSYM/Contents/Resources/
+glog.framework.dSYM/Contents/Resources/DWARF/
+yoga.framework.dSYM/
+yoga.framework.dSYM/Contents/
+yoga.framework.dSYM/Contents/Resources/
+yoga.framework.dSYM/Contents/Resources/DWARF/
+2017-11-09 10:23:52 +0000  
+sent 1.28K bytes  received 242 bytes  1.01K bytes/sec
+total size is 25.93M  speedup is 17495.15
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  
+
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  /usr/bin/rsync exited with 0
+
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  Running /Applications/Xcode.app/Contents/Developer/usr/bin/symbols '-noTextInSOD' '-noDaemon' '-arch' 'all' '-symbolsPackageDir' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Symbols' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftCoreFoundation.dylib'
+2017-11-09 10:23:52 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftCoreFoundation.dylib [armv7, 0.002012 seconds]:
+/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftCoreFoundation.dylib [armv7s, 0.002012 seconds]:
+/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftCoreFoundation.dylib [arm64, 0.002012 seconds]:
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  /Applications/Xcode.app/Contents/Developer/usr/bin/symbols exited with 0
+
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  
+
+2017-11-09 10:23:52 +0000  Processing symbols for libswiftCoreGraphics.dylib
+2017-11-09 10:23:52 +0000  Running /usr/bin/rsync '-8aPhhE' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftCoreGraphics.dylib' '--link-dest' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT'
+2017-11-09 10:23:52 +0000  building file list ... 
+2017-11-09 10:23:52 +0000   0 files...2017-11-09 10:23:52 +0000  1 file to consider
+2017-11-09 10:23:52 +0000  
+sent 99 bytes  received 20 bytes  238.00 bytes/sec
+total size is 1.21M  speedup is 10662.59
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  /usr/bin/rsync exited with 0
+2017-11-09 10:23:52 +0000  
+
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  Running /usr/bin/rsync '-8aPhhE' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/dSYMs/' '--link-dest' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/dSYMs/' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT'
+2017-11-09 10:23:52 +0000  building file list ... 
+2017-11-09 10:23:52 +0000   0 files...2017-11-09 10:23:52 +0000  37 files to consider
+2017-11-09 10:23:52 +0000  ./
+2017-11-09 10:23:52 +0000  DoubleConversion.framework.dSYM/
+2017-11-09 10:23:52 +0000  DoubleConversion.framework.dSYM/Contents/
+DoubleConversion.framework.dSYM/Contents/Resources/
+DoubleConversion.framework.dSYM/Contents/Resources/DWARF/
+PocketCRM for Vtiger.app.dSYM/
+PocketCRM for Vtiger.app.dSYM/Contents/
+PocketCRM for Vtiger.app.dSYM/Contents/Resources/
+PocketCRM for Vtiger.app.dSYM/Contents/Resources/DWARF/
+React.framework.dSYM/
+React.framework.dSYM/Contents/
+React.framework.dSYM/Contents/Resources/
+React.framework.dSYM/Contents/Resources/DWARF/
+folly.framework.dSYM/
+folly.framework.dSYM/Contents/
+folly.framework.dSYM/Contents/Resources/
+2017-11-09 10:23:52 +0000  folly.framework.dSYM/Contents/Resources/DWARF/
+glog.framework.dSYM/
+glog.framework.dSYM/Contents/
+glog.framework.dSYM/Contents/Resources/
+glog.framework.dSYM/Contents/Resources/DWARF/
+yoga.framework.dSYM/
+yoga.framework.dSYM/Contents/
+yoga.framework.dSYM/Contents/Resources/
+yoga.framework.dSYM/Contents/Resources/DWARF/
+2017-11-09 10:23:52 +0000  
+sent 1.28K bytes  received 242 bytes  3.04K bytes/sec
+total size is 25.93M  speedup is 17495.15
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  
+
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  /usr/bin/rsync exited with 0
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  
+
+2017-11-09 10:23:52 +0000  Running /Applications/Xcode.app/Contents/Developer/usr/bin/symbols '-noTextInSOD' '-noDaemon' '-arch' 'all' '-symbolsPackageDir' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Symbols' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftCoreGraphics.dylib'
+2017-11-09 10:23:52 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftCoreGraphics.dylib [armv7, 0.013879 seconds]:
+/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftCoreGraphics.dylib [armv7s, 0.013879 seconds]:
+/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftCoreGraphics.dylib [arm64, 0.013879 seconds]:
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  
+
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  /Applications/Xcode.app/Contents/Developer/usr/bin/symbols exited with 0
+2017-11-09 10:23:52 +0000  
+
+2017-11-09 10:23:52 +0000  Processing symbols for libswiftCoreImage.dylib
+2017-11-09 10:23:52 +0000  Running /usr/bin/rsync '-8aPhhE' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftCoreImage.dylib' '--link-dest' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT'
+2017-11-09 10:23:52 +0000  building file list ... 
+2017-11-09 10:23:52 +0000   0 files...2017-11-09 10:23:52 +0000  1 file to consider
+2017-11-09 10:23:52 +0000  
+sent 96 bytes  received 20 bytes  232.00 bytes/sec
+total size is 252.22K  speedup is 2226.48
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  /usr/bin/rsync exited with 0
+
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  Running /usr/bin/rsync '-8aPhhE' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/dSYMs/' '--link-dest' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/dSYMs/' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT'
+2017-11-09 10:23:52 +0000  building file list ... 
+2017-11-09 10:23:52 +0000   0 files...2017-11-09 10:23:52 +0000  37 files to consider
+2017-11-09 10:23:52 +0000  ./
+2017-11-09 10:23:52 +0000  DoubleConversion.framework.dSYM/
+DoubleConversion.framework.dSYM/Contents/
+2017-11-09 10:23:52 +0000  DoubleConversion.framework.dSYM/Contents/Resources/
+DoubleConversion.framework.dSYM/Contents/Resources/DWARF/
+PocketCRM for Vtiger.app.dSYM/
+PocketCRM for Vtiger.app.dSYM/Contents/
+PocketCRM for Vtiger.app.dSYM/Contents/Resources/
+PocketCRM for Vtiger.app.dSYM/Contents/Resources/DWARF/
+React.framework.dSYM/
+React.framework.dSYM/Contents/
+React.framework.dSYM/Contents/Resources/
+React.framework.dSYM/Contents/Resources/DWARF/
+folly.framework.dSYM/
+folly.framework.dSYM/Contents/
+folly.framework.dSYM/Contents/Resources/
+2017-11-09 10:23:52 +0000  folly.framework.dSYM/Contents/Resources/DWARF/
+glog.framework.dSYM/
+glog.framework.dSYM/Contents/
+glog.framework.dSYM/Contents/Resources/
+glog.framework.dSYM/Contents/Resources/DWARF/
+yoga.framework.dSYM/
+yoga.framework.dSYM/Contents/
+yoga.framework.dSYM/Contents/Resources/
+yoga.framework.dSYM/Contents/Resources/DWARF/
+2017-11-09 10:23:52 +0000  
+sent 1.28K bytes  received 242 bytes  3.04K bytes/sec
+total size is 25.93M  speedup is 17495.15
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  
+
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  /usr/bin/rsync exited with 0
+
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  Running /Applications/Xcode.app/Contents/Developer/usr/bin/symbols '-noTextInSOD' '-noDaemon' '-arch' 'all' '-symbolsPackageDir' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Symbols' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftCoreImage.dylib'
+2017-11-09 10:23:52 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftCoreImage.dylib [armv7, 0.002223 seconds]:
+/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftCoreImage.dylib [armv7s, 0.002223 seconds]:
+/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftCoreImage.dylib [arm64, 0.002223 seconds]:
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  
+
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  
+
+2017-11-09 10:23:52 +0000  /Applications/Xcode.app/Contents/Developer/usr/bin/symbols exited with 0
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  Processing symbols for libswiftCoreLocation.dylib
+2017-11-09 10:23:52 +0000  Running /usr/bin/rsync '-8aPhhE' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftCoreLocation.dylib' '--link-dest' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT'
+2017-11-09 10:23:52 +0000  building file list ... 
+2017-11-09 10:23:52 +0000   0 files...2017-11-09 10:23:52 +0000  1 file to consider
+2017-11-09 10:23:52 +0000  
+sent 99 bytes  received 20 bytes  238.00 bytes/sec
+total size is 392.02K  speedup is 3373.31
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  
+
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  
+
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  /usr/bin/rsync exited with 0
+
+2017-11-09 10:23:52 +0000  Running /usr/bin/rsync '-8aPhhE' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/dSYMs/' '--link-dest' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/dSYMs/' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT'
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  building file list ... 
+2017-11-09 10:23:52 +0000   0 files...2017-11-09 10:23:52 +0000  37 files to consider
+2017-11-09 10:23:52 +0000  ./
+2017-11-09 10:23:52 +0000  DoubleConversion.framework.dSYM/
+2017-11-09 10:23:52 +0000  DoubleConversion.framework.dSYM/Contents/
+DoubleConversion.framework.dSYM/Contents/Resources/
+DoubleConversion.framework.dSYM/Contents/Resources/DWARF/
+PocketCRM for Vtiger.app.dSYM/
+PocketCRM for Vtiger.app.dSYM/Contents/
+PocketCRM for Vtiger.app.dSYM/Contents/Resources/
+PocketCRM for Vtiger.app.dSYM/Contents/Resources/DWARF/
+React.framework.dSYM/
+React.framework.dSYM/Contents/
+2017-11-09 10:23:52 +0000  React.framework.dSYM/Contents/Resources/
+React.framework.dSYM/Contents/Resources/DWARF/
+folly.framework.dSYM/
+folly.framework.dSYM/Contents/
+folly.framework.dSYM/Contents/Resources/
+folly.framework.dSYM/Contents/Resources/DWARF/
+glog.framework.dSYM/
+glog.framework.dSYM/Contents/
+2017-11-09 10:23:52 +0000  glog.framework.dSYM/Contents/Resources/
+glog.framework.dSYM/Contents/Resources/DWARF/
+yoga.framework.dSYM/
+yoga.framework.dSYM/Contents/
+yoga.framework.dSYM/Contents/Resources/
+yoga.framework.dSYM/Contents/Resources/DWARF/
+2017-11-09 10:23:52 +0000  
+sent 1.28K bytes  received 242 bytes  3.04K bytes/sec
+total size is 25.93M  speedup is 17495.15
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  
+
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  
+
+2017-11-09 10:23:52 +0000  /usr/bin/rsync exited with 0
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  Running /Applications/Xcode.app/Contents/Developer/usr/bin/symbols '-noTextInSOD' '-noDaemon' '-arch' 'all' '-symbolsPackageDir' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Symbols' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftCoreLocation.dylib'
+2017-11-09 10:23:52 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftCoreLocation.dylib [armv7, 0.003811 seconds]:
+/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftCoreLocation.dylib [armv7s, 0.003811 seconds]:
+/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftCoreLocation.dylib [arm64, 0.003811 seconds]:
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  
+
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  
+
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  /Applications/Xcode.app/Contents/Developer/usr/bin/symbols exited with 0
+2017-11-09 10:23:52 +0000  
+
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  Processing symbols for libswiftDarwin.dylib
+2017-11-09 10:23:52 +0000  Running /usr/bin/rsync '-8aPhhE' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftDarwin.dylib' '--link-dest' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT'
+2017-11-09 10:23:52 +0000  building file list ... 
+2017-11-09 10:23:52 +0000   0 files...2017-11-09 10:23:52 +0000  1 file to consider
+2017-11-09 10:23:52 +0000  
+sent 93 bytes  received 20 bytes  226.00 bytes/sec
+total size is 585.23K  speedup is 5303.36
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  
+
+2017-11-09 10:23:52 +0000  /usr/bin/rsync exited with 02017-11-09 10:23:52 +0000  
+
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  Running /usr/bin/rsync '-8aPhhE' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/dSYMs/' '--link-dest' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/dSYMs/' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT'
+2017-11-09 10:23:52 +0000  building file list ... 
+2017-11-09 10:23:52 +0000   0 files...2017-11-09 10:23:52 +0000  37 files to consider
+2017-11-09 10:23:52 +0000  ./
+2017-11-09 10:23:52 +0000  DoubleConversion.framework.dSYM/
+DoubleConversion.framework.dSYM/Contents/
+2017-11-09 10:23:52 +0000  DoubleConversion.framework.dSYM/Contents/Resources/
+DoubleConversion.framework.dSYM/Contents/Resources/DWARF/
+PocketCRM for Vtiger.app.dSYM/
+PocketCRM for Vtiger.app.dSYM/Contents/
+PocketCRM for Vtiger.app.dSYM/Contents/Resources/
+PocketCRM for Vtiger.app.dSYM/Contents/Resources/DWARF/
+2017-11-09 10:23:52 +0000  React.framework.dSYM/
+React.framework.dSYM/Contents/
+React.framework.dSYM/Contents/Resources/
+React.framework.dSYM/Contents/Resources/DWARF/
+folly.framework.dSYM/
+folly.framework.dSYM/Contents/
+folly.framework.dSYM/Contents/Resources/
+2017-11-09 10:23:52 +0000  folly.framework.dSYM/Contents/Resources/DWARF/
+glog.framework.dSYM/
+glog.framework.dSYM/Contents/
+glog.framework.dSYM/Contents/Resources/
+glog.framework.dSYM/Contents/Resources/DWARF/
+yoga.framework.dSYM/
+yoga.framework.dSYM/Contents/
+yoga.framework.dSYM/Contents/Resources/
+yoga.framework.dSYM/Contents/Resources/DWARF/
+2017-11-09 10:23:52 +0000  
+sent 1.28K bytes  received 242 bytes  3.04K bytes/sec
+total size is 25.93M  speedup is 17495.15
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  /usr/bin/rsync exited with 0
+2017-11-09 10:23:52 +0000  
+
+2017-11-09 10:23:52 +0000  Running /Applications/Xcode.app/Contents/Developer/usr/bin/symbols '-noTextInSOD' '-noDaemon' '-arch' 'all' '-symbolsPackageDir' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Symbols' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftDarwin.dylib'
+2017-11-09 10:23:52 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftDarwin.dylib [armv7, 0.006294 seconds]:
+/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftDarwin.dylib [armv7s, 0.006294 seconds]:
+/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftDarwin.dylib [arm64, 0.006294 seconds]:
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  /Applications/Xcode.app/Contents/Developer/usr/bin/symbols exited with 0
+2017-11-09 10:23:52 +0000  
+
+2017-11-09 10:23:52 +0000  Processing symbols for libswiftDispatch.dylib
+2017-11-09 10:23:52 +0000  Running /usr/bin/rsync '-8aPhhE' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftDispatch.dylib' '--link-dest' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT'
+2017-11-09 10:23:52 +0000  building file list ... 
+2017-11-09 10:23:52 +0000   0 files...2017-11-09 10:23:52 +0000  1 file to consider
+2017-11-09 10:23:52 +0000  
+sent 95 bytes  received 20 bytes  230.00 bytes/sec
+total size is 2.33M  speedup is 21223.79
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  /usr/bin/rsync exited with 0
+
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  
+
+2017-11-09 10:23:52 +0000  Running /usr/bin/rsync '-8aPhhE' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/dSYMs/' '--link-dest' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/dSYMs/' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT'
+2017-11-09 10:23:52 +0000  building file list ... 
+2017-11-09 10:23:52 +0000   0 files...2017-11-09 10:23:52 +0000  37 files to consider
+2017-11-09 10:23:52 +0000  ./
+2017-11-09 10:23:52 +0000  DoubleConversion.framework.dSYM/
+DoubleConversion.framework.dSYM/Contents/
+2017-11-09 10:23:52 +0000  DoubleConversion.framework.dSYM/Contents/Resources/
+DoubleConversion.framework.dSYM/Contents/Resources/DWARF/
+PocketCRM for Vtiger.app.dSYM/
+PocketCRM for Vtiger.app.dSYM/Contents/
+PocketCRM for Vtiger.app.dSYM/Contents/Resources/
+PocketCRM for Vtiger.app.dSYM/Contents/Resources/DWARF/
+React.framework.dSYM/
+React.framework.dSYM/Contents/
+React.framework.dSYM/Contents/Resources/
+React.framework.dSYM/Contents/Resources/DWARF/
+folly.framework.dSYM/
+folly.framework.dSYM/Contents/
+folly.framework.dSYM/Contents/Resources/
+folly.framework.dSYM/Contents/Resources/DWARF/
+2017-11-09 10:23:52 +0000  glog.framework.dSYM/
+glog.framework.dSYM/Contents/
+glog.framework.dSYM/Contents/Resources/
+glog.framework.dSYM/Contents/Resources/DWARF/
+yoga.framework.dSYM/
+yoga.framework.dSYM/Contents/
+yoga.framework.dSYM/Contents/Resources/
+yoga.framework.dSYM/Contents/Resources/DWARF/
+2017-11-09 10:23:52 +0000  
+sent 1.28K bytes  received 242 bytes  3.04K bytes/sec
+total size is 25.93M  speedup is 17495.15
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  
+
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  /usr/bin/rsync exited with 0
+
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  
+
+2017-11-09 10:23:52 +0000  Running /Applications/Xcode.app/Contents/Developer/usr/bin/symbols '-noTextInSOD' '-noDaemon' '-arch' 'all' '-symbolsPackageDir' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Symbols' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftDispatch.dylib'
+2017-11-09 10:23:52 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftDispatch.dylib [armv7, 0.026841 seconds]:
+/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftDispatch.dylib [armv7s, 0.026841 seconds]:
+/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftDispatch.dylib [arm64, 0.026841 seconds]:
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  
+
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  /Applications/Xcode.app/Contents/Developer/usr/bin/symbols exited with 0
+2017-11-09 10:23:52 +0000  
+
+2017-11-09 10:23:52 +0000  Processing symbols for libswiftFoundation.dylib
+2017-11-09 10:23:52 +0000  Running /usr/bin/rsync '-8aPhhE' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftFoundation.dylib' '--link-dest' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT'
+2017-11-09 10:23:52 +0000  building file list ... 
+2017-11-09 10:23:52 +0000   0 files...2017-11-09 10:23:52 +0000  1 file to consider
+2017-11-09 10:23:52 +0000  
+sent 97 bytes  received 20 bytes  234.00 bytes/sec
+total size is 26.63M  speedup is 238657.91
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  
+
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  /usr/bin/rsync exited with 0
+
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  Running /usr/bin/rsync '-8aPhhE' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/dSYMs/' '--link-dest' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/dSYMs/' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT'
+2017-11-09 10:23:52 +0000  building file list ... 
+2017-11-09 10:23:52 +0000   0 files...2017-11-09 10:23:52 +0000  37 files to consider
+2017-11-09 10:23:52 +0000  ./
+2017-11-09 10:23:52 +0000  DoubleConversion.framework.dSYM/
+DoubleConversion.framework.dSYM/Contents/
+2017-11-09 10:23:52 +0000  DoubleConversion.framework.dSYM/Contents/Resources/
+DoubleConversion.framework.dSYM/Contents/Resources/DWARF/
+PocketCRM for Vtiger.app.dSYM/
+PocketCRM for Vtiger.app.dSYM/Contents/
+PocketCRM for Vtiger.app.dSYM/Contents/Resources/
+PocketCRM for Vtiger.app.dSYM/Contents/Resources/DWARF/
+React.framework.dSYM/
+React.framework.dSYM/Contents/
+React.framework.dSYM/Contents/Resources/
+React.framework.dSYM/Contents/Resources/DWARF/
+2017-11-09 10:23:52 +0000  folly.framework.dSYM/
+folly.framework.dSYM/Contents/
+folly.framework.dSYM/Contents/Resources/
+folly.framework.dSYM/Contents/Resources/DWARF/
+glog.framework.dSYM/
+glog.framework.dSYM/Contents/
+glog.framework.dSYM/Contents/Resources/
+glog.framework.dSYM/Contents/Resources/DWARF/
+yoga.framework.dSYM/
+yoga.framework.dSYM/Contents/
+yoga.framework.dSYM/Contents/Resources/
+yoga.framework.dSYM/Contents/Resources/DWARF/
+2017-11-09 10:23:52 +0000  
+sent 1.28K bytes  received 242 bytes  3.04K bytes/sec
+total size is 25.93M  speedup is 17495.15
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  
+
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  
+
+2017-11-09 10:23:52 +0000  /usr/bin/rsync exited with 0
+2017-11-09 10:23:52 +0000  2017-11-09 10:23:52 +0000  
+
+2017-11-09 10:23:52 +0000  Running /Applications/Xcode.app/Contents/Developer/usr/bin/symbols '-noTextInSOD' '-noDaemon' '-arch' 'all' '-symbolsPackageDir' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Symbols' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftFoundation.dylib'
+2017-11-09 10:23:53 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftFoundation.dylib [armv7, 0.250655 seconds]:
+/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftFoundation.dylib [armv7s, 0.250655 seconds]:
+/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftFoundation.dylib [arm64, 0.250655 seconds]:
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  2017-11-09 10:23:53 +0000  
+
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  2017-11-09 10:23:53 +0000  /Applications/Xcode.app/Contents/Developer/usr/bin/symbols exited with 0
+2017-11-09 10:23:53 +0000  
+
+2017-11-09 10:23:53 +0000  Processing symbols for libswiftMetal.dylib
+2017-11-09 10:23:53 +0000  Running /usr/bin/rsync '-8aPhhE' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftMetal.dylib' '--link-dest' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT'
+2017-11-09 10:23:53 +0000  building file list ... 
+2017-11-09 10:23:53 +0000   0 files...2017-11-09 10:23:53 +0000  1 file to consider
+2017-11-09 10:23:53 +0000  
+sent 92 bytes  received 20 bytes  224.00 bytes/sec
+total size is 390.02K  speedup is 3565.86
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  2017-11-09 10:23:53 +0000  
+
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  2017-11-09 10:23:53 +0000  
+
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  /usr/bin/rsync exited with 0
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  Running /usr/bin/rsync '-8aPhhE' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/dSYMs/' '--link-dest' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/dSYMs/' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT'
+2017-11-09 10:23:53 +0000  building file list ... 
+2017-11-09 10:23:53 +0000   0 files...2017-11-09 10:23:53 +0000  37 files to consider
+2017-11-09 10:23:53 +0000  ./
+2017-11-09 10:23:53 +0000  DoubleConversion.framework.dSYM/
+DoubleConversion.framework.dSYM/Contents/
+DoubleConversion.framework.dSYM/Contents/Resources/
+DoubleConversion.framework.dSYM/Contents/Resources/DWARF/
+PocketCRM for Vtiger.app.dSYM/
+PocketCRM for Vtiger.app.dSYM/Contents/
+PocketCRM for Vtiger.app.dSYM/Contents/Resources/
+PocketCRM for Vtiger.app.dSYM/Contents/Resources/DWARF/
+React.framework.dSYM/
+React.framework.dSYM/Contents/
+React.framework.dSYM/Contents/Resources/
+React.framework.dSYM/Contents/Resources/DWARF/
+folly.framework.dSYM/
+folly.framework.dSYM/Contents/
+folly.framework.dSYM/Contents/Resources/
+folly.framework.dSYM/Contents/Resources/DWARF/
+glog.framework.dSYM/
+glog.framework.dSYM/Contents/
+glog.framework.dSYM/Contents/Resources/
+glog.framework.dSYM/Contents/Resources/DWARF/
+yoga.framework.dSYM/
+yoga.framework.dSYM/Contents/
+yoga.framework.dSYM/Contents/Resources/
+yoga.framework.dSYM/Contents/Resources/DWARF/
+2017-11-09 10:23:53 +0000  
+sent 1.28K bytes  received 242 bytes  3.04K bytes/sec
+total size is 25.93M  speedup is 17495.15
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  2017-11-09 10:23:53 +0000  /usr/bin/rsync exited with 0
+2017-11-09 10:23:53 +0000  
+
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  Running /Applications/Xcode.app/Contents/Developer/usr/bin/symbols '-noTextInSOD' '-noDaemon' '-arch' 'all' '-symbolsPackageDir' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Symbols' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftMetal.dylib'
+2017-11-09 10:23:53 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftMetal.dylib [armv7, 0.003255 seconds]:
+/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftMetal.dylib [armv7s, 0.003255 seconds]:
+/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftMetal.dylib [arm64, 0.003255 seconds]:
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  2017-11-09 10:23:53 +0000  /Applications/Xcode.app/Contents/Developer/usr/bin/symbols exited with 0
+2017-11-09 10:23:53 +0000  
+
+2017-11-09 10:23:53 +0000  Processing symbols for libswiftObjectiveC.dylib
+2017-11-09 10:23:53 +0000  Running /usr/bin/rsync '-8aPhhE' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftObjectiveC.dylib' '--link-dest' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT'
+2017-11-09 10:23:53 +0000  building file list ... 
+2017-11-09 10:23:53 +0000   0 files...2017-11-09 10:23:53 +0000  1 file to consider
+2017-11-09 10:23:53 +0000  
+sent 97 bytes  received 20 bytes  234.00 bytes/sec
+total size is 493.94K  speedup is 4323.01
+2017-11-09 10:23:53 +0000  2017-11-09 10:23:53 +0000  
+
+2017-11-09 10:23:53 +0000  2017-11-09 10:23:53 +0000  
+
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  2017-11-09 10:23:53 +0000  /usr/bin/rsync exited with 0
+2017-11-09 10:23:53 +0000  
+
+2017-11-09 10:23:53 +0000  Running /usr/bin/rsync '-8aPhhE' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/dSYMs/' '--link-dest' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/dSYMs/' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT'
+2017-11-09 10:23:53 +0000  building file list ... 
+2017-11-09 10:23:53 +0000   0 files...2017-11-09 10:23:53 +0000  37 files to consider
+2017-11-09 10:23:53 +0000  ./
+2017-11-09 10:23:53 +0000  DoubleConversion.framework.dSYM/
+2017-11-09 10:23:53 +0000  DoubleConversion.framework.dSYM/Contents/
+DoubleConversion.framework.dSYM/Contents/Resources/
+DoubleConversion.framework.dSYM/Contents/Resources/DWARF/
+PocketCRM for Vtiger.app.dSYM/
+PocketCRM for Vtiger.app.dSYM/Contents/
+PocketCRM for Vtiger.app.dSYM/Contents/Resources/
+PocketCRM for Vtiger.app.dSYM/Contents/Resources/DWARF/
+React.framework.dSYM/
+React.framework.dSYM/Contents/
+2017-11-09 10:23:53 +0000  React.framework.dSYM/Contents/Resources/
+React.framework.dSYM/Contents/Resources/DWARF/
+folly.framework.dSYM/
+folly.framework.dSYM/Contents/
+folly.framework.dSYM/Contents/Resources/
+folly.framework.dSYM/Contents/Resources/DWARF/
+glog.framework.dSYM/
+glog.framework.dSYM/Contents/
+2017-11-09 10:23:53 +0000  glog.framework.dSYM/Contents/Resources/
+glog.framework.dSYM/Contents/Resources/DWARF/
+yoga.framework.dSYM/
+yoga.framework.dSYM/Contents/
+yoga.framework.dSYM/Contents/Resources/
+yoga.framework.dSYM/Contents/Resources/DWARF/
+2017-11-09 10:23:53 +0000  
+sent 1.28K bytes  received 242 bytes  3.04K bytes/sec
+total size is 25.93M  speedup is 17495.15
+2017-11-09 10:23:53 +0000  2017-11-09 10:23:53 +0000  
+
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  2017-11-09 10:23:53 +0000  
+
+2017-11-09 10:23:53 +0000  2017-11-09 10:23:53 +0000  
+
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  2017-11-09 10:23:53 +0000  /usr/bin/rsync exited with 0
+
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  Running /Applications/Xcode.app/Contents/Developer/usr/bin/symbols '-noTextInSOD' '-noDaemon' '-arch' 'all' '-symbolsPackageDir' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Symbols' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftObjectiveC.dylib'
+2017-11-09 10:23:53 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftObjectiveC.dylib [armv7, 0.005220 seconds]:
+/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftObjectiveC.dylib [armv7s, 0.005220 seconds]:
+/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftObjectiveC.dylib [arm64, 0.005220 seconds]:
+2017-11-09 10:23:53 +0000  2017-11-09 10:23:53 +0000  
+
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  /Applications/Xcode.app/Contents/Developer/usr/bin/symbols exited with 0
+2017-11-09 10:23:53 +0000  2017-11-09 10:23:53 +0000  
+
+2017-11-09 10:23:53 +0000  Processing symbols for libswiftQuartzCore.dylib
+2017-11-09 10:23:53 +0000  Running /usr/bin/rsync '-8aPhhE' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftQuartzCore.dylib' '--link-dest' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT'
+2017-11-09 10:23:53 +0000  building file list ... 
+2017-11-09 10:23:53 +0000   0 files...2017-11-09 10:23:53 +0000  1 file to consider
+2017-11-09 10:23:53 +0000  
+sent 97 bytes  received 20 bytes  234.00 bytes/sec
+total size is 303.69K  speedup is 2657.91
+2017-11-09 10:23:53 +0000  2017-11-09 10:23:53 +0000  
+
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  2017-11-09 10:23:53 +0000  
+
+2017-11-09 10:23:53 +0000  /usr/bin/rsync exited with 0
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  Running /usr/bin/rsync '-8aPhhE' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/dSYMs/' '--link-dest' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/dSYMs/' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT'
+2017-11-09 10:23:53 +0000  building file list ... 
+2017-11-09 10:23:53 +0000   0 files...2017-11-09 10:23:53 +0000  37 files to consider
+2017-11-09 10:23:53 +0000  ./
+2017-11-09 10:23:53 +0000  DoubleConversion.framework.dSYM/
+DoubleConversion.framework.dSYM/Contents/
+DoubleConversion.framework.dSYM/Contents/Resources/
+DoubleConversion.framework.dSYM/Contents/Resources/DWARF/
+PocketCRM for Vtiger.app.dSYM/
+2017-11-09 10:23:53 +0000  PocketCRM for Vtiger.app.dSYM/Contents/
+PocketCRM for Vtiger.app.dSYM/Contents/Resources/
+PocketCRM for Vtiger.app.dSYM/Contents/Resources/DWARF/
+React.framework.dSYM/
+React.framework.dSYM/Contents/
+React.framework.dSYM/Contents/Resources/
+React.framework.dSYM/Contents/Resources/DWARF/
+folly.framework.dSYM/
+folly.framework.dSYM/Contents/
+folly.framework.dSYM/Contents/Resources/
+folly.framework.dSYM/Contents/Resources/DWARF/
+glog.framework.dSYM/
+2017-11-09 10:23:53 +0000  glog.framework.dSYM/Contents/
+glog.framework.dSYM/Contents/Resources/
+glog.framework.dSYM/Contents/Resources/DWARF/
+yoga.framework.dSYM/
+yoga.framework.dSYM/Contents/
+yoga.framework.dSYM/Contents/Resources/
+yoga.framework.dSYM/Contents/Resources/DWARF/
+2017-11-09 10:23:53 +0000  
+sent 1.28K bytes  received 242 bytes  3.04K bytes/sec
+total size is 25.93M  speedup is 17495.15
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  2017-11-09 10:23:53 +0000  
+
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  /usr/bin/rsync exited with 0
+2017-11-09 10:23:53 +0000  2017-11-09 10:23:53 +0000  
+
+2017-11-09 10:23:53 +0000  Running /Applications/Xcode.app/Contents/Developer/usr/bin/symbols '-noTextInSOD' '-noDaemon' '-arch' 'all' '-symbolsPackageDir' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Symbols' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftQuartzCore.dylib'
+2017-11-09 10:23:53 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftQuartzCore.dylib [armv7, 0.003725 seconds]:
+/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftQuartzCore.dylib [armv7s, 0.003725 seconds]:
+/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftQuartzCore.dylib [arm64, 0.003725 seconds]:
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  2017-11-09 10:23:53 +0000  /Applications/Xcode.app/Contents/Developer/usr/bin/symbols exited with 0
+
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  Processing symbols for libswiftUIKit.dylib
+2017-11-09 10:23:53 +0000  Running /usr/bin/rsync '-8aPhhE' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftUIKit.dylib' '--link-dest' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT'
+2017-11-09 10:23:53 +0000  building file list ... 
+2017-11-09 10:23:53 +0000   0 files...2017-11-09 10:23:53 +0000  1 file to consider
+2017-11-09 10:23:53 +0000  
+sent 92 bytes  received 20 bytes  224.00 bytes/sec
+total size is 770.69K  speedup is 7046.29
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  /usr/bin/rsync exited with 0
+2017-11-09 10:23:53 +0000  2017-11-09 10:23:53 +0000  
+
+2017-11-09 10:23:53 +0000  Running /usr/bin/rsync '-8aPhhE' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/dSYMs/' '--link-dest' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/dSYMs/' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT'
+2017-11-09 10:23:53 +0000  building file list ... 
+2017-11-09 10:23:53 +0000   0 files...2017-11-09 10:23:53 +0000  37 files to consider
+2017-11-09 10:23:53 +0000  ./
+2017-11-09 10:23:53 +0000  DoubleConversion.framework.dSYM/
+2017-11-09 10:23:53 +0000  DoubleConversion.framework.dSYM/Contents/
+DoubleConversion.framework.dSYM/Contents/Resources/
+DoubleConversion.framework.dSYM/Contents/Resources/DWARF/
+PocketCRM for Vtiger.app.dSYM/
+PocketCRM for Vtiger.app.dSYM/Contents/
+PocketCRM for Vtiger.app.dSYM/Contents/Resources/
+PocketCRM for Vtiger.app.dSYM/Contents/Resources/DWARF/
+React.framework.dSYM/
+React.framework.dSYM/Contents/
+React.framework.dSYM/Contents/Resources/
+React.framework.dSYM/Contents/Resources/DWARF/
+folly.framework.dSYM/
+folly.framework.dSYM/Contents/
+folly.framework.dSYM/Contents/Resources/
+folly.framework.dSYM/Contents/Resources/DWARF/
+2017-11-09 10:23:53 +0000  glog.framework.dSYM/
+glog.framework.dSYM/Contents/
+glog.framework.dSYM/Contents/Resources/
+glog.framework.dSYM/Contents/Resources/DWARF/
+yoga.framework.dSYM/
+yoga.framework.dSYM/Contents/
+yoga.framework.dSYM/Contents/Resources/
+yoga.framework.dSYM/Contents/Resources/DWARF/
+2017-11-09 10:23:53 +0000  
+sent 1.28K bytes  received 242 bytes  3.04K bytes/sec
+total size is 25.93M  speedup is 17495.15
+2017-11-09 10:23:53 +0000  2017-11-09 10:23:53 +0000  
+
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  2017-11-09 10:23:53 +0000  
+
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  /usr/bin/rsync exited with 02017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+
+2017-11-09 10:23:53 +0000  Running /Applications/Xcode.app/Contents/Developer/usr/bin/symbols '-noTextInSOD' '-noDaemon' '-arch' 'all' '-symbolsPackageDir' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Symbols' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftUIKit.dylib'
+2017-11-09 10:23:53 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftUIKit.dylib [armv7, 0.009083 seconds]:
+/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftUIKit.dylib [armv7s, 0.009083 seconds]:
+/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftUIKit.dylib [arm64, 0.009083 seconds]:
+2017-11-09 10:23:53 +0000  2017-11-09 10:23:53 +0000  
+
+2017-11-09 10:23:53 +0000  2017-11-09 10:23:53 +0000  
+
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  2017-11-09 10:23:53 +0000  /Applications/Xcode.app/Contents/Developer/usr/bin/symbols exited with 0
+
+2017-11-09 10:23:53 +0000  2017-11-09 10:23:53 +0000  
+
+2017-11-09 10:23:53 +0000  Processing symbols for libswiftos.dylib
+2017-11-09 10:23:53 +0000  Running /usr/bin/rsync '-8aPhhE' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftos.dylib' '--link-dest' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT'
+2017-11-09 10:23:53 +0000  building file list ... 
+2017-11-09 10:23:53 +0000   0 files...2017-11-09 10:23:53 +0000  1 file to consider
+2017-11-09 10:23:53 +0000  
+sent 89 bytes  received 20 bytes  218.00 bytes/sec
+2017-11-09 10:23:53 +0000  total size is 435.94K  speedup is 4095.41
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  2017-11-09 10:23:53 +0000  
+
+2017-11-09 10:23:53 +0000  2017-11-09 10:23:53 +0000  
+
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  2017-11-09 10:23:53 +0000  /usr/bin/rsync exited with 0
+
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  Running /usr/bin/rsync '-8aPhhE' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/dSYMs/' '--link-dest' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/dSYMs/' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT'
+2017-11-09 10:23:53 +0000  building file list ... 
+2017-11-09 10:23:53 +0000   0 files...2017-11-09 10:23:53 +0000  37 files to consider
+2017-11-09 10:23:53 +0000  ./
+2017-11-09 10:23:53 +0000  DoubleConversion.framework.dSYM/
+2017-11-09 10:23:53 +0000  DoubleConversion.framework.dSYM/Contents/
+DoubleConversion.framework.dSYM/Contents/Resources/
+DoubleConversion.framework.dSYM/Contents/Resources/DWARF/
+PocketCRM for Vtiger.app.dSYM/
+PocketCRM for Vtiger.app.dSYM/Contents/
+PocketCRM for Vtiger.app.dSYM/Contents/Resources/
+PocketCRM for Vtiger.app.dSYM/Contents/Resources/DWARF/
+React.framework.dSYM/
+React.framework.dSYM/Contents/
+2017-11-09 10:23:53 +0000  React.framework.dSYM/Contents/Resources/
+React.framework.dSYM/Contents/Resources/DWARF/
+folly.framework.dSYM/
+folly.framework.dSYM/Contents/
+folly.framework.dSYM/Contents/Resources/
+folly.framework.dSYM/Contents/Resources/DWARF/
+glog.framework.dSYM/
+glog.framework.dSYM/Contents/
+glog.framework.dSYM/Contents/Resources/
+glog.framework.dSYM/Contents/Resources/DWARF/
+yoga.framework.dSYM/
+yoga.framework.dSYM/Contents/
+2017-11-09 10:23:53 +0000  yoga.framework.dSYM/Contents/Resources/
+yoga.framework.dSYM/Contents/Resources/DWARF/
+2017-11-09 10:23:53 +0000  
+sent 1.28K bytes  received 242 bytes  3.04K bytes/sec
+total size is 25.93M  speedup is 17495.15
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  2017-11-09 10:23:53 +0000  /usr/bin/rsync exited with 0
+
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  Running /Applications/Xcode.app/Contents/Developer/usr/bin/symbols '-noTextInSOD' '-noDaemon' '-arch' 'all' '-symbolsPackageDir' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Symbols' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftos.dylib'
+2017-11-09 10:23:53 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftos.dylib [armv7, 0.003179 seconds]:
+/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftos.dylib [armv7s, 0.003179 seconds]:
+/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/libswiftos.dylib [arm64, 0.003179 seconds]:
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  2017-11-09 10:23:53 +0000  
+2017-11-09 10:23:53 +0000  
+
+2017-11-09 10:23:53 +0000  2017-11-09 10:23:53 +0000  /Applications/Xcode.app/Contents/Developer/usr/bin/symbols exited with 0
+2017-11-09 10:23:53 +0000  
+
+2017-11-09 10:23:53 +0000  Excluding symbols for yoga.framework
+2017-11-09 10:23:53 +0000  Excluding symbols for PocketCRM for Vtiger.app
+2017-11-09 10:23:53 +0000  Processing step: IDEDistributionCopyAppleProvidedContentStep
+2017-11-09 10:23:53 +0000  Running /usr/bin/ditto '-V' '/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/SwiftSupport' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/SwiftSupport'
+2017-11-09 10:23:53 +0000  >>> Copying /Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/SwiftSupport 
+2017-11-09 10:23:53 +0000  copying file ./iphoneos/libswiftCoreImage.dylib ... 
+2017-11-09 10:23:53 +0000  300324 bytes for ./iphoneos/libswiftCoreImage.dylib
+2017-11-09 10:23:53 +0000  copying file ./iphoneos/libswiftObjectiveC.dylib ... 
+2017-11-09 10:23:53 +0000  681315 bytes for ./iphoneos/libswiftObjectiveC.dylib
+2017-11-09 10:23:53 +0000  copying file ./iphoneos/libswiftCore.dylib ... 
+2017-11-09 10:23:54 +0000  100105869 bytes for ./iphoneos/libswiftCore.dylib
+copying file ./iphoneos/libswiftCoreGraphics.dylib ... 
+2017-11-09 10:23:54 +0000  1736854 bytes for ./iphoneos/libswiftCoreGraphics.dylib
+2017-11-09 10:23:54 +0000  copying file ./iphoneos/libswiftUIKit.dylib ... 
+2017-11-09 10:23:54 +0000  1117164 bytes for ./iphoneos/libswiftUIKit.dylib
+copying file ./iphoneos/libswiftMetal.dylib ... 
+2017-11-09 10:23:54 +0000  504006 bytes for ./iphoneos/libswiftMetal.dylib
+2017-11-09 10:23:54 +0000  copying file ./iphoneos/libswiftCoreData.dylib ... 
+2017-11-09 10:23:54 +0000  872487 bytes for ./iphoneos/libswiftCoreData.dylib
+2017-11-09 10:23:54 +0000  copying file ./iphoneos/libswiftDispatch.dylib ... 
+2017-11-09 10:23:54 +0000  3398327 bytes for ./iphoneos/libswiftDispatch.dylib
+2017-11-09 10:23:54 +0000  copying file ./iphoneos/libswiftos.dylib ... 
+2017-11-09 10:23:54 +0000  589732 bytes for ./iphoneos/libswiftos.dylib
+2017-11-09 10:23:54 +0000  copying file ./iphoneos/libswiftCoreFoundation.dylib ... 
+2017-11-09 10:23:54 +0000  287519 bytes for ./iphoneos/libswiftCoreFoundation.dylib
+copying file ./iphoneos/libswiftDarwin.dylib ... 
+2017-11-09 10:23:54 +0000  790347 bytes for ./iphoneos/libswiftDarwin.dylib
+copying file ./iphoneos/libswiftQuartzCore.dylib ... 
+2017-11-09 10:23:54 +0000  370132 bytes for ./iphoneos/libswiftQuartzCore.dylib
+2017-11-09 10:23:54 +0000  copying file ./iphoneos/libswiftAccelerate.dylib ... 
+2017-11-09 10:23:54 +0000  490475 bytes for ./iphoneos/libswiftAccelerate.dylib
+copying file ./iphoneos/libswiftFoundation.dylib ... 
+2017-11-09 10:23:54 +0000  40949491 bytes for ./iphoneos/libswiftFoundation.dylib
+copying file ./iphoneos/libswiftCoreLocation.dylib ... 
+2017-11-09 10:23:54 +0000  499202 bytes for ./iphoneos/libswiftCoreLocation.dylib
+2017-11-09 10:23:54 +0000  
+2017-11-09 10:23:54 +0000  2017-11-09 10:23:54 +0000  /usr/bin/ditto exited with 0
+
+2017-11-09 10:23:54 +0000  
+2017-11-09 10:23:54 +0000  2017-11-09 10:23:54 +0000  Processing step: IDEDistributionAppThinningStep
+
+2017-11-09 10:23:54 +0000  Skipping step: IDEDistributionAppThinningStep because it said so
+2017-11-09 10:23:54 +0000  Processing step: IDEDistributionODRStep
+2017-11-09 10:23:54 +0000  Processing step: IDEDistributionStripXattrsStep
+2017-11-09 10:23:54 +0000  Skipping stripping extended attributes of item: <IDEDistributionItem: 0x7f834af750f0 'org.cocoapods.DoubleConversion' '<DVTFilePath:0x7f833ca705d0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/DoubleConversion.framework'>'>
+2017-11-09 10:23:54 +0000  Skipping stripping extended attributes of item: <IDEDistributionItem: 0x7f8353aa17e0 'org.cocoapods.React' '<DVTFilePath:0x7f8353d9e3c0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/React.framework'>'>
+2017-11-09 10:23:54 +0000  Skipping stripping extended attributes of item: <IDEDistributionItem: 0x7f834ae53110 'org.cocoapods.folly' '<DVTFilePath:0x7f833c3d2cd0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/folly.framework'>'>
+2017-11-09 10:23:54 +0000  Skipping stripping extended attributes of item: <IDEDistributionItem: 0x7f8336adb610 'org.cocoapods.glog' '<DVTFilePath:0x7f833c1bc9a0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/glog.framework'>'>
+2017-11-09 10:23:54 +0000  Skipping stripping extended attributes of item: <IDEDistributionItem: 0x7f833546f220 'com.apple.dt.runtime.swiftAccelerate' '<DVTFilePath:0x7f8337df9640:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftAccelerate.dylib'>'>
+2017-11-09 10:23:54 +0000  Skipping stripping extended attributes of item: <IDEDistributionItem: 0x7f8337d21840 'com.apple.dt.runtime.swiftCore' '<DVTFilePath:0x7f83354d5960:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftCore.dylib'>'>
+2017-11-09 10:23:54 +0000  Skipping stripping extended attributes of item: <IDEDistributionItem: 0x7f834d40e860 'com.apple.dt.runtime.swiftCoreData' '<DVTFilePath:0x7f833b782d00:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftCoreData.dylib'>'>
+2017-11-09 10:23:54 +0000  Skipping stripping extended attributes of item: <IDEDistributionItem: 0x7f8335335930 'com.apple.dt.runtime.swiftCoreFoundation' '<DVTFilePath:0x7f834cdac030:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftCoreFoundation.dylib'>'>
+2017-11-09 10:23:54 +0000  Skipping stripping extended attributes of item: <IDEDistributionItem: 0x7f83538ba970 'com.apple.dt.runtime.swiftCoreGraphics' '<DVTFilePath:0x7f833b8f18c0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftCoreGraphics.dylib'>'>
+2017-11-09 10:23:54 +0000  Skipping stripping extended attributes of item: <IDEDistributionItem: 0x7f8353bd7d80 'com.apple.dt.runtime.swiftCoreImage' '<DVTFilePath:0x7f83350bd500:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftCoreImage.dylib'>'>
+2017-11-09 10:23:54 +0000  Skipping stripping extended attributes of item: <IDEDistributionItem: 0x7f8335156df0 'com.apple.dt.runtime.swiftCoreLocation' '<DVTFilePath:0x7f8347dbf4d0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftCoreLocation.dylib'>'>
+2017-11-09 10:23:54 +0000  Skipping stripping extended attributes of item: <IDEDistributionItem: 0x7f833c4c6020 'com.apple.dt.runtime.swiftDarwin' '<DVTFilePath:0x7f834c108bb0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftDarwin.dylib'>'>
+2017-11-09 10:23:54 +0000  Skipping stripping extended attributes of item: <IDEDistributionItem: 0x7f8337faf7b0 'com.apple.dt.runtime.swiftDispatch' '<DVTFilePath:0x7f8354b6f960:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftDispatch.dylib'>'>
+2017-11-09 10:23:54 +0000  Skipping stripping extended attributes of item: <IDEDistributionItem: 0x7f833c529cd0 'com.apple.dt.runtime.swiftFoundation' '<DVTFilePath:0x7f8352964240:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftFoundation.dylib'>'>
+2017-11-09 10:23:54 +0000  Skipping stripping extended attributes of item: <IDEDistributionItem: 0x7f833c3dafc0 'com.apple.dt.runtime.swiftMetal' '<DVTFilePath:0x7f8337eb1120:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftMetal.dylib'>'>
+2017-11-09 10:23:54 +0000  Skipping stripping extended attributes of item: <IDEDistributionItem: 0x7f833579d470 'com.apple.dt.runtime.swiftObjectiveC' '<DVTFilePath:0x7f833cd30c30:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftObjectiveC.dylib'>'>
+2017-11-09 10:23:54 +0000  Skipping stripping extended attributes of item: <IDEDistributionItem: 0x7f833c3b1c00 'com.apple.dt.runtime.swiftQuartzCore' '<DVTFilePath:0x7f833bd660f0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftQuartzCore.dylib'>'>
+2017-11-09 10:23:54 +0000  Skipping stripping extended attributes of item: <IDEDistributionItem: 0x7f8353ace000 'com.apple.dt.runtime.swiftUIKit' '<DVTFilePath:0x7f833d1aea80:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftUIKit.dylib'>'>
+2017-11-09 10:23:54 +0000  Skipping stripping extended attributes of item: <IDEDistributionItem: 0x7f83538626e0 'com.apple.dt.runtime.swiftos' '<DVTFilePath:0x7f8353cf3800:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftos.dylib'>'>
+2017-11-09 10:23:54 +0000  Skipping stripping extended attributes of item: <IDEDistributionItem: 0x7f833c6b4fa0 'org.cocoapods.yoga' '<DVTFilePath:0x7f833d96f300:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/yoga.framework'>'>
+2017-11-09 10:23:54 +0000  Running /usr/bin/xattr '-crs' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app'
+2017-11-09 10:23:55 +0000  
+2017-11-09 10:23:55 +0000  2017-11-09 10:23:55 +0000  /usr/bin/xattr exited with 0
+2017-11-09 10:23:55 +0000  
+
+2017-11-09 10:23:55 +0000  
+2017-11-09 10:23:55 +0000  Processing step: IDEDistributionCodesignStep
+2017-11-09 10:23:55 +0000  Applying entitlements delta for <IDEDistributionItem: 0x7f834af750f0 'org.cocoapods.DoubleConversion' '<DVTFilePath:0x7f833ca705d0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/DoubleConversion.framework'>'> from <IDEiCloudEntitlementsProcessor: 0x7f833c64d8e0>: {
+}
+2017-11-09 10:23:55 +0000  Entitlements for <IDEDistributionItem: 0x7f834af750f0 'org.cocoapods.DoubleConversion' '<DVTFilePath:0x7f833ca705d0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/DoubleConversion.framework'>'>: {
+}
+2017-11-09 10:23:55 +0000  Writing entitlements for <IDEDistributionItem: 0x7f834af750f0 'org.cocoapods.DoubleConversion' '<DVTFilePath:0x7f833ca705d0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/DoubleConversion.framework'>'> to: /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementsbkT059
+2017-11-09 10:23:55 +0000  Running /usr/bin/codesign '-vvv' '--force' '--sign' '819EFB7005AADE38AF02ACAA4B60ED79F48B4F48' '--preserve-metadata=identifier,flags' '--entitlements' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementsbkT059' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/DoubleConversion.framework'
+2017-11-09 10:23:55 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/DoubleConversion.framework: signed bundle with Mach-O universal (arm64) [org.cocoapods.DoubleConversion]
+2017-11-09 10:23:55 +0000  2017-11-09 10:23:55 +0000  
+
+2017-11-09 10:23:55 +0000  
+2017-11-09 10:23:55 +0000  
+2017-11-09 10:23:55 +0000  
+2017-11-09 10:23:55 +0000  
+2017-11-09 10:23:55 +0000  
+2017-11-09 10:23:55 +0000  
+2017-11-09 10:23:55 +0000  
+2017-11-09 10:23:55 +0000  
+2017-11-09 10:23:55 +0000  2017-11-09 10:23:55 +0000  
+2017-11-09 10:23:55 +0000  /usr/bin/codesign exited with 0
+
+2017-11-09 10:23:55 +0000  
+2017-11-09 10:23:55 +0000  Applying entitlements delta for <IDEDistributionItem: 0x7f8353aa17e0 'org.cocoapods.React' '<DVTFilePath:0x7f8353d9e3c0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/React.framework'>'> from <IDEiCloudEntitlementsProcessor: 0x7f8336d8c160>: {
+}
+2017-11-09 10:23:55 +0000  Entitlements for <IDEDistributionItem: 0x7f8353aa17e0 'org.cocoapods.React' '<DVTFilePath:0x7f8353d9e3c0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/React.framework'>'>: {
+}
+2017-11-09 10:23:55 +0000  Writing entitlements for <IDEDistributionItem: 0x7f8353aa17e0 'org.cocoapods.React' '<DVTFilePath:0x7f8353d9e3c0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/React.framework'>'> to: /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementsoJynXu
+2017-11-09 10:23:55 +0000  Running /usr/bin/codesign '-vvv' '--force' '--sign' '819EFB7005AADE38AF02ACAA4B60ED79F48B4F48' '--preserve-metadata=identifier,flags' '--entitlements' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementsoJynXu' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/React.framework'
+2017-11-09 10:23:55 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/React.framework: signed bundle with Mach-O universal (arm64) [org.cocoapods.React]
+2017-11-09 10:23:55 +0000  
+2017-11-09 10:23:55 +0000  
+2017-11-09 10:23:55 +0000  
+2017-11-09 10:23:55 +0000  
+2017-11-09 10:23:55 +0000  
+2017-11-09 10:23:55 +0000  
+2017-11-09 10:23:55 +0000  
+2017-11-09 10:23:55 +0000  /usr/bin/codesign exited with 0
+2017-11-09 10:23:55 +0000  
+2017-11-09 10:23:55 +0000  
+2017-11-09 10:23:55 +0000  Applying entitlements delta for <IDEDistributionItem: 0x7f834ae53110 'org.cocoapods.folly' '<DVTFilePath:0x7f833c3d2cd0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/folly.framework'>'> from <IDEiCloudEntitlementsProcessor: 0x7f834ccbae40>: {
+}
+2017-11-09 10:23:55 +0000  Entitlements for <IDEDistributionItem: 0x7f834ae53110 'org.cocoapods.folly' '<DVTFilePath:0x7f833c3d2cd0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/folly.framework'>'>: {
+}
+2017-11-09 10:23:55 +0000  Writing entitlements for <IDEDistributionItem: 0x7f834ae53110 'org.cocoapods.folly' '<DVTFilePath:0x7f833c3d2cd0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/folly.framework'>'> to: /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementsOY66ng
+2017-11-09 10:23:55 +0000  Running /usr/bin/codesign '-vvv' '--force' '--sign' '819EFB7005AADE38AF02ACAA4B60ED79F48B4F48' '--preserve-metadata=identifier,flags' '--entitlements' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementsOY66ng' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/folly.framework'
+2017-11-09 10:23:56 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/folly.framework: signed bundle with Mach-O universal (arm64) [org.cocoapods.folly]
+2017-11-09 10:23:56 +0000  2017-11-09 10:23:56 +0000  
+
+2017-11-09 10:23:56 +0000  
+2017-11-09 10:23:56 +0000  
+2017-11-09 10:23:56 +0000  
+2017-11-09 10:23:56 +0000  
+2017-11-09 10:23:56 +0000  
+2017-11-09 10:23:56 +0000  
+2017-11-09 10:23:56 +0000  
+2017-11-09 10:23:56 +0000  
+2017-11-09 10:23:56 +0000  
+2017-11-09 10:23:56 +0000  2017-11-09 10:23:56 +0000  /usr/bin/codesign exited with 0
+2017-11-09 10:23:56 +0000  
+
+2017-11-09 10:23:56 +0000  Applying entitlements delta for <IDEDistributionItem: 0x7f8336adb610 'org.cocoapods.glog' '<DVTFilePath:0x7f833c1bc9a0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/glog.framework'>'> from <IDEiCloudEntitlementsProcessor: 0x7f834ccb3eb0>: {
+}
+2017-11-09 10:23:56 +0000  Entitlements for <IDEDistributionItem: 0x7f8336adb610 'org.cocoapods.glog' '<DVTFilePath:0x7f833c1bc9a0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/glog.framework'>'>: {
+}
+2017-11-09 10:23:56 +0000  Writing entitlements for <IDEDistributionItem: 0x7f8336adb610 'org.cocoapods.glog' '<DVTFilePath:0x7f833c1bc9a0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/glog.framework'>'> to: /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlements8gdKrG
+2017-11-09 10:23:56 +0000  Running /usr/bin/codesign '-vvv' '--force' '--sign' '819EFB7005AADE38AF02ACAA4B60ED79F48B4F48' '--preserve-metadata=identifier,flags' '--entitlements' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlements8gdKrG' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/glog.framework'
+2017-11-09 10:23:56 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/glog.framework: signed bundle with Mach-O universal (arm64) [org.cocoapods.glog]
+2017-11-09 10:23:56 +0000  2017-11-09 10:23:56 +0000  
+
+2017-11-09 10:23:56 +0000  
+2017-11-09 10:23:56 +0000  
+2017-11-09 10:23:56 +0000  
+2017-11-09 10:23:56 +0000  
+2017-11-09 10:23:56 +0000  
+2017-11-09 10:23:56 +0000  
+2017-11-09 10:23:56 +0000  
+2017-11-09 10:23:56 +0000  
+2017-11-09 10:23:56 +0000  2017-11-09 10:23:56 +0000  
+2017-11-09 10:23:56 +0000  /usr/bin/codesign exited with 0
+
+2017-11-09 10:23:56 +0000  
+2017-11-09 10:23:56 +0000  Applying entitlements delta for <IDEDistributionItem: 0x7f833546f220 'com.apple.dt.runtime.swiftAccelerate' '<DVTFilePath:0x7f8337df9640:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftAccelerate.dylib'>'> from <IDEiCloudEntitlementsProcessor: 0x7f8337c54090>: {
+}
+2017-11-09 10:23:56 +0000  Entitlements for <IDEDistributionItem: 0x7f833546f220 'com.apple.dt.runtime.swiftAccelerate' '<DVTFilePath:0x7f8337df9640:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftAccelerate.dylib'>'>: {
+}
+2017-11-09 10:23:56 +0000  Writing entitlements for <IDEDistributionItem: 0x7f833546f220 'com.apple.dt.runtime.swiftAccelerate' '<DVTFilePath:0x7f8337df9640:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftAccelerate.dylib'>'> to: /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementsm7ps1J
+2017-11-09 10:23:56 +0000  Running /usr/bin/codesign '-vvv' '--force' '--sign' '819EFB7005AADE38AF02ACAA4B60ED79F48B4F48' '--preserve-metadata=identifier,flags' '--entitlements' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementsm7ps1J' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftAccelerate.dylib'
+2017-11-09 10:23:56 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftAccelerate.dylib: replacing existing signature
+2017-11-09 10:23:56 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftAccelerate.dylib: signed Mach-O universal (armv7 armv7s arm64) [com.apple.dt.runtime.swiftAccelerate]
+2017-11-09 10:23:56 +0000  2017-11-09 10:23:56 +0000  
+
+2017-11-09 10:23:56 +0000  
+2017-11-09 10:23:56 +0000  
+2017-11-09 10:23:56 +0000  
+2017-11-09 10:23:56 +0000  
+2017-11-09 10:23:56 +0000  
+2017-11-09 10:23:56 +0000  
+2017-11-09 10:23:56 +0000  
+2017-11-09 10:23:56 +0000  
+2017-11-09 10:23:56 +0000  
+2017-11-09 10:23:56 +0000  2017-11-09 10:23:56 +0000  /usr/bin/codesign exited with 0
+2017-11-09 10:23:56 +0000  
+
+2017-11-09 10:23:56 +0000  Applying entitlements delta for <IDEDistributionItem: 0x7f8337d21840 'com.apple.dt.runtime.swiftCore' '<DVTFilePath:0x7f83354d5960:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftCore.dylib'>'> from <IDEiCloudEntitlementsProcessor: 0x7f8354841b50>: {
+}
+2017-11-09 10:23:56 +0000  Entitlements for <IDEDistributionItem: 0x7f8337d21840 'com.apple.dt.runtime.swiftCore' '<DVTFilePath:0x7f83354d5960:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftCore.dylib'>'>: {
+}
+2017-11-09 10:23:56 +0000  Writing entitlements for <IDEDistributionItem: 0x7f8337d21840 'com.apple.dt.runtime.swiftCore' '<DVTFilePath:0x7f83354d5960:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftCore.dylib'>'> to: /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementslAOjfv
+2017-11-09 10:23:56 +0000  Running /usr/bin/codesign '-vvv' '--force' '--sign' '819EFB7005AADE38AF02ACAA4B60ED79F48B4F48' '--preserve-metadata=identifier,flags' '--entitlements' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementslAOjfv' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftCore.dylib'
+2017-11-09 10:23:56 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftCore.dylib: replacing existing signature
+2017-11-09 10:23:58 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftCore.dylib: signed Mach-O universal (armv7 armv7s arm64) [com.apple.dt.runtime.swiftCore]
+2017-11-09 10:23:58 +0000  
+2017-11-09 10:23:58 +0000  
+2017-11-09 10:23:58 +0000  
+2017-11-09 10:23:58 +0000  
+2017-11-09 10:23:58 +0000  
+2017-11-09 10:23:58 +0000  
+2017-11-09 10:23:58 +0000  
+2017-11-09 10:23:58 +0000  
+2017-11-09 10:23:58 +0000  
+2017-11-09 10:23:58 +0000  
+2017-11-09 10:23:58 +0000  
+2017-11-09 10:23:58 +0000  
+2017-11-09 10:23:58 +0000  /usr/bin/codesign exited with 0
+2017-11-09 10:23:58 +0000  2017-11-09 10:23:58 +0000  
+
+2017-11-09 10:23:58 +0000  Applying entitlements delta for <IDEDistributionItem: 0x7f834d40e860 'com.apple.dt.runtime.swiftCoreData' '<DVTFilePath:0x7f833b782d00:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftCoreData.dylib'>'> from <IDEiCloudEntitlementsProcessor: 0x7f8336dd5780>: {
+}
+2017-11-09 10:23:58 +0000  Entitlements for <IDEDistributionItem: 0x7f834d40e860 'com.apple.dt.runtime.swiftCoreData' '<DVTFilePath:0x7f833b782d00:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftCoreData.dylib'>'>: {
+}
+2017-11-09 10:23:58 +0000  Writing entitlements for <IDEDistributionItem: 0x7f834d40e860 'com.apple.dt.runtime.swiftCoreData' '<DVTFilePath:0x7f833b782d00:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftCoreData.dylib'>'> to: /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementspdyDhc
+2017-11-09 10:23:58 +0000  Running /usr/bin/codesign '-vvv' '--force' '--sign' '819EFB7005AADE38AF02ACAA4B60ED79F48B4F48' '--preserve-metadata=identifier,flags' '--entitlements' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementspdyDhc' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftCoreData.dylib'
+2017-11-09 10:23:58 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftCoreData.dylib: replacing existing signature
+2017-11-09 10:23:58 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftCoreData.dylib: signed Mach-O universal (armv7 armv7s arm64) [com.apple.dt.runtime.swiftCoreData]
+2017-11-09 10:23:58 +0000  
+2017-11-09 10:23:58 +0000  
+2017-11-09 10:23:58 +0000  
+2017-11-09 10:23:58 +0000  
+2017-11-09 10:23:58 +0000  
+2017-11-09 10:23:58 +0000  
+2017-11-09 10:23:58 +0000  2017-11-09 10:23:58 +0000  
+
+2017-11-09 10:23:58 +0000  /usr/bin/codesign exited with 0
+2017-11-09 10:23:58 +0000  2017-11-09 10:23:58 +0000  
+
+2017-11-09 10:23:58 +0000  Applying entitlements delta for <IDEDistributionItem: 0x7f8335335930 'com.apple.dt.runtime.swiftCoreFoundation' '<DVTFilePath:0x7f834cdac030:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftCoreFoundation.dylib'>'> from <IDEiCloudEntitlementsProcessor: 0x7f833ca87550>: {
+}
+2017-11-09 10:23:58 +0000  Entitlements for <IDEDistributionItem: 0x7f8335335930 'com.apple.dt.runtime.swiftCoreFoundation' '<DVTFilePath:0x7f834cdac030:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftCoreFoundation.dylib'>'>: {
+}
+2017-11-09 10:23:58 +0000  Writing entitlements for <IDEDistributionItem: 0x7f8335335930 'com.apple.dt.runtime.swiftCoreFoundation' '<DVTFilePath:0x7f834cdac030:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftCoreFoundation.dylib'>'> to: /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementszVLqZa
+2017-11-09 10:23:58 +0000  Running /usr/bin/codesign '-vvv' '--force' '--sign' '819EFB7005AADE38AF02ACAA4B60ED79F48B4F48' '--preserve-metadata=identifier,flags' '--entitlements' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementszVLqZa' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftCoreFoundation.dylib'
+2017-11-09 10:23:58 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftCoreFoundation.dylib: replacing existing signature
+2017-11-09 10:23:58 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftCoreFoundation.dylib: signed Mach-O universal (armv7 armv7s arm64) [com.apple.dt.runtime.swiftCoreFoundation]
+2017-11-09 10:23:58 +0000  
+2017-11-09 10:23:58 +0000  
+2017-11-09 10:23:58 +0000  
+2017-11-09 10:23:58 +0000  
+2017-11-09 10:23:58 +0000  
+2017-11-09 10:23:58 +0000  
+2017-11-09 10:23:58 +0000  
+2017-11-09 10:23:58 +0000  
+2017-11-09 10:23:58 +0000  
+2017-11-09 10:23:58 +0000  
+2017-11-09 10:23:58 +0000  
+2017-11-09 10:23:58 +0000  
+2017-11-09 10:23:58 +0000  
+2017-11-09 10:23:58 +0000  2017-11-09 10:23:58 +0000  /usr/bin/codesign exited with 0
+2017-11-09 10:23:58 +0000  
+
+2017-11-09 10:23:58 +0000  Applying entitlements delta for <IDEDistributionItem: 0x7f83538ba970 'com.apple.dt.runtime.swiftCoreGraphics' '<DVTFilePath:0x7f833b8f18c0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftCoreGraphics.dylib'>'> from <IDEiCloudEntitlementsProcessor: 0x7f833d221690>: {
+}
+2017-11-09 10:23:58 +0000  Entitlements for <IDEDistributionItem: 0x7f83538ba970 'com.apple.dt.runtime.swiftCoreGraphics' '<DVTFilePath:0x7f833b8f18c0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftCoreGraphics.dylib'>'>: {
+}
+2017-11-09 10:23:58 +0000  Writing entitlements for <IDEDistributionItem: 0x7f83538ba970 'com.apple.dt.runtime.swiftCoreGraphics' '<DVTFilePath:0x7f833b8f18c0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftCoreGraphics.dylib'>'> to: /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementsBG2z4n
+2017-11-09 10:23:58 +0000  Running /usr/bin/codesign '-vvv' '--force' '--sign' '819EFB7005AADE38AF02ACAA4B60ED79F48B4F48' '--preserve-metadata=identifier,flags' '--entitlements' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementsBG2z4n' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftCoreGraphics.dylib'
+2017-11-09 10:23:59 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftCoreGraphics.dylib: replacing existing signature
+2017-11-09 10:23:59 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftCoreGraphics.dylib: signed Mach-O universal (armv7 armv7s arm64) [com.apple.dt.runtime.swiftCoreGraphics]
+2017-11-09 10:23:59 +0000  2017-11-09 10:23:59 +0000  
+
+2017-11-09 10:23:59 +0000  
+2017-11-09 10:23:59 +0000  
+2017-11-09 10:23:59 +0000  
+2017-11-09 10:23:59 +0000  
+2017-11-09 10:23:59 +0000  
+2017-11-09 10:23:59 +0000  
+2017-11-09 10:23:59 +0000  
+2017-11-09 10:23:59 +0000  
+2017-11-09 10:23:59 +0000  2017-11-09 10:23:59 +0000  /usr/bin/codesign exited with 0
+2017-11-09 10:23:59 +0000  
+
+2017-11-09 10:23:59 +0000  Applying entitlements delta for <IDEDistributionItem: 0x7f8353bd7d80 'com.apple.dt.runtime.swiftCoreImage' '<DVTFilePath:0x7f83350bd500:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftCoreImage.dylib'>'> from <IDEiCloudEntitlementsProcessor: 0x7f833cde6e40>: {
+}
+2017-11-09 10:23:59 +0000  Entitlements for <IDEDistributionItem: 0x7f8353bd7d80 'com.apple.dt.runtime.swiftCoreImage' '<DVTFilePath:0x7f83350bd500:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftCoreImage.dylib'>'>: {
+}
+2017-11-09 10:23:59 +0000  Writing entitlements for <IDEDistributionItem: 0x7f8353bd7d80 'com.apple.dt.runtime.swiftCoreImage' '<DVTFilePath:0x7f83350bd500:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftCoreImage.dylib'>'> to: /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementsXabgCP
+2017-11-09 10:23:59 +0000  Running /usr/bin/codesign '-vvv' '--force' '--sign' '819EFB7005AADE38AF02ACAA4B60ED79F48B4F48' '--preserve-metadata=identifier,flags' '--entitlements' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementsXabgCP' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftCoreImage.dylib'
+2017-11-09 10:23:59 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftCoreImage.dylib: replacing existing signature
+2017-11-09 10:23:59 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftCoreImage.dylib: signed Mach-O universal (armv7 armv7s arm64) [com.apple.dt.runtime.swiftCoreImage]
+2017-11-09 10:23:59 +0000  2017-11-09 10:23:59 +0000  
+
+2017-11-09 10:23:59 +0000  
+2017-11-09 10:23:59 +0000  
+2017-11-09 10:23:59 +0000  
+2017-11-09 10:23:59 +0000  
+2017-11-09 10:23:59 +0000  
+2017-11-09 10:23:59 +0000  
+2017-11-09 10:23:59 +0000  
+2017-11-09 10:23:59 +0000  
+2017-11-09 10:23:59 +0000  
+2017-11-09 10:23:59 +0000  
+2017-11-09 10:23:59 +0000  
+2017-11-09 10:23:59 +0000  
+2017-11-09 10:23:59 +0000  /usr/bin/codesign exited with 02017-11-09 10:23:59 +0000  
+
+2017-11-09 10:23:59 +0000  
+2017-11-09 10:23:59 +0000  Applying entitlements delta for <IDEDistributionItem: 0x7f8335156df0 'com.apple.dt.runtime.swiftCoreLocation' '<DVTFilePath:0x7f8347dbf4d0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftCoreLocation.dylib'>'> from <IDEiCloudEntitlementsProcessor: 0x7f833d21f5b0>: {
+}
+2017-11-09 10:23:59 +0000  Entitlements for <IDEDistributionItem: 0x7f8335156df0 'com.apple.dt.runtime.swiftCoreLocation' '<DVTFilePath:0x7f8347dbf4d0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftCoreLocation.dylib'>'>: {
+}
+2017-11-09 10:23:59 +0000  Writing entitlements for <IDEDistributionItem: 0x7f8335156df0 'com.apple.dt.runtime.swiftCoreLocation' '<DVTFilePath:0x7f8347dbf4d0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftCoreLocation.dylib'>'> to: /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementsy1uF5B
+2017-11-09 10:23:59 +0000  Running /usr/bin/codesign '-vvv' '--force' '--sign' '819EFB7005AADE38AF02ACAA4B60ED79F48B4F48' '--preserve-metadata=identifier,flags' '--entitlements' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementsy1uF5B' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftCoreLocation.dylib'
+2017-11-09 10:23:59 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftCoreLocation.dylib: replacing existing signature
+2017-11-09 10:23:59 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftCoreLocation.dylib: signed Mach-O universal (armv7 armv7s arm64) [com.apple.dt.runtime.swiftCoreLocation]
+2017-11-09 10:23:59 +0000  2017-11-09 10:23:59 +0000  
+
+2017-11-09 10:23:59 +0000  
+2017-11-09 10:23:59 +0000  
+2017-11-09 10:23:59 +0000  
+2017-11-09 10:23:59 +0000  
+2017-11-09 10:23:59 +0000  
+2017-11-09 10:23:59 +0000  
+2017-11-09 10:23:59 +0000  
+2017-11-09 10:23:59 +0000  /usr/bin/codesign exited with 0
+2017-11-09 10:23:59 +0000  
+2017-11-09 10:23:59 +0000  
+2017-11-09 10:23:59 +0000  Applying entitlements delta for <IDEDistributionItem: 0x7f833c4c6020 'com.apple.dt.runtime.swiftDarwin' '<DVTFilePath:0x7f834c108bb0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftDarwin.dylib'>'> from <IDEiCloudEntitlementsProcessor: 0x7f833d05f800>: {
+}
+2017-11-09 10:23:59 +0000  Entitlements for <IDEDistributionItem: 0x7f833c4c6020 'com.apple.dt.runtime.swiftDarwin' '<DVTFilePath:0x7f834c108bb0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftDarwin.dylib'>'>: {
+}
+2017-11-09 10:23:59 +0000  Writing entitlements for <IDEDistributionItem: 0x7f833c4c6020 'com.apple.dt.runtime.swiftDarwin' '<DVTFilePath:0x7f834c108bb0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftDarwin.dylib'>'> to: /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlements3TIqPs
+2017-11-09 10:23:59 +0000  Running /usr/bin/codesign '-vvv' '--force' '--sign' '819EFB7005AADE38AF02ACAA4B60ED79F48B4F48' '--preserve-metadata=identifier,flags' '--entitlements' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlements3TIqPs' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftDarwin.dylib'
+2017-11-09 10:23:59 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftDarwin.dylib: replacing existing signature
+2017-11-09 10:24:00 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftDarwin.dylib: signed Mach-O universal (armv7 armv7s arm64) [com.apple.dt.runtime.swiftDarwin]
+2017-11-09 10:24:00 +0000  
+2017-11-09 10:24:00 +0000  
+2017-11-09 10:24:00 +0000  
+2017-11-09 10:24:00 +0000  
+2017-11-09 10:24:00 +0000  
+2017-11-09 10:24:00 +0000  2017-11-09 10:24:00 +0000  
+
+2017-11-09 10:24:00 +0000  
+2017-11-09 10:24:00 +0000  /usr/bin/codesign exited with 0
+2017-11-09 10:24:00 +0000  
+2017-11-09 10:24:00 +0000  Applying entitlements delta for <IDEDistributionItem: 0x7f8337faf7b0 'com.apple.dt.runtime.swiftDispatch' '<DVTFilePath:0x7f8354b6f960:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftDispatch.dylib'>'> from <IDEiCloudEntitlementsProcessor: 0x7f833c1d1420>: {
+}
+2017-11-09 10:24:00 +0000  Entitlements for <IDEDistributionItem: 0x7f8337faf7b0 'com.apple.dt.runtime.swiftDispatch' '<DVTFilePath:0x7f8354b6f960:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftDispatch.dylib'>'>: {
+}
+2017-11-09 10:24:00 +0000  Writing entitlements for <IDEDistributionItem: 0x7f8337faf7b0 'com.apple.dt.runtime.swiftDispatch' '<DVTFilePath:0x7f8354b6f960:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftDispatch.dylib'>'> to: /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementsGE8pUC
+2017-11-09 10:24:00 +0000  Running /usr/bin/codesign '-vvv' '--force' '--sign' '819EFB7005AADE38AF02ACAA4B60ED79F48B4F48' '--preserve-metadata=identifier,flags' '--entitlements' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementsGE8pUC' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftDispatch.dylib'
+2017-11-09 10:24:00 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftDispatch.dylib: replacing existing signature
+2017-11-09 10:24:00 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftDispatch.dylib: signed Mach-O universal (armv7 armv7s arm64) [com.apple.dt.runtime.swiftDispatch]
+2017-11-09 10:24:00 +0000  2017-11-09 10:24:00 +0000  
+
+2017-11-09 10:24:00 +0000  
+2017-11-09 10:24:00 +0000  
+2017-11-09 10:24:00 +0000  
+2017-11-09 10:24:00 +0000  
+2017-11-09 10:24:00 +0000  
+2017-11-09 10:24:00 +0000  
+2017-11-09 10:24:00 +0000  
+2017-11-09 10:24:00 +0000  
+2017-11-09 10:24:00 +0000  
+2017-11-09 10:24:00 +0000  
+2017-11-09 10:24:00 +0000  2017-11-09 10:24:00 +0000  /usr/bin/codesign exited with 0
+
+2017-11-09 10:24:00 +0000  
+2017-11-09 10:24:00 +0000  
+2017-11-09 10:24:00 +0000  Applying entitlements delta for <IDEDistributionItem: 0x7f833c529cd0 'com.apple.dt.runtime.swiftFoundation' '<DVTFilePath:0x7f8352964240:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftFoundation.dylib'>'> from <IDEiCloudEntitlementsProcessor: 0x7f833ca81060>: {
+}
+2017-11-09 10:24:00 +0000  Entitlements for <IDEDistributionItem: 0x7f833c529cd0 'com.apple.dt.runtime.swiftFoundation' '<DVTFilePath:0x7f8352964240:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftFoundation.dylib'>'>: {
+}
+2017-11-09 10:24:00 +0000  Writing entitlements for <IDEDistributionItem: 0x7f833c529cd0 'com.apple.dt.runtime.swiftFoundation' '<DVTFilePath:0x7f8352964240:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftFoundation.dylib'>'> to: /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementsqEyypD
+2017-11-09 10:24:00 +0000  Running /usr/bin/codesign '-vvv' '--force' '--sign' '819EFB7005AADE38AF02ACAA4B60ED79F48B4F48' '--preserve-metadata=identifier,flags' '--entitlements' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementsqEyypD' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftFoundation.dylib'
+2017-11-09 10:24:00 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftFoundation.dylib: replacing existing signature
+2017-11-09 10:24:01 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftFoundation.dylib: signed Mach-O universal (armv7 armv7s arm64) [com.apple.dt.runtime.swiftFoundation]
+2017-11-09 10:24:01 +0000  2017-11-09 10:24:01 +0000  
+
+2017-11-09 10:24:01 +0000  
+2017-11-09 10:24:01 +0000  
+2017-11-09 10:24:01 +0000  
+2017-11-09 10:24:01 +0000  
+2017-11-09 10:24:01 +0000  
+2017-11-09 10:24:01 +0000  
+2017-11-09 10:24:01 +0000  
+2017-11-09 10:24:01 +0000  
+2017-11-09 10:24:01 +0000  
+2017-11-09 10:24:01 +0000  
+2017-11-09 10:24:01 +0000  
+2017-11-09 10:24:01 +0000  /usr/bin/codesign exited with 0
+2017-11-09 10:24:01 +0000  
+2017-11-09 10:24:01 +0000  
+2017-11-09 10:24:01 +0000  Applying entitlements delta for <IDEDistributionItem: 0x7f833c3dafc0 'com.apple.dt.runtime.swiftMetal' '<DVTFilePath:0x7f8337eb1120:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftMetal.dylib'>'> from <IDEiCloudEntitlementsProcessor: 0x7f8353982c30>: {
+}
+2017-11-09 10:24:01 +0000  Entitlements for <IDEDistributionItem: 0x7f833c3dafc0 'com.apple.dt.runtime.swiftMetal' '<DVTFilePath:0x7f8337eb1120:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftMetal.dylib'>'>: {
+}
+2017-11-09 10:24:01 +0000  Writing entitlements for <IDEDistributionItem: 0x7f833c3dafc0 'com.apple.dt.runtime.swiftMetal' '<DVTFilePath:0x7f8337eb1120:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftMetal.dylib'>'> to: /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementskn7auX
+2017-11-09 10:24:01 +0000  Running /usr/bin/codesign '-vvv' '--force' '--sign' '819EFB7005AADE38AF02ACAA4B60ED79F48B4F48' '--preserve-metadata=identifier,flags' '--entitlements' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementskn7auX' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftMetal.dylib'
+2017-11-09 10:24:01 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftMetal.dylib: replacing existing signature
+2017-11-09 10:24:01 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftMetal.dylib: signed Mach-O universal (armv7 armv7s arm64) [com.apple.dt.runtime.swiftMetal]
+2017-11-09 10:24:01 +0000  2017-11-09 10:24:01 +0000  
+
+2017-11-09 10:24:01 +0000  
+2017-11-09 10:24:01 +0000  
+2017-11-09 10:24:01 +0000  
+2017-11-09 10:24:01 +0000  
+2017-11-09 10:24:01 +0000  
+2017-11-09 10:24:01 +0000  
+2017-11-09 10:24:01 +0000  
+2017-11-09 10:24:01 +0000  
+2017-11-09 10:24:01 +0000  
+2017-11-09 10:24:01 +0000  2017-11-09 10:24:01 +0000  /usr/bin/codesign exited with 0
+2017-11-09 10:24:01 +0000  
+
+2017-11-09 10:24:01 +0000  Applying entitlements delta for <IDEDistributionItem: 0x7f833579d470 'com.apple.dt.runtime.swiftObjectiveC' '<DVTFilePath:0x7f833cd30c30:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftObjectiveC.dylib'>'> from <IDEiCloudEntitlementsProcessor: 0x7f833cd70580>: {
+}
+2017-11-09 10:24:01 +0000  Entitlements for <IDEDistributionItem: 0x7f833579d470 'com.apple.dt.runtime.swiftObjectiveC' '<DVTFilePath:0x7f833cd30c30:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftObjectiveC.dylib'>'>: {
+}
+2017-11-09 10:24:01 +0000  Writing entitlements for <IDEDistributionItem: 0x7f833579d470 'com.apple.dt.runtime.swiftObjectiveC' '<DVTFilePath:0x7f833cd30c30:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftObjectiveC.dylib'>'> to: /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementsfQKl8Q
+2017-11-09 10:24:01 +0000  Running /usr/bin/codesign '-vvv' '--force' '--sign' '819EFB7005AADE38AF02ACAA4B60ED79F48B4F48' '--preserve-metadata=identifier,flags' '--entitlements' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementsfQKl8Q' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftObjectiveC.dylib'
+2017-11-09 10:24:01 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftObjectiveC.dylib: replacing existing signature
+2017-11-09 10:24:01 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftObjectiveC.dylib: signed Mach-O universal (armv7 armv7s arm64) [com.apple.dt.runtime.swiftObjectiveC]
+2017-11-09 10:24:01 +0000  2017-11-09 10:24:01 +0000  
+
+2017-11-09 10:24:01 +0000  
+2017-11-09 10:24:01 +0000  
+2017-11-09 10:24:01 +0000  
+2017-11-09 10:24:01 +0000  
+2017-11-09 10:24:01 +0000  
+2017-11-09 10:24:01 +0000  
+2017-11-09 10:24:01 +0000  
+2017-11-09 10:24:01 +0000  2017-11-09 10:24:01 +0000  
+
+2017-11-09 10:24:01 +0000  /usr/bin/codesign exited with 0
+2017-11-09 10:24:01 +0000  2017-11-09 10:24:01 +0000  
+
+2017-11-09 10:24:01 +0000  Applying entitlements delta for <IDEDistributionItem: 0x7f833c3b1c00 'com.apple.dt.runtime.swiftQuartzCore' '<DVTFilePath:0x7f833bd660f0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftQuartzCore.dylib'>'> from <IDEiCloudEntitlementsProcessor: 0x7f833b5cefa0>: {
+}
+2017-11-09 10:24:01 +0000  Entitlements for <IDEDistributionItem: 0x7f833c3b1c00 'com.apple.dt.runtime.swiftQuartzCore' '<DVTFilePath:0x7f833bd660f0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftQuartzCore.dylib'>'>: {
+}
+2017-11-09 10:24:01 +0000  Writing entitlements for <IDEDistributionItem: 0x7f833c3b1c00 'com.apple.dt.runtime.swiftQuartzCore' '<DVTFilePath:0x7f833bd660f0:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftQuartzCore.dylib'>'> to: /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementsdK1ou6
+2017-11-09 10:24:01 +0000  Running /usr/bin/codesign '-vvv' '--force' '--sign' '819EFB7005AADE38AF02ACAA4B60ED79F48B4F48' '--preserve-metadata=identifier,flags' '--entitlements' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementsdK1ou6' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftQuartzCore.dylib'
+2017-11-09 10:24:01 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftQuartzCore.dylib: replacing existing signature
+2017-11-09 10:24:02 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftQuartzCore.dylib: signed Mach-O universal (armv7 armv7s arm64) [com.apple.dt.runtime.swiftQuartzCore]
+2017-11-09 10:24:02 +0000  2017-11-09 10:24:02 +0000  
+
+2017-11-09 10:24:02 +0000  2017-11-09 10:24:02 +0000  
+
+2017-11-09 10:24:02 +0000  
+2017-11-09 10:24:02 +0000  
+2017-11-09 10:24:02 +0000  
+2017-11-09 10:24:02 +0000  
+2017-11-09 10:24:02 +0000  2017-11-09 10:24:02 +0000  /usr/bin/codesign exited with 0
+2017-11-09 10:24:02 +0000  
+
+2017-11-09 10:24:02 +0000  Applying entitlements delta for <IDEDistributionItem: 0x7f8353ace000 'com.apple.dt.runtime.swiftUIKit' '<DVTFilePath:0x7f833d1aea80:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftUIKit.dylib'>'> from <IDEiCloudEntitlementsProcessor: 0x7f8353919c10>: {
+}
+2017-11-09 10:24:02 +0000  Entitlements for <IDEDistributionItem: 0x7f8353ace000 'com.apple.dt.runtime.swiftUIKit' '<DVTFilePath:0x7f833d1aea80:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftUIKit.dylib'>'>: {
+}
+2017-11-09 10:24:02 +0000  Writing entitlements for <IDEDistributionItem: 0x7f8353ace000 'com.apple.dt.runtime.swiftUIKit' '<DVTFilePath:0x7f833d1aea80:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftUIKit.dylib'>'> to: /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementsYBW3M7
+2017-11-09 10:24:02 +0000  Running /usr/bin/codesign '-vvv' '--force' '--sign' '819EFB7005AADE38AF02ACAA4B60ED79F48B4F48' '--preserve-metadata=identifier,flags' '--entitlements' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementsYBW3M7' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftUIKit.dylib'
+2017-11-09 10:24:02 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftUIKit.dylib: replacing existing signature
+2017-11-09 10:24:02 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftUIKit.dylib: signed Mach-O universal (armv7 armv7s arm64) [com.apple.dt.runtime.swiftUIKit]
+2017-11-09 10:24:02 +0000  2017-11-09 10:24:02 +0000  
+
+2017-11-09 10:24:02 +0000  
+2017-11-09 10:24:02 +0000  
+2017-11-09 10:24:02 +0000  
+2017-11-09 10:24:02 +0000  
+2017-11-09 10:24:02 +0000  
+2017-11-09 10:24:02 +0000  
+2017-11-09 10:24:02 +0000  2017-11-09 10:24:02 +0000  
+
+2017-11-09 10:24:02 +0000  2017-11-09 10:24:02 +0000  /usr/bin/codesign exited with 0
+2017-11-09 10:24:02 +0000  
+
+2017-11-09 10:24:02 +0000  Applying entitlements delta for <IDEDistributionItem: 0x7f83538626e0 'com.apple.dt.runtime.swiftos' '<DVTFilePath:0x7f8353cf3800:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftos.dylib'>'> from <IDEiCloudEntitlementsProcessor: 0x7f833b8526b0>: {
+}
+2017-11-09 10:24:02 +0000  Entitlements for <IDEDistributionItem: 0x7f83538626e0 'com.apple.dt.runtime.swiftos' '<DVTFilePath:0x7f8353cf3800:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftos.dylib'>'>: {
+}
+2017-11-09 10:24:02 +0000  Writing entitlements for <IDEDistributionItem: 0x7f83538626e0 'com.apple.dt.runtime.swiftos' '<DVTFilePath:0x7f8353cf3800:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/libswiftos.dylib'>'> to: /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementsnXJBJU
+2017-11-09 10:24:02 +0000  Running /usr/bin/codesign '-vvv' '--force' '--sign' '819EFB7005AADE38AF02ACAA4B60ED79F48B4F48' '--preserve-metadata=identifier,flags' '--entitlements' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementsnXJBJU' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftos.dylib'
+2017-11-09 10:24:02 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftos.dylib: replacing existing signature
+2017-11-09 10:24:02 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/libswiftos.dylib: signed Mach-O universal (armv7 armv7s arm64) [com.apple.dt.runtime.swiftos]
+2017-11-09 10:24:02 +0000  2017-11-09 10:24:02 +0000  
+
+2017-11-09 10:24:02 +0000  
+2017-11-09 10:24:02 +0000  
+2017-11-09 10:24:02 +0000  
+2017-11-09 10:24:02 +0000  
+2017-11-09 10:24:02 +0000  
+2017-11-09 10:24:02 +0000  
+2017-11-09 10:24:02 +0000  
+2017-11-09 10:24:02 +0000  
+2017-11-09 10:24:02 +0000  
+2017-11-09 10:24:02 +0000  /usr/bin/codesign exited with 0
+2017-11-09 10:24:02 +0000  2017-11-09 10:24:02 +0000  
+
+2017-11-09 10:24:02 +0000  Applying entitlements delta for <IDEDistributionItem: 0x7f833c6b4fa0 'org.cocoapods.yoga' '<DVTFilePath:0x7f833d96f300:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/yoga.framework'>'> from <IDEiCloudEntitlementsProcessor: 0x7f833cae8f70>: {
+}
+2017-11-09 10:24:02 +0000  Entitlements for <IDEDistributionItem: 0x7f833c6b4fa0 'org.cocoapods.yoga' '<DVTFilePath:0x7f833d96f300:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/yoga.framework'>'>: {
+}
+2017-11-09 10:24:02 +0000  Writing entitlements for <IDEDistributionItem: 0x7f833c6b4fa0 'org.cocoapods.yoga' '<DVTFilePath:0x7f833d96f300:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app/Frameworks/yoga.framework'>'> to: /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementsQmb8k6
+2017-11-09 10:24:02 +0000  Running /usr/bin/codesign '-vvv' '--force' '--sign' '819EFB7005AADE38AF02ACAA4B60ED79F48B4F48' '--preserve-metadata=identifier,flags' '--entitlements' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementsQmb8k6' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/yoga.framework'
+2017-11-09 10:24:02 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app/Frameworks/yoga.framework: signed bundle with Mach-O universal (arm64) [org.cocoapods.yoga]
+2017-11-09 10:24:02 +0000  2017-11-09 10:24:02 +0000  
+
+2017-11-09 10:24:02 +0000  
+2017-11-09 10:24:02 +0000  
+2017-11-09 10:24:02 +0000  
+2017-11-09 10:24:02 +0000  
+2017-11-09 10:24:02 +0000  
+2017-11-09 10:24:02 +0000  
+2017-11-09 10:24:02 +0000  
+2017-11-09 10:24:02 +0000  
+2017-11-09 10:24:02 +0000  
+2017-11-09 10:24:02 +0000  /usr/bin/codesign exited with 0
+2017-11-09 10:24:02 +0000  2017-11-09 10:24:02 +0000  
+
+2017-11-09 10:24:02 +0000  Applying entitlements delta for <IDEDistributionItem: 0x7f8335409c70 'com.smackcoders.pocketvtiger' '<DVTFilePath:0x7f833b5f8180:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app'>'> from <IDEiCloudEntitlementsProcessor: 0x7f833c6173e0>: {
+}
+2017-11-09 10:24:02 +0000  Entitlements for <IDEDistributionItem: 0x7f8335409c70 'com.smackcoders.pocketvtiger' '<DVTFilePath:0x7f833b5f8180:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app'>'>: {
+    "application-identifier" = "995KLR8FLJ.com.smackcoders.pocketvtiger";
+    "beta-reports-active" = 1;
+    "com.apple.developer.team-identifier" = 995KLR8FLJ;
+    "get-task-allow" = 0;
+    "keychain-access-groups" =     (
+        "995KLR8FLJ.com.smackcoders.pocketvtiger"
+    );
+}
+2017-11-09 10:24:02 +0000  Writing entitlements for <IDEDistributionItem: 0x7f8335409c70 'com.smackcoders.pocketvtiger' '<DVTFilePath:0x7f833b5f8180:'/Users/prince/Library/Developer/Xcode/Archives/2017-11-09/PocketCRM for Vtiger 09-11-17, 3.53 PM.xcarchive/Products/Applications/PocketCRM for Vtiger.app'>'> to: /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementsZ3i2Kq
+2017-11-09 10:24:02 +0000  Running /usr/bin/codesign '-vvv' '--force' '--sign' '819EFB7005AADE38AF02ACAA4B60ED79F48B4F48' '--preserve-metadata=identifier,flags' '--entitlements' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/entitlementsZ3i2Kq' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app'
+2017-11-09 10:24:03 +0000  /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root/Payload/PocketCRM for Vtiger.app: signed app bundle with Mach-O thin (arm64) [com.smackcoders.pocketvtiger]
+2017-11-09 10:24:03 +0000  
+2017-11-09 10:24:03 +0000  
+2017-11-09 10:24:03 +0000  
+2017-11-09 10:24:03 +0000  
+2017-11-09 10:24:03 +0000  
+2017-11-09 10:24:03 +0000  
+2017-11-09 10:24:03 +0000  
+2017-11-09 10:24:03 +0000  2017-11-09 10:24:03 +0000  
+
+2017-11-09 10:24:03 +0000  2017-11-09 10:24:03 +0000  /usr/bin/codesign exited with 0
+2017-11-09 10:24:03 +0000  
+
+2017-11-09 10:24:03 +0000  Processing step: IDEDistributionStreamingZipItemStep
+2017-11-09 10:24:03 +0000  Skipping step: IDEDistributionStreamingZipItemStep because it said so
+2017-11-09 10:24:03 +0000  Skipping step: IDEDistributionStreamingZipItemStep because it said so
+2017-11-09 10:24:03 +0000  Skipping step: IDEDistributionStreamingZipItemStep because it said so
+2017-11-09 10:24:03 +0000  Skipping step: IDEDistributionStreamingZipItemStep because it said so
+2017-11-09 10:24:03 +0000  Skipping step: IDEDistributionStreamingZipItemStep because it said so
+2017-11-09 10:24:03 +0000  Skipping step: IDEDistributionStreamingZipItemStep because it said so
+2017-11-09 10:24:03 +0000  Skipping step: IDEDistributionStreamingZipItemStep because it said so
+2017-11-09 10:24:03 +0000  Skipping step: IDEDistributionStreamingZipItemStep because it said so
+2017-11-09 10:24:03 +0000  Skipping step: IDEDistributionStreamingZipItemStep because it said so
+2017-11-09 10:24:03 +0000  Skipping step: IDEDistributionStreamingZipItemStep because it said so
+2017-11-09 10:24:03 +0000  Skipping step: IDEDistributionStreamingZipItemStep because it said so
+2017-11-09 10:24:03 +0000  Skipping step: IDEDistributionStreamingZipItemStep because it said so
+2017-11-09 10:24:03 +0000  Skipping step: IDEDistributionStreamingZipItemStep because it said so
+2017-11-09 10:24:03 +0000  Skipping step: IDEDistributionStreamingZipItemStep because it said so
+2017-11-09 10:24:03 +0000  Skipping step: IDEDistributionStreamingZipItemStep because it said so
+2017-11-09 10:24:03 +0000  Skipping step: IDEDistributionStreamingZipItemStep because it said so
+2017-11-09 10:24:03 +0000  Skipping step: IDEDistributionStreamingZipItemStep because it said so
+2017-11-09 10:24:03 +0000  Skipping step: IDEDistributionStreamingZipItemStep because it said so
+2017-11-09 10:24:03 +0000  Skipping step: IDEDistributionStreamingZipItemStep because it said so
+2017-11-09 10:24:03 +0000  Skipping step: IDEDistributionStreamingZipItemStep because it said so
+2017-11-09 10:24:03 +0000  Skipping step: IDEDistributionStreamingZipItemStep because it said so
+2017-11-09 10:24:03 +0000  Processing step: IDEDistributionCreateIPAStep
+2017-11-09 10:24:03 +0000  Running /usr/bin/rsync '-8aPhhE' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Symbols' '--link-dest' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root'
+2017-11-09 10:24:03 +0000  building file list ... 
+2017-11-09 10:24:03 +0000   0 files...2017-11-09 10:24:03 +0000  46 files to consider
+2017-11-09 10:24:03 +0000  Symbols/
+2017-11-09 10:24:03 +0000  
+sent 2.51K bytes  received 26 bytes  5.06K bytes/sec
+total size is 18.87M  speedup is 7632.00
+2017-11-09 10:24:03 +0000  2017-11-09 10:24:03 +0000  
+
+2017-11-09 10:24:03 +0000  
+2017-11-09 10:24:03 +0000  
+2017-11-09 10:24:03 +0000  2017-11-09 10:24:03 +0000  
+
+2017-11-09 10:24:03 +0000  
+2017-11-09 10:24:03 +0000  
+2017-11-09 10:24:03 +0000  2017-11-09 10:24:03 +0000  
+
+2017-11-09 10:24:03 +0000  /usr/bin/rsync exited with 0
+2017-11-09 10:24:03 +0000  
+2017-11-09 10:24:03 +0000  
+2017-11-09 10:24:03 +0000  Running /usr/bin/ditto '-V' '-c' '-k' '--norsrc' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root' '/var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Packages/PocketCRM for Vtiger.ipa'
+2017-11-09 10:24:03 +0000  >>> Copying /var/folders/_h/vr85bbg15sl2qsgfsc8dsyn80000gn/T/XcodeDistPipeline.VIT/Root 
+2017-11-09 10:24:03 +0000  copying file ./BCSymbolMaps/649F039B-5EE9-32B0-B500-EA5884AB1CE8.bcsymbolmap ... 
+2017-11-09 10:24:03 +0000  509215 bytes for ./BCSymbolMaps/649F039B-5EE9-32B0-B500-EA5884AB1CE8.bcsymbolmap
+2017-11-09 10:24:03 +0000  copying file ./BCSymbolMaps/F819817D-51E6-3076-85DC-A409550AFAE3.bcsymbolmap ... 
+2017-11-09 10:24:03 +0000  15160 bytes for ./BCSymbolMaps/F819817D-51E6-3076-85DC-A409550AFAE3.bcsymbolmap
+2017-11-09 10:24:03 +0000  copying file ./BCSymbolMaps/077E54A5-4026-314A-9265-F2324371F1C0.bcsymbolmap ... 
+2017-11-09 10:24:03 +0000  15105 bytes for ./BCSymbolMaps/077E54A5-4026-314A-9265-F2324371F1C0.bcsymbolmap
+2017-11-09 10:24:03 +0000  copying file ./BCSymbolMaps/220CFDE3-904D-3D4F-88F1-F2F4CDCF2FCA.bcsymbolmap ... 
+2017-11-09 10:24:03 +0000  22302 bytes for ./BCSymbolMaps/220CFDE3-904D-3D4F-88F1-F2F4CDCF2FCA.bcsymbolmap
+2017-11-09 10:24:03 +0000  copying file ./BCSymbolMaps/DE7B3CD7-E1AF-3D59-B05B-F50AD2F745AB.bcsymbolmap ... 
+2017-11-09 10:24:03 +0000  61237 bytes for ./BCSymbolMaps/DE7B3CD7-E1AF-3D59-B05B-F50AD2F745AB.bcsymbolmap
+copying file ./BCSymbolMaps/F775955D-0E97-30F3-AF23-2C2F55FBDE34.bcsymbolmap ... 
+2017-11-09 10:24:03 +0000  26904 bytes for ./BCSymbolMaps/F775955D-0E97-30F3-AF23-2C2F55FBDE34.bcsymbolmap
+2017-11-09 10:24:03 +0000  copying file ./Payload/PocketCRM for Vtiger.app/_CodeSignature/CodeResources ... 
+2017-11-09 10:24:03 +0000  26873 bytes for ./Payload/PocketCRM for Vtiger.app/_CodeSignature/CodeResources
+copying file ./Payload/PocketCRM for Vtiger.app/Octicons.ttf ... 
+2017-11-09 10:24:03 +0000  27512 bytes for ./Payload/PocketCRM for Vtiger.app/Octicons.ttf
+copying file ./Payload/PocketCRM for Vtiger.app/Feather.ttf ... 
+2017-11-09 10:24:03 +0000  55288 bytes for ./Payload/PocketCRM for Vtiger.app/Feather.ttf
+copying file ./Payload/PocketCRM for Vtiger.app/AppIcon20x20@2x.png ... 
+2904 bytes for ./Payload/PocketCRM for Vtiger.app/AppIcon20x20@2x.png
+copying file ./Payload/PocketCRM for Vtiger.app/AppIcon57x57.png ... 
+2017-11-09 10:24:03 +0000  4215 bytes for ./Payload/PocketCRM for Vtiger.app/AppIcon57x57.png
+2017-11-09 10:24:03 +0000  copying file ./Payload/PocketCRM for Vtiger.app/Entypo.ttf ... 
+2017-11-09 10:24:03 +0000  65584 bytes for ./Payload/PocketCRM for Vtiger.app/Entypo.ttf
+2017-11-09 10:24:03 +0000  copying file ./Payload/PocketCRM for Vtiger.app/AppIcon20x20@3x.png ... 
+2017-11-09 10:24:03 +0000  4297 bytes for ./Payload/PocketCRM for Vtiger.app/AppIcon20x20@3x.png
+copying file ./Payload/PocketCRM for Vtiger.app/AppIcon29x29.png ... 
+2017-11-09 10:24:03 +0000  1970 bytes for ./Payload/PocketCRM for Vtiger.app/AppIcon29x29.png
+copying file ./Payload/PocketCRM for Vtiger.app/MaterialCommunityIcons.ttf ... 
+2017-11-09 10:24:03 +0000  292556 bytes for ./Payload/PocketCRM for Vtiger.app/MaterialCommunityIcons.ttf
+copying file ./Payload/PocketCRM for Vtiger.app/AppIcon60x60@2x.png ... 
+2017-11-09 10:24:03 +0000  10245 bytes for ./Payload/PocketCRM for Vtiger.app/AppIcon60x60@2x.png
+2017-11-09 10:24:03 +0000  copying file ./Payload/PocketCRM for Vtiger.app/PocketCRM_for_Vtiger.momd/VersionInfo.plist ... 
+181 bytes for ./Payload/PocketCRM for Vtiger.app/PocketCRM_for_Vtiger.momd/VersionInfo.plist
+2017-11-09 10:24:03 +0000  copying file ./Payload/PocketCRM for Vtiger.app/PocketCRM_for_Vtiger.momd/PocketCRM_for_Vtiger.omo ... 
+696 bytes for ./Payload/PocketCRM for Vtiger.app/PocketCRM_for_Vtiger.momd/PocketCRM_for_Vtiger.omo
+2017-11-09 10:24:03 +0000  copying file ./Payload/PocketCRM for Vtiger.app/PocketCRM_for_Vtiger.momd/PocketCRM_for_Vtiger.mom ... 
+513 bytes for ./Payload/PocketCRM for Vtiger.app/PocketCRM_for_Vtiger.momd/PocketCRM_for_Vtiger.mom
+2017-11-09 10:24:03 +0000  copying file ./Payload/PocketCRM for Vtiger.app/AppIcon72x72@2x~ipad.png ... 
+2017-11-09 10:24:03 +0000  12079 bytes for ./Payload/PocketCRM for Vtiger.app/AppIcon72x72@2x~ipad.png
+copying file ./Payload/PocketCRM for Vtiger.app/AppIcon29x29@2x.png ... 
+2017-11-09 10:24:03 +0000  4221 bytes for ./Payload/PocketCRM for Vtiger.app/AppIcon29x29@2x.png
+2017-11-09 10:24:03 +0000  copying file ./Payload/PocketCRM for Vtiger.app/PocketCRM for Vtiger ... 
+2017-11-09 10:24:03 +0000  166304 bytes for ./Payload/PocketCRM for Vtiger.app/PocketCRM for Vtiger
+copying file ./Payload/PocketCRM for Vtiger.app/AppIcon40x40@3x.png ... 
+2017-11-09 10:24:03 +0000  10245 bytes for ./Payload/PocketCRM for Vtiger.app/AppIcon40x40@3x.png
+2017-11-09 10:24:03 +0000  copying file ./Payload/PocketCRM for Vtiger.app/AppIcon57x57@2x.png ... 
+2017-11-09 10:24:03 +0000  9605 bytes for ./Payload/PocketCRM for Vtiger.app/AppIcon57x57@2x.png
+2017-11-09 10:24:03 +0000  copying file ./Payload/PocketCRM for Vtiger.app/Foundation.ttf ... 
+2017-11-09 10:24:03 +0000  56976 bytes for ./Payload/PocketCRM for Vtiger.app/Foundation.ttf
+2017-11-09 10:24:03 +0000  copying file ./Payload/PocketCRM for Vtiger.app/AppIcon29x29~ipad.png ... 
+2017-11-09 10:24:03 +0000  1970 bytes for ./Payload/PocketCRM for Vtiger.app/AppIcon29x29~ipad.png
+copying file ./Payload/PocketCRM for Vtiger.app/Ionicons.ttf ... 
+2017-11-09 10:24:03 +0000  143936 bytes for ./Payload/PocketCRM for Vtiger.app/Ionicons.ttf
+2017-11-09 10:24:03 +0000  copying file ./Payload/PocketCRM for Vtiger.app/AppIcon40x40@2x.png ... 
+2017-11-09 10:24:03 +0000  6716 bytes for ./Payload/PocketCRM for Vtiger.app/AppIcon40x40@2x.png
+2017-11-09 10:24:03 +0000  copying file ./Payload/PocketCRM for Vtiger.app/AppIcon29x29@3x.png ... 
+2017-11-09 10:24:03 +0000  7264 bytes for ./Payload/PocketCRM for Vtiger.app/AppIcon29x29@3x.png
+2017-11-09 10:24:03 +0000  copying file ./Payload/PocketCRM for Vtiger.app/AppIcon60x60@3x.png ... 
+2017-11-09 10:24:03 +0000  15035 bytes for ./Payload/PocketCRM for Vtiger.app/AppIcon60x60@3x.png
+2017-11-09 10:24:03 +0000  copying file ./Payload/PocketCRM for Vtiger.app/Base.lproj/Main.storyboardc/UIViewController-BYZ-38-t0r.nib ... 
+2017-11-09 10:24:03 +0000  944 bytes for ./Payload/PocketCRM for Vtiger.app/Base.lproj/Main.storyboardc/UIViewController-BYZ-38-t0r.nib
+copying file ./Payload/PocketCRM for Vtiger.app/Base.lproj/Main.storyboardc/BYZ-38-t0r-view-8bC-Xf-vdC.nib ... 
+2017-11-09 10:24:03 +0000  1986 bytes for ./Payload/PocketCRM for Vtiger.app/Base.lproj/Main.storyboardc/BYZ-38-t0r-view-8bC-Xf-vdC.nib
+2017-11-09 10:24:03 +0000  copying file ./Payload/PocketCRM for Vtiger.app/Base.lproj/Main.storyboardc/Info.plist ... 
+258 bytes for ./Payload/PocketCRM for Vtiger.app/Base.lproj/Main.storyboardc/Info.plist
+2017-11-09 10:24:03 +0000  copying file ./Payload/PocketCRM for Vtiger.app/Base.lproj/LaunchScreen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib ... 
+2017-11-09 10:24:03 +0000  1985 bytes for ./Payload/PocketCRM for Vtiger.app/Base.lproj/LaunchScreen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib
+2017-11-09 10:24:03 +0000  copying file ./Payload/PocketCRM for Vtiger.app/Base.lproj/LaunchScreen.storyboardc/UIViewController-01J-lp-oVM.nib ... 
+2017-11-09 10:24:03 +0000  832 bytes for ./Payload/PocketCRM for Vtiger.app/Base.lproj/LaunchScreen.storyboardc/UIViewController-01J-lp-oVM.nib
+copying file ./Payload/PocketCRM for Vtiger.app/Base.lproj/LaunchScreen.storyboardc/Info.plist ... 
+258 bytes for ./Payload/PocketCRM for Vtiger.app/Base.lproj/LaunchScreen.storyboardc/Info.plist
+2017-11-09 10:24:03 +0000  copying file ./Payload/PocketCRM for Vtiger.app/FontAwesome.ttf ... 
+2017-11-09 10:24:03 +0000  165548 bytes for ./Payload/PocketCRM for Vtiger.app/FontAwesome.ttf
+2017-11-09 10:24:03 +0000  copying file ./Payload/PocketCRM for Vtiger.app/archived-expanded-entitlements.xcent ... 
+394 bytes for ./Payload/PocketCRM for Vtiger.app/archived-expanded-entitlements.xcent
+copying file ./Payload/PocketCRM for Vtiger.app/Zocial.ttf ... 
+2017-11-09 10:24:03 +0000  25552 bytes for ./Payload/PocketCRM for Vtiger.app/Zocial.ttf
+2017-11-09 10:24:03 +0000  copying file ./Payload/PocketCRM for Vtiger.app/Assets.car ... 
+2017-11-09 10:24:04 +0000  11214440 bytes for ./Payload/PocketCRM for Vtiger.app/Assets.car
+copying file ./Payload/PocketCRM for Vtiger.app/AppIcon40x40@2x~ipad.png ... 
+2017-11-09 10:24:04 +0000  6716 bytes for ./Payload/PocketCRM for Vtiger.app/AppIcon40x40@2x~ipad.png
+copying file ./Payload/PocketCRM for Vtiger.app/EvilIcons.ttf ... 
+2017-11-09 10:24:04 +0000  13128 bytes for ./Payload/PocketCRM for Vtiger.app/EvilIcons.ttf
+2017-11-09 10:24:04 +0000  copying file ./Payload/PocketCRM for Vtiger.app/AppIcon76x76@2x~ipad.png ... 
+2017-11-09 10:24:04 +0000  12781 bytes for ./Payload/PocketCRM for Vtiger.app/AppIcon76x76@2x~ipad.png
+2017-11-09 10:24:04 +0000  copying file ./Payload/PocketCRM for Vtiger.app/AppIcon72x72~ipad.png ... 
+2017-11-09 10:24:04 +0000  6008 bytes for ./Payload/PocketCRM for Vtiger.app/AppIcon72x72~ipad.png
+2017-11-09 10:24:04 +0000  copying file ./Payload/PocketCRM for Vtiger.app/AppIcon83.5x83.5@2x~ipad.png ... 
+2017-11-09 10:24:04 +0000  13992 bytes for ./Payload/PocketCRM for Vtiger.app/AppIcon83.5x83.5@2x~ipad.png
+2017-11-09 10:24:04 +0000  copying file ./Payload/PocketCRM for Vtiger.app/AppIcon50x50~ipad.png ... 
+2017-11-09 10:24:04 +0000  3675 bytes for ./Payload/PocketCRM for Vtiger.app/AppIcon50x50~ipad.png
+2017-11-09 10:24:04 +0000  copying file ./Payload/PocketCRM for Vtiger.app/AppIcon29x29@2x~ipad.png ... 
+2017-11-09 10:24:04 +0000  4221 bytes for ./Payload/PocketCRM for Vtiger.app/AppIcon29x29@2x~ipad.png
+2017-11-09 10:24:04 +0000  copying file ./Payload/PocketCRM for Vtiger.app/AppIcon50x50@2x~ipad.png ... 
+2017-11-09 10:24:04 +0000  8322 bytes for ./Payload/PocketCRM for Vtiger.app/AppIcon50x50@2x~ipad.png
+2017-11-09 10:24:04 +0000  copying file ./Payload/PocketCRM for Vtiger.app/AppIcon40x40~ipad.png ... 
+2017-11-09 10:24:04 +0000  2904 bytes for ./Payload/PocketCRM for Vtiger.app/AppIcon40x40~ipad.png
+2017-11-09 10:24:04 +0000  copying file ./Payload/PocketCRM for Vtiger.app/Frameworks/folly.framework/_CodeSignature/CodeResources ... 
+2017-11-09 10:24:04 +0000  2202 bytes for ./Payload/PocketCRM for Vtiger.app/Frameworks/folly.framework/_CodeSignature/CodeResources
+2017-11-09 10:24:04 +0000  copying file ./Payload/PocketCRM for Vtiger.app/Frameworks/folly.framework/folly ... 
+2017-11-09 10:24:04 +0000  624416 bytes for ./Payload/PocketCRM for Vtiger.app/Frameworks/folly.framework/folly
+copying file ./Payload/PocketCRM for Vtiger.app/Frameworks/folly.framework/Info.plist ... 
+2017-11-09 10:24:04 +0000  734 bytes for ./Payload/PocketCRM for Vtiger.app/Frameworks/folly.framework/Info.plist
+copying file ./Payload/PocketCRM for Vtiger.app/Frameworks/libswiftCoreImage.dylib ... 
+2017-11-09 10:24:04 +0000  258656 bytes for ./Payload/PocketCRM for Vtiger.app/Frameworks/libswiftCoreImage.dylib
+2017-11-09 10:24:04 +0000  copying file ./Payload/PocketCRM for Vtiger.app/Frameworks/glog.framework/_CodeSignature/CodeResources ... 
+2017-11-09 10:24:04 +0000  2202 bytes for ./Payload/PocketCRM for Vtiger.app/Frameworks/glog.framework/_CodeSignature/CodeResources
+copying file ./Payload/PocketCRM for Vtiger.app/Frameworks/glog.framework/glog ... 
+2017-11-09 10:24:04 +0000  467472 bytes for ./Payload/PocketCRM for Vtiger.app/Frameworks/glog.framework/glog
+2017-11-09 10:24:04 +0000  copying file ./Payload/PocketCRM for Vtiger.app/Frameworks/glog.framework/Info.plist ... 
+2017-11-09 10:24:04 +0000  728 bytes for ./Payload/PocketCRM for Vtiger.app/Frameworks/glog.framework/Info.plist
+copying file ./Payload/PocketCRM for Vtiger.app/Frameworks/libswiftObjectiveC.dylib ... 
+2017-11-09 10:24:04 +0000  506176 bytes for ./Payload/PocketCRM for Vtiger.app/Frameworks/libswiftObjectiveC.dylib
+2017-11-09 10:24:04 +0000  copying file ./Payload/PocketCRM for Vtiger.app/Frameworks/libswiftCore.dylib ... 
+2017-11-09 10:24:08 +0000  68839344 bytes for ./Payload/PocketCRM for Vtiger.app/Frameworks/libswiftCore.dylib
+2017-11-09 10:24:08 +0000  copying file ./Payload/PocketCRM for Vtiger.app/Frameworks/libswiftCoreGraphics.dylib ... 
+2017-11-09 10:24:08 +0000  1269232 bytes for ./Payload/PocketCRM for Vtiger.app/Frameworks/libswiftCoreGraphics.dylib
+copying file ./Payload/PocketCRM for Vtiger.app/Frameworks/libswiftUIKit.dylib ... 
+2017-11-09 10:24:08 +0000  789568 bytes for ./Payload/PocketCRM for Vtiger.app/Frameworks/libswiftUIKit.dylib
+copying file ./Payload/PocketCRM for Vtiger.app/Frameworks/libswiftMetal.dylib ... 
+2017-11-09 10:24:08 +0000  399760 bytes for ./Payload/PocketCRM for Vtiger.app/Frameworks/libswiftMetal.dylib
+2017-11-09 10:24:08 +0000  copying file ./Payload/PocketCRM for Vtiger.app/Frameworks/libswiftCoreData.dylib ... 
+2017-11-09 10:24:08 +0000  690944 bytes for ./Payload/PocketCRM for Vtiger.app/Frameworks/libswiftCoreData.dylib
+copying file ./Payload/PocketCRM for Vtiger.app/Frameworks/libswiftDispatch.dylib ... 
+2017-11-09 10:24:08 +0000  2441120 bytes for ./Payload/PocketCRM for Vtiger.app/Frameworks/libswiftDispatch.dylib
+2017-11-09 10:24:08 +0000  copying file ./Payload/PocketCRM for Vtiger.app/Frameworks/yoga.framework/_CodeSignature/CodeResources ... 
+2017-11-09 10:24:08 +0000  2202 bytes for ./Payload/PocketCRM for Vtiger.app/Frameworks/yoga.framework/_CodeSignature/CodeResources
+2017-11-09 10:24:08 +0000  copying file ./Payload/PocketCRM for Vtiger.app/Frameworks/yoga.framework/yoga ... 
+2017-11-09 10:24:08 +0000  318080 bytes for ./Payload/PocketCRM for Vtiger.app/Frameworks/yoga.framework/yoga
+2017-11-09 10:24:08 +0000  copying file ./Payload/PocketCRM for Vtiger.app/Frameworks/yoga.framework/Info.plist ... 
+2017-11-09 10:24:08 +0000  729 bytes for ./Payload/PocketCRM for Vtiger.app/Frameworks/yoga.framework/Info.plist
+2017-11-09 10:24:08 +0000  copying file ./Payload/PocketCRM for Vtiger.app/Frameworks/libswiftos.dylib ... 
+2017-11-09 10:24:08 +0000  446784 bytes for ./Payload/PocketCRM for Vtiger.app/Frameworks/libswiftos.dylib
+2017-11-09 10:24:08 +0000  copying file ./Payload/PocketCRM for Vtiger.app/Frameworks/React.framework/_CodeSignature/CodeResources ... 
+2017-11-09 10:24:08 +0000  2202 bytes for ./Payload/PocketCRM for Vtiger.app/Frameworks/React.framework/_CodeSignature/CodeResources
+2017-11-09 10:24:08 +0000  copying file ./Payload/PocketCRM for Vtiger.app/Frameworks/React.framework/React ... 
+2017-11-09 10:24:08 +0000  6816016 bytes for ./Payload/PocketCRM for Vtiger.app/Frameworks/React.framework/React
+2017-11-09 10:24:08 +0000  copying file ./Payload/PocketCRM for Vtiger.app/Frameworks/React.framework/Info.plist ... 
+2017-11-09 10:24:08 +0000  731 bytes for ./Payload/PocketCRM for Vtiger.app/Frameworks/React.framework/Info.plist
+copying file ./Payload/PocketCRM for Vtiger.app/Frameworks/libswiftCoreFoundation.dylib ... 
+2017-11-09 10:24:08 +0000  258096 bytes for ./Payload/PocketCRM for Vtiger.app/Frameworks/libswiftCoreFoundation.dylib
+2017-11-09 10:24:08 +0000  copying file ./Payload/PocketCRM for Vtiger.app/Frameworks/libswiftDarwin.dylib ... 
+2017-11-09 10:24:08 +0000  599664 bytes for ./Payload/PocketCRM for Vtiger.app/Frameworks/libswiftDarwin.dylib
+2017-11-09 10:24:08 +0000  copying file ./Payload/PocketCRM for Vtiger.app/Frameworks/libswiftQuartzCore.dylib ... 
+2017-11-09 10:24:08 +0000  311360 bytes for ./Payload/PocketCRM for Vtiger.app/Frameworks/libswiftQuartzCore.dylib
+2017-11-09 10:24:08 +0000  copying file ./Payload/PocketCRM for Vtiger.app/Frameworks/DoubleConversion.framework/_CodeSignature/CodeResources ... 
+2202 bytes for ./Payload/PocketCRM for Vtiger.app/Frameworks/DoubleConversion.framework/_CodeSignature/CodeResources
+2017-11-09 10:24:08 +0000  copying file ./Payload/PocketCRM for Vtiger.app/Frameworks/DoubleConversion.framework/DoubleConversion ... 
+2017-11-09 10:24:08 +0000  262416 bytes for ./Payload/PocketCRM for Vtiger.app/Frameworks/DoubleConversion.framework/DoubleConversion
+2017-11-09 10:24:08 +0000  copying file ./Payload/PocketCRM for Vtiger.app/Frameworks/DoubleConversion.framework/Info.plist ... 
+754 bytes for ./Payload/PocketCRM for Vtiger.app/Frameworks/DoubleConversion.framework/Info.plist
+2017-11-09 10:24:08 +0000  copying file ./Payload/PocketCRM for Vtiger.app/Frameworks/libswiftAccelerate.dylib ... 
+2017-11-09 10:24:08 +0000  404128 bytes for ./Payload/PocketCRM for Vtiger.app/Frameworks/libswiftAccelerate.dylib
+2017-11-09 10:24:08 +0000  copying file ./Payload/PocketCRM for Vtiger.app/Frameworks/libswiftFoundation.dylib ... 
+2017-11-09 10:24:10 +0000  27923360 bytes for ./Payload/PocketCRM for Vtiger.app/Frameworks/libswiftFoundation.dylib
+2017-11-09 10:24:10 +0000  copying file ./Payload/PocketCRM for Vtiger.app/Frameworks/libswiftCoreLocation.dylib ... 
+2017-11-09 10:24:10 +0000  401808 bytes for ./Payload/PocketCRM for Vtiger.app/Frameworks/libswiftCoreLocation.dylib
+2017-11-09 10:24:10 +0000  copying file ./Payload/PocketCRM for Vtiger.app/AppIcon20x20~ipad.png ... 
+1213 bytes for ./Payload/PocketCRM for Vtiger.app/AppIcon20x20~ipad.png
+copying file ./Payload/PocketCRM for Vtiger.app/SimpleLineIcons.ttf ... 
+2017-11-09 10:24:10 +0000  54056 bytes for ./Payload/PocketCRM for Vtiger.app/SimpleLineIcons.ttf
+copying file ./Payload/PocketCRM for Vtiger.app/embedded.mobileprovision ... 
+2017-11-09 10:24:10 +0000  7553 bytes for ./Payload/PocketCRM for Vtiger.app/embedded.mobileprovision
+2017-11-09 10:24:10 +0000  copying file ./Payload/PocketCRM for Vtiger.app/AppIcon20x20@2x~ipad.png ... 
+2017-11-09 10:24:10 +0000  2904 bytes for ./Payload/PocketCRM for Vtiger.app/AppIcon20x20@2x~ipad.png
+2017-11-09 10:24:10 +0000  copying file ./Payload/PocketCRM for Vtiger.app/Info.plist ... 
+2017-11-09 10:24:10 +0000  1837 bytes for ./Payload/PocketCRM for Vtiger.app/Info.plist
+copying file ./Payload/PocketCRM for Vtiger.app/PkgInfo ... 
+8 bytes for ./Payload/PocketCRM for Vtiger.app/PkgInfo
+2017-11-09 10:24:10 +0000  copying file ./Payload/PocketCRM for Vtiger.app/MaterialIcons.ttf ... 
+2017-11-09 10:24:10 +0000  128180 bytes for ./Payload/PocketCRM for Vtiger.app/MaterialIcons.ttf
+copying file ./Payload/PocketCRM for Vtiger.app/AppIcon76x76~ipad.png ... 
+2017-11-09 10:24:10 +0000  6384 bytes for ./Payload/PocketCRM for Vtiger.app/AppIcon76x76~ipad.png
+2017-11-09 10:24:10 +0000  copying file ./SwiftSupport/iphoneos/libswiftCoreImage.dylib ... 
+2017-11-09 10:24:10 +0000  258160 bytes for ./SwiftSupport/iphoneos/libswiftCoreImage.dylib
+copying file ./SwiftSupport/iphoneos/libswiftObjectiveC.dylib ... 
+2017-11-09 10:24:10 +0000  505680 bytes for ./SwiftSupport/iphoneos/libswiftObjectiveC.dylib
+2017-11-09 10:24:10 +0000  copying file ./SwiftSupport/iphoneos/libswiftCore.dylib ... 
+2017-11-09 10:24:14 +0000  68838832 bytes for ./SwiftSupport/iphoneos/libswiftCore.dylib
+2017-11-09 10:24:14 +0000  copying file ./SwiftSupport/iphoneos/libswiftCoreGraphics.dylib ... 
+2017-11-09 10:24:14 +0000  1268736 bytes for ./SwiftSupport/iphoneos/libswiftCoreGraphics.dylib
+2017-11-09 10:24:14 +0000  copying file ./SwiftSupport/iphoneos/libswiftUIKit.dylib ... 
+2017-11-09 10:24:14 +0000  789072 bytes for ./SwiftSupport/iphoneos/libswiftUIKit.dylib
+copying file ./SwiftSupport/iphoneos/libswiftMetal.dylib ... 
+2017-11-09 10:24:14 +0000  399264 bytes for ./SwiftSupport/iphoneos/libswiftMetal.dylib
+2017-11-09 10:24:14 +0000  copying file ./SwiftSupport/iphoneos/libswiftCoreData.dylib ... 
+2017-11-09 10:24:14 +0000  690448 bytes for ./SwiftSupport/iphoneos/libswiftCoreData.dylib
+copying file ./SwiftSupport/iphoneos/libswiftDispatch.dylib ... 
+2017-11-09 10:24:15 +0000  2440624 bytes for ./SwiftSupport/iphoneos/libswiftDispatch.dylib
+2017-11-09 10:24:15 +0000  copying file ./SwiftSupport/iphoneos/libswiftos.dylib ... 
+2017-11-09 10:24:15 +0000  446288 bytes for ./SwiftSupport/iphoneos/libswiftos.dylib
+2017-11-09 10:24:15 +0000  copying file ./SwiftSupport/iphoneos/libswiftCoreFoundation.dylib ... 
+2017-11-09 10:24:15 +0000  257584 bytes for ./SwiftSupport/iphoneos/libswiftCoreFoundation.dylib
+2017-11-09 10:24:15 +0000  copying file ./SwiftSupport/iphoneos/libswiftDarwin.dylib ... 
+2017-11-09 10:24:15 +0000  599168 bytes for ./SwiftSupport/iphoneos/libswiftDarwin.dylib
+copying file ./SwiftSupport/iphoneos/libswiftQuartzCore.dylib ... 
+2017-11-09 10:24:15 +0000  310864 bytes for ./SwiftSupport/iphoneos/libswiftQuartzCore.dylib
+copying file ./SwiftSupport/iphoneos/libswiftAccelerate.dylib ... 
+2017-11-09 10:24:15 +0000  403616 bytes for ./SwiftSupport/iphoneos/libswiftAccelerate.dylib
+copying file ./SwiftSupport/iphoneos/libswiftFoundation.dylib ... 
+2017-11-09 10:24:17 +0000  27922864 bytes for ./SwiftSupport/iphoneos/libswiftFoundation.dylib
+copying file ./SwiftSupport/iphoneos/libswiftCoreLocation.dylib ... 
+2017-11-09 10:24:17 +0000  401312 bytes for ./SwiftSupport/iphoneos/libswiftCoreLocation.dylib
+2017-11-09 10:24:17 +0000  copying file ./Symbols/2A830D61-12AC-3410-841D-0EAA98D30420.symbols ... 
+2017-11-09 10:24:17 +0000  23952 bytes for ./Symbols/2A830D61-12AC-3410-841D-0EAA98D30420.symbols
+2017-11-09 10:24:17 +0000  copying file ./Symbols/F04E0EF2-C398-3CB0-82E7-CF3C71A04773.symbols ... 
+2017-11-09 10:24:17 +0000  2352 bytes for ./Symbols/F04E0EF2-C398-3CB0-82E7-CF3C71A04773.symbols
+2017-11-09 10:24:17 +0000  copying file ./Symbols/EABAFF23-803B-3711-A3C8-39A54BE2747D.symbols ... 
+2017-11-09 10:24:17 +0000  44696 bytes for ./Symbols/EABAFF23-803B-3711-A3C8-39A54BE2747D.symbols
+copying file ./Symbols/C2CF886B-6E9C-3D16-AE67-F6C2F6A97D97.symbols ... 
+2017-11-09 10:24:17 +0000  12304 bytes for ./Symbols/C2CF886B-6E9C-3D16-AE67-F6C2F6A97D97.symbols
+2017-11-09 10:24:17 +0000  copying file ./Symbols/D744E904-BA3F-3BCD-82EE-B8756DBB2171.symbols ... 
+2017-11-09 10:24:17 +0000  2352 bytes for ./Symbols/D744E904-BA3F-3BCD-82EE-B8756DBB2171.symbols
+copying file ./Symbols/BD37ACF3-A8D0-38B2-93EC-7961B8617604.symbols ... 
+2017-11-09 10:24:17 +0000  4443976 bytes for ./Symbols/BD37ACF3-A8D0-38B2-93EC-7961B8617604.symbols
+2017-11-09 10:24:17 +0000  copying file ./Symbols/607F837C-AAE9-37A3-BDE5-CA7F6F8D083B.symbols ... 
+2017-11-09 10:24:17 +0000  7384 bytes for ./Symbols/607F837C-AAE9-37A3-BDE5-CA7F6F8D083B.symbols
+2017-11-09 10:24:17 +0000  copying file ./Symbols/1CD043A2-CD22-3163-8F98-B468EEC2892E.symbols ... 
+2017-11-09 10:24:17 +0000  4425016 bytes for ./Symbols/1CD043A2-CD22-3163-8F98-B468EEC2892E.symbols
+2017-11-09 10:24:17 +0000  copying file ./Symbols/3440193D-01A2-3A2E-B814-E6082BEAF3FC.symbols ... 
+2017-11-09 10:24:17 +0000  2456 bytes for ./Symbols/3440193D-01A2-3A2E-B814-E6082BEAF3FC.symbols
+copying file ./Symbols/B82BAD0E-530C-3E9F-AFA7-99ABCB7DE318.symbols ... 
+2017-11-09 10:24:17 +0000  2824 bytes for ./Symbols/B82BAD0E-530C-3E9F-AFA7-99ABCB7DE318.symbols
+2017-11-09 10:24:17 +0000  copying file ./Symbols/4A28F23A-0431-31AB-9E8A-EE07AA8784E0.symbols ... 
+2017-11-09 10:24:17 +0000  55696 bytes for ./Symbols/4A28F23A-0431-31AB-9E8A-EE07AA8784E0.symbols
+2017-11-09 10:24:17 +0000  copying file ./Symbols/33DF7B2D-DFB7-3E44-B9B2-2860E0BCE993.symbols ... 
+2017-11-09 10:24:17 +0000  12128 bytes for ./Symbols/33DF7B2D-DFB7-3E44-B9B2-2860E0BCE993.symbols
+2017-11-09 10:24:17 +0000  copying file ./Symbols/AB6CF875-A0E9-3118-91B4-A142EB901C82.symbols ... 
+2017-11-09 10:24:17 +0000  44912 bytes for ./Symbols/AB6CF875-A0E9-3118-91B4-A142EB901C82.symbols
+2017-11-09 10:24:17 +0000  copying file ./Symbols/6BDC6B0B-294C-34F6-80DF-96AD95556D9D.symbols ... 
+2017-11-09 10:24:17 +0000  2736 bytes for ./Symbols/6BDC6B0B-294C-34F6-80DF-96AD95556D9D.symbols
+2017-11-09 10:24:17 +0000  copying file ./Symbols/298A74FE-C787-378E-B614-8BEE4A7F65C3.symbols ... 
+2017-11-09 10:24:17 +0000  12304 bytes for ./Symbols/298A74FE-C787-378E-B614-8BEE4A7F65C3.symbols
+2017-11-09 10:24:17 +0000  copying file ./Symbols/9B734366-DFD0-34F6-98CD-D2628A4B0D06.symbols ... 
+2017-11-09 10:24:17 +0000  19600 bytes for ./Symbols/9B734366-DFD0-34F6-98CD-D2628A4B0D06.symbols
+2017-11-09 10:24:17 +0000  copying file ./Symbols/61BB3809-7A1E-31F7-ADC9-95D06C80577B.symbols ... 
+2017-11-09 10:24:17 +0000  55664 bytes for ./Symbols/61BB3809-7A1E-31F7-ADC9-95D06C80577B.symbols
+2017-11-09 10:24:17 +0000  copying file ./Symbols/1502D54F-3B4F-384B-A4BB-4B2D68104E92.symbols ... 
+2017-11-09 10:24:17 +0000  18704 bytes for ./Symbols/1502D54F-3B4F-384B-A4BB-4B2D68104E92.symbols
+2017-11-09 10:24:17 +0000  copying file ./Symbols/DEA8A23F-8C8D-3737-B7BD-47623B1BE8C4.symbols ... 
+2017-11-09 10:24:17 +0000  234128 bytes for ./Symbols/DEA8A23F-8C8D-3737-B7BD-47623B1BE8C4.symbols
+2017-11-09 10:24:17 +0000  copying file ./Symbols/4B736565-3876-324D-B702-34FD4857D667.symbols ... 
+2017-11-09 10:24:17 +0000  24384 bytes for ./Symbols/4B736565-3876-324D-B702-34FD4857D667.symbols
+2017-11-09 10:24:17 +0000  copying file ./Symbols/EBA0EA5E-7316-3472-98BE-385B3E5F0AEB.symbols ... 
+2017-11-09 10:24:17 +0000  38552 bytes for ./Symbols/EBA0EA5E-7316-3472-98BE-385B3E5F0AEB.symbols
+2017-11-09 10:24:17 +0000  copying file ./Symbols/8CBF4442-EC83-3195-9AA6-162ACA7C70D8.symbols ... 
+2017-11-09 10:24:17 +0000  96608 bytes for ./Symbols/8CBF4442-EC83-3195-9AA6-162ACA7C70D8.symbols
+2017-11-09 10:24:17 +0000  copying file ./Symbols/F147851F-9FA5-30A0-A1C8-03C062AD6EE6.symbols ... 
+2017-11-09 10:24:17 +0000  23952 bytes for ./Symbols/F147851F-9FA5-30A0-A1C8-03C062AD6EE6.symbols
+2017-11-09 10:24:17 +0000  copying file ./Symbols/042ECCC4-2490-38A0-8609-C72D4AB75EBD.symbols ... 
+2017-11-09 10:24:17 +0000  18704 bytes for ./Symbols/042ECCC4-2490-38A0-8609-C72D4AB75EBD.symbols
+2017-11-09 10:24:17 +0000  copying file ./Symbols/FACCD862-6C3A-3C99-AB9D-EC64A54107E6.symbols ... 
+2017-11-09 10:24:17 +0000  1588040 bytes for ./Symbols/FACCD862-6C3A-3C99-AB9D-EC64A54107E6.symbols
+2017-11-09 10:24:17 +0000  copying file ./Symbols/54028052-4A70-307B-BFF2-CC759A40A625.symbols ... 
+2017-11-09 10:24:17 +0000  13056 bytes for ./Symbols/54028052-4A70-307B-BFF2-CC759A40A625.symbols
+2017-11-09 10:24:17 +0000  copying file ./Symbols/8ECBCD9C-85EE-3DA3-B89D-16C15C9652D5.symbols ... 
+2017-11-09 10:24:17 +0000  232040 bytes for ./Symbols/8ECBCD9C-85EE-3DA3-B89D-16C15C9652D5.symbols
+2017-11-09 10:24:17 +0000  copying file ./Symbols/0846A5A6-F1B7-3F17-8F27-51B84CECB7B4.symbols ... 
+2017-11-09 10:24:17 +0000  19224 bytes for ./Symbols/0846A5A6-F1B7-3F17-8F27-51B84CECB7B4.symbols
+2017-11-09 10:24:17 +0000  copying file ./Symbols/0DCA260A-ADF7-3BB0-BCA9-ACC9A8717C99.symbols ... 
+2017-11-09 10:24:17 +0000  7384 bytes for ./Symbols/0DCA260A-ADF7-3BB0-BCA9-ACC9A8717C99.symbols
+copying file ./Symbols/BC4CE972-AA93-39B1-AD07-1F154DFE84AB.symbols ... 
+2017-11-09 10:24:17 +0000  234272 bytes for ./Symbols/BC4CE972-AA93-39B1-AD07-1F154DFE84AB.symbols
+copying file ./Symbols/1D7154AC-BD75-3E84-B0AD-621A11D37063.symbols ... 
+2017-11-09 10:24:17 +0000  38552 bytes for ./Symbols/1D7154AC-BD75-3E84-B0AD-621A11D37063.symbols
+copying file ./Symbols/F0965F4E-3BB0-383E-87F0-60AFE69C248B.symbols ... 
+2017-11-09 10:24:17 +0000  4443392 bytes for ./Symbols/F0965F4E-3BB0-383E-87F0-60AFE69C248B.symbols
+2017-11-09 10:24:17 +0000  copying file ./Symbols/68056500-6DC4-366C-95BF-C0F0DA3240D9.symbols ... 
+2017-11-09 10:24:17 +0000  13232 bytes for ./Symbols/68056500-6DC4-366C-95BF-C0F0DA3240D9.symbols
+2017-11-09 10:24:17 +0000  copying file ./Symbols/B1EC1A59-54E0-3567-8985-6DBD962AFCA3.symbols ... 
+2017-11-09 10:24:17 +0000  55696 bytes for ./Symbols/B1EC1A59-54E0-3567-8985-6DBD962AFCA3.symbols
+2017-11-09 10:24:17 +0000  copying file ./Symbols/9B91B49A-3A6A-3397-A584-55121F4D7A4F.symbols ... 
+2017-11-09 10:24:17 +0000  17944 bytes for ./Symbols/9B91B49A-3A6A-3397-A584-55121F4D7A4F.symbols
+2017-11-09 10:24:17 +0000  copying file ./Symbols/C7D068EC-EA87-3500-8E3C-4C41985FF859.symbols ... 
+2017-11-09 10:24:17 +0000  44696 bytes for ./Symbols/C7D068EC-EA87-3500-8E3C-4C41985FF859.symbols
+2017-11-09 10:24:17 +0000  copying file ./Symbols/513C98C9-23B0-3EF1-9886-79E3006E92FF.symbols ... 
+2017-11-09 10:24:17 +0000  1591576 bytes for ./Symbols/513C98C9-23B0-3EF1-9886-79E3006E92FF.symbols
+copying file ./Symbols/D7C9EE68-E7AC-3AF8-9F6F-8C70A96A98E7.symbols ... 
+2017-11-09 10:24:17 +0000  37952 bytes for ./Symbols/D7C9EE68-E7AC-3AF8-9F6F-8C70A96A98E7.symbols
+2017-11-09 10:24:17 +0000  copying file ./Symbols/CE43E435-BB9F-3C78-8019-D2A13B9DAFD0.symbols ... 
+2017-11-09 10:24:17 +0000  96544 bytes for ./Symbols/CE43E435-BB9F-3C78-8019-D2A13B9DAFD0.symbols
+2017-11-09 10:24:17 +0000  copying file ./Symbols/C5E5A346-09FC-35F7-A627-77A33F39CA0C.symbols ... 
+2017-11-09 10:24:17 +0000  2736 bytes for ./Symbols/C5E5A346-09FC-35F7-A627-77A33F39CA0C.symbols
+copying file ./Symbols/4687A4F0-CD49-30D9-AC8D-0343DF250E0C.symbols ... 
+2017-11-09 10:24:17 +0000  13056 bytes for ./Symbols/4687A4F0-CD49-30D9-AC8D-0343DF250E0C.symbols
+2017-11-09 10:24:17 +0000  copying file ./Symbols/63426A65-D66A-34B5-B145-47E2B7639999.symbols ... 
+2017-11-09 10:24:17 +0000  19224 bytes for ./Symbols/63426A65-D66A-34B5-B145-47E2B7639999.symbols
+2017-11-09 10:24:17 +0000  copying file ./Symbols/C99C131E-EDA3-3F9A-9633-9D108703F344.symbols ... 
+2017-11-09 10:24:17 +0000  1591728 bytes for ./Symbols/C99C131E-EDA3-3F9A-9633-9D108703F344.symbols
+2017-11-09 10:24:17 +0000  copying file ./Symbols/C35B43BC-2D3C-3CD0-8BED-6C9CAA92F143.symbols ... 
+2017-11-09 10:24:17 +0000  96392 bytes for ./Symbols/C35B43BC-2D3C-3CD0-8BED-6C9CAA92F143.symbols
+2017-11-09 10:24:17 +0000  copying file ./Symbols/C2F136C9-F96B-320A-8F63-5432156DDD31.symbols ... 
+2017-11-09 10:24:17 +0000  7656 bytes for ./Symbols/C2F136C9-F96B-320A-8F63-5432156DDD31.symbols
+2017-11-09 10:24:17 +0000  
+2017-11-09 10:24:17 +0000  
+2017-11-09 10:24:17 +0000  /usr/bin/ditto exited with 0
+2017-11-09 10:24:17 +0000  2017-11-09 10:24:17 +0000  
+
+2017-11-09 10:24:17 +0000  Processing step: IDEDistributionCreateManifestStep
+2017-11-09 10:24:17 +0000  Skipping step: IDEDistributionCreateManifestStep because it said so

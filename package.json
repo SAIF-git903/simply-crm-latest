@@ -1,0 +1,41 @@
+{
+	"name": "vtiger",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"start": "node node_modules/react-native/local-cli/cli.js start",
+		"test": "jest"
+	},
+	"dependencies": {
+		"eslint-config-rallycoding": "*",
+		"moment": "^2.19.1",
+		"moment-timezone": "0.5.14",
+		"react": "16.0.0",
+		"react-native": "0.50.3",
+		"react-native-action-button": "^2.8.1",
+		"react-native-datepicker": "^1.6.0",
+		"react-native-datepicker-dialog": "^0.0.7",
+		"react-native-elements": "^0.17.0",
+		"react-native-iphone-x-helper": "^1.0.1",
+		"react-native-keyboard-aware-scroll-view": "^0.4.1",
+		"react-native-material-dialog": "^0.5.4",
+		"react-native-modal-dropdown": "^0.5.0",
+		"react-native-multiple-select": "^0.3.0",
+		"react-native-simple-toast": "0.0.7",
+		"react-native-swipeout": "^2.3.1",
+		"react-native-swiper": "^1.5.13",
+		"react-navigation": "1.0.0-beta.11",
+		"react-redux": "5.0.6",
+		"redux": "3.7.2",
+		"redux-thunk": "2.2.0"
+	},
+	"devDependencies": {
+		"babel-jest": "*",
+		"babel-preset-react-native": "*",
+		"jest": "*",
+		"react-test-renderer": "*"
+	},
+	"jest": {
+		"preset": "react-native"
+	}
+}

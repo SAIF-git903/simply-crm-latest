@@ -1,0 +1,24 @@
+platform :ios, '10.0'
+
+target 'PocketCRM for Vtiger' do
+	use_frameworks!
+	pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
+	pod 'GLog', :podspec => '../node_modules/react-native/third-party-podspecs/GLog.podspec'
+	pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
+	pod 'React', :path => '../node_modules/react-native', :subspecs => [
+		'Core',
+    		'DevSupport', # Include this to enable In-App Devmenu if RN >= 0.43
+    		'RCTText',
+		'RCTImage',
+    		'RCTNetwork',
+		'RCTAnimation',
+		'CxxBridge',
+		'RCTLinkingIOS',
+    		'RCTWebSocket', # needed for debugging
+  	]
+	pod "yoga", :path => "../node_modules/react-native/ReactCommon/yoga"
+
+
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
+end
