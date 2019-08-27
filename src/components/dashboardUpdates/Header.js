@@ -3,6 +3,7 @@ import { View, Text } from 'react-native';
 import ModalDropdown from 'react-native-modal-dropdown';
 import { connect } from 'react-redux';
 import { moduleSelected } from '../../actions';
+import { HEADER_COLOR } from '../../variables/themeColors';
 
 class Header extends Component {
     handleDisplayModule(value) {
@@ -43,7 +44,7 @@ class Header extends Component {
 const styles = {
     subContainer: {        
         padding: 5,
-        backgroundColor: '#404040',
+        backgroundColor: HEADER_COLOR,
         justifyContent: 'flex-start',
         flexDirection: 'row',
         position: 'relative',

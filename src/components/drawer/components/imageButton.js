@@ -1,79 +1,100 @@
 import React, { Component } from 'react';
-import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
-import { View, Alert, Image, StyleSheet, TouchableOpacity, Linking } from 'react-native';
-import { DRAWER_MENU_BUTTON_IMAGE_SELECTED_COLOR, DRAWER_MENU_BUTTON_IMAGE_COLOR,
-    DRAWER_MENU_BORDER_COLOR } from '../../../variables/themeColors';    
-import { drawerButtonPress } from '../../../actions';    
-import { LOGOUT, REBRAND, SMACKCODERS_SUPPORT } from '../../../variables/constants';
-import { removeAllDatabase } from '../../../helper';
+import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faBuilding, faUser, faTachometerAlt } from '@fortawesome/pro-regular-svg-icons';
+import { drawerButtonPress } from '../../../actions'; 
+import { DRAWER_MODULE_BUTTON_TEXT_SELECTED_COLOR, DRAWER_SECTION_HEADER_TEXT_COLOR,
+    DRAWER_SECTION_HEADER_IMAGE_COLOR
+} from '../../../variables/themeColors';   
+import { ACCOUNTS, CONTACTS, HOME } from '../../../variables/constants';
 
 class ImageButton extends Component {
+    
+    constructor(props) {
+        super(props);
+        this.state = { iconName: faTachometerAlt };
+    }
+
+    componentWillMount() {
+        this.assignIcons();
+    }
+
     onButtonPress() {
-        if (this.props.type === LOGOUT) {
-            Alert.alert('Logout !', 'Are you sure all your offline data will be deleted?',
-            [
-              { text: 'Cancel', style: 'cancel' },
-              { text: 'Ok', onPress: this.logout.bind(this) },
-            ],
-            { cancelable: true }
-            );
-        } else if (this.props.type === REBRAND) {
-            Linking.openURL('https://www.smackcoders.com/vtiger-mobile-branding.html').catch(err => console.error('An error occured', err));
-        } else if (this.props.type === SMACKCODERS_SUPPORT) {
-            Linking.openURL('https://www.smackcoders.com/contact-us.html').catch(err => console.error('An error occured', err));
-        } else {
+        if (this.props.type === HOME) {
             this.props.dispatch(drawerButtonPress(this.props.type));
-        }
+        } else {
+            this.props.dispatch(drawerButtonPress(this.props.module.name, 
+                this.props.module.label, this.props.module.id));
+        }   
     }
 
-    logout() {
-        removeAllDatabase(this.navigateToSplash.bind(this));
+    assignIcons() {
+        switch (this.props.type) {
+            case ACCOUNTS:
+                this.setState({ iconName: faBuilding });
+                break;
+           
+            case CONTACTS: 
+                this.setState({ iconName: faUser });
+                break;
+           
+            default:
+
+
+        } 
     }
 
-    navigateToSplash() {
-        const resetAction = NavigationActions.reset({
-            index: 0,
-            actions: [
-              NavigationActions.navigate({ routeName: 'SplashScreen' })
-            ]
-          });
-          this.props.rootNavigation.dispatch(resetAction);
-    }
 
     render() {
+        console.log(this.props.type);
         return (
-            <TouchableOpacity onPress={this.onButtonPress.bind(this)}>
+            <TouchableOpacity style={{ flex: 1 }} onPress={this.onButtonPress.bind(this)}>
                 <View 
                 style={{ 
-                    width: 40, 
+                    flexDirection: 'row',
                     flex: 1,
-                    paddingTop: 4,
-                    borderColor: DRAWER_MENU_BORDER_COLOR,
-                    justifyContent: 'center' }}
+                    alignItems: 'center',
+                    }}
                 >
-                    <Image 
+            
+                    <View style={styles.imageStyle}>
+                        <FontAwesomeIcon icon={this.state.iconName} size={23} color={(this.props.selectedButton !== this.props.type) ? DRAWER_SECTION_HEADER_TEXT_COLOR : DRAWER_MODULE_BUTTON_TEXT_SELECTED_COLOR} />
+                    </View>
+                    
+                    
+                    {/* <Image 
                     source={{ uri: this.props.type }} 
                     style={(this.props.selectedButton === this.props.type) ? 
                     styles.imageStyleSelected : 
                     styles.imageStyle} 
-                    />
+                    /> */}
+                
+                
+                    <Text style={(this.props.selectedButton === this.props.type) ? styles.textSelectedStyle : styles.textStyle}>{this.props.label}</Text>
                 </View>
             </ TouchableOpacity>
+
         );  
     }
 }
 
 const styles = StyleSheet.create({
     imageStyle: {
-        height: 35,
-        width: 35,
-        tintColor: DRAWER_MENU_BUTTON_IMAGE_COLOR
+        height: 25,
+        width: 25,
+        marginRight: 10,
+        marginLeft: 10
     },
-    imageStyleSelected: {
-        width: 35,
-        height: 35,
-        tintColor: DRAWER_MENU_BUTTON_IMAGE_SELECTED_COLOR
+    
+    textStyle: {
+        color: DRAWER_SECTION_HEADER_IMAGE_COLOR,
+        fontSize: 16,
+
+    },
+    textSelectedStyle: {
+        color: DRAWER_MODULE_BUTTON_TEXT_SELECTED_COLOR,
+        fontSize: 16
     }
 });
 

@@ -1,19 +1,27 @@
 import React, { Component } from 'react';
-import { View, Image, Text, Animated, StyleSheet, TouchableWithoutFeedback } from 'react-native';
-import { DRAWER_SECTION_HEADER_IMAGE_SELECTED_COLOR, DRAWER_SECTION_HEADER_IMAGE_COLOR,
-    DRAWER_SECTION_HEADER_BACKGROUND_COLOR, 
-    DRAWER_SECTION_BORDER_COLOR } from '../../../variables/themeColors';
+import { View, Image, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faWrench, faLuggageCart } from '@fortawesome/pro-regular-svg-icons';
+import { DRAWER_BORDER_COLOR } from '../../../variables/themeColors';
+import { TOOLS, SALES } from '../../../variables/constants';
 
 export default class SectionHeader extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selected: false
+            selected: false,
+            isArrowVisible: true
         };
     }
 
     componentWillMount() {
         this.init();
+        this.assignIcons();
+    }
+
+    componentDidMount() {
+        this.props.openSection();
+        this.setState({ selected: true });
     }
 
     componentWillReceiveProps(newProps) {
@@ -24,13 +32,37 @@ export default class SectionHeader extends Component {
 
     onHeaderPress() {
         if (this.state.selected) {
-            this.props.closeSection();
-            this.setState({ selected: false });
+            // this.props.closeSection();
+            // this.setState({ selected: false });
         } else {
             this.props.openSection();
-            this.setState({ selected: true });
+            this.setState({ selected: true, isArrowVisible: true });
         }
     }
+
+    onClosePress() {
+        if (this.state.selected) {
+            this.props.closeSection();
+            this.setState({ selected: false, isArrowVisible: false });
+        } 
+    }
+
+    assignIcons() {
+        switch (this.props.name) {
+            case TOOLS:
+                this.setState({ iconName: faWrench });
+                break;
+           
+            case SALES: 
+                this.setState({ iconName: faLuggageCart });
+                break;
+           
+            default:
+
+
+        } 
+    }
+
 
     init() {
         if (this.props.selected) {
@@ -41,32 +73,48 @@ export default class SectionHeader extends Component {
     }
 
     render() {
-        const arrowAnimation = { transform: [{ rotate: this.props.arrowDegree.interpolate({
-            inputRange: [0, 1],
-            outputRange: ['0deg', '180deg'],
-        }) }] };
-
         return (
             <TouchableWithoutFeedback onPress={this.onHeaderPress.bind(this)}>
                 <View style={[styles.headerBackground, { backgroundColor: this.props.backgroundColor }]}>
                     { (this.props.headerImage) ?
-                        <Image 
-                        source={{ uri: this.props.imageName }}
-                        style={(this.state.selected) ? 
-                        [styles.imageStyleSelected, { tintColor: this.props.imageSelectedColor }] : 
-                        [styles.imageStyle, { tintColor: this.props.imageColor }]}
-                        /> :
+                        <View style={styles.imageStyle}>
+                            <FontAwesomeIcon icon={this.state.iconName} size={23} color={this.props.imageColor} />
+                        </View>
+                        // <Image 
+                        // source={{ uri: this.props.imageName }}
+                        // // style={(this.state.selected) ? 
+                        // // [styles.imageStyleSelected, { tintColor: this.props.imageSelectedColor }] : 
+                        // // [styles.imageStyle, { tintColor: this.props.imageColor }]}
+                        // style={styles.imageStyle}
+                        // /> 
+                        :
                         undefined 
                     }
-                    <Text style={{ color: this.props.textColor }}>{this.props.name}</Text>
-                    <Animated.View style={[styles.arrowAnimatedViewStyle, arrowAnimation]}>
-                        <Image 
-                            source={{ uri: 'uparrow' }}
-                            style={(this.state.selected) ? 
-                            [styles.arrowImageStyleSelected, { tintColor: this.props.imageSelectedColor }] : 
-                            [styles.arrowImageStyle, { tintColor: this.props.imageColor }]}
-                        />
-                    </Animated.View>
+                    <Text style={{ color: this.props.imageColor, fontSize: 16 }}>{this.props.name}</Text>
+                    {/* <Animated.View style={[styles.arrowAnimatedViewStyle, arrowAnimation]}> */}
+                    
+                    <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end' }}>
+                        {
+                            (this.state.isArrowVisible) ?
+                            <TouchableWithoutFeedback onPress={this.onClosePress.bind(this)}>
+                                <View style={{ width: 40, height: 40, alignItems: 'flex-end', justifyContent: 'center', paddingRight: 6 }}>
+                                    <Image 
+                                        source={{ uri: 'uparrow' }}
+                                        style={(this.state.selected) ? 
+                                        [styles.arrowImageStyleSelected, { tintColor: DRAWER_BORDER_COLOR }] : 
+                                        [styles.arrowImageStyle, { tintColor: this.props.imageColor }]}
+                                    />
+                                </View>
+
+                            </TouchableWithoutFeedback>
+                            : 
+                            undefined
+                            
+                        }
+                        
+                    </View>
+                   
+                    {/* </Animated.View> */}
                 </View>
             </TouchableWithoutFeedback>
         );
@@ -75,33 +123,38 @@ export default class SectionHeader extends Component {
 
 const styles = StyleSheet.create({
     headerBackground: {
+        flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
         paddingRight: 5,
         paddingLeft: 5,
-        borderColor: DRAWER_SECTION_BORDER_COLOR,
-        borderTopWidth: 1,
+        borderColor: DRAWER_BORDER_COLOR,
         marginTop: 5,
-        borderBottomWidth: 1,
-        justifyContent: 'space-between',
+        borderBottomWidth: 0.5,
         height: 40,
+       
     },
     imageStyle: {
-        height: 30,
-        width: 30,
+        height: 25,
+        width: 25,
+        marginRight: 10,
+        marginLeft: 5
     },
     imageStyleSelected: {
-        height: 30,
-        width: 30,
+        height: 25,
+        width: 25,
     },
     arrowImageStyle: {
-        flex: 1,
+        width: 15, 
+        height: 15,
+        
     },
     arrowImageStyleSelected: {
-        flex: 1,
+        width: 15,
+        height: 15
+        
     },
     arrowAnimatedViewStyle: {
-        height: 30,
-        width: 30
+        flex: 1,
     }
 });
