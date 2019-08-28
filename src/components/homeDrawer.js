@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import { View, StatusBar, ScrollView, StyleSheet, ActivityIndicator, 
-    TouchableOpacity, Text, Image, Alert } from 'react-native';
+    TouchableOpacity, Text, Alert } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPowerOff } from '@fortawesome/pro-regular-svg-icons';
 import { renderDrawerView, removeAllDatabase } from '../helper';

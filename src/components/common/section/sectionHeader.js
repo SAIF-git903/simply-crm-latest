@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { View, Image, Text, StyleSheet, TouchableWithoutFeedback, Platform } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faWrench, faLuggageCart } from '@fortawesome/pro-regular-svg-icons';
 import { DRAWER_BORDER_COLOR } from '../../../variables/themeColors';
@@ -129,9 +129,9 @@ const styles = StyleSheet.create({
         paddingRight: 5,
         paddingLeft: 5,
         borderColor: DRAWER_BORDER_COLOR,
-        marginTop: 5,
+        marginTop: (Platform.OS === 'ios') ? 0 : 5,
         borderBottomWidth: 0.5,
-        height: 40,
+        height: 50,
        
     },
     imageStyle: {

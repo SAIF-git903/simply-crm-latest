@@ -1,4 +1,4 @@
-package com.smackcoders.vtiger;
+package com.simplycrm.vtiger;
 
 import com.facebook.react.ReactActivity;
 
@@ -10,6 +10,6 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected String getMainComponentName() {
-        return "vtiger";
+        return "simplycrm";
     }
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Platform } from 'react-native';
 import { DRAWER_MENU_BACKGROUND_COLOR, 
          DRAWER_BORDER_COLOR } from '../../../variables/themeColors';    
 
@@ -17,8 +17,8 @@ const styles = StyleSheet.create({
     menuStyle: {
         //flex: 1,
         width: '100%',
-        height: 40,
-        marginTop: 10,
+        height: 50,
+        marginTop: (Platform.OS === 'android') ? 10 : 0,
         borderColor: DRAWER_BORDER_COLOR,
         backgroundColor: DRAWER_MENU_BACKGROUND_COLOR,      
         flexDirection: 'row',       

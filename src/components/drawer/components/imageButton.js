@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text, Platform } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBuilding, faUser, faTachometerAlt } from '@fortawesome/pro-regular-svg-icons';
 import { drawerButtonPress } from '../../../actions'; 
@@ -47,14 +47,17 @@ class ImageButton extends Component {
 
 
     render() {
-        console.log(this.props.type);
         return (
-            <TouchableOpacity style={{ flex: 1 }} onPress={this.onButtonPress.bind(this)}>
+            <TouchableOpacity 
+                style={{ flex: 1, marginTop: (Platform.OS === 'ios' && this.props.type === HOME) ? 30 : 0, paddingBottom: (Platform.OS === 'ios' && this.props.type === HOME) ? 15 : 0 }} 
+                onPress={this.onButtonPress.bind(this)}
+            >
                 <View 
                 style={{ 
                     flexDirection: 'row',
                     flex: 1,
                     alignItems: 'center',
+                  
                     }}
                 >
             

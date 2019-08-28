@@ -1,4 +1,4 @@
-package com.smackcoders.vtiger;
+package com.simplycrm.vtiger;
 
 import android.app.Application;
 
