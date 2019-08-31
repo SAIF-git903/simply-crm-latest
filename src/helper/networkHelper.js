@@ -17,6 +17,8 @@ export const getDatafromNet = async (param, dispatch) => {
         },
         body: param
         });
+        console.log('url', `${loginDetails.url}/modules/Mobile/api.php`);
+        console.log('params', param);
     const responseJson = await response.json();
     if (!responseJson.success) {
         if (responseJson.error.code === 1501 || responseJson.error.code === '1501') {
@@ -26,6 +28,8 @@ export const getDatafromNet = async (param, dispatch) => {
             param.append('username', loginDetails.username);
             param.append('password', loginDetails.password);
 
+            console.log('url', `${loginDetails.url}/modules/Mobile/api.php`);
+            console.log('params', param);
             const newresponse = await fetch((`${loginDetails.url}/modules/Mobile/api.php`), {
                 method: 'POST',
                 headers: {

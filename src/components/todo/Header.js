@@ -10,6 +10,7 @@ import {
     AsyncStorage,
 } from 'react-native';
 import Swipeout from 'react-native-swipeout';
+import { HEADER_COLOR } from '../../variables/themeColors';
 
 class Header extends Component {
     constructor(props) {
@@ -113,10 +114,10 @@ class Header extends Component {
                                     flex: 1, 
                                     marginTop: 2, 
                                     marginBottom: 2, 
-                                    backgroundColor: '#29b87f',
+                                    backgroundColor: '#34bfa3',
                                     justifyContent: 'center',
                                     alignItems: 'center',
-                                    borderRadius: 5 }}
+                                    borderRadius: 2 }}
                         >
                             <Text style={{ color: '#ffffff' }}>Add</Text>
                         </View>
@@ -163,7 +164,7 @@ const styles = {
     subContainer: {
         
         padding: 5,
-        backgroundColor: '#404040',
+        backgroundColor: HEADER_COLOR,
         justifyContent: 'flex-start',
         flexDirection: 'row',
         position: 'relative',

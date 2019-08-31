@@ -1,23 +1,21 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.smackcoders.vtiger"
-    android:versionCode="3"
-    android:versionName="2.1">
+    package="com.simplycrm.vtiger"
+    android:versionCode="1"
+    android:versionName="1.0">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 
-    <uses-sdk
-        android:minSdkVersion="21"
-        android:targetSdkVersion="22" />
+    <uses-sdk android:targetSdkVersion="22" />
 
     <application
-      android:name="com.smackcoders.vtiger.MainApplication"
+      android:name="com.simplycrm.vtiger.MainApplication"
       android:allowBackup="true"
       android:label="@string/app_name"
       android:icon="@mipmap/ic_launcher"
       android:theme="@style/AppTheme">
       <activity
-        android:name="com.smackcoders.vtiger.MainActivity"
+        android:name="com.simplycrm.vtiger.MainActivity"
         android:label="@string/app_name"
         android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
         android:windowSoftInputMode="adjustResize">

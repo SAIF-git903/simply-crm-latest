@@ -7,13 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		002C366EEE5248688DB27427 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB8AE7EF3EF64640A016F858 /* AntDesign.ttf */; };
 		0322746EF9A24C47ABF94EBF /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 50935CA54FB54F18AB35A98F /* Ionicons.ttf */; };
+		0E6784902315688B0019155F /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E67848D231568540019155F /* libRNSVG.a */; };
 		18395B382B844D27975A8AE8 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA6E01F56B3D48EA93EA3733 /* FontAwesome.ttf */; };
+		213E371CC8CD479C88292C72 /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 583C39B17EF448798B9E110B /* FontAwesome5_Brands.ttf */; };
 		28B31CE180A269B9430E5CF9 /* Pods_PocketCRM_for_Vtiger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6EA8420B7231B22BE2CEA6C /* Pods_PocketCRM_for_Vtiger.framework */; };
 		4812EB1DDDBF45F0B4DE5726 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2D5FBD665DA34924A755B38D /* EvilIcons.ttf */; };
 		54231C936EC24B879DB4861E /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DFD24A04F78847618FF89C1F /* Octicons.ttf */; };
+		5A404ECFFB304978A8CACE32 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F9505C60A07A4CEFB64E191C /* FontAwesome5_Regular.ttf */; };
 		64839B65D3A74E089F56EE97 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 232AFF2DDDD34729BE4CF8D5 /* MaterialCommunityIcons.ttf */; };
 		6E4D613CE1E64B39AAAD2239 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EBBE24A134364F2793284ED2 /* Foundation.ttf */; };
+		98ADE062CA474821A0A67A1D /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 24000D34738743398040625C /* FontAwesome5_Solid.ttf */; };
 		9D7B65A7192E4AA1B277A615 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3D412DBE2F70404092BB2FF6 /* MaterialIcons.ttf */; };
 		A28EEDC2DF424743A7D17263 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FE8997848BB1444B891CE0AE /* Entypo.ttf */; };
 		A343FBED1FB1A9B7009A9ADB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A343FBEC1FB1A9B7009A9ADB /* AppDelegate.swift */; };
@@ -26,18 +31,48 @@
 		A3E554F01FB58B0900F8CE71 /* UIView+Toast.m in Sources */ = {isa = PBXBuildFile; fileRef = A3E554EF1FB58B0900F8CE71 /* UIView+Toast.m */; };
 		A3E554F21FB58B0E00F8CE71 /* LRDRCTSimpleToast.m in Sources */ = {isa = PBXBuildFile; fileRef = A3E554F11FB58B0E00F8CE71 /* LRDRCTSimpleToast.m */; };
 		A56D6C9C1C574971A3B503BD /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B8A00119CDF4F71B81C6AD6 /* SimpleLineIcons.ttf */; };
+		B858EB35FC42460C93BDF0D1 /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 82A4F0976580480FA4147891 /* Fontisto.ttf */; };
 		C9630D1467054735A18EC326 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E6DACDA40C034824BF441918 /* Feather.ttf */; };
 		F374FC2EAD314D49B56FFE85 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BB7E5D8C3320406195112A47 /* Zocial.ttf */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		0E678485231552880019155F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 82ECFD7B3FCA43EF86B45AB0 /* LRDRCTSimpleToast.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 15209BEF1D250F63000D0F44;
+			remoteInfo = LRDRCTSimpleToast;
+		};
+		0E67848C231568540019155F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0E678487231568540019155F /* RNSVG.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0CF68AC11AF0540F00FF9E5C;
+			remoteInfo = RNSVG;
+		};
+		0E67848E231568540019155F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0E678487231568540019155F /* RNSVG.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 94DDAC5C1F3D024300EED511;
+			remoteInfo = "RNSVG-tvOS";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		0E678487231568540019155F /* RNSVG.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNSVG.xcodeproj; path = "../node_modules/react-native-svg/ios/RNSVG.xcodeproj"; sourceTree = "<group>"; };
 		232AFF2DDDD34729BE4CF8D5 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
+		24000D34738743398040625C /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		2B8A00119CDF4F71B81C6AD6 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		2D5FBD665DA34924A755B38D /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		3D16397C5ABD4D9EA3E3ACDC /* libLRDRCTSimpleToast.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libLRDRCTSimpleToast.a; sourceTree = "<group>"; };
 		3D412DBE2F70404092BB2FF6 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		50935CA54FB54F18AB35A98F /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
+		583C39B17EF448798B9E110B /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		75122CB25C8F722506118012 /* Pods-PocketCRM for Vtiger.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PocketCRM for Vtiger.release.xcconfig"; path = "Pods/Target Support Files/Pods-PocketCRM for Vtiger/Pods-PocketCRM for Vtiger.release.xcconfig"; sourceTree = "<group>"; };
+		82A4F0976580480FA4147891 /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
+		82ECFD7B3FCA43EF86B45AB0 /* LRDRCTSimpleToast.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = LRDRCTSimpleToast.xcodeproj; path = "../node_modules/react-native-simple-toast/ios/LRDRCTSimpleToast.xcodeproj"; sourceTree = "<group>"; };
 		94A6BF6FA9F7974B5B96563D /* Pods-PocketCRM for Vtiger.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PocketCRM for Vtiger.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PocketCRM for Vtiger/Pods-PocketCRM for Vtiger.debug.xcconfig"; sourceTree = "<group>"; };
 		A343FBE91FB1A9B7009A9ADB /* PocketCRM for Vtiger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PocketCRM for Vtiger.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A343FBEC1FB1A9B7009A9ADB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -52,10 +87,12 @@
 		A3E554EF1FB58B0900F8CE71 /* UIView+Toast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Toast.m"; sourceTree = "<group>"; };
 		A3E554F11FB58B0E00F8CE71 /* LRDRCTSimpleToast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRDRCTSimpleToast.m; sourceTree = "<group>"; };
 		BB7E5D8C3320406195112A47 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
+		DB8AE7EF3EF64640A016F858 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		DFD24A04F78847618FF89C1F /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		E6DACDA40C034824BF441918 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		EBBE24A134364F2793284ED2 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		F6EA8420B7231B22BE2CEA6C /* Pods_PocketCRM_for_Vtiger.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PocketCRM_for_Vtiger.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9505C60A07A4CEFB64E191C /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		FA6E01F56B3D48EA93EA3733 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		FE8997848BB1444B891CE0AE /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -66,12 +103,30 @@
 			buildActionMask = 2147483647;
 			files = (
 				28B31CE180A269B9430E5CF9 /* Pods_PocketCRM_for_Vtiger.framework in Frameworks */,
+				0E6784902315688B0019155F /* libRNSVG.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0E678482231552880019155F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0E678486231552880019155F /* libLRDRCTSimpleToast.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0E678488231568540019155F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0E67848D231568540019155F /* libRNSVG.a */,
+				0E67848F231568540019155F /* libRNSVG-tvOS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		4EC63831C3664B6F924A2CE7 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -86,6 +141,11 @@
 				DFD24A04F78847618FF89C1F /* Octicons.ttf */,
 				2B8A00119CDF4F71B81C6AD6 /* SimpleLineIcons.ttf */,
 				BB7E5D8C3320406195112A47 /* Zocial.ttf */,
+				DB8AE7EF3EF64640A016F858 /* AntDesign.ttf */,
+				583C39B17EF448798B9E110B /* FontAwesome5_Brands.ttf */,
+				F9505C60A07A4CEFB64E191C /* FontAwesome5_Regular.ttf */,
+				24000D34738743398040625C /* FontAwesome5_Solid.ttf */,
+				82A4F0976580480FA4147891 /* Fontisto.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -110,6 +170,8 @@
 		66D05A0F599C41ACAD3F233C /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				0E678487231568540019155F /* RNSVG.xcodeproj */,
+				82ECFD7B3FCA43EF86B45AB0 /* LRDRCTSimpleToast.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -173,7 +235,6 @@
 				A343FBE61FB1A9B7009A9ADB /* Frameworks */,
 				A343FBE71FB1A9B7009A9ADB /* Resources */,
 				F94043AC391DC7D369ADDE31 /* [CP] Embed Pods Frameworks */,
-				CD4E91F38144BB8DA1673351 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -211,12 +272,46 @@
 			mainGroup = A343FBE01FB1A9B7009A9ADB;
 			productRefGroup = A343FBEA1FB1A9B7009A9ADB /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 0E678482231552880019155F /* Products */;
+					ProjectRef = 82ECFD7B3FCA43EF86B45AB0 /* LRDRCTSimpleToast.xcodeproj */;
+				},
+				{
+					ProductGroup = 0E678488231568540019155F /* Products */;
+					ProjectRef = 0E678487231568540019155F /* RNSVG.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				A343FBE81FB1A9B7009A9ADB /* PocketCRM for Vtiger */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		0E678486231552880019155F /* libLRDRCTSimpleToast.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLRDRCTSimpleToast.a;
+			remoteRef = 0E678485231552880019155F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0E67848D231568540019155F /* libRNSVG.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNSVG.a;
+			remoteRef = 0E67848C231568540019155F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0E67848F231568540019155F /* libRNSVG-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libRNSVG-tvOS.a";
+			remoteRef = 0E67848E231568540019155F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		A343FBE71FB1A9B7009A9ADB /* Resources */ = {
@@ -238,27 +333,17 @@
 				A3AFFC4E1FCC2AAF00126F84 /* main.jsbundle in Resources */,
 				A56D6C9C1C574971A3B503BD /* SimpleLineIcons.ttf in Resources */,
 				F374FC2EAD314D49B56FFE85 /* Zocial.ttf in Resources */,
+				002C366EEE5248688DB27427 /* AntDesign.ttf in Resources */,
+				213E371CC8CD479C88292C72 /* FontAwesome5_Brands.ttf in Resources */,
+				5A404ECFFB304978A8CACE32 /* FontAwesome5_Regular.ttf in Resources */,
+				98ADE062CA474821A0A67A1D /* FontAwesome5_Solid.ttf in Resources */,
+				B858EB35FC42460C93BDF0D1 /* Fontisto.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		CD4E91F38144BB8DA1673351 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PocketCRM for Vtiger/Pods-PocketCRM for Vtiger-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		E0531B10CA6538932DE455DC /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -287,6 +372,8 @@
 				"${BUILT_PRODUCTS_DIR}/DoubleConversion/DoubleConversion.framework",
 				"${BUILT_PRODUCTS_DIR}/Folly/folly.framework",
 				"${BUILT_PRODUCTS_DIR}/GLog/glog.framework",
+				"${BUILT_PRODUCTS_DIR}/RNSVG/RNSVG.framework",
+				"${BUILT_PRODUCTS_DIR}/RNVectorIcons/RNVectorIcons.framework",
 				"${BUILT_PRODUCTS_DIR}/React/React.framework",
 				"${BUILT_PRODUCTS_DIR}/yoga/yoga.framework",
 			);
@@ -295,6 +382,8 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DoubleConversion.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/folly.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/glog.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RNSVG.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RNVectorIcons.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/React.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/yoga.framework",
 			);
@@ -452,17 +541,18 @@
 			baseConfigurationReference = 94A6BF6FA9F7974B5B96563D /* Pods-PocketCRM for Vtiger.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = 995KLR8FLJ;
+				DEVELOPMENT_TEAM = 6JWQQD5699;
 				INFOPLIST_FILE = "PocketCRM for Vtiger/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.smackcoders.pocketvtiger;
+				PRODUCT_BUNDLE_IDENTIFIER = com.simply.vtigercrm;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "37a55dcc-cd23-4ff7-9f5b-0709ca0e93b0";
-				PROVISIONING_PROFILE_SPECIFIER = VtigerAppDistributeProfile;
+				PROVISIONING_PROFILE_SPECIFIER = VtigerAppAdHocProfile;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -473,17 +563,18 @@
 			baseConfigurationReference = 75122CB25C8F722506118012 /* Pods-PocketCRM for Vtiger.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = 995KLR8FLJ;
+				DEVELOPMENT_TEAM = 6JWQQD5699;
 				INFOPLIST_FILE = "PocketCRM for Vtiger/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.smackcoders.pocketvtiger;
+				PRODUCT_BUNDLE_IDENTIFIER = com.simply.vtigercrm;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "37a55dcc-cd23-4ff7-9f5b-0709ca0e93b0";
-				PROVISIONING_PROFILE_SPECIFIER = VtigerAppDistributeProfile;
+				PROVISIONING_PROFILE_SPECIFIER = VtigerAppAdHocProfile;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

@@ -140,6 +140,7 @@ export const getNextPageHelper = async (listerInstance, dispatch) => {
             param.append('module', listerInstance.props.moduleName);
             param.append('page', listerInstance.state.pageToTake);
             const responseJson = await getDatafromNet(param, dispatch);
+            console.log(responseJson);
             if (responseJson.success) {
                 await getAndSaveDataVtiger(responseJson, listerInstance, true, false, true);
             } else {
@@ -227,7 +228,7 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
             //console.log(listerInstance.state.pageToTake);
             param.append('page', listerInstance.state.pageToTake);
             const responseJson = await getDatafromNet(param, dispatch);
-            //console.log(responseJson);
+            console.log(responseJson);
             if (responseJson.success) {
                 await getAndSaveDataVtiger(responseJson, listerInstance, false, false, false);
             } else {
@@ -254,6 +255,7 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
             param.append('_operation', 'listModuleRecords');
             param.append('module', listerInstance.props.moduleName);
             const responseJson = await getDatafromNet(param, dispatch);
+            console.log(responseJson);
             if (responseJson.success) {
                 await getAndSaveDataVtiger(responseJson, listerInstance, true, false, false);
             } else {
@@ -556,6 +558,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
     let statusText;
     if (data.length > 0) {
         // the array is defined and has at least one element
+        statusText = 'Loading complete - Recently updated Pull to refresh';
         offlineData = { records: data,
             nextPage: (vtigerSeven) ? (responseJson.result.moreRecords) : (responseJson.result.nextPage > 0),
             finishedTime: JSON.stringify(moment()), 

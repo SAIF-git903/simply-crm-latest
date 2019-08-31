@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Swiper from 'react-native-swiper';
-import { View, Text, Image, StatusBar, ScrollView, Linking, 
-    TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
-import { renderDrawerView } from '../helper';
-import { DRAWER_BACKGROUND, HEADER_COLOR } from '../variables/themeColors';
+import { NavigationActions } from 'react-navigation';
+import { View, StatusBar, ScrollView, StyleSheet, ActivityIndicator, 
+    TouchableOpacity, Text, Alert } from 'react-native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faPowerOff } from '@fortawesome/pro-regular-svg-icons';
+import { renderDrawerView, removeAllDatabase } from '../helper';
+import { DRAWER_BACKGROUND, HEADER_COLOR, DRAWER_INNER_BACKGROUND, 
+    DRAWER_SECTION_HEADER_TEXT_COLOR, DRAWER_SECTION_HEADER_IMAGE_COLOR } from '../variables/themeColors';
+
 
 class HomeDrawer extends Component {
     constructor(props) {
@@ -12,7 +16,8 @@ class HomeDrawer extends Component {
         this.state = {
             loading: false,
             drawerViews: [],
-            drawerLoadComplete: false
+            drawerLoadComplete: false,
+            signOut: []
         };
     }
 
@@ -22,7 +27,44 @@ class HomeDrawer extends Component {
             renderDrawerView(this.props.loginDetails, this);
         }
     }
-    
+
+    onSignOutPress() {
+        Alert.alert('Logout !', 'Are you sure all your offline data will be deleted?',
+        [
+          { text: 'Cancel', style: 'cancel' },
+          { text: 'Ok', onPress: this.logout.bind(this) },
+        ],
+        { cancelable: true }
+        );
+    }
+
+    signOut() {
+        return (
+            <TouchableOpacity style={styles.singOutWrapper}onPress={this.onSignOutPress.bind(this)} >
+                <View style={styles.signOut}>
+                    <View style={styles.imageStyle}>
+                        <FontAwesomeIcon icon={faPowerOff} size={20} color={DRAWER_SECTION_HEADER_IMAGE_COLOR} /> 
+                    </View>
+                    <Text style={styles.textStyle}>Sign Out</Text>
+            </View>
+        </ TouchableOpacity>
+        );
+    }
+
+    logout() {
+        removeAllDatabase(this.navigateToSplash.bind(this));
+    }
+
+    navigateToSplash() {
+        const resetAction = NavigationActions.reset({
+            index: 0,
+            actions: [
+              NavigationActions.navigate({ routeName: 'SplashScreen' })
+            ]
+          });
+          this.props.navigation.dispatch(resetAction);
+    }
+
     render() {
         return (
             <View style={{ flex: 1, backgroundColor: DRAWER_BACKGROUND }} >
@@ -30,6 +72,7 @@ class HomeDrawer extends Component {
                 backgroundColor={HEADER_COLOR}
                 barStyle="light-content"
                 />
+               
                 {
                     (this.state.loading) ? 
                     <ActivityIndicator /> :
@@ -39,115 +82,9 @@ class HomeDrawer extends Component {
                         
                     </ScrollView>
                 }
-                <View style={{ width: '100%', height: 80 }}>
-                    <Swiper height={50} style={styles.wrapper} autoplay horizontal showsButtons={false} showsPagination={false}>
-                        <View style={styles.slide}>
-                        <TouchableOpacity
-                        style={{ flex: 1 }} 
-                        onPress={() => {
-                            Linking.openURL('https://www.smackcoders.com/xero-vtiger-crm-6-0-integration.html').catch(err => console.error('An error occurred', err));
-                            }}
-                        >
-                            <View 
-                            style={{
-                                flex: 1,
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                                justifyContent: 'space-around'
-                            }}
-                            >
-                                <Image 
-                                source={{ uri: 'ad_xero' }}
-                                style={{ width: 30, height: 30 }}
-                                resizeMode={'contain'} 
-                                />
-                                <Text style={{ color: 'white' }} numberOfLines={1}>Xero Vtiger Integration</Text>
-                            </View>
-                        </TouchableOpacity>
-                        </View>
-                        <View style={styles.slide}>
-                            <TouchableOpacity
-                            style={{ flex: 1 }} 
-                            onPress={() => {
-                                Linking.openURL('https://www.smackcoders.com/vtigercrm-magento-connector.html').catch(err => console.error('An error occurred', err));
-                                }}
-                            >
-                                <View 
-                                style={{
-                                    flex: 1,
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    justifyContent: 'space-around'
-                                }}
-                                >
-                                    <Image 
-                                    source={{ uri: 'ad_magento' }}
-                                    style={{ width: 30, height: 30 }}
-                                    resizeMode={'contain'} 
-                                    />
-                                    <Text style={{ color: 'white' }} numberOfLines={1}>Magento Vtiger Connector</Text>
-                                </View>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={styles.slide}>
-                            <TouchableOpacity
-                            style={{ flex: 1 }} 
-                            onPress={() => {
-                                Linking.openURL('https://www.smackcoders.com/vtigercrm-mailchimp-integration.html').catch(err => console.error('An error occurred', err));
-                                }}
-                            >
-                                <View 
-                                style={{
-                                    flex: 1,
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    justifyContent: 'space-around'
-                                }}
-                                >
-                                    <Image 
-                                    source={{ uri: 'ad_mailchimp' }}
-                                    style={{ width: 30, height: 30 }}
-                                    resizeMode={'contain'} 
-                                    />
-                                    <Text style={{ color: 'white' }} numberOfLines={1}>Mailchimp Integration</Text>
-                                </View>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={styles.slide}>
-                            <TouchableOpacity
-                            style={{ flex: 1 }} 
-                            onPress={() => {
-                                Linking.openURL('https://www.smackcoders.com/vtiger-google-calendar-sync-bi-directional.html').catch(err => console.error('An error occurred', err));
-                                }}
-                            >
-                                <View 
-                                style={{
-                                    flex: 1,
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    justifyContent: 'space-around'
-                                }}
-                                >
-                                    <Image 
-                                    source={{ uri: 'ad_googlesync' }}
-                                    style={{ width: 30, height: 30 }}
-                                    resizeMode={'contain'} 
-                                    />
-                                    <Text style={{ color: 'white' }} numberOfLines={1}>Google Calendar Sync</Text>
-                                </View>
-                            </TouchableOpacity>
-                        </View>
-                    </Swiper>
-                    <View style={{ flexDirection: 'row', marginBottom: 3 }}>
-                        <Text style={{ color: 'white' }}>  Powered by</Text>
-                        <Image 
-                        source={{ uri: 'smackcoders' }}
-                        style={{ width: 17, height: 17 }}
-                        resizeMode={'contain'} 
-                        />
-                        <Text style={{ color: 'white' }}> Smackcoders, Inc.</Text>
-                    </View>
-                </View>
+                {
+                    this.signOut()
+                }
             </View>
         );
     }
@@ -155,6 +92,17 @@ class HomeDrawer extends Component {
 }
 
 const styles = StyleSheet.create({
+    singOutWrapper: {
+        height: 40,
+        width: '100%', 
+        backgroundColor: DRAWER_INNER_BACKGROUND
+    },
+    signOut: {
+        flexDirection: 'row',
+        flex: 1,
+        alignItems: 'center',
+        
+    },
     wrapper: {
         borderTopWidth: 1,
         borderBottomWidth: 1,
@@ -163,7 +111,19 @@ const styles = StyleSheet.create({
     },
     slide: {
         height: 50 
-    }
+    },
+    textStyle: {
+        fontSize: 16,
+        color: DRAWER_SECTION_HEADER_TEXT_COLOR,
+
+    },
+    imageStyle: {
+        height: 22,
+        width: 22,
+        marginRight: 10,
+        marginLeft: 10
+    },
+  
 });
 
 const mapStateToProps = ({ auth }) => {
