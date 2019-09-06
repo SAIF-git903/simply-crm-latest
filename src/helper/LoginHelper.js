@@ -10,11 +10,15 @@ export const loginHelper = async (username, password, url, navigation, loginInst
     param.append('username', username);
     param.append('password', password);
     try {
-        let trimUrl = url;
+        console.log('URL', url);
+        
+        let trimUrl = url.replace(/ /g, '');
+        
+        trimUrl = (trimUrl.indexOf('://') === -1) ? 'https://' + trimUrl : trimUrl;   
         if (url.includes('www')) { 
             trimUrl = url.replace('www.', '');
-            //console.log(trimUrl);
         }
+        
         console.log(trimUrl);
         console.log(username);
         console.log(password);
