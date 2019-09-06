@@ -49,16 +49,16 @@ class LoginForm extends Component {
         const https = url.substring(0, 6);
         const http = url.substring(0, 5);
 
-        if (https !== 'https:' && http !== 'http:') {
-            Alert.alert('Check your url', 'Url should start with http:// or https://.',
-            [
-              { text: 'Ok', onPress: () => {} },
-            ],
-            { cancelable: true }
-          );
-        } else {
+        // if (https !== 'https:' && http !== 'http:') {
+        //     Alert.alert('Check your url', 'Url should start with http:// or https://.',
+        //     [
+        //       { text: 'Ok', onPress: () => {} },
+        //     ],
+        //     { cancelable: true }
+        //   );
+        // } else {
             this.props.loginUser(username, password, url, this.props.navigation, this);
-        }
+        // }
     }
 
     handlePressIn() {
@@ -84,7 +84,7 @@ class LoginForm extends Component {
 
     renderLoginButton() {
         return (
-            <Text style={{ color: 'white' }} >Login</Text>
+            <Text style={{ color: 'white', fontSize: 14, fontWeight: 'bold' }} >Login</Text>
         );
     }
 
@@ -92,30 +92,32 @@ class LoginForm extends Component {
         const animatedStyle = { opacity: this.animatedValue };
         const buttonAnimatedStyle = { transform: [{ scale: this.buttonAnimatedValue }] };
         return (
-            <View style={{ padding: 5, height: 175, width: '90%', backgroundColor: 'white', borderRadius: 5 }}>
-                <Animated.View 
+            <View style={{ padding: 5, height: 200, width: '90%', borderRadius: 5 }}>
+                {/* <Animated.View 
                 style={[styles.formInsideStyle, animatedStyle]}
-                >                
+                >                 */}
                     <View style={styles.inputformStyle}>
                         <View style={styles.inputformImageHolderStyle}>
                             <Image source={{ uri: 'url' }} style={styles.inputformImageStyle} />
                         </View>
-                        <View style={styles.verticalLine} />
+                        {/* <View style={styles.verticalLine} /> */}
                         <TextInput 
                         clearButtonMode='always'
                         underlineColorAndroid='rgba(0,0,0,0)' 
                         style={styles.textInputStyle} 
                         placeholder='Enter URL'
+                        placeholderTextColor='#ddd'
                         onSubmitEditing={() => { 
                             this.refs.username.focus(); 
                         }}
                         autoCapitalize='none'
+                        autoCorrect={false}
                         returnKeyType='next'
                         value={this.state.url}
                         onChangeText={this.onUrlChanged.bind(this)}
                         />
                     </View>
-                    <View style={styles.horizontalLine} />
+                    {/* <View style={styles.horizontalLine} /> */}
                     <View style={styles.inputformStyle}>
                         <View style={styles.inputformImageHolderStyle}>
                             <Image
@@ -123,12 +125,13 @@ class LoginForm extends Component {
                             style={styles.inputformImageStyle} 
                             />
                         </View>
-                        <View style={styles.verticalLine} />
+                        {/* <View style={styles.verticalLine} /> */}
                         <TextInput 
                         clearButtonMode='always'
                         underlineColorAndroid='rgba(0,0,0,0)' 
                         style={styles.textInputStyle} 
                         placeholder='Enter Username'
+                        placeholderTextColor='#ddd'
                         ref='username'
                         onSubmitEditing={() => { 
                             this.refs.password.focus(); 
@@ -139,7 +142,7 @@ class LoginForm extends Component {
                         onChangeText={this.onUsernameChanged.bind(this)}
                         />
                     </View>
-                    <View style={styles.horizontalLine} />
+                    {/* <View style={styles.horizontalLine} /> */}
                     <View style={styles.inputformStyle}>
                         <View style={styles.inputformImageHolderStyle}>
                             <Image 
@@ -147,20 +150,22 @@ class LoginForm extends Component {
                             style={styles.inputformImageStyle} 
                             />
                         </View>
-                        <View style={styles.verticalLine} />
+                        {/* <View style={styles.verticalLine} /> */}
                         <TextInput 
                         clearButtonMode='always' 
                         underlineColorAndroid='rgba(0,0,0,0)'
                         style={styles.textInputStyle}
                         ref='password' 
-                        secureTextEntry placeholder='Enter Password'
+                        secureTextEntry 
+                        placeholder='Enter Password'
+                        placeholderTextColor='#ddd'
                         autoCapitalize='none'
                         returnKeyType='done' 
                         value={this.state.password}
                         onChangeText={this.onPasswordChanged.bind(this)}
                         />
                     </View>
-                    <View style={styles.horizontalLine} />
+                    {/* <View style={styles.horizontalLine} /> */}
                     <View style={styles.buttonHolderStyle}>
                         <TouchableWithoutFeedback
                         onPressIn={this.handlePressIn} 
@@ -171,7 +176,7 @@ class LoginForm extends Component {
                             </Animated.View>
                         </TouchableWithoutFeedback>
                     </View>
-                </Animated.View>
+                {/* </Animated.View> */}
             </View>
         );
    }
@@ -179,14 +184,17 @@ class LoginForm extends Component {
 
 const styles = StyleSheet.create({
     formInsideStyle: {
-        borderWidth: 1,
-        backgroundColor: 'white',
-        borderColor: '#d3d3d3',
+        // borderWidth: 1,
+        // // backgroundColor: 'white',
+        // borderColor: '#d3d3d3',
     },
     inputformStyle: {
-        height: 40,
+        height: 35,
         flexDirection: 'row',
-        alignItems: 'center',
+        alignItems: 'center', 
+        marginTop: 7,
+        backgroundColor: 'white',
+        borderRadius: 5
     },
     inputformImageHolderStyle: {
         height: '100%',
@@ -195,8 +203,10 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     inputformImageStyle: {
-        height: 25,
-        width: 25
+        height: 23,
+        width: 23,
+        tintColor: '#ddd',
+        marginLeft: 8
     },
     horizontalLine: {
         width: '100%',
@@ -211,27 +221,36 @@ const styles = StyleSheet.create({
     textInputStyle: {
         height: '100%',
         flex: 1,
-        fontSize: 13,
-        paddingLeft: 5
+        fontSize: 14,
+        paddingLeft: 5,
+        backgroundColor: 'white',
+        margin: 10
     },
     buttonHolderStyle: {
+        marginTop: 20,
         height: 40,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        
     },
     buttonStyle: {
-        width: 80,
+        width: 100,
         height: '80%',
         borderRadius: 3,
-        backgroundColor: '#1863ae',
+        // backgroundColor: '#1863ae',
+        backgroundColor: '#339DE5',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        elevation: 3,
+        shadowOffset: { width: 0.5, height: 0.5 },
+        shadowColor: 'black',
+        shadowOpacity: 0.5,
+        
     },
     buttonTextStyle: {
         color: 'white',
         fontWeight: 'bold'
     }
 });
-
 export default connect(undefined, { loginUser })(LoginForm);
