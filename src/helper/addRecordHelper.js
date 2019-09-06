@@ -35,8 +35,9 @@ export const describeRecordHelper = async(addInstance) => {
         });
         const responseJson = await response.json();
         
+        console.log(responseJson);
         if (responseJson.success) {
-            //console.log(responseJson);
+            
             const fields = responseJson.result.describe.fields;
             const formArray = [];
             const formInstance = [];
@@ -253,7 +254,7 @@ const addRecordHelper = async(addInstance, headerInstance, jsonObj, dispatch) =>
             addInstance.props.navigation.dispatch(resetAction);
             //addInstance.props.navigation.goBack(null);
         } else {
-            //console.log(responseJson);
+            console.log(responseJson);
             //console.log('Failed');
             headerInstance.setState({ loading: false });
             if (responseJson.error.message === '') {

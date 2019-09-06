@@ -40,11 +40,13 @@ class Lister extends Component {
     }
 
     onEndReached() {
-        if (!this.onEndReachedCalledDuringMomentum) {
+        console.log(this.onEndReachedCalledDuringMomentum);
+        console.log(this.state.nextPage);
+        //if (!this.onEndReachedCalledDuringMomentum) {
             if (this.state.nextPage) {
-                this.props.dispatch(getNextPageRecord(this));
+                this.setState({ pageToTake: this.state.pageToTake + 1 }, () => this.props.dispatch(getNextPageRecord(this)));
             }
-        }
+        //}
     }
     onAddButtonPress() {
         const { navigate } = this.props.navigation;

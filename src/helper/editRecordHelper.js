@@ -35,6 +35,7 @@ export const describeEditRecordHelper = async(editInstance) => {
         });
         const responseJson = await response.json();
         
+        console.log(responseJson);
         if (responseJson.success) {
             //console.log(responseJson);
             const fields = responseJson.result.describe.fields;
@@ -234,7 +235,7 @@ export const getDataHelper = async(editInstance) => {
         });
 
         const responseJson = await response.json();
-        //console.log(responseJson);
+        console.log(responseJson);
         
         if (responseJson.success) {
 
@@ -336,7 +337,7 @@ const editRecordHelper = async(editInstance, headerInstance, jsonObj, dispatch) 
             editInstance.props.navigation.dispatch(resetAction);
             //editInstance.props.navigation.goBack(null);
         } else {
-            //console.log(responseJson);
+            console.log(responseJson);
             //console.log('Failed');
             headerInstance.setState({ loading: false });
             if (responseJson.error.message === '') {

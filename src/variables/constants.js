@@ -4,6 +4,7 @@ export const INVENTORY = 'Inventory';
 export const SUPPORT = 'Support';
 export const PROJECT = 'Project';
 export const CUSTOM = 'Custom Modules';
+export const TOOLS = 'Tools';
 
 export const MARKETING_IMAGE = 'marketing';
 export const SALES_IMAGE = 'sales';
@@ -12,8 +13,8 @@ export const SUPPORT_IMAGE = 'support';
 export const PROJECT_IMAGE = 'project';
 export const CUSTOM_IMAGE = 'custommodules';
 
-export const DRAWER_COLUMN_HEIGHT = 75; 
-export const DRAWER_COLUMN_TOTAL_HEIGHT = DRAWER_COLUMN_HEIGHT + 10; //10 refers to margin
+export const DRAWER_COLUMN_HEIGHT = 50; 
+export const DRAWER_COLUMN_TOTAL_HEIGHT = DRAWER_COLUMN_HEIGHT; //10 refers to margin
 
 //Button types:
 export const CAMPAIGNS = 'Campaigns';
@@ -42,8 +43,11 @@ export const PROJECT_TASK = 'ProjectTask';
 export const MODULE_PROJECT = 'Project';
 export const COMMENTS = 'ModComments';
 export const CURRENCY = 'Currency';
+export const EMAILS = 'Emails';
+export const REPORT = 'Reports';
 
-export const HOME = 'home';
+
+export const HOME = 'Dashboard';
 export const PROFILE = 'profile';
 export const SETTINGS = 'settings';
 export const LOGOUT = 'logout';
