@@ -136,6 +136,7 @@ export const getNextPageHelper = async (listerInstance, dispatch) => {
             }
         } else {
             let param = new FormData();
+            // appendParamFor(listerInstance.props.moduleName, param);
             param.append('_operation', 'listModuleRecords');
             param.append('module', listerInstance.props.moduleName);
             param.append('page', listerInstance.state.pageToTake);
@@ -252,6 +253,7 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
             }
         } else {
             let param = new FormData();
+            // appendParamFor(listerInstance.props.moduleName, param);
             param.append('_operation', 'listModuleRecords');
             param.append('module', listerInstance.props.moduleName);
             const responseJson = await getDatafromNet(param, dispatch);
@@ -309,6 +311,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
     } else {
         data = [];
     }
+    console.log(responseJson);
     let records = responseJson.result.records;
     if (records === null) {
         records = [];
@@ -370,9 +373,11 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
             break;
         }
         case INVOICE: {
+            console.log('Invoice records', records);
             for (const record of records) {
                 const modifiedRecord = { invoiceLable: record.subject,
                                             invoiceStatus: record.invoicestatus,
+                                            invoiceAmount: record.purchase_cost,
                                             id: record.id };
                 data.push(modifiedRecord);
             }
@@ -409,7 +414,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
                 const modifiedRecord = { accountsLable: record.accountname,
                                             website: record.website,
                                             phone: record.phone,
-                                            email: record.email,
+                                            email: record.email1,
                                             id: record.id };
                 data.push(modifiedRecord);
             }
@@ -669,7 +674,7 @@ export const appendParamFor = (moduleName, param) => {
             break;
         case INVOICE:
             param.append('_operation', 'query');
-            param.append('query', 'select invoicestatus,subject,id from Invoice ORDER BY modifiedtime DESC');
+            param.append('query', 'select invoicestatus,subject, id, purchase_cost, account_id from Invoice ORDER BY modifiedtime DESC');
             break;
         case PRICEBOOKS:
             param.append('_operation', 'query');

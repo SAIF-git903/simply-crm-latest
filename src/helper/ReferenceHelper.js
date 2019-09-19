@@ -54,13 +54,15 @@ import CommentsRecord from
 import CustomRecord from '../components/addRecords/referenceRecordLister/recordItems/customRecord';
 import CurrencyRecord from 
 '../components/addRecords/referenceRecordLister/recordItems/currencyRecord';
+import DocumentFoldersRecord from 
+'../components/addRecords/referenceRecordLister/recordItems/documentFoldersRecord';
 
 import { UPDATE_RECORD_VIEWER } from '../actions/types';
 import { CAMPAIGNS, VENDORS, FAQ, QUOTES, PURCHASEORDER, SALESORDER,
 INVOICE, PRICEBOOKS, CALENDAR, LEADS, ACCOUNTS, CONTACTS, OPPORTUNITIES,
 PRODUCTS, DOCUMENTS, TICKETS, PBXMANAGER, SERVICECONTRACTS, SERVICES,
 ASSETS, SMS_NOTIFIER, PROJECT_MILESTONE, PROJECT_TASK, MODULE_PROJECT,
-COMMENTS, CURRENCY } from '../variables/constants';
+COMMENTS, CURRENCY, DOCUMENTFOLDERS } from '../variables/constants';
 import { addDatabaseKey } from '.';
 
 const moment = require('moment-timezone');
@@ -246,7 +248,7 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
             //console.log(listerInstance.state.pageToTake);
             param.append('page', listerInstance.state.pageToTake);
             const responseJson = await getDatafromNet(param, dispatch);
-            //console.log(responseJson);
+            console.log(responseJson);
             if (responseJson.success) {
                 await getAndSaveDataVtiger(responseJson, listerInstance, false, false, false);
             } else {
@@ -270,7 +272,8 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
             }
         } else {
             let param = new FormData();
-            param.append('_operation', 'listModuleRecords');
+            appendParamForRef(listerInstance.props.moduleName, param);
+            // param.append('_operation', 'listModuleRecords');
             param.append('module', listerInstance.props.moduleName);
             const responseJson = await getDatafromNet(param, dispatch);
             if (responseJson.success) {
@@ -296,6 +299,7 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
             }
         }
     } catch (error) {
+        console.log(error);
         if (!offlineAvailable) {
             //Show error to user that something went wrong.
             listerInstance.setState({ 
@@ -560,6 +564,14 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
             }
             break;
         }
+        case DOCUMENTFOLDERS: {
+            for (const record of records) {
+                const modifiedRecord = { foldername: record.foldername,
+                                            id: record.id };
+                data.push(modifiedRecord);
+            }
+            break;
+        }
         default : {
             for (const record of records) {
                 const modifiedRecord = { lable: (vtigerSeven) ? 
@@ -658,6 +670,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
 // };
 
 export const appendParamForRef = (moduleName, param) => {
+    console.log('Reference module', moduleName);
     switch (moduleName) {
         case CAMPAIGNS:
             param.append('_operation', 'query');
@@ -762,6 +775,10 @@ export const appendParamForRef = (moduleName, param) => {
         case CURRENCY:
             param.append('_operation', 'query');
             param.append('query', 'select currency_name,id from Currency');
+            break;
+        case DOCUMENTFOLDERS:
+            param.append('_operation', 'query');
+            param.append('query', 'select * from DocumentFolders');
             break;
         default:
             param.append('_operation', 'listModuleRecords');
@@ -1339,6 +1356,48 @@ export const recordRefListRendererHelper = (listerInstance) => {
                     listerInstance={listerInstance}
                     item={item} 
                     onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
+                />}
+                />
+            );
+        }
+        case CURRENCY: {
+            return (
+                <FlatList
+                onRefresh={listerInstance.refreshData.bind(listerInstance)}
+                data={listerInstance.state.data}
+                refreshing={listerInstance.state.isFlatListRefreshing}
+                ListFooterComponent={(listerInstance.state.nextPage) ? listerInstance.renderFooter.bind(listerInstance) : undefined}
+                onEndReached={listerInstance.onEndReached.bind(listerInstance)}
+                onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
+                renderItem={({ item, index }) => 
+                <CurrencyRecord 
+                    index={index} 
+                    selectedIndex={listerInstance.state.selectedIndex}
+                    listerInstance={listerInstance}
+                    item={item} 
+                    onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
+                    navigation={listerInstance.state.navigation}
+                />}
+                />
+            );
+        }
+        case DOCUMENTFOLDERS: {
+            return (
+                <FlatList
+                onRefresh={listerInstance.refreshData.bind(listerInstance)}
+                data={listerInstance.state.data}
+                refreshing={listerInstance.state.isFlatListRefreshing}
+                ListFooterComponent={(listerInstance.state.nextPage) ? listerInstance.renderFooter.bind(listerInstance) : undefined}
+                onEndReached={listerInstance.onEndReached.bind(listerInstance)}
+                onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
+                renderItem={({ item, index }) => 
+                <DocumentFoldersRecord
+                    index={index} 
+                    selectedIndex={listerInstance.state.selectedIndex}
+                    listerInstance={listerInstance}
+                    item={item} 
+                    onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
+                    navigation={listerInstance.state.navigation}
                 />}
                 />
             );

@@ -18,6 +18,7 @@ class Lister extends Component {
             statusText: 'Click search button to search',
             statusTextColor: '#000000', 
             navigation: this.props.navigation,
+            //recordId: `${this.props.moduleId}x${this.props.recordId}`
         };
     }
 
@@ -37,6 +38,7 @@ class Lister extends Component {
 
 
     getRecords() {
+        console.log(this.props.moduleId);
         this.setState({ loading: true, data: [], selectedIndex: -1, statusText: 'Fetching Record', statusTextColor: '#000000' });
         this.props.dispatch(fetchRecord(this));
     }
@@ -73,6 +75,7 @@ class Lister extends Component {
 
 const mapStateToProps = ({ event }) => {
     const { isPortrait, width, height } = event;
+    
     return { isPortrait, width, height };
 };
 

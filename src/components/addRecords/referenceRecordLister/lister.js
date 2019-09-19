@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, ActivityIndicator, Text } from 'react-native';
+import store from '../../../store';
 import StatusView from './statusView';
 import { commonStyles } from '../../../styles/common';
 import { fetchRefRecord, refreshRefRecord, getNextRefPageRecord, markReferenceLabel } from '../../../actions';
@@ -24,6 +25,7 @@ class Lister extends Component {
 
     componentWillMount() {
         this.getRecords();
+        // this.getModuleId();
     }
 
     componentWillReceiveProps(newprops) {
@@ -32,9 +34,13 @@ class Lister extends Component {
     }
 
     onRecordSelect(id, lable, index) {
+        let recordId = id;
+        if (this.props.moduleName === 'Users') {
+            recordId = `19x${id}`;
+        }
         this.setState({ selectedIndex: index });
         this.props.navigation.goBack(null);
-        this.props.dispatch(markReferenceLabel(id, lable, this.props.uniqueId));
+        this.props.dispatch(markReferenceLabel(recordId, lable, this.props.uniqueId));
     }
 
     onEndReached() {
@@ -43,6 +49,12 @@ class Lister extends Component {
                 this.props.dispatch(getNextRefPageRecord(this));
             }
         }
+    }
+
+    getModuleId() {
+        const { auth } = store.getState();
+        const loginDetails = auth.loginDetails;
+        console.log(loginDetails);
     }
 
     getRecords() {

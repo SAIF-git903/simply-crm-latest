@@ -28,7 +28,7 @@ class Viewer extends Component {
     }
 
     getRecords() {
-        this.setState({ loading: true, data: [], statusText: '', statusTextColor: '#000000' });
+        this.setState({ loading: true, data: [], statusText: '', statusTextColor: '#000000', recordId: `${this.props.moduleId}x${this.props.recordId}` });
         this.props.dispatch(viewRecordRendererActions(this));
     }
 
@@ -77,6 +77,9 @@ class Viewer extends Component {
         );
     }
 }
-
-export default connect(null)(Viewer);
+const mapStateToProps = ({ drawer }) => {
+    const { moduleId } = drawer;
+    return { moduleId };
+};
+export default connect(mapStateToProps)(Viewer);
 

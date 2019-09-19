@@ -207,11 +207,29 @@ export const describeRecordHelper = async(addInstance) => {
 export const saveRecordHelper = (addInstance, headerInstance, dispatch) => {
     const formInstance = addInstance.state.inputInstance;
     const jsonObj = {};
+    const lineitemsObj = [];
     for (let i = 0; i < formInstance.length; i++) {
         const fieldName = formInstance[i].state.fieldName;
         const value = formInstance[i].state.saveValue;
         jsonObj[fieldName] = value;
+        if (addInstance.props.moduleName === 'Invoice') {
+            //do here
+            console.log(formInstance);
+            if (fieldName === 'productid' || fieldName === 'quantity' || fieldName === 'listprice') {
+                const productObj = {};
+                productObj[fieldName] = value;
+                lineitemsObj.push(productObj);
+                
+            }
+        }
     }
+    if (addInstance.props.moduleName === 'Invoice') {
+        jsonObj['LineItems'] = lineitemsObj;
+    }
+    // if (addInstance.props.moduleName === 'Invoice') {
+    //     //do here
+    //     console.log(formInstance);
+    // }
     addRecordHelper(addInstance, headerInstance, jsonObj, dispatch);
 };
 
@@ -220,7 +238,7 @@ const addRecordHelper = async(addInstance, headerInstance, jsonObj, dispatch) =>
     const { auth } = store.getState();
     const loginDetails = auth.loginDetails;
     const obj = JSON.stringify(jsonObj);
-    //console.log(obj);
+    console.log(obj);
     const param = new FormData();
     param.append('_session', loginDetails.session);
     param.append('_operation', 'saveRecord');

@@ -87,7 +87,7 @@ const getAndSaveDataVtiger = async (responseJson, searchInstance, data, recordsS
             for (const record of records) {
                 const modifiedRecord = { lable: record.campaignname,
                                             id: record.id };
-                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch)) {
+                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch, searchInstance)) {
                     data.push(modifiedRecord);
                     searchInstance.setState({
                         data: data.slice()
@@ -114,7 +114,7 @@ const getAndSaveDataVtiger = async (responseJson, searchInstance, data, recordsS
                                             vendorPhone: record.phone,
                                             vendorWebsite: record.website,
                                             id: record.id };
-                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch)) {
+                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch, searchInstance)) {
                     data.push(modifiedRecord);
                     searchInstance.setState({
                         data: data.slice()
@@ -138,7 +138,7 @@ const getAndSaveDataVtiger = async (responseJson, searchInstance, data, recordsS
             for (const record of records) {
                 const modifiedRecord = { question: record.question,
                                             id: record.id };
-                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch)) {
+                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch, searchInstance)) {
                     data.push(modifiedRecord);
                     searchInstance.setState({
                         data: data.slice()
@@ -164,7 +164,7 @@ const getAndSaveDataVtiger = async (responseJson, searchInstance, data, recordsS
                                             total: record.hdnGrandTotal,
                                             quoteStage: record.quotestage,
                                             id: record.id };
-                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch)) {
+                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch, searchInstance)) {
                     data.push(modifiedRecord);
                     searchInstance.setState({
                         data: data.slice()
@@ -189,7 +189,7 @@ const getAndSaveDataVtiger = async (responseJson, searchInstance, data, recordsS
                 const modifiedRecord = { poLable: record.subject,
                                             status: record.postatus,
                                             id: record.id };
-                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch)) {
+                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch, searchInstance)) {
                     data.push(modifiedRecord);
                     searchInstance.setState({
                         data: data.slice()
@@ -214,7 +214,7 @@ const getAndSaveDataVtiger = async (responseJson, searchInstance, data, recordsS
                 const modifiedRecord = { soLable: record.subject,
                                             status: record.sostatus,
                                             id: record.id };
-                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch)) {
+                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch, searchInstance)) {
                     data.push(modifiedRecord);
                     searchInstance.setState({
                         data: data.slice()
@@ -239,7 +239,7 @@ const getAndSaveDataVtiger = async (responseJson, searchInstance, data, recordsS
                 const modifiedRecord = { invoiceLable: record.subject,
                                             invoiceStatus: record.invoicestatus,
                                             id: record.id };
-                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch)) {
+                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch, searchInstance)) {
                     data.push(modifiedRecord);
                     searchInstance.setState({
                         data: data.slice()
@@ -263,7 +263,7 @@ const getAndSaveDataVtiger = async (responseJson, searchInstance, data, recordsS
             for (const record of records) {
                 const modifiedRecord = { bookLable: record.bookname,
                                             id: record.id };
-                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch)) {
+                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch, searchInstance)) {
                     data.push(modifiedRecord);
                     searchInstance.setState({
                         data: data.slice()
@@ -287,7 +287,7 @@ const getAndSaveDataVtiger = async (responseJson, searchInstance, data, recordsS
             for (const record of records) {
                 const modifiedRecord = { eventLable: record.subject,
                                             id: record.id };
-                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch)) {
+                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch, searchInstance)) {
                     data.push(modifiedRecord);
                     searchInstance.setState({
                         data: data.slice()
@@ -313,7 +313,7 @@ const getAndSaveDataVtiger = async (responseJson, searchInstance, data, recordsS
                                             phone: record.phone,
                                             email: record.email,
                                             id: record.id };
-                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch)) {
+                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch, searchInstance)) {
                     data.push(modifiedRecord);
                     searchInstance.setState({
                         data: data.slice()
@@ -340,7 +340,7 @@ const getAndSaveDataVtiger = async (responseJson, searchInstance, data, recordsS
                                             phone: record.phone,
                                             email: record.email,
                                             id: record.id };
-                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch)) {
+                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch, searchInstance)) {
                     data.push(modifiedRecord);
                     searchInstance.setState({
                         data: data.slice()
@@ -366,15 +366,14 @@ const getAndSaveDataVtiger = async (responseJson, searchInstance, data, recordsS
                                             phone: record.phone,
                                             email: record.email,
                                             id: record.id };
-                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch)) {
+                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch, searchInstance)) {
                     data.push(modifiedRecord);
+                    console.log('search records', modifiedRecord);
                     searchInstance.setState({
                         data: data.slice()
                     });
                     totalRecordsAdded++;
-                } else {
-                    break;
-                }
+                } 
                 searchInstance.setState({
                     statusText: `Searched records: ${totalRecordsSearched}`,
                     statusTextColor: '#000000'
@@ -394,7 +393,7 @@ const getAndSaveDataVtiger = async (responseJson, searchInstance, data, recordsS
                                             amount: record.amount,
                                             stage: record.sales_stage,
                                             id: record.id };
-                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch)) {
+                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch, searchInstance)) {
                     data.push(modifiedRecord);
                     searchInstance.setState({
                         data: data.slice()
@@ -421,7 +420,7 @@ const getAndSaveDataVtiger = async (responseJson, searchInstance, data, recordsS
                                             productcategory: record.productcategory,
                                             quantity: record.qtyinstock,
                                             id: record.id };
-                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch)) {
+                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch, searchInstance)) {
                     data.push(modifiedRecord);
                     searchInstance.setState({
                         data: data.slice()
@@ -445,7 +444,7 @@ const getAndSaveDataVtiger = async (responseJson, searchInstance, data, recordsS
             for (const record of records) {
                 const modifiedRecord = { documentLable: record.notes_title,
                                             id: record.id };
-                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch)) {
+                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch, searchInstance)) {
                     data.push(modifiedRecord);
                     searchInstance.setState({
                         data: data.slice()
@@ -470,7 +469,7 @@ const getAndSaveDataVtiger = async (responseJson, searchInstance, data, recordsS
                 const modifiedRecord = { ticketLable: record.ticket_title,
                                             priority: record.ticketpriorities,
                                             id: record.id };
-                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch)) {
+                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch, searchInstance)) {
                     data.push(modifiedRecord);
                     searchInstance.setState({
                         data: data.slice()
@@ -494,7 +493,7 @@ const getAndSaveDataVtiger = async (responseJson, searchInstance, data, recordsS
             for (const record of records) {
                 const modifiedRecord = { number: record.customernumber,
                                             id: record.id };
-                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch)) {
+                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch, searchInstance)) {
                     data.push(modifiedRecord);
                     searchInstance.setState({
                         data: data.slice()
@@ -518,7 +517,7 @@ const getAndSaveDataVtiger = async (responseJson, searchInstance, data, recordsS
             for (const record of records) {
                 const modifiedRecord = { scLable: record.subject,
                                             id: record.id };
-                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch)) {
+                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch, searchInstance)) {
                     data.push(modifiedRecord);
                     searchInstance.setState({
                         data: data.slice()
@@ -542,7 +541,7 @@ const getAndSaveDataVtiger = async (responseJson, searchInstance, data, recordsS
             for (const record of records) {
                 const modifiedRecord = { serviceLable: record.servicename,
                                             id: record.id };
-                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch)) {
+                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch, searchInstance)) {
                     data.push(modifiedRecord);
                     searchInstance.setState({
                         data: data.slice()
@@ -566,7 +565,7 @@ const getAndSaveDataVtiger = async (responseJson, searchInstance, data, recordsS
             for (const record of records) {
                 const modifiedRecord = { assetLable: record.assetname,
                                             id: record.id };
-                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch)) {
+                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch, searchInstance)) {
                     data.push(modifiedRecord);
                     searchInstance.setState({
                         data: data.slice()
@@ -590,7 +589,7 @@ const getAndSaveDataVtiger = async (responseJson, searchInstance, data, recordsS
             for (const record of records) {
                 const modifiedRecord = { message: record.message,
                                             id: record.id };
-                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch)) {
+                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch, searchInstance)) {
                     data.push(modifiedRecord);
                     searchInstance.setState({
                         data: data.slice()
@@ -614,7 +613,7 @@ const getAndSaveDataVtiger = async (responseJson, searchInstance, data, recordsS
             for (const record of records) {
                 const modifiedRecord = { pmLable: record.projectmilestonename,
                                             id: record.id };
-                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch)) {
+                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch, searchInstance)) {
                     data.push(modifiedRecord);
                     searchInstance.setState({
                         data: data.slice()
@@ -638,7 +637,7 @@ const getAndSaveDataVtiger = async (responseJson, searchInstance, data, recordsS
             for (const record of records) {
                 const modifiedRecord = { ptLable: record.projecttaskname,
                                             id: record.id };
-                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch)) {
+                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch, searchInstance)) {
                     data.push(modifiedRecord);
                     searchInstance.setState({
                         data: data.slice()
@@ -662,7 +661,7 @@ const getAndSaveDataVtiger = async (responseJson, searchInstance, data, recordsS
             for (const record of records) {
                 const modifiedRecord = { projectLable: record.projectname,
                                             id: record.id };
-                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch)) {
+                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch, searchInstance)) {
                     data.push(modifiedRecord);
                     searchInstance.setState({
                         data: data.slice()
@@ -686,7 +685,7 @@ const getAndSaveDataVtiger = async (responseJson, searchInstance, data, recordsS
             for (const record of records) {
                 const modifiedRecord = { comment: record.commentcontent,
                                             id: record.id };
-                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch)) {
+                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch, searchInstance)) {
                     data.push(modifiedRecord);
                     searchInstance.setState({
                         data: data.slice()
@@ -711,7 +710,7 @@ const getAndSaveDataVtiger = async (responseJson, searchInstance, data, recordsS
                 const modifiedRecord = { lable: (vtigerSeven) ? 
                     record[responseJson.result.headers[0].name] : record.label,
                                         id: record.id };
-                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch)) {
+                if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch, searchInstance)) {
                     data.push(modifiedRecord);
                     searchInstance.setState({
                         data: data.slice()
@@ -737,20 +736,21 @@ const getAndSaveDataVtiger = async (responseJson, searchInstance, data, recordsS
     return { nextPage, recordsSearched: totalRecordsSearched, recordsAdded: totalRecordsAdded };
 };
 
-export const isKeywordAvailable = async (moduleName, recordId, searchText, dispatch) => {
+export const isKeywordAvailable = async (moduleName, recordId, searchText, dispatch, searchInstance) => {
     try {
-        return await getRecordDataFromInternet(moduleName, recordId, searchText, dispatch);
+        return await getRecordDataFromInternet(moduleName, recordId, searchText, dispatch, searchInstance);
     } catch (error) {
         //console.log(error);
         return false;
     }
 };
 
-const getRecordDataFromInternet = async (moduleName, recordId, searchText, dispatch) => {
+const getRecordDataFromInternet = async (moduleName, recordId, searchText, dispatch, searchInstance) => {
     const { auth } = store.getState();
     const loginDetails = auth.loginDetails;
 
     let responseJson;
+    console.log(recordId);
 
     if (loginDetails.vtigerVersion < 7) {
         const param = new FormData();
@@ -758,16 +758,22 @@ const getRecordDataFromInternet = async (moduleName, recordId, searchText, dispa
         param.append('record', recordId);
         responseJson = await getDatafromNet(param, dispatch);
     } else {
+        
         const param = new FormData();
         param.append('_operation', 'fetchRecordWithGrouping');
         param.append('module', moduleName);
         param.append('record', recordId);
+        if (loginDetails.vtigerVersion <= 7.1) {
+            param.append('record', `${searchInstance.props.moduleId}x${recordId}`);
+        }
         responseJson = await getDatafromNet(param, dispatch);
     }
 
+   
     if (responseJson.success) {
         const records = responseJson.result.record;
         const blocks = records.blocks;
+        console.log('BLOCKS', blocks);
         if (blocks.length === 0) {
             return false;
         }
@@ -789,16 +795,21 @@ const getRecordDataFromInternet = async (moduleName, recordId, searchText, dispa
                     leftValue = '';
                 }
                 const rightValue = searchText.toLowerCase();
-                //console.log(leftValue);
-                //console.log(rightValue);
+                console.log(leftValue);
+                console.log(rightValue);
                 //debugger;
                 if (leftValue.includes(rightValue)) {
-                    //console.log('inside');
+                    console.log('inside');
                     return true;
                 }
             }
         }
     } else {
-        throw new Error(JSON.stringify(responseJson));        
+        // if (responseJson.error.code === 'ACCESS_DENIED') {
+        //     await isKeywordAvailable(moduleName, recordId, searchText, dispatch, searchInstance);
+        //     // await getRecordDataFromInternet(moduleName, `${searchInstance.props.moduleId}x${recordId}`, searchText, dispatch, searchInstance);
+        // } else {
+            throw new Error(JSON.stringify(responseJson));        
+        // } 
     }
 };

@@ -38,6 +38,7 @@ class InvoiceRecord extends Component {
     }
 
     render() {
+        console.log(this.props.item);
         const swipeOutButtons = [{
             component: (
             <View 
@@ -87,12 +88,33 @@ class InvoiceRecord extends Component {
                         (this.props.selectedIndex === this.props.index) ? 
                         RECORD_SELECTED_COLOR : RECORD_COLOR }]}
                     >
-                        <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10 }}>
+                    {
+                        (this.props.item.invoiceLable !== '') ?
+                        <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10, color: 'black' }}>
                             {this.props.item.invoiceLable}
+                        </Text> :
+                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic' }}>
+                            no lable
                         </Text>
-                        <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10 }}>
+                    }
+                    {
+                        (this.props.item.invoiceStatus !== '') ?
+                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
                             {this.props.item.invoiceStatus}
+                        </Text> :
+                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic' }}>
+                            no status
                         </Text>
+                    }
+                    {
+                        (this.props.item.invoiceAmount !== '') ?
+                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
+                            {this.props.item.invoiceAmount}
+                        </Text> :
+                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic' }}>
+                            no amount
+                        </Text>
+                    }
                     </View>
                     </TouchableOpacity>
                 </SwipeOut>

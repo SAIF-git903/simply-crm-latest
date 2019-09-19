@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, StyleSheet, TouchableOpacity, Text, Platform } from 'react-native';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faBuilding, faUser, faTachometerAlt } from '@fortawesome/pro-regular-svg-icons';
+import { View, StyleSheet, TouchableOpacity, Text, Platform, Image } from 'react-native';
+// import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+// import { faBuilding, faUser, faTachometerAlt } from '@fortawesome/pro-regular-svg-icons';
 import { drawerButtonPress } from '../../../actions'; 
 import { DRAWER_MODULE_BUTTON_TEXT_SELECTED_COLOR, DRAWER_SECTION_HEADER_TEXT_COLOR,
     DRAWER_SECTION_HEADER_IMAGE_COLOR
@@ -13,7 +13,7 @@ class ImageButton extends Component {
     
     constructor(props) {
         super(props);
-        this.state = { iconName: faTachometerAlt };
+        // this.state = { iconName: faTachometerAlt };
     }
 
     componentWillMount() {
@@ -32,11 +32,11 @@ class ImageButton extends Component {
     assignIcons() {
         switch (this.props.type) {
             case ACCOUNTS:
-                this.setState({ iconName: faBuilding });
+                // this.setState({ iconName: faBuilding });
                 break;
            
             case CONTACTS: 
-                this.setState({ iconName: faUser });
+                // this.setState({ iconName: faUser });
                 break;
            
             default:
@@ -47,6 +47,7 @@ class ImageButton extends Component {
 
 
     render() {
+        console.log(this.props.selectedButton, this.props.type);
         return (
             <TouchableOpacity 
                 style={{ flex: 1, marginTop: (Platform.OS === 'ios' && this.props.type === HOME) ? 30 : 0, paddingBottom: (Platform.OS === 'ios' && this.props.type === HOME) ? 15 : 0 }} 
@@ -60,18 +61,17 @@ class ImageButton extends Component {
                   
                     }}
                 >
-            
+{/*             
                     <View style={styles.imageStyle}>
                         <FontAwesomeIcon icon={this.state.iconName} size={23} color={(this.props.selectedButton !== this.props.type) ? DRAWER_SECTION_HEADER_TEXT_COLOR : DRAWER_MODULE_BUTTON_TEXT_SELECTED_COLOR} />
-                    </View>
+                    </View> */}
                     
                     
-                    {/* <Image 
-                    source={{ uri: this.props.type }} 
-                    style={(this.props.selectedButton === this.props.type) ? 
-                    styles.imageStyleSelected : 
-                    styles.imageStyle} 
-                    /> */}
+                    <Image 
+                    source={{ uri: this.props.type.toLowerCase() }} 
+                    style={[styles.imageStyle, { tintColor: (this.props.selectedButton !== this.props.type) ? DRAWER_SECTION_HEADER_TEXT_COLOR : DRAWER_MODULE_BUTTON_TEXT_SELECTED_COLOR }]}
+                     
+                    />
                 
                 
                     <Text style={(this.props.selectedButton === this.props.type) ? styles.textSelectedStyle : styles.textStyle}>{this.props.label}</Text>
@@ -84,8 +84,8 @@ class ImageButton extends Component {
 
 const styles = StyleSheet.create({
     imageStyle: {
-        height: 25,
-        width: 25,
+        height: 20,
+        width: 20,
         marginRight: 10,
         marginLeft: 10
     },

@@ -5,7 +5,7 @@ class PickListType extends Component {
     constructor(props) {
         super(props);
         this.state = { 
-                       saveValue: this.props.obj.type.defaultValue,
+                       saveValue: (this.props.obj.lable === 'Company country') ? '' : this.props.obj.type.defaultValue,
                        fieldName: this.props.obj.name    
                      };
     }
@@ -14,6 +14,15 @@ class PickListType extends Component {
         let options = [];
         options = this.props.obj.type.picklistValues;
 
+        const amp = '&amp';
+
+        const validLable = (this.props.obj.lable.indexOf(amp) !== -1) ? this.props.obj.lable.replace('&amp;', '&') : this.props.obj.lable; 
+
+        // console.log(validLable);
+        // if (validLable === 'Company country') {
+        //     this.setState({ saveValue: '' });
+        // }
+        console.log(this.state.saveValue);
         return (
             <View style={styles.inputHolder}>
             {
@@ -22,10 +31,11 @@ class PickListType extends Component {
                     <Text style={{ color: 'red', fontSize: 16 }}>*</Text>
                 </View>
                 :
-                undefined
+                // undefined
+                <View style={styles.mandatory} />
             } 
                 <View style={{ flex: 1, justifyContent: 'center' }}>
-                    <Text style={styles.label}>{this.props.obj.lable}</Text>
+                    <Text style={styles.label}>{validLable}</Text>
                 </View>
                 <View style={{ flex: 1 }}>
                 <Picker 

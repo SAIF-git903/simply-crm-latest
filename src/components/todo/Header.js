@@ -103,7 +103,7 @@ class Header extends Component {
                         style={styles.inputStyle}
                         value={this.state.inputValue}
                         onChangeText={this.handleTextChange.bind(this)}
-                        placeholder="Input todo"
+                        placeholder="Enter your todo here..."
                         underlineColorAndroid='rgba(0,0,0,0)'
                         placeholderTextColor="gray"
                     />
@@ -164,6 +164,7 @@ const styles = {
     subContainer: {
         
         padding: 5,
+        
         backgroundColor: HEADER_COLOR,
         justifyContent: 'flex-start',
         flexDirection: 'row',
@@ -182,7 +183,7 @@ const styles = {
         
     },
     rowContainer: {
-        height: 35,
+        height: 38,
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
@@ -191,8 +192,9 @@ const styles = {
         color: '#ffffff',
         paddingRight: 5,
         paddingLeft: 5,
-        fontSize: 14,
+        fontSize: 16,
         lineHeight: 15,
+        fontStyle: 'italic',
         flex: 1
     },
     todoItem: {

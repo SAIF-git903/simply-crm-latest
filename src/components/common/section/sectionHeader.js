@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Image, Text, StyleSheet, TouchableWithoutFeedback, Platform } from 'react-native';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faWrench, faLuggageCart } from '@fortawesome/pro-regular-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+// import { faWrench, faLuggageCart } from '@fortawesome/pro-regular-svg-icons';
 import { DRAWER_BORDER_COLOR } from '../../../variables/themeColors';
 import { TOOLS, SALES } from '../../../variables/constants';
 
@@ -50,11 +50,11 @@ export default class SectionHeader extends Component {
     assignIcons() {
         switch (this.props.name) {
             case TOOLS:
-                this.setState({ iconName: faWrench });
+                // this.setState({ iconName: faWrench });
                 break;
            
             case SALES: 
-                this.setState({ iconName: faLuggageCart });
+                // this.setState({ iconName: faLuggageCart });
                 break;
            
             default:
@@ -73,20 +73,21 @@ export default class SectionHeader extends Component {
     }
 
     render() {
+        console.log(this.props.imageName);
         return (
             <TouchableWithoutFeedback onPress={this.onHeaderPress.bind(this)}>
                 <View style={[styles.headerBackground, { backgroundColor: this.props.backgroundColor }]}>
                     { (this.props.headerImage) ?
-                        <View style={styles.imageStyle}>
-                            <FontAwesomeIcon icon={this.state.iconName} size={23} color={this.props.imageColor} />
-                        </View>
-                        // <Image 
-                        // source={{ uri: this.props.imageName }}
-                        // // style={(this.state.selected) ? 
-                        // // [styles.imageStyleSelected, { tintColor: this.props.imageSelectedColor }] : 
-                        // // [styles.imageStyle, { tintColor: this.props.imageColor }]}
-                        // style={styles.imageStyle}
-                        // /> 
+                        // <View style={styles.imageStyle}>
+                        //     <FontAwesomeIcon icon={this.state.iconName} size={23} color={this.props.imageColor} />
+                        // </View>
+                        <Image 
+                        source={{ uri: this.props.imageName }}
+                        // style={(this.state.selected) ? 
+                        // [styles.imageStyleSelected, { tintColor: this.props.imageSelectedColor }] : 
+                        // [styles.imageStyle, { tintColor: this.props.imageColor }]}
+                        style={[styles.imageStyle, { tintColor: this.props.imageColor }]}
+                        /> 
                         :
                         undefined 
                     }
@@ -135,10 +136,11 @@ const styles = StyleSheet.create({
        
     },
     imageStyle: {
-        height: 25,
-        width: 25,
+        height: 20,
+        width: 20,
         marginRight: 10,
-        marginLeft: 5
+        marginLeft: 5,
+        
     },
     imageStyleSelected: {
         height: 25,

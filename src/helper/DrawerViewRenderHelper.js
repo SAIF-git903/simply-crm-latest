@@ -7,7 +7,7 @@ SERVICES, ASSETS, SMS_NOTIFIER, OPPORTUNITIES, SALESORDER,
 INVOICE, VENDORS, PRICEBOOKS, PURCHASEORDER, TICKETS, 
 FAQ, SERVICECONTRACTS, MODULE_PROJECT, PROJECT_TASK, PROJECT_MILESTONE,
 PBXMANAGER, 
-DOCUMENTS, REPORTS, EMAILS } from '../variables/constants';
+DOCUMENTS, REPORTS, EMAILS, TOOLS_IMAGE } from '../variables/constants';
 import ImageButton from '../components/drawer/components/imageButton';
 import Menu from '../components/drawer/components/menu';
 import Section from '../components/common/section';
@@ -16,7 +16,7 @@ import { DRAWER_SECTION_BACKGROUND_COLOR, DRAWER_SECTION_HEADER_BACKGROUND_COLOR
     DRAWER_SECTION_HEADER_IMAGE_SELECTED_COLOR, DRAWER_SECTION_HEADER_IMAGE_COLOR,
     DRAWER_SECTION_HEADER_TEXT_COLOR } from '../variables/themeColors';
 import MenuHolder from '../components/drawer/layouts/menuHolder';
-import { faTools } from '@fortawesome/pro-regular-svg-icons';
+// import { faTools } from '@fortawesome/pro-regular-svg-icons';
 
 
 export const renderDrawerView = async (loginDetails, drawerInstance) => {
@@ -132,7 +132,7 @@ export const renderDrawerView = async (loginDetails, drawerInstance) => {
         sectionHeaderTextColor={DRAWER_SECTION_HEADER_TEXT_COLOR}
         sectionHeaderImageColor={DRAWER_SECTION_HEADER_IMAGE_COLOR}
         sectionHeaderImageSelectedColor={DRAWER_SECTION_HEADER_IMAGE_SELECTED_COLOR}
-        headerName={TOOLS} imageName={PROJECT_IMAGE}
+        headerName={TOOLS} imageName={TOOLS_IMAGE}
         headerImage content={toolsSectionContent}
         contentHeight={toolsSectionContent[0].length * DRAWER_COLUMN_TOTAL_HEIGHT} 
     />);

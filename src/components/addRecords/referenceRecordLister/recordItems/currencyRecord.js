@@ -13,6 +13,7 @@ class CurrencyRecord extends Component {
     }
 
     render() {
+        console.log(this.props.item);
         if (!this.state.loading) {
             return (
                 <TouchableOpacity 
@@ -25,9 +26,17 @@ class CurrencyRecord extends Component {
                     (this.props.selectedIndex === this.props.index) ? 
                     RECORD_SELECTED_COLOR : RECORD_COLOR }]}
                 >
-                    <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10 }}>
+                {
+                    (this.props.item.currency_name !== '') ?
+                    <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10, color: 'black' }}>
                         {this.props.item.currency_name}
+                    </Text> :
+                    <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic' }}>
+                        no currency name
                     </Text>
+
+                }
+                    
                 </View>
                 </TouchableOpacity>
             );

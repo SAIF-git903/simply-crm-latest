@@ -87,18 +87,45 @@ class ProductsRecord extends Component {
                         (this.props.selectedIndex === this.props.index) ? 
                         RECORD_SELECTED_COLOR : RECORD_COLOR }]}
                     >
-                        <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10 }}>
-                            {this.props.item.productLable}
-                        </Text>
-                        <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10 }}>
-                            {this.props.item.no}
-                        </Text>
-                        <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10 }}>
-                            {this.props.item.productcategory}
-                        </Text>
-                        <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10 }}>
-                            {this.props.item.quantity}
-                        </Text>
+                        {
+                            (this.props.item.productLable !== '') ?
+                            <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10, color: 'black' }}>
+                                {this.props.item.productLable}
+                            </Text> :
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic' }}>
+                                no lable
+                            </Text>
+                        }
+
+                        {
+                            (this.props.item.no !== '') ?
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
+                                {this.props.item.no}
+                            </Text> :
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic' }}>
+                                no product number
+                            </Text>
+                        }
+                        {
+                            (this.props.item.productcategory !== '') ?
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
+                                {this.props.item.productcategory}
+                            </Text> :
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic' }}>
+                                no category
+                            </Text>
+                        }   
+                        {
+                            (this.props.item.quantity !== '') ?
+                            <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10 }}>
+                                {this.props.item.quantity}
+                            </Text> :
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic' }}>
+                                no quantity
+                            </Text>
+                        }
+                        
+                        
                     </View>
                     </TouchableOpacity>
                 </SwipeOut>

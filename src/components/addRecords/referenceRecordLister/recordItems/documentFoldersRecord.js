@@ -4,19 +4,20 @@ import { View, ActivityIndicator, Image, Alert, Text, TouchableOpacity,
     StyleSheet } from 'react-native';
 import { RECORD_COLOR, RECORD_SELECTED_COLOR } from '../../../../variables/themeColors';
 
-class CustomRecord extends Component {
+class DocumentFoldersRecord extends Component {
     constructor(props) {
         super(props);
         this.state = {
             loading: false
         };
     }
+
     render() {
         console.log(this.props.item);
         if (!this.state.loading) {
             return (
                 <TouchableOpacity 
-                onPress={() => { this.props.onRecordSelect(this.props.item.id, this.props.item.lable, this.props.index); }}
+                onPress={() => { this.props.onRecordSelect(this.props.item.id, this.props.item.foldername, this.props.index); }}
                 >
                 <View 
                 style={[styles.backgroundStyle, { 
@@ -26,14 +27,13 @@ class CustomRecord extends Component {
                     RECORD_SELECTED_COLOR : RECORD_COLOR }]}
                 >
                 {
-                    (this.props.item.lable !== '') ?
+                    (this.props.item.foldername !== '') ? 
                     <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10, color: 'black' }}>
-                        {this.props.item.lable}
+                        {this.props.item.foldername}
                     </Text> :
                     <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic' }}>
-                        no lable
+                        no foldername
                     </Text>
-                
                 }
                     
                 </View>
@@ -71,4 +71,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default connect(null)(CustomRecord);
+export default connect(null)(DocumentFoldersRecord);

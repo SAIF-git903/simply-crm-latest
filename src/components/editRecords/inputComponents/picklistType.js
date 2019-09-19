@@ -22,7 +22,8 @@ class PickListType extends Component {
                     <Text style={{ color: 'red', fontSize: 16 }}>*</Text>
                 </View>
                 :
-                undefined
+                // undefined
+                <View style={styles.mandatory} />
             } 
                 <View style={{ flex: 1, justifyContent: 'center' }}>
                     <Text style={styles.label}>{this.props.obj.lable}</Text>

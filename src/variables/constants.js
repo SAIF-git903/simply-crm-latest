@@ -11,6 +11,7 @@ export const SALES_IMAGE = 'sales';
 export const INVENTORY_IMAGE = 'inventory';
 export const SUPPORT_IMAGE = 'support';
 export const PROJECT_IMAGE = 'project';
+export const TOOLS_IMAGE = 'tools';
 export const CUSTOM_IMAGE = 'custommodules';
 
 export const DRAWER_COLUMN_HEIGHT = 50; 
@@ -45,6 +46,7 @@ export const COMMENTS = 'ModComments';
 export const CURRENCY = 'Currency';
 export const EMAILS = 'Emails';
 export const REPORT = 'Reports';
+export const DOCUMENTFOLDERS = 'DocumentFolders';
 
 
 export const HOME = 'Dashboard';
