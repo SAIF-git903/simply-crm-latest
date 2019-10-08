@@ -77,7 +77,8 @@ class ReferenceType extends Component {
                     <Text style={{ color: 'red', fontSize: 16 }}>*</Text>
                 </View>
                 :
-                undefined
+                // undefined
+                <View style={styles.mandatory} />
             } 
             
                 <View style={{ flex: 1, justifyContent: 'center' }}>

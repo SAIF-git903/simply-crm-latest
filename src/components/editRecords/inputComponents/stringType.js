@@ -7,7 +7,8 @@ import { View, Text, TextInput, StyleSheet } from 'react-native';
 class StringType extends Component {
     constructor(props) {
         super(props);
-        this.state = { saveValue: this.props.obj.default,
+        this.state = { 
+                       saveValue: this.props.obj.default,
                        fieldName: this.props.obj.name };
     }
 
@@ -28,7 +29,8 @@ class StringType extends Component {
                     <Text style={{ color: 'red', fontSize: 16 }}>*</Text>
                 </View>
                 :
-                undefined
+                // undefined
+                <View style={styles.mandatory} />
             } 
                 <View style={{ flex: 1, justifyContent: 'center' }}>
                     <Text style={styles.label}>{this.props.obj.lable}</Text>

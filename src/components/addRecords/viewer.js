@@ -28,7 +28,7 @@ class Viewer extends Component {
     }
     renderRecordView() {
         return (
-            <KeyboardAwareScrollView>
+            <KeyboardAwareScrollView keyboardShouldPersistTaps='handled'>
                 {this.state.inputForm}
             </KeyboardAwareScrollView>
         );

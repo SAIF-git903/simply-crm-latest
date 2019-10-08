@@ -64,17 +64,25 @@ export const refreshRecordDataHelper = async (viewerInstance, dispatch) => {
             const param = new FormData();
             param.append('_operation', 'fetchRecordWithGrouping');
             param.append('module', viewerInstance.props.moduleName);
-            param.append('record', viewerInstance.props.recordId);
+            param.append('record', viewerInstance.state.recordId);
             responseJson = await getDatafromNet(param, dispatch);
         }
 
         if (responseJson.success) {
             await getAndSaveData(responseJson, viewerInstance, false, '');
         } else {
-            viewerInstance.setState({ 
-                isScrollViewRefreshing: false, 
-                statusText: 'Something went wrong', 
-                statusTextColor: 'red' });
+            if (responseJson.error.code === 1) {
+                viewerInstance.setState({ 
+                    isScrollViewRefreshing: false, 
+                    statusText: 'Loading...', 
+                    recordId: viewerInstance.props.recordId }, 
+                    async() => { await refreshRecordDataHelper(viewerInstance, dispatch); });
+            } else {
+                viewerInstance.setState({ 
+                    isScrollViewRefreshing: false, 
+                    statusText: 'Something went wrong', 
+                    statusTextColor: 'red' });
+            } 
         }
     } catch (error) {
         viewerInstance.setState({ 
@@ -100,22 +108,31 @@ const getDataFromInternet = async (viewerInstance, offlineAvailable, offlineData
             const param = new FormData();
             param.append('_operation', 'fetchRecordWithGrouping');
             param.append('module', viewerInstance.props.moduleName);
-            param.append('record', viewerInstance.props.recordId);
+            param.append('record', viewerInstance.state.recordId);
             responseJson = await getDatafromNet(param, dispatch);
         }
 
         console.log(responseJson);
         if (responseJson.success) {
             await getAndSaveData(responseJson, viewerInstance, false, '');
-        } else {
-            if (offlineAvailable) {
-                await getAndSaveData(offlineData.record, viewerInstance, true, 'Showing Offline data - No internet Pull to refresh');
-            } else {
-                //Show error to user that something went wrong.
+        } else {     
+            if (responseJson.error.code === 1) {
                 viewerInstance.setState({ 
-                    loading: false, 
-                    statusText: 'Something went wrong', 
-                    statusTextColor: 'red' });
+                    isScrollViewRefreshing: false, 
+                    statusText: 'Loading...', 
+                    recordId: viewerInstance.props.recordId }, 
+                    async() => { await getDataFromInternet(viewerInstance, false, {}, dispatch); });
+            } else {
+                if (offlineAvailable) {
+                    await getAndSaveData(offlineData.record, viewerInstance, true, 'Showing Offline data - No internet Pull to refresh');
+                } else {
+                    //Show error to user that something went wrong.
+                    viewerInstance.setState({ 
+                        loading: false, 
+                        statusText: 'Something went wrong', 
+                        statusTextColor: 'red' });
+                }
+                
             }
         }
     } catch (error) {

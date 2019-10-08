@@ -110,10 +110,11 @@ class Lister extends Component {
     }
 }
 
-const mapStateToProps = ({ event, recordViewer }) => {
+const mapStateToProps = ({ event, recordViewer, drawer }) => {
     const { isPortrait, width, height } = event;
     const { saved } = recordViewer;
-    return { isPortrait, width, height, saved };
+    const { moduleId } = drawer;
+    return { isPortrait, width, height, saved, moduleId };
 };
 
 export default connect(mapStateToProps)(Lister);

@@ -18,6 +18,9 @@ class MultiPickListType extends Component {
         options.map((item) => {
             items.push({ id: item.label, name: item.value });
         });
+        const amp = '&amp;';
+
+        const validLable = (this.props.obj.lable.indexOf(amp) !== -1) ? this.props.obj.lable.replace('&amp;', '&') : this.props.obj.lable; 
         return (
             <View style={styles.inputHolder}>
             {
@@ -26,10 +29,11 @@ class MultiPickListType extends Component {
                     <Text style={{ color: 'red', fontSize: 16 }}>*</Text>
                 </View>
                 :
-                undefined
+                // undefined
+                <View style={styles.mandatory} />
             } 
                 <View style={{ flex: 1, justifyContent: 'center' }}>
-                    <Text style={styles.label}>{this.props.obj.lable}</Text>
+                    <Text style={styles.label}>{validLable}</Text>
                 </View>
                 <View style={{ flex: 1 }}>
                 <MultiSelect

@@ -32,7 +32,8 @@ class BooleanType extends Component {
                     <Text style={{ color: 'red', fontSize: 16 }}>*</Text>
                 </View>
                 :
-                undefined
+                // undefined
+                <View style={styles.mandatory} />
             } 
                 <View style={{ flex: 1, justifyContent: 'center' }}>
                     <Text style={styles.label}>{this.props.obj.lable}</Text>
@@ -57,7 +58,8 @@ class BooleanType extends Component {
                             style={{ 
                                 width: 35,
                                 resizeMode: 'contain',  
-                                height: 25 }}
+                                height: 25,
+                                tintColor: 'green' }}
                             />
                             :
                             null

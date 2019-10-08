@@ -46,6 +46,10 @@ class DateType extends Component {
     }
     render() {
         const mandatory = this.props.obj.mandatory;
+        const amp = '&amp;';
+
+        const validLable = (this.props.obj.lable.indexOf(amp) !== -1) ? this.props.obj.lable.replace('&amp;', '&') : this.props.obj.lable; 
+
         return (
             <View style={styles.inputHolder}>
             {
@@ -54,11 +58,12 @@ class DateType extends Component {
                     <Text style={{ color: 'red', fontSize: 16 }}>*</Text>
                 </View>
                 :
-                undefined
+                // undefined
+                <View style={styles.mandatory} />
             } 
             
                 <View style={{ flex: 1, justifyContent: 'center' }}>
-                    <Text style={styles.label}>{this.props.obj.lable}</Text>
+                    <Text style={styles.label}>{validLable}</Text>
                 </View>
                 <View style={{ flex: 1 }}>
                 <TouchableOpacity onPress={this.onDatePress.bind(this)} >

@@ -57,8 +57,6 @@ PODS:
     - React/Core
     - React/fishhook
     - React/RCTBlob
-  - RNSVG (9.6.4):
-    - React
   - RNVectorIcons (6.6.0):
     - React
   - yoga (0.50.3.React)
@@ -76,29 +74,22 @@ DEPENDENCIES:
   - React/RCTNetwork (from `../node_modules/react-native`)
   - React/RCTText (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
-  - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
-SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
-    - boost
-
 EXTERNAL SOURCES:
   DoubleConversion:
-    :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
+    :podspec: ../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec
   Folly:
-    :podspec: "../node_modules/react-native/third-party-podspecs/Folly.podspec"
+    :podspec: ../node_modules/react-native/third-party-podspecs/Folly.podspec
   GLog:
-    :podspec: "../node_modules/react-native/third-party-podspecs/GLog.podspec"
+    :podspec: ../node_modules/react-native/third-party-podspecs/GLog.podspec
   React:
-    :path: "../node_modules/react-native"
-  RNSVG:
-    :path: "../node_modules/react-native-svg"
+    :path: ../node_modules/react-native
   RNVectorIcons:
-    :path: "../node_modules/react-native-vector-icons"
+    :path: ../node_modules/react-native-vector-icons
   yoga:
-    :path: "../node_modules/react-native/ReactCommon/yoga"
+    :path: ../node_modules/react-native/ReactCommon/yoga
 
 SPEC CHECKSUMS:
   boost: 30a15ffb6d9aa4646dd3caffc960753f4cb4ca4e
@@ -106,10 +97,9 @@ SPEC CHECKSUMS:
   Folly: b7255b29f1d693c375d642d0f04f0592181156d9
   GLog: 3e4e4ae9746ce6bf6e9420c7fc1e08ad59c8ba1a
   React: 541ba768b9855e10cdc76f55427a5cd0653ca806
-  RNSVG: 2e097b92aaa6d4e0f354fd7c49cbf3b17f8b3920
   RNVectorIcons: 66af4d5c8ff4f584c7b7cd9c4b0780920f27fce2
   yoga: 17521bbb0dd54a47c0b3ac43253e78cdac7488e0
 
-PODFILE CHECKSUM: efdc93f75e30f0106acdeae5273d968146f8e465
+PODFILE CHECKSUM: 88b06992171489b11eff3398002ef4523c215a44
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.4.0

@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import { View, StatusBar, ScrollView, StyleSheet, ActivityIndicator, 
-    TouchableOpacity, Text, Alert } from 'react-native';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faPowerOff } from '@fortawesome/pro-regular-svg-icons';
+    TouchableOpacity, Text, Alert, Image } from 'react-native';
+// import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+// import { faPowerOff } from '@fortawesome/pro-regular-svg-icons';
 import { renderDrawerView, removeAllDatabase } from '../helper';
 import { DRAWER_BACKGROUND, HEADER_COLOR, DRAWER_INNER_BACKGROUND, 
     DRAWER_SECTION_HEADER_TEXT_COLOR, DRAWER_SECTION_HEADER_IMAGE_COLOR } from '../variables/themeColors';
@@ -43,7 +43,11 @@ class HomeDrawer extends Component {
             <TouchableOpacity style={styles.singOutWrapper}onPress={this.onSignOutPress.bind(this)} >
                 <View style={styles.signOut}>
                     <View style={styles.imageStyle}>
-                        <FontAwesomeIcon icon={faPowerOff} size={20} color={DRAWER_SECTION_HEADER_IMAGE_COLOR} /> 
+                    <Image 
+                        source={{ uri: 'logout' }}
+                        style={[styles.imageStyle, { tintColor: DRAWER_SECTION_HEADER_IMAGE_COLOR }]}
+                    /> 
+                        {/* <FontAwesomeIcon icon={faPowerOff} size={20} color={DRAWER_SECTION_HEADER_IMAGE_COLOR} />  */}
                     </View>
                     <Text style={styles.textStyle}>Sign Out</Text>
             </View>
@@ -118,9 +122,9 @@ const styles = StyleSheet.create({
 
     },
     imageStyle: {
-        height: 22,
-        width: 22,
-        marginRight: 10,
+        height: 20,
+        width: 20,
+        marginRight: 15,
         marginLeft: 10
     },
   

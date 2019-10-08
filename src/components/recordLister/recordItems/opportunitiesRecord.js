@@ -87,15 +87,36 @@ class OpportunitiesRecord extends Component {
                         (this.props.selectedIndex === this.props.index) ? 
                         RECORD_SELECTED_COLOR : RECORD_COLOR }]}
                     >
-                        <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10 }}>
-                            {this.props.item.potentialLable}
-                        </Text>
-                        <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10 }}>
-                            {this.props.item.amount}
-                        </Text>
-                        <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10 }}>
-                            {this.props.item.stage}
-                        </Text>
+                        {
+                            (this.props.item.potentialLable !== '') ?
+                            <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10, color: 'black' }}>
+                                {this.props.item.potentialLable}
+                            </Text> :
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
+                                no lable
+                            </Text>
+                        }
+
+                        {
+                            (this.props.item.amount !== '') ?
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
+                                {this.props.item.amount}
+                            </Text> :
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
+                                no amount
+                            </Text>
+                        }
+
+                        {
+                            (this.props.item.stage !== '') ?
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
+                                {this.props.item.stage}
+                            </Text> :
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
+                                no stage 
+                            </Text>
+
+                        }      
                     </View>
                     </TouchableOpacity>
                 </SwipeOut>

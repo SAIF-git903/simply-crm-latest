@@ -38,6 +38,7 @@ class AccountsRecord extends Component {
     }
 
     render() {
+        
         const swipeOutButtons = [{
             component: (
             <View 
@@ -86,18 +87,47 @@ class AccountsRecord extends Component {
                         (this.props.selectedIndex === this.props.index) ? 
                         RECORD_SELECTED_COLOR : RECORD_COLOR }]}
                     >
-                        <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10 }}>
+                        {
+                            (this.props.item.accountsLable !== '') ? 
+                            <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10, color: 'black' }}>
                             {this.props.item.accountsLable}
-                        </Text>
-                        <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10 }}>
-                            {this.props.item.website}
-                        </Text>
-                        <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10 }}>
-                            {this.props.item.phone}
-                        </Text>
-                        <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10 }}>
-                            {this.props.item.email}
-                        </Text>
+                            </Text>
+                            : 
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray', color: 'gray' }}>
+                                no lable
+                            </Text>
+                        }
+                        
+                        {
+                            (this.props.item.website !== '') ? 
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
+                                {this.props.item.website}
+                            </Text>
+                            : 
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
+                                no website
+                            </Text>
+                        }
+                        {
+                            (this.props.item.phone !== '') ? 
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
+                                {this.props.item.phone}
+                            </Text>
+                            : 
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray'}}>
+                                no phone number
+                            </Text>
+                        }
+                        {
+                            (this.props.item.email !== '') ? 
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
+                                {this.props.item.email}
+                            </Text>
+                            : 
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
+                                no email
+                            </Text>
+                        }
                     </View>
                     </TouchableOpacity>
                 </SwipeOut>

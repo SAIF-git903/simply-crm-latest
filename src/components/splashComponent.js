@@ -51,20 +51,21 @@ class SplashComponent extends Component {
 
         return (
             <View style={styles.backgroundStyle}>
-                <Animated.Image 
+                {/* <Animated.Image 
                 style={[{ 
                     position: 'absolute', 
                     width: '100%', 
                     height: '100%',
                         }, imageScaleStyle]} 
                 source={{ uri: 'loginbackground' }} 
-                />
+                /> */}
                 <View 
                 style={{ 
                     position: 'absolute',
                     width: '100%', 
                     height: '100%', 
-                    backgroundColor: 'rgba(100, 100, 100, 0.5)' }}
+                   // backgroundColor: 'rgba(100, 100, 100, 0.5)' 
+                }}
                 />
                 <View 
                 style={{ 
@@ -75,13 +76,13 @@ class SplashComponent extends Component {
                 >
                     <View style={{ width: '100%', alignItems: 'center' }}>
                     <Animated.View style={animatedStyle}>
-                        <Text style={styles.appNameStyle}> PocketCRM for Vtiger </Text>
+                        <Text style={styles.appNameStyle}> Simply CRM </Text>
                     </Animated.View>
                     <Image source={{ uri: 'vtigerlogo' }} resizeMode={'contain'} style={styles.logoStyle} />
                     </View>
                 </View>
                     {this.renderChildren()}
-                    <TouchableOpacity onPress={this.onSmackcodersPress.bind(this)}>
+                    {/* <TouchableOpacity onPress={this.onSmackcodersPress.bind(this)}>
                     <View 
                     style={{ 
                         flexDirection: 'row', 
@@ -97,7 +98,7 @@ class SplashComponent extends Component {
                             />
                             <Text style={{ color: 'white' }}> Smackcoders, Inc.</Text>
                     </View>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
             </View>
         );
     }
@@ -113,29 +114,29 @@ class SplashComponent extends Component {
         
         return (
             <View style={styles.landscapeBackgroundStyle}>
-                 <Animated.Image 
+                 {/* <Animated.Image 
                 style={[{ 
                     position: 'absolute', 
                     width: '100%', 
                     height: '100%',
                         }, imageScaleStyle]} 
                 source={{ uri: 'loginbackground' }} 
-                />
+                /> */}
                 <View 
                 style={{ 
                     flex: 0.9, 
-                    backgroundColor: 'rgba(100, 100, 100, 0.5)',
+                    //backgroundColor: 'rgba(100, 100, 100, 0.5)',
                     justifyContent: 'center',
                     alignItems: 'center' }} 
                 >
                     <View style={{ width: '100%', alignItems: 'center' }}>
                     <Animated.View style={animatedStyle}>
-                        <Text style={styles.appNameStyle}> PocketCRM for Vtiger </Text>
+                        <Text style={styles.appNameStyle}>Simply CRM</Text>
                     </Animated.View>
                     <Image source={{ uri: 'vtigerlogo' }} resizeMode={'contain'} style={styles.logoStyle} />
                     </View>
                 </View>
-                <View style={{ flex: 1.1, justifyContent: 'center', backgroundColor: 'rgba(100, 100, 100, 0.5)', }}>
+                {/* <View style={{ flex: 1.1, justifyContent: 'center', backgroundColor: 'rgba(100, 100, 100, 0.5)', }}>
                     {this.renderChildren()}
                     <TouchableOpacity onPress={this.onSmackcodersPress.bind(this)}>
                         <View 
@@ -153,7 +154,7 @@ class SplashComponent extends Component {
                                 <Text style={{ color: 'white' }}> Smackcoders, Inc.</Text>
                         </View>
                     </TouchableOpacity>
-                </View>
+                </View> */}
             </View>
         );
     }
@@ -168,7 +169,8 @@ class SplashComponent extends Component {
 
 const styles = StyleSheet.create({
     backgroundStyle: {
-        flex: 1
+        flex: 1,
+        backgroundColor: '#0085DE'
     },
     landscapeBackgroundStyle: {
         flex: 1,
@@ -201,7 +203,7 @@ const styles = StyleSheet.create({
     appNameStyle: {
         color: 'white',
         fontWeight: 'bold',
-        fontSize: 22,
+        fontSize: 25,
     }
 });
 
