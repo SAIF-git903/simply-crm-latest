@@ -33,6 +33,7 @@ export const loginHelper = async (username, password, url, navigation, loginInst
         });
         console.log(response);
         const responseJson = await response.json();
+        console.log(responseJson);
         if (responseJson.success) {
             const loginDetails = {
                 username,
@@ -44,6 +45,7 @@ export const loginHelper = async (username, password, url, navigation, loginInst
                 vtigerVersion: parseInt(responseJson.result.login.vtiger_version.charAt(0), 10),
                 dateFormat: responseJson.result.login.date_format,
                 modules: responseJson.result.modules,
+                userId: responseJson.result.login.userid
             };
             AsyncStorage.setItem(LOGINDETAILSKEY, JSON.stringify(loginDetails));
             await addDatabaseKey(LOGINDETAILSKEY);

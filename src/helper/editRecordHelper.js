@@ -222,6 +222,7 @@ export const getDataHelper = async(editInstance) => {
             param.append('_session', loginDetails.session);
             param.append('_operation', 'fetchRecord');
             param.append('record', editInstance.state.recordId);
+            // param.append('record', editInstance.state.id);
             param.append('module', editInstance.props.moduleName);
         }
         const response = await fetch((`${loginDetails.url}/modules/Mobile/api.php`), {
@@ -236,6 +237,7 @@ export const getDataHelper = async(editInstance) => {
 
         const responseJson = await response.json();
         console.log(responseJson);
+        console.log(param);
         
         if (responseJson.success) {
             const record = responseJson.result.record;

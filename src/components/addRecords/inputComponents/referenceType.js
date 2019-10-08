@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, Alert } from 'react-native';
 import { SinglePickerMaterialDialog } from 'react-native-material-dialog';
 import { connect } from 'react-redux';
+import { getUserName } from '../../../helper';
 
 
 const mapStateToProps = ({ recordViewer }) => {
@@ -28,6 +29,7 @@ class ReferenceType extends Component {
             referenceValue: this.props.label
             //referenceValue: label
         });
+        this.assignUserId();
     }
 
     componentWillReceiveProps(newProps) {
@@ -60,8 +62,16 @@ class ReferenceType extends Component {
         }     
     }
  
+    assignUserId() {
+        if (this.props.obj.name === 'assigned_user_id') {
+            getUserName(this);
+            console.log(this.state.userName);
+            
+        }
+    }
 
     render() {
+        console.log(this.props.userId);
         const mandatory = this.props.obj.mandatory;
         const type = this.props.obj.type;
         const { navigate } = this.props.navigate;
@@ -76,7 +86,9 @@ class ReferenceType extends Component {
 
         const validLable = (this.props.obj.lable.indexOf(amp) !== -1) ? this.props.obj.lable.replace('&amp;', '&') : this.props.obj.lable; 
 
-        
+        // if (this.props.obj.name === 'assigned_user_id') {
+        //     this.se
+        // }
         return (
             <View style={styles.inputHolder}>
             {
@@ -100,6 +112,7 @@ class ReferenceType extends Component {
                 </TouchableOpacity>
                  
                 </View>  
+                
             
                 <SinglePickerMaterialDialog
                 title={'Choose one'}

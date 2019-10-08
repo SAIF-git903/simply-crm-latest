@@ -5,7 +5,7 @@ import store from '../../../store';
 import StatusView from './statusView';
 import { commonStyles } from '../../../styles/common';
 import { fetchRefRecord, refreshRefRecord, getNextRefPageRecord, markReferenceLabel } from '../../../actions';
-import { recordRefListRendererHelper } from '../../../helper';
+import { recordRefListRendererHelper, getUserName } from '../../../helper';
 
 class Lister extends Component {
     constructor(props) {
@@ -51,11 +51,9 @@ class Lister extends Component {
         }
     }
 
-    getModuleId() {
-        const { auth } = store.getState();
-        const loginDetails = auth.loginDetails;
-        console.log(loginDetails);
-    }
+    // getModuleId() {
+        
+    // }
 
     getRecords() {
         this.setState({ loading: true, data: [], selectedIndex: -1, statusText: 'Fetching Record', statusTextColor: '#000000' });

@@ -22,6 +22,8 @@ export const describeRecordHelper = async(addInstance) => {
     param.append('_operation', 'describe');
     param.append('module', addInstance.props.moduleName);
     //console.log(param);
+
+    console.log('Login Details', loginDetails);
     
     try {    
         const response = await fetch((`${loginDetails.url}/modules/Mobile/api.php`), {
@@ -155,6 +157,7 @@ export const describeRecordHelper = async(addInstance) => {
                                     moduleName={addInstance.props.moduleName}
                                     formId={i}
                                     ref={(ref) => { (ref !== null) ? formInstance.push(ref.getWrappedInstance()) : undefined; }}
+                                    userId={loginDetails.userId}
                                 />
                                 <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
                                 </View>

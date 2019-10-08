@@ -64,7 +64,7 @@ class DateType extends Component {
                 <View style={{ flex: 1 }}>
                 <TouchableOpacity onPress={this.onDatePress.bind(this)} >
                     <View style={styles.textbox}>
-                        <Text style={styles.text}>{this.state.saveValue}</Text>
+                        {/* <Text style={styles.text}>{this.state.saveValue}</Text> */}
                     </View>
                 </TouchableOpacity>
                
