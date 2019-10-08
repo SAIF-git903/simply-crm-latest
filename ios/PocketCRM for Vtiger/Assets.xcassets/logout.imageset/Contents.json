@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "logout1x.png",
+      "filename" : "logout.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "logout2x.png",
+      "filename" : "logout-1.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "logout3x.png",
+      "filename" : "logout-2.png",
       "scale" : "3x"
     }
   ],

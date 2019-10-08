@@ -92,7 +92,7 @@ class ProductsRecord extends Component {
                             <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10, color: 'black' }}>
                                 {this.props.item.productLable}
                             </Text> :
-                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic' }}>
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
                                 no lable
                             </Text>
                         }
@@ -102,7 +102,7 @@ class ProductsRecord extends Component {
                             <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
                                 {this.props.item.no}
                             </Text> :
-                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic' }}>
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
                                 no product number
                             </Text>
                         }
@@ -111,7 +111,7 @@ class ProductsRecord extends Component {
                             <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
                                 {this.props.item.productcategory}
                             </Text> :
-                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic' }}>
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
                                 no category
                             </Text>
                         }   
@@ -120,7 +120,7 @@ class ProductsRecord extends Component {
                             <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10 }}>
                                 {this.props.item.quantity}
                             </Text> :
-                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic' }}>
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
                                 no quantity
                             </Text>
                         }

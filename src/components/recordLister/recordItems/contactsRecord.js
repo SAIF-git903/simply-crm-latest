@@ -94,7 +94,7 @@ class ContactsRecord extends Component {
                         <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10, color: 'black' }}>
                             {this.props.item.contactsLable}
                         </Text> :
-                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic' }}>
+                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
                             no lable
                         </Text>
                     }
@@ -103,7 +103,7 @@ class ContactsRecord extends Component {
                         <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
                             {this.props.item.email}
                         </Text> :
-                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic' }}>
+                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
                             no email
                         </Text>
                     } 

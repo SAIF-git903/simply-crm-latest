@@ -93,7 +93,7 @@ class InvoiceRecord extends Component {
                         <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10, color: 'black' }}>
                             {this.props.item.invoiceLable}
                         </Text> :
-                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic' }}>
+                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
                             no lable
                         </Text>
                     }
@@ -102,7 +102,7 @@ class InvoiceRecord extends Component {
                         <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
                             {this.props.item.invoiceStatus}
                         </Text> :
-                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic' }}>
+                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
                             no status
                         </Text>
                     }
@@ -111,7 +111,7 @@ class InvoiceRecord extends Component {
                         <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
                             {this.props.item.invoiceAmount}
                         </Text> :
-                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic' }}>
+                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
                             no amount
                         </Text>
                     }

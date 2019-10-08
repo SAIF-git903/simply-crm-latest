@@ -92,7 +92,7 @@ class OpportunitiesRecord extends Component {
                             <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10, color: 'black' }}>
                                 {this.props.item.potentialLable}
                             </Text> :
-                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic' }}>
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
                                 no lable
                             </Text>
                         }
@@ -102,7 +102,7 @@ class OpportunitiesRecord extends Component {
                             <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
                                 {this.props.item.amount}
                             </Text> :
-                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic' }}>
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
                                 no amount
                             </Text>
                         }
@@ -112,7 +112,7 @@ class OpportunitiesRecord extends Component {
                             <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
                                 {this.props.item.stage}
                             </Text> :
-                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic' }}>
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
                                 no stage 
                             </Text>
 

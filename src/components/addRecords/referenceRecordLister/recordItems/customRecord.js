@@ -30,7 +30,7 @@ class CustomRecord extends Component {
                     <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10, color: 'black' }}>
                         {this.props.item.lable}
                     </Text> :
-                    <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic' }}>
+                    <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
                         no lable
                     </Text>
                 

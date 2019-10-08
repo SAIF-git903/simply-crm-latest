@@ -93,7 +93,7 @@ class AccountsRecord extends Component {
                             {this.props.item.accountsLable}
                             </Text>
                             : 
-                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic' }}>
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray', color: 'gray' }}>
                                 no lable
                             </Text>
                         }
@@ -104,7 +104,7 @@ class AccountsRecord extends Component {
                                 {this.props.item.website}
                             </Text>
                             : 
-                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic' }}>
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
                                 no website
                             </Text>
                         }
@@ -114,7 +114,7 @@ class AccountsRecord extends Component {
                                 {this.props.item.phone}
                             </Text>
                             : 
-                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic' }}>
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray'}}>
                                 no phone number
                             </Text>
                         }
@@ -124,7 +124,7 @@ class AccountsRecord extends Component {
                                 {this.props.item.email}
                             </Text>
                             : 
-                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic' }}>
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
                                 no email
                             </Text>
                         }

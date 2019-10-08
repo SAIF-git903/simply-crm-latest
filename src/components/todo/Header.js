@@ -194,7 +194,7 @@ const styles = {
         paddingLeft: 5,
         fontSize: 16,
         lineHeight: 15,
-        fontStyle: 'italic',
+        fontStyle: 'italic', color: 'gray',
         flex: 1
     },
     todoItem: {
