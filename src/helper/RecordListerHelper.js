@@ -141,7 +141,7 @@ export const getNextPageHelper = async (listerInstance, dispatch) => {
             param.append('module', listerInstance.props.moduleName);
             param.append('page', listerInstance.state.pageToTake);
             const responseJson = await getDatafromNet(param, dispatch);
-            console.log(responseJson);
+            // console.log(responseJson);
             if (responseJson.success) {
                 await getAndSaveDataVtiger(responseJson, listerInstance, true, false, true);
             } else {
@@ -229,7 +229,7 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
             //console.log(listerInstance.state.pageToTake);
             param.append('page', listerInstance.state.pageToTake);
             const responseJson = await getDatafromNet(param, dispatch);
-            console.log(responseJson);
+            // console.log(responseJson);
             if (responseJson.success) {
                 await getAndSaveDataVtiger(responseJson, listerInstance, false, false, false);
             } else {
@@ -257,7 +257,7 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
             param.append('_operation', 'listModuleRecords');
             param.append('module', listerInstance.props.moduleName);
             const responseJson = await getDatafromNet(param, dispatch);
-            console.log(responseJson);
+            // console.log(responseJson);
             if (responseJson.success) {
                 await getAndSaveDataVtiger(responseJson, listerInstance, true, false, false);
             } else {
@@ -311,7 +311,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
     } else {
         data = [];
     }
-    console.log(responseJson);
+    // console.log(responseJson);
     let records = responseJson.result.records;
     if (records === null) {
         records = [];
@@ -373,11 +373,12 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
             break;
         }
         case INVOICE: {
-            console.log('Invoice records', records);
+            // console.log('Invoice records', records);
             for (const record of records) {
                 const modifiedRecord = { invoiceLable: record.subject,
                                             invoiceStatus: record.invoicestatus,
-                                            invoiceAmount: record.purchase_cost,
+                                            invoiceAmount: record.listprice,
+                                            invoiceAccountId: record.accountid,
                                             id: record.id };
                 data.push(modifiedRecord);
             }
@@ -686,7 +687,7 @@ export const appendParamFor = (moduleName, param) => {
             break;
         case LEADS:
             param.append('_operation', 'query');
-            param.append('query', 'select firstname,lastname,phone,email,id from Leads ORDER BY modifiedtime DESC');
+            param.append('query', 'select firstnamse,lastname,phone,email,id from Leads ORDER BY modifiedtime DESC');
             break;
         case ACCOUNTS:
             param.append('_operation', 'query');

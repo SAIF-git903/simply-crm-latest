@@ -1,4 +1,4 @@
-import { UPDATE_RECORD_VIEWER, REFERENCE_LABEL, SAVE_SUCCESS } from '../actions/types';
+import { UPDATE_RECORD_VIEWER, REFERENCE_LABEL, SAVE_SUCCESS, COPY_CONTACT_ADDRESS, COPY_ORGANISATION_ADDRESS } from '../actions/types';
 
 const INITIAL_STATE = 
 { navigation: {}, 
@@ -8,10 +8,12 @@ const INITIAL_STATE =
   recordId: '',
   label: '',
   uniqueId: '',
-  saved: '' };
+  saved: '',
+  contactAddress: [],
+  organisationAddress: [] };
 
 export default (state = INITIAL_STATE, action) => {
-    //console.log(action);
+    // console.log(action);
     switch (action.type) {
         case UPDATE_RECORD_VIEWER:
             return { 
@@ -33,7 +35,19 @@ export default (state = INITIAL_STATE, action) => {
                 label: '',
                 recordId: '',
                 uniqueId: '',
-                saved: action.payload };
+                saved: action.payload,
+                contactAddress: [],
+                organisationAddress: [] };
+        case COPY_CONTACT_ADDRESS:
+            return {
+                ...state,
+                contactAddress: action.payload.contactAddress
+            };
+        case COPY_ORGANISATION_ADDRESS: 
+            return {
+                ...state,
+                organisationAddress: action.payload.organisationAddress
+            };
         default:
             return state;
     }

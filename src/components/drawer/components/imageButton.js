@@ -47,7 +47,7 @@ class ImageButton extends Component {
 
 
     render() {
-        console.log(this.props.selectedButton, this.props.type);
+        // console.log(this.props.selectedButton, this.props.type);
         return (
             <TouchableOpacity 
                 style={{ flex: 1, marginTop: (Platform.OS === 'ios' && this.props.type === HOME) ? 30 : 0, paddingBottom: (Platform.OS === 'ios' && this.props.type === HOME) ? 15 : 0 }} 

@@ -1,11 +1,12 @@
 import { Alert } from 'react-native';
 import { DIMENSION_CHANGED, UPDATE_MGR,
    SHOW_SEARCH, DRAWER_BUTTON_SELECTED,
-   UPDATE_SEARCH_MODULE, MODULE_SELECT, SHOW_HOME, REFERENCE_LABEL, SAVE_SUCCESS } from './types';
+   UPDATE_SEARCH_MODULE, MODULE_SELECT, SHOW_HOME, REFERENCE_LABEL, SAVE_SUCCESS, COPY_CONTACT_ADDRESS, COPY_ORGANISATION_ADDRESS } from './types';
 import { RECORD_ADDER, HOME_MAIN, RECORD_VIEWER } from '../variables/constants';
 import { loginHelper, renderDrawerView, fetchRecordHelper, fetchRefRecordHelper, viewRecord,
   viewRecordRenderer, deleteRecordHelper, refreshRecordHelper, refreshRefRecordHelper, searchRecordHelper,
-  refreshRecordDataHelper, getNextPageHelper, getNextRefPageHelper, fetchWidgetRecordHelper, refreshRecordWidgetHelper } from '../helper';
+  refreshRecordDataHelper, getNextPageHelper, getNextRefPageHelper, fetchWidgetRecordHelper, refreshRecordWidgetHelper,
+  getAddressDetails } from '../helper';
 
 export const dimensionChanged = (isPortrait, width, height) => ({
   type: DIMENSION_CHANGED,
@@ -124,3 +125,16 @@ export const markReferenceLabel = (recordId, label, uniqueId) => (dispatch) => {
 export const saveSuccess = (saved) => (dispatch) => {
   dispatch({ type: SAVE_SUCCESS, payload: saved });
 };
+ 
+// export const copyAddressAction = (referenceInstance) => (dispatch) => {
+//   getAddressDetails(referenceInstance, dispatch);
+// };
+
+// export const copyContactAddress = (contactAddress) => (dispatch) => {
+  
+//   dispatch({ type: COPY_CONTACT_ADDRESS, payload: contactAddress });
+// };
+
+// export const copyOrganisationAddress = (organisationAddress) => (dispatch) => {
+//   dispatch({ type: COPY_ORGANISATION_ADDRESS, payload: organisationAddress });
+// };

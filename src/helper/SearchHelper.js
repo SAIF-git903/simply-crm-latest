@@ -34,7 +34,7 @@ export const searchRecordHelper = async(searchInstance, dispatch) => {
         });
     } catch (error) {
         //send error to smackcoders
-        console.log(error);
+        // console.lsog(error);
     }
 };
 
@@ -42,7 +42,7 @@ const getDataFromInternet = async (searchInstance, pageToTake, data, recordsSear
     const { auth } = store.getState();
     const loginDetails = auth.loginDetails;
 
-    console.log(pageToTake);
+    // console.log(pageToTake);
 
 
     if (loginDetails.vtigerVersion < 7) {
@@ -368,7 +368,7 @@ const getAndSaveDataVtiger = async (responseJson, searchInstance, data, recordsS
                                             id: record.id };
                 if (await isKeywordAvailable(searchInstance.state.moduleName, record.id, searchInstance.state.searchText, dispatch, searchInstance)) {
                     data.push(modifiedRecord);
-                    console.log('search records', modifiedRecord);
+                    // console.log('search records', modifiedRecord);
                     searchInstance.setState({
                         data: data.slice()
                     });
@@ -750,7 +750,7 @@ const getRecordDataFromInternet = async (moduleName, recordId, searchText, dispa
     const loginDetails = auth.loginDetails;
 
     let responseJson;
-    console.log(recordId);
+    // console.log(recordId);
 
     if (loginDetails.vtigerVersion < 7) {
         const param = new FormData();
@@ -773,7 +773,7 @@ const getRecordDataFromInternet = async (moduleName, recordId, searchText, dispa
     if (responseJson.success) {
         const records = responseJson.result.record;
         const blocks = records.blocks;
-        console.log('BLOCKS', blocks);
+        // console.log('BLOCKS', blocks);
         if (blocks.length === 0) {
             return false;
         }
@@ -795,11 +795,10 @@ const getRecordDataFromInternet = async (moduleName, recordId, searchText, dispa
                     leftValue = '';
                 }
                 const rightValue = searchText.toLowerCase();
-                console.log(leftValue);
-                console.log(rightValue);
+                
                 //debugger;
                 if (leftValue.includes(rightValue)) {
-                    console.log('inside');
+                    
                     return true;
                 }
             }

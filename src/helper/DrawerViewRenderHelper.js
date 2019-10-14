@@ -33,7 +33,7 @@ export const renderDrawerView = async (loginDetails, drawerInstance) => {
 
     drawerViews.push(menu);
 
-    console.log(loginDetails);
+    // console.log(loginDetails);
     for (const module of loginDetails.modules) {
         if (module.name === CONTACTS) {
             homeButton = <ImageButton type={CONTACTS} label={module.label} module={module} />;
@@ -66,7 +66,7 @@ export const renderDrawerView = async (loginDetails, drawerInstance) => {
     const toolsSectionContent = [];
     const customSectionContent = [];
 
-    console.log('Modules', loginDetails.modules);
+    // console.log('Modules', loginDetails.modules);
 
     getSectionContent(marketSectionContent, salesSectionContent, inventorySectionContent, 
     supportSectionContent, projectSectionContent, toolsSectionContent, customSectionContent, loginDetails.modules);
@@ -148,7 +148,7 @@ export const renderDrawerView = async (loginDetails, drawerInstance) => {
         contentHeight={customSectionContent[0].length * DRAWER_COLUMN_TOTAL_HEIGHT}
     />);
     
-    console.log('len', marketSectionContent.length);
+    // console.log('len', marketSectionContent.length);
     const section = [];
     if (marketSectionContent.length > 0) {
         //section.push(marketingSection);

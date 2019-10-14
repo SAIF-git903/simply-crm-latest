@@ -72,10 +72,10 @@ class Header extends Component {
             <Image 
             source={{ uri: 'save' }}
             style={{ 
-                width: 30,
+                width: 25,
                 resizeMode: 'contain',  
                 tintColor: HEADER_IMAGE_COLOR,
-                height: 30 }}
+                height: 25 }}
             />
         );
     }

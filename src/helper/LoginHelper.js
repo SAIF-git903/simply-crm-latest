@@ -10,7 +10,7 @@ export const loginHelper = async (username, password, url, navigation, loginInst
     param.append('username', username);
     param.append('password', password);
     try {
-        console.log('URL', url);
+        // console.log('URL', url);
         
         let trimUrl = url.replace(/ /g, '');
         
@@ -31,7 +31,7 @@ export const loginHelper = async (username, password, url, navigation, loginInst
         },
         body: param
         });
-        console.log(response);
+        // console.log(response);
         const responseJson = await response.json();
         console.log(responseJson);
         if (responseJson.success) {

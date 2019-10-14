@@ -42,7 +42,7 @@ export const viewRecordRenderer = async (viewerInstance, dispatch) => {
             await getDataFromInternet(viewerInstance, false, {}, dispatch);
         }
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         //Offline data is not available
         await getDataFromInternet(viewerInstance, false, {}, dispatch);
     }
@@ -112,7 +112,7 @@ const getDataFromInternet = async (viewerInstance, offlineAvailable, offlineData
             responseJson = await getDatafromNet(param, dispatch);
         }
 
-        console.log(responseJson);
+        // console.log(responseJson);
         if (responseJson.success) {
             await getAndSaveData(responseJson, viewerInstance, false, '');
         } else {     

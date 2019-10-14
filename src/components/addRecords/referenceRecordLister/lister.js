@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, ActivityIndicator, Text } from 'react-native';
-import store from '../../../store';
 import StatusView from './statusView';
 import { commonStyles } from '../../../styles/common';
 import { fetchRefRecord, refreshRefRecord, getNextRefPageRecord, markReferenceLabel } from '../../../actions';
-import { recordRefListRendererHelper, getUserName } from '../../../helper';
+import { recordRefListRendererHelper } from '../../../helper';
 
 class Lister extends Component {
     constructor(props) {
@@ -44,11 +43,11 @@ class Lister extends Component {
     }
 
     onEndReached() {
-        if (!this.onEndReachedCalledDuringMomentum) {
+        // if (!this.onEndReachedCalledDuringMomentum) {
             if (this.state.nextPage) {
-                this.props.dispatch(getNextRefPageRecord(this));
+                this.setState({ pageToTake: this.state.pageToTake + 1 }, () => this.props.dispatch(getNextRefPageRecord(this)));
             }
-        }
+        // }
     }
 
     // getModuleId() {

@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, Alert } from 'react-native';
 import { SinglePickerMaterialDialog } from 'react-native-material-dialog';
 import { connect } from 'react-redux';
-import { getUserName } from '../../../helper';
+import { COPY_CONTACT_ADDRESS } from '../../../actions/types';
+import { getUserName, getAddressDetails, getPriceDetails } from '../../../helper';
 
 
 const mapStateToProps = ({ recordViewer }) => {
@@ -20,6 +21,7 @@ class ReferenceType extends Component {
                         formId: 0,
                         saveValue: this.props.obj.default,
                         fieldName: this.props.obj.name,
+                        selectedRefModule: ''
                      };
     }
 
@@ -34,12 +36,21 @@ class ReferenceType extends Component {
 
     componentWillReceiveProps(newProps) {
         this.props = newProps;
-
+        
         if (this.state.formId === this.props.uniqueId) {
             this.setState({ 
                 referenceValue: this.props.label, 
                 saveValue: this.props.recordId,
                 uniqueId: this.props.uniqueId
+            }, () => { 
+                if (this.props.moduleName === 'Invoice') {
+                    if (this.state.selectedRefModule === 'Contacts' || this.state.selectedRefModule === 'Accounts') {
+                        this.assignAddress(); 
+                    }
+                    if (this.state.selectedRefModule === 'Products' || this.state.selectedRefModule === 'Services' ) {
+                        this.assignPriceDetails();
+                    }  
+                }
             });
         }
     }
@@ -56,6 +67,7 @@ class ReferenceType extends Component {
                     this.setState({ dialogueVisible: true });
                 } else {
                     const { navigate } = this.props.navigate;
+                    this.setState({ selectedRefModule: type.refersTo[0] });
                     navigate('ReferenceScreen', { selectedModule: type.refersTo[0], uniqueId: this.state.formId });
                 }       
             } 
@@ -65,13 +77,18 @@ class ReferenceType extends Component {
     assignUserId() {
         if (this.props.obj.name === 'assigned_user_id') {
             getUserName(this);
-            console.log(this.state.userName);
-            
         }
     }
 
+    assignAddress() {
+        getAddressDetails(this, this.props.dispatch);
+    }
+
+    assignPriceDetails() {
+        getPriceDetails(this);
+    }
+
     render() {
-        console.log(this.props.userId);
         const mandatory = this.props.obj.mandatory;
         const type = this.props.obj.type;
         const { navigate } = this.props.navigate;
@@ -122,14 +139,12 @@ class ReferenceType extends Component {
                 onCancel={() => this.setState({ dialogueVisible: false })}
                 onOk={(result) => {
                     //console.log(result);
-                    
-                    
                     if (result.selectedItem === undefined) {
                         //console.log('undefined');
                         this.setState({ dialogueVisible: false });
                     } else {
                         navigate('ReferenceScreen', { selectedModule: result.selectedItem.label, uniqueId: this.state.formId });
-                        this.setState({ dialogueSelectedValue: result.selectedItem });
+                        this.setState({ dialogueSelectedValue: result.selectedItem, selectedRefModule: result.selectedItem.label });
                         this.setState({ dialogueVisible: false });
                     }
                 }}
@@ -183,4 +198,5 @@ const styles = StyleSheet.create(
 
 
 export default connect(mapStateToProps, null, null, { withRef: true })(ReferenceType);
+// export default connect(mapStateToProps, null, null, { withRef: true })(ReferenceType);
 //export default ReferenceType;

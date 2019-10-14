@@ -12,7 +12,7 @@ class CustomRecord extends Component {
         };
     }
     render() {
-        console.log(this.props.item);
+        // console.log(this.props.item);
         if (!this.state.loading) {
             return (
                 <TouchableOpacity 
