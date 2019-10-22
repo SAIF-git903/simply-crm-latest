@@ -112,7 +112,7 @@ const getDataFromInternet = async (viewerInstance, offlineAvailable, offlineData
             responseJson = await getDatafromNet(param, dispatch);
         }
 
-        // console.log(responseJson);
+        console.log(responseJson);
         if (responseJson.success) {
             await getAndSaveData(responseJson, viewerInstance, false, '');
         } else {     
@@ -131,8 +131,7 @@ const getDataFromInternet = async (viewerInstance, offlineAvailable, offlineData
                         loading: false, 
                         statusText: 'Something went wrong', 
                         statusTextColor: 'red' });
-                }
-                
+                }   
             }
         }
     } catch (error) {

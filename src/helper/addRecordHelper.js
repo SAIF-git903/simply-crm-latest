@@ -24,7 +24,6 @@ export const describeRecordHelper = async(addInstance) => {
     //console.log(param);
 
     // console.log('Login Details', loginDetails);
-    
     try {    
         const response = await fetch((`${loginDetails.url}/modules/Mobile/api.php`), {
             method: 'POST',
@@ -39,11 +38,11 @@ export const describeRecordHelper = async(addInstance) => {
         
         console.log(responseJson);
         if (responseJson.success) {
-            
             const fields = responseJson.result.describe.fields;
             const formArray = [];
             const formInstance = [];
             let i = 0;
+            const currencyArr = [];
             for (const fArr of fields) {
                 i++;
                 const fieldObj = { name: fArr.name,
@@ -53,8 +52,17 @@ export const describeRecordHelper = async(addInstance) => {
                                     nullable: fArr.nullable,
                                     editable: fArr.editable,
                                     default: fArr.default };
-                if (fieldObj.editable) {
-                    const type = fieldObj.type.name;
+                // if (fieldObj.name.includes('currency') && fieldObj.name.match(/\d+$/) && addInstance.props.moduleName === 'Products') {
+                //     currencyArr.push({ label: fieldObj.lable, value: fieldObj.lable });
+                // }
+
+                if (fieldObj.editable && !(fieldObj.name.includes('currency') && fieldObj.type.name === 'double')) {
+                    let type = fieldObj.type.name;
+
+                    // if (type === 'currency' && fieldObj.name === 'unit_price' && addInstance.props.moduleName === 'Products') {
+                    //     type = 'picklist';
+                    //     fieldObj.type.picklistValues = currencyArr;
+                    // }
                     switch (type) {
                         case 'string':
                         case 'text' :
@@ -68,6 +76,7 @@ export const describeRecordHelper = async(addInstance) => {
                                     moduleName={addInstance.props.moduleName}
                                     formId={i}
                                     ref={(ref) => formInstance.push(ref)}
+                                    key={i}
                                     
                                 />
                                     <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
@@ -83,6 +92,7 @@ export const describeRecordHelper = async(addInstance) => {
                                     moduleName={addInstance.props.moduleName}
                                     formId={i}
                                     ref={(ref) => formInstance.push(ref)}
+                                    key={i}
                                 />
                                 <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
                                 </View>
@@ -97,6 +107,7 @@ export const describeRecordHelper = async(addInstance) => {
                                     moduleName={addInstance.props.moduleName}
                                     formId={i}
                                     ref={(ref) => formInstance.push(ref)}
+                                    key={i}
                                 />
                                 <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
                                 </View>
@@ -115,6 +126,7 @@ export const describeRecordHelper = async(addInstance) => {
                                     moduleName={addInstance.props.moduleName}
                                     formId={i}
                                     ref={(ref) => formInstance.push(ref)}
+                                    key={i}
                                 />
                                 <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
                                 </View>
@@ -129,6 +141,7 @@ export const describeRecordHelper = async(addInstance) => {
                                     moduleName={addInstance.props.moduleName}
                                     formId={i}
                                     ref={(ref) => formInstance.push(ref)}
+                                    key={i}
                                 />
                                 <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
                                 </View>
@@ -143,6 +156,7 @@ export const describeRecordHelper = async(addInstance) => {
                                     moduleName={addInstance.props.moduleName}
                                     formId={i}
                                     ref={(ref) => formInstance.push(ref)}
+                                    key={i}
                                 />
                                 <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
                                 </View>
@@ -160,6 +174,7 @@ export const describeRecordHelper = async(addInstance) => {
                                     ref={(ref) => { (ref !== null) ? formInstance.push(ref.getWrappedInstance()) : undefined; }}
                                     userId={loginDetails.userId}
                                     onCopyPriceDetails={addInstance.onCopyPriceDetails.bind(addInstance)}
+                                    key={i}
                                 />
                                 <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
                                 </View>
@@ -174,6 +189,7 @@ export const describeRecordHelper = async(addInstance) => {
                                     moduleName={addInstance.props.moduleName}
                                     formId={i}
                                     ref={(ref) => formInstance.push(ref)}
+                                    key={i}
                                 />
                                 <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
                                 </View>
@@ -188,6 +204,7 @@ export const describeRecordHelper = async(addInstance) => {
                                     moduleName={addInstance.props.moduleName}
                                     formId={i}
                                     ref={(ref) => formInstance.push(ref)}
+                                    key={i}
                                 />
                                 <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
                                 </View>
@@ -216,24 +233,25 @@ export const saveRecordHelper = (addInstance, headerInstance, dispatch) => {
     for (let i = 0; i < formInstance.length; i++) {
         const fieldName = formInstance[i].state.fieldName;
         const value = formInstance[i].state.saveValue;
+        
         jsonObj[fieldName] = value;
         if (addInstance.props.moduleName === 'Invoice') {
-            //do here
-            // console.log(formInstance);
+            if (fieldName !== 'quantity' || fieldName !== 'listprice') {
+                jsonObj[fieldName] = value;
+            }
             if (fieldName === 'productid' || fieldName === 'quantity' || fieldName === 'listprice') {
                 const productObj = {};
                 productObj[fieldName] = value;
                 lineitemsObj.push(productObj); 
-            }
+            } 
+        } else {
+            jsonObj[fieldName] = value;
         }
     }
     if (addInstance.props.moduleName === 'Invoice') {
         jsonObj['LineItems'] = lineitemsObj;
     }
-    // if (addInstance.props.moduleName === 'Invoice') {
-    //     //do here
-    //     console.log(formInstance);
-    // }
+   
     addRecordHelper(addInstance, headerInstance, jsonObj, dispatch);
 };
 
@@ -300,6 +318,7 @@ export const copyAddress = (addInstance, headerInstance) => {
         const loginDetails = auth.loginDetails;
     
         const formInstance = addInstance.state.inputInstance;
+        let emptyFlag = true;
         for (let i = 0; i < formInstance.length; i++) { 
             const { recordViewer } = store.getState();
             const contactAddress = recordViewer.contactAddress;
@@ -312,8 +331,6 @@ export const copyAddress = (addInstance, headerInstance) => {
                 targetAddress = organisationAddress;
             } 
 
-
-            // console.log(formInstance[i].state.fieldName);
             switch (formInstance[i].state.fieldName) {
                 case 'bill_street':
                 case 'ship_street':
@@ -344,21 +361,26 @@ export const copyAddress = (addInstance, headerInstance) => {
                 
             }
            
-            // console.log(checkValue);
             if (targetAddress !== undefined) {
                 if (checkValue !== '' && targetAddress.length > 0) {
-                    // console.log('checkvalue', checkValue);
+                    
                     targetAddress = targetAddress.filter((item) => item.name === checkValue).map(({ value }) => ({ value }));                    
-                    // console.log('result',targetAddress);
+                    
                     if (targetAddress.length > 0) {
                         formInstance[i].setState({ saveValue: (loginDetails.vtigerVersion === 7) ? targetAddress[0].value : targetAddress[0].value.value });               
-                        // formInstance[i].setState({ saveValue: targetAddress[0].value });               
+                        // formInstance[i].setState({ saveValue: targetAddress[0].value });    
+                        if (targetAddress[0].value !== '') {
+                            emptyFlag = false;
+                        }           
                     }     
                 } else {    
                     Toast.show('No values to copy');
                 } 
             } 
-        }         
+        }     
+        if (emptyFlag) {
+            Toast.show('Values are empty', Toast.LONG);
+        }    
     } catch (error) {
         // console.log(error);
     }

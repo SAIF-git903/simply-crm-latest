@@ -69,8 +69,7 @@ const moment = require('moment-timezone');
 
 export const fetchRefRecordHelper = async (listerInstance, dispatch) => {
     //First checking if any data in offline.
-    try {
-        
+    try {   
         const offlineData = JSON.parse(await AsyncStorage.getItem(listerInstance.props.moduleName));
         if (offlineData !== null) {
             //Offline data is avialable
@@ -273,11 +272,11 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
             }
         } else {
             let param = new FormData();
-            // appendParamForRef(listerInstance.props.moduleName, param);
-            param.append('_operation', 'listModuleRecords');
-            param.append('module', listerInstance.props.moduleName);
+            appendParamForRef(listerInstance.props.moduleName, param);
+            // param.append('_operation', 'listModuleRecords');
+            // param.append('module', listerInstance.props.moduleName);
             const responseJson = await getDatafromNet(param, dispatch);
-            // console.log(responseJson);
+            console.log(responseJson);
             if (responseJson.success) {
                 await getAndSaveDataVtiger(responseJson, listerInstance, true, false, false);
             } else {
@@ -1906,7 +1905,8 @@ export const getAddressDetails = async (referenceInstance, dispatch) => {
             
             param.append('_operation', 'fetchRecordWithGrouping');
             param.append('module', referenceInstance.state.selectedRefModule);
-            param.append('record', `${moduleId}x${referenceInstance.state.saveValue}`);
+            // param.append('record', `${moduleId}x${referenceInstance.state.saveValue}`);
+            param.append('record', referenceInstance.state.saveValue);
             param.append('_session', loginDetails.session);
 
             const response = await fetch((`${loginDetails.url}/modules/Mobile/api.php`), {
@@ -1920,6 +1920,7 @@ export const getAddressDetails = async (referenceInstance, dispatch) => {
             });
             const responseJson = await response.json();
             
+            // console.log(responseJson);
             if (responseJson.success) {    
                 const blocks = responseJson.result.record.blocks;
                 for (const block of blocks) {
@@ -1960,7 +1961,8 @@ export const getPriceDetails = async(referenceInstance) => {
             
             param.append('_operation', 'fetchRecordWithGrouping');
             param.append('module', referenceInstance.state.selectedRefModule);
-            param.append('record', `${productModuleId[0]}x${referenceInstance.state.saveValue}`);
+            // param.append('record', `${productModuleId[0]}x${referenceInstance.state.saveValue}`);
+            param.append('record', referenceInstance.state.saveValue);
             param.append('_session', loginDetails.session);
 
             const response = await fetch((`${loginDetails.url}/modules/Mobile/api.php`), {

@@ -102,7 +102,7 @@ class Header extends Component {
                 }
                 <Text style={styles.headerTextStyle}>{this.props.moduleLable}</Text>
                 { //Invoice copy option
-                (this.props.moduleName === 'Invoice') ? 
+                (this.props.moduleName === 'Invoice' && (this.props.contactAddress.length > 0 || this.props.organisationAddress.length > 0)) ? 
                   
                     <View style={{ width: 30, height: 30 }}>
                         <TouchableOpacity onPress={this.isCopyDialogueVisible.bind(this)}>
@@ -159,9 +159,10 @@ const styles = StyleSheet.create({
     }
 });
 
-const mapStateToProp = ({ event }) => {
+const mapStateToProp = ({ event, recordViewer }) => {
     const { isPortrait, width, height } = event;
-    return { isPortrait, width, height };
+    const { contactAddress, organisationAddress } = recordViewer;
+    return { isPortrait, width, height, contactAddress, organisationAddress };
 };
 
 export default connect(mapStateToProp)(Header);

@@ -308,14 +308,19 @@ export const saveEditRecordHelper = (editInstance, headerInstance, dispatch) => 
     for (let i = 0; i < formInstance.length; i++) {
         const fieldName = formInstance[i].state.fieldName;
         const value = formInstance[i].state.saveValue;
-        jsonObj[fieldName] = value;
+        
         if (editInstance.props.moduleName === 'Invoice') {
-            
+            if (fieldName !== 'quantity' || fieldName !== 'listprice') {
+                jsonObj[fieldName] = value;
+            }
+
             if (fieldName === 'productid' || fieldName === 'quantity' || fieldName === 'listprice') {
                 const productObj = {};
                 productObj[fieldName] = value;
                 lineitemsObj.push(productObj);
             }
+        } else {
+            jsonObj[fieldName] = value;
         }
     }
     if (editInstance.props.moduleName === 'Invoice') {

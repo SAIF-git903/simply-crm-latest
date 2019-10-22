@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, TextInput, Image, ActivityIndicator, Text, Animated, TouchableWithoutFeedback, 
-    StyleSheet, Alert } from 'react-native';
+    StyleSheet, Alert, Picker } from 'react-native';
 import { loginUser } from '../actions/';
+import { userUrlHelper, assignUrl } from '../helper';
 
 class LoginForm extends Component {
     static navigationOptions = {
@@ -13,8 +14,11 @@ class LoginForm extends Component {
         super(props);
         this.state = {
             url: '',
-            username: '',
+            email: '',
             password: '',
+            showUrlList: false,
+            urlList: [],
+            username: ''
         };
         this.handlePressIn = this.handlePressIn.bind(this);
         this.handlePressOut = this.handlePressOut.bind(this);
@@ -23,6 +27,7 @@ class LoginForm extends Component {
     componentWillMount() {
         this.animatedValue = new Animated.Value(0);
         this.buttonAnimatedValue = new Animated.Value(1);
+        // userUrlHelper('albert.xhani@outlook.com', '987654321');
     }
 
     componentDidMount() {
@@ -36,8 +41,8 @@ class LoginForm extends Component {
         this.setState({ ...this.state, url: text });
     }
 
-    onUsernameChanged(text) {
-        this.setState({ ...this.state, username: text });
+    onEmailChanged(text) {
+        this.setState({ ...this.state, email: text });
     }
 
     onPasswordChanged(text) {
@@ -45,20 +50,15 @@ class LoginForm extends Component {
     }
 
     onButtonPress() {
-        const { username, password, url } = this.state;
-        const https = url.substring(0, 6);
-        const http = url.substring(0, 5);
-
-        // if (https !== 'https:' && http !== 'http:') {
-        //     Alert.alert('Check your url', 'Url should start with http:// or https://.',
-        //     [
-        //       { text: 'Ok', onPress: () => {} },
-        //     ],
-        //     { cancelable: true }
-        //   );
-        // } else {
-            this.props.loginUser(username, password, url, this.props.navigation, this);
-        // }
+        const { email, password, url, username } = this.state;
+        
+        console.log(url, this.state.showUrlList);
+        if (this.state.showUrlList && url !== '') {
+            this.setState({ loading: true });
+            assignUrl(url, username, password, this.props.navigation, this, this.state.dispatch);
+        } else {
+            this.props.loginUser(email, password, '', this.props.navigation, this);
+        }
     }
 
     handlePressIn() {
@@ -91,58 +91,88 @@ class LoginForm extends Component {
     render() {
         const animatedStyle = { opacity: this.animatedValue };
         const buttonAnimatedStyle = { transform: [{ scale: this.buttonAnimatedValue }] };
+        
+        const options = this.state.urlList;
+
         return (
             <View style={{ padding: 5, height: 200, width: '90%', borderRadius: 5 }}>
                 {/* <Animated.View 
                 style={[styles.formInsideStyle, animatedStyle]}
                 >                 */}
-                    <View style={styles.inputformStyle}>
-                        <View style={styles.inputformImageHolderStyle}>
-                            <Image source={{ uri: 'url' }} style={styles.inputformImageStyle} />
-                        </View>
+                    {
+                        (this.state.showUrlList) ? 
+                            <View style={styles.inputformStyle}>
+                                <View style={styles.inputformImageHolderStyle}>
+                                    <Image source={{ uri: 'url' }} style={styles.inputformImageStyle} />
+                                </View> 
+                                <View style={{ flex: 1, margin: 5 }}>
+                                    <Picker 
+                                        mode={'dropdown'}
+                                        selectedValue={this.state.url} 
+                                        onValueChange={(itemValue) => {
+                                                if (itemValue !== 0) {
+                                                    this.setState({ url: itemValue });
+                                                    // this.onUrlPickPress(itemValue);
+                                                }
+                                            }
+                                        }
+                                        itemStyle={{ fontSize: 12 }}
+                                    >
+                                    <Picker.Item label='Please Select Url' value={0} />
+                                        {options.map((item, index) => {
+                                            return (<Picker.Item label={item.url} value={item.url} key={index} />); 
+                                        })}
+                                    </Picker>
+                                </View>
+                            </View> 
+                        :
+                            undefined
+                    }
+
+                        
                         {/* <View style={styles.verticalLine} /> */}
-                        <TextInput 
+                        {/* <TextInput 
                         clearButtonMode='always'
                         underlineColorAndroid='rgba(0,0,0,0)' 
                         style={styles.textInputStyle} 
                         placeholder='Enter URL'
                         placeholderTextColor='#ddd'
                         onSubmitEditing={() => { 
-                            this.refs.username.focus(); 
+                            this.refs.email.focus(); 
                         }}
                         autoCapitalize='none'
                         autoCorrect={false}
                         returnKeyType='next'
                         value={this.state.url}
                         onChangeText={this.onUrlChanged.bind(this)}
-                        />
-                    </View>
-                    {/* <View style={styles.horizontalLine} /> */}
+                        /> */}
+                    
+                    
                     <View style={styles.inputformStyle}>
                         <View style={styles.inputformImageHolderStyle}>
                             <Image
-                            source={{ uri: 'username' }}
+                            source={{ uri: 'emails' }}
                             style={styles.inputformImageStyle} 
                             />
                         </View>
-                        {/* <View style={styles.verticalLine} /> */}
+                       
                         <TextInput 
                         clearButtonMode='always'
                         underlineColorAndroid='rgba(0,0,0,0)' 
                         style={styles.textInputStyle} 
-                        placeholder='Enter Username'
+                        placeholder='Enter Email'
                         placeholderTextColor='#ddd'
-                        ref='username'
+                        ref='email'
                         onSubmitEditing={() => { 
                             this.refs.password.focus(); 
                         }} 
                         autoCapitalize='none'
                         returnKeyType='next'
-                        value={this.state.username}
-                        onChangeText={this.onUsernameChanged.bind(this)}
+                        value={this.state.email}
+                        onChangeText={this.onEmailChanged.bind(this)}
                         />
                     </View>
-                    {/* <View style={styles.horizontalLine} /> */}
+                    
                     <View style={styles.inputformStyle}>
                         <View style={styles.inputformImageHolderStyle}>
                             <Image 
@@ -165,7 +195,7 @@ class LoginForm extends Component {
                         onChangeText={this.onPasswordChanged.bind(this)}
                         />
                     </View>
-                    {/* <View style={styles.horizontalLine} /> */}
+                   
                     <View style={styles.buttonHolderStyle}>
                         <TouchableWithoutFeedback
                         onPressIn={this.handlePressIn} 

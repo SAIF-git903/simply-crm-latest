@@ -6,8 +6,10 @@ import { moduleSelected } from '../../actions';
 import { HEADER_COLOR } from '../../variables/themeColors';
 
 class Header extends Component {
+
     handleDisplayModule(value) {
         this.props.moduleSelected(value);
+        
     }
     
     render() {

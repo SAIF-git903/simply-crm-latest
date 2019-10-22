@@ -33,6 +33,7 @@ class Lister extends Component {
     }
 
     onRecordSelect(id, lable, index) {
+        console.log(id);
         let recordId = id;
         if (this.props.moduleName === 'Users') {
             recordId = `19x${id}`;
