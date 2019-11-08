@@ -25,32 +25,32 @@ export const renderDrawerView = async (loginDetails, drawerInstance) => {
 
     //.................................................................................
 
-    let homeButton = <ImageButton type={HOME} label={HOME} />;
+    let homeButton = <ImageButton type={HOME} label={HOME} key='home_menu' />;
     
     let menuButtons = [homeButton];
     
-    let menu = <Menu>{menuButtons}</Menu>;
+    let menu = <Menu key='menu1'>{menuButtons}</Menu>;
 
     drawerViews.push(menu);
 
-    console.log(loginDetails);
+    // console.log(loginDetails);
     for (const module of loginDetails.modules) {
         if (module.name === CONTACTS) {
-            homeButton = <ImageButton type={CONTACTS} label={module.label} module={module} />;
+            homeButton = <ImageButton type={CONTACTS} label={module.label} module={module} key='contact_menu' />;
         
             menuButtons = [homeButton];
         
-            menu = <Menu>{menuButtons}</Menu>;
+            menu = <Menu key='menu2'>{menuButtons}</Menu>;
 
             drawerViews.push(menu);
         }
 
         if (module.name === ACCOUNTS) {
-            homeButton = <ImageButton type={ACCOUNTS} label={module.label} module={module} />;
+            homeButton = <ImageButton type={ACCOUNTS} label={module.label} module={module} key='account_menu' />;
         
             menuButtons = [homeButton];
         
-            menu = <Menu>{menuButtons}</Menu>;
+            menu = <Menu key='menu3'>{menuButtons}</Menu>;
 
             drawerViews.push(menu);
         }
@@ -66,7 +66,7 @@ export const renderDrawerView = async (loginDetails, drawerInstance) => {
     const toolsSectionContent = [];
     const customSectionContent = [];
 
-    console.log('Modules', loginDetails.modules);
+    // console.log('Modules', loginDetails.modules);
 
     getSectionContent(marketSectionContent, salesSectionContent, inventorySectionContent, 
     supportSectionContent, projectSectionContent, toolsSectionContent, customSectionContent, loginDetails.modules);
@@ -91,6 +91,7 @@ export const renderDrawerView = async (loginDetails, drawerInstance) => {
         headerName={SALES} imageName={SALES_IMAGE}
         headerImage content={salesSectionContent} 
         contentHeight={salesSectionContent[0].length * DRAWER_COLUMN_TOTAL_HEIGHT}
+        key='sales_section'
     />);
 
     const inventorySection = (<Section 
@@ -135,6 +136,7 @@ export const renderDrawerView = async (loginDetails, drawerInstance) => {
         headerName={TOOLS} imageName={TOOLS_IMAGE}
         headerImage content={toolsSectionContent}
         contentHeight={toolsSectionContent[0].length * DRAWER_COLUMN_TOTAL_HEIGHT} 
+        key='tools_section'
     />);
 
     const customSection = (<Section 
@@ -148,7 +150,7 @@ export const renderDrawerView = async (loginDetails, drawerInstance) => {
         contentHeight={customSectionContent[0].length * DRAWER_COLUMN_TOTAL_HEIGHT}
     />);
     
-    console.log('len', marketSectionContent.length);
+    // console.log('len', marketSectionContent.length);
     const section = [];
     if (marketSectionContent.length > 0) {
         //section.push(marketingSection);
@@ -178,7 +180,7 @@ export const renderDrawerView = async (loginDetails, drawerInstance) => {
         //section.push(customSection);
     }
 
-    const sectionHolder = <SectionHolder>{section}</SectionHolder>;
+    const sectionHolder = <SectionHolder key='section_holder'>{section}</SectionHolder>;
 
     drawerViews.push(sectionHolder);
 

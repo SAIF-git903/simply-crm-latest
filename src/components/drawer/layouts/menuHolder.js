@@ -71,7 +71,7 @@ class MenuHolder extends Component {
     }
 
     render() {
-        console.log(this.props.module.name.toLowerCase());
+        // console.log(this.props.module.name.toLowerCase());
        return (
             <TouchableOpacity onPress={this.onButtonPress.bind(this)}>
                 <View style={[styles.holder]}>

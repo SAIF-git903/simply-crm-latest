@@ -93,7 +93,7 @@ class AccountsRecord extends Component {
                             {this.props.item.accountsLable}
                             </Text>
                             : 
-                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray', color: 'gray' }}>
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
                                 no lable
                             </Text>
                         }
@@ -114,7 +114,7 @@ class AccountsRecord extends Component {
                                 {this.props.item.phone}
                             </Text>
                             : 
-                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray'}}>
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
                                 no phone number
                             </Text>
                         }

@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     backgroundStyle: {
         width: '100%',
         flex: 1,
-        backgroundColor: 'red'
+        // backgroundColor: 'red'
     }
 });
 const mapStateToProps = ({ drawer }) => {

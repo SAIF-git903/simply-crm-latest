@@ -38,7 +38,7 @@ class InvoiceRecord extends Component {
     }
 
     render() {
-        console.log(this.props.item);
+        // console.log(this.props.item);
         const swipeOutButtons = [{
             component: (
             <View 
@@ -115,6 +115,16 @@ class InvoiceRecord extends Component {
                             no amount
                         </Text>
                     }
+                    {
+                        (this.props.item.invoiceAccountId !== '') ?
+                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
+                            {this.props.item.invoiceAccountId}
+                        </Text> :
+                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
+                            no account id
+                        </Text>
+                    } 
+                    
                     </View>
                     </TouchableOpacity>
                 </SwipeOut>
@@ -142,7 +152,7 @@ class InvoiceRecord extends Component {
 const styles = StyleSheet.create({
     backgroundStyle: {
         flex: 1,
-        height: 70,
+        height: 100,
         borderColor: '#d3d3d3',
         paddingLeft: 5,
         justifyContent: 'space-around',

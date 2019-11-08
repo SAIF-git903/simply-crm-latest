@@ -73,7 +73,7 @@ export default class SectionHeader extends Component {
     }
 
     render() {
-        console.log(this.props.imageName);
+        // console.log(this.props.imageName);
         return (
             <TouchableWithoutFeedback onPress={this.onHeaderPress.bind(this)}>
                 <View style={[styles.headerBackground, { backgroundColor: this.props.backgroundColor }]}>

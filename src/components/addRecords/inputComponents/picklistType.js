@@ -22,7 +22,7 @@ class PickListType extends Component {
         // if (validLable === 'Company country') {
         //     this.setState({ saveValue: '' });
         // }
-        console.log(this.state.saveValue);
+        // console.log(this.state.saveValue);
         return (
             <View style={styles.inputHolder}>
             {

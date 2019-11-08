@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import Header from './header';
 import Viewer from './viewer';
-import { saveRecordHelper, } from '../../helper';
+import { saveRecordHelper, copyAddress } from '../../helper';
 
 
 class AddRecords extends Component {
@@ -15,6 +15,10 @@ class AddRecords extends Component {
         //console.log('call viewer');
         headerInstance.setState({ loading: true });
         saveRecordHelper(this.viewer, headerInstance, this.props.dispatch);
+    }
+
+    showCopyOptions(headerInstance) {
+        copyAddress(this.viewer, headerInstance);
     }
 
     render() {
@@ -33,6 +37,7 @@ class AddRecords extends Component {
                 moduleId={this.props.moduleId}
                 moduleLable={this.props.moduleLable} 
                 callViewer={this.callViewer.bind(this)}
+                showCopyOptions={this.showCopyOptions.bind(this)}
                 />
             </View>
         );

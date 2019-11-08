@@ -1,6 +1,7 @@
 export const LOGINDETAILSKEY = 'logindetailskey';
 export const LOADER = 'loader';
 export const LOGINFORM = 'loginform';
+export const URLDETAILSKEY = 'urldetailskey';
 
 //contacts module strings
 export const CONTACTS_LIST_KEY = 'contacts_list';

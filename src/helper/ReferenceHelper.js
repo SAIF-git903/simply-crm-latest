@@ -57,7 +57,7 @@ import CurrencyRecord from
 import DocumentFoldersRecord from 
 '../components/addRecords/referenceRecordLister/recordItems/documentFoldersRecord';
 
-import { UPDATE_RECORD_VIEWER } from '../actions/types';
+import { UPDATE_RECORD_VIEWER, COPY_CONTACT_ADDRESS, COPY_ORGANISATION_ADDRESS } from '../actions/types';
 import { CAMPAIGNS, VENDORS, FAQ, QUOTES, PURCHASEORDER, SALESORDER,
 INVOICE, PRICEBOOKS, CALENDAR, LEADS, ACCOUNTS, CONTACTS, OPPORTUNITIES,
 PRODUCTS, DOCUMENTS, TICKETS, PBXMANAGER, SERVICECONTRACTS, SERVICES,
@@ -69,7 +69,7 @@ const moment = require('moment-timezone');
 
 export const fetchRefRecordHelper = async (listerInstance, dispatch) => {
     //First checking if any data in offline.
-    try {
+    try {   
         const offlineData = JSON.parse(await AsyncStorage.getItem(listerInstance.props.moduleName));
         if (offlineData !== null) {
             //Offline data is avialable
@@ -248,7 +248,7 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
             //console.log(listerInstance.state.pageToTake);
             param.append('page', listerInstance.state.pageToTake);
             const responseJson = await getDatafromNet(param, dispatch);
-            console.log(responseJson);
+            // console.log(responseJson);
             if (responseJson.success) {
                 await getAndSaveDataVtiger(responseJson, listerInstance, false, false, false);
             } else {
@@ -274,8 +274,9 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
             let param = new FormData();
             appendParamForRef(listerInstance.props.moduleName, param);
             // param.append('_operation', 'listModuleRecords');
-            param.append('module', listerInstance.props.moduleName);
+            // param.append('module', listerInstance.props.moduleName);
             const responseJson = await getDatafromNet(param, dispatch);
+            console.log(responseJson);
             if (responseJson.success) {
                 await getAndSaveDataVtiger(responseJson, listerInstance, true, false, false);
             } else {
@@ -299,7 +300,7 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
             }
         }
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         if (!offlineAvailable) {
             //Show error to user that something went wrong.
             listerInstance.setState({ 
@@ -391,9 +392,11 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
             break;
         }
         case INVOICE: {
+            // console.log('Invoice records', records);
             for (const record of records) {
                 const modifiedRecord = { invoiceLable: record.subject,
                                             invoiceStatus: record.invoicestatus,
+                                            invoiceAmount: record.purchase_cost,
                                             id: record.id };
                 data.push(modifiedRecord);
             }
@@ -430,7 +433,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
                 const modifiedRecord = { accountsLable: record.accountname,
                                             website: record.website,
                                             phone: record.phone,
-                                            email: record.email,
+                                            email: record.email1,
                                             id: record.id };
                 data.push(modifiedRecord);
             }
@@ -670,7 +673,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
 // };
 
 export const appendParamForRef = (moduleName, param) => {
-    console.log('Reference module', moduleName);
+    // conssole.log('Reference module', moduleName);
     switch (moduleName) {
         case CAMPAIGNS:
             param.append('_operation', 'query');
@@ -780,6 +783,7 @@ export const appendParamForRef = (moduleName, param) => {
             param.append('_operation', 'query');
             param.append('query', 'select * from DocumentFolders');
             break;
+            
         default:
             param.append('_operation', 'listModuleRecords');
             param.append('module', moduleName);
@@ -1840,3 +1844,158 @@ export const searchRefRecordListRendererHelper = (listerInstance) => {
             );
     }
 };
+
+export const getUserName = async (referenceInstance) => {
+    try {
+        const { auth } = store.getState();
+        const loginDetails = auth.loginDetails;
+
+        const param = new FormData();
+        
+        param.append('_operation', 'listModuleRecords');
+        param.append('module', 'Users');
+        param.append('_session', loginDetails.session);
+        const response = await fetch((`${loginDetails.url}/modules/Mobile/api.php`), {
+            method: 'POST',
+            headers: {
+            // 'Accept': 'application/json',
+            // 'Content-Type': 'multipart/form-data; charset=utf-8',
+            'cache-control': 'no-cache',
+            },
+            body: param
+        });
+        const responseJson = await response.json();
+        
+       
+        if (responseJson.success) {
+            
+            const records = responseJson.result.records;
+            for (const record of records) {
+                
+                if (record.id === loginDetails.userId) {
+                    const userName = `${record.first_name} ${record.last_name}`;
+                    referenceInstance.setState({ saveValue: loginDetails.userId, referenceValue: userName });
+                    
+                    break;
+                }
+            }
+
+        }
+    } catch (error) {
+        // console.log(error);
+    }
+};
+
+export const getAddressDetails = async (referenceInstance, dispatch) => {
+
+    //Get record details
+    try {
+            const { auth } = store.getState();
+            const loginDetails = auth.loginDetails;
+
+            const modules = loginDetails.modules;
+       
+            const contactModuleId = modules.filter((item) => item.name === 'Contacts').map(({ id }) => (id));                    
+            const accountModuleId = modules.filter((item) => item.name === 'Accounts').map(({ id }) => (id));                    
+
+            const moduleId = (referenceInstance.state.selectedRefModule === 'Contacts') ? contactModuleId[0] : accountModuleId[0];
+            
+    
+            const param = new FormData();
+            
+            param.append('_operation', 'fetchRecordWithGrouping');
+            param.append('module', referenceInstance.state.selectedRefModule);
+            // param.append('record', `${moduleId}x${referenceInstance.state.saveValue}`);
+            param.append('record', referenceInstance.state.saveValue);
+            param.append('_session', loginDetails.session);
+
+            const response = await fetch((`${loginDetails.url}/modules/Mobile/api.php`), {
+                method: 'POST',
+                headers: {
+                // 'Accept': 'application/json',
+                // 'Content-Type': 'multipart/form-data; charset=utf-8',
+                'cache-control': 'no-cache',
+                },
+                body: param
+            });
+            const responseJson = await response.json();
+            
+            // console.log(responseJson);
+            if (responseJson.success) {    
+                const blocks = responseJson.result.record.blocks;
+                for (const block of blocks) {
+                    if (block.label === 'Address Details') {
+                        if (referenceInstance.state.selectedRefModule === 'Contacts') {
+                            dispatch({ type: COPY_CONTACT_ADDRESS, 
+                                payload: { 
+                                    contactAddress: block.fields
+                                } 
+                            });
+                        } 
+                        if (referenceInstance.state.selectedRefModule === 'Accounts') {
+                            dispatch({ type: COPY_ORGANISATION_ADDRESS, 
+                                payload: { 
+                                    organisationAddress: block.fields
+                                } 
+                            });
+                        } 
+                    }
+                }
+            }   
+    } catch (error) {
+        // console.log('Error occured', error);
+    }
+};
+
+export const getPriceDetails = async(referenceInstance) => {
+//Get record details
+    try {
+            const { auth } = store.getState();
+            const loginDetails = auth.loginDetails;
+
+            const modules = loginDetails.modules;
+       
+            const productModuleId = modules.filter((item) => item.name === 'Products').map(({ id }) => (id));                    
+
+            const param = new FormData();
+            
+            param.append('_operation', 'fetchRecordWithGrouping');
+            param.append('module', referenceInstance.state.selectedRefModule);
+            // param.append('record', `${productModuleId[0]}x${referenceInstance.state.saveValue}`);
+            param.append('record', referenceInstance.state.saveValue);
+            param.append('_session', loginDetails.session);
+
+            const response = await fetch((`${loginDetails.url}/modules/Mobile/api.php`), {
+                method: 'POST',
+                headers: {
+                // 'Accept': 'application/json',
+                // 'Content-Type': 'multipart/form-data; charset=utf-8',
+                'cache-control': 'no-cache',
+                },
+                body: param
+            });
+            const responseJson = await response.json();
+            
+            if (responseJson.success) {
+                // console.log(responseJson);
+                const blocks = responseJson.result.record.blocks;
+                let priceFields;
+                let stockFields;
+
+                const label = (referenceInstance.state.selectedRefModule === 'Products') ? 'Stock Information' : 'Service Details';
+                for (const block of blocks) {
+                    if (block.label === 'Pricing Information') {
+                        priceFields = block.fields;     
+                    } 
+
+                    if (block.label === label) {
+                        stockFields = block.fields;
+                    }
+                }
+                referenceInstance.props.onCopyPriceDetails(priceFields, stockFields);
+            }   
+    } catch (error) {
+        // console.log('Error occured', error);
+    }
+};
+

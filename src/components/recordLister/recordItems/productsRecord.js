@@ -153,7 +153,7 @@ class ProductsRecord extends Component {
 const styles = StyleSheet.create({
     backgroundStyle: {
         flex: 1,
-        height: 125,
+        height: 100,
         borderColor: '#d3d3d3',
         paddingLeft: 5,
         justifyContent: 'space-around',

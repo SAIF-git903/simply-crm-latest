@@ -22,7 +22,8 @@ export const describeRecordHelper = async(addInstance) => {
     param.append('_operation', 'describe');
     param.append('module', addInstance.props.moduleName);
     //console.log(param);
-    
+
+    // console.log('Login Details', loginDetails);
     try {    
         const response = await fetch((`${loginDetails.url}/modules/Mobile/api.php`), {
             method: 'POST',
@@ -37,11 +38,11 @@ export const describeRecordHelper = async(addInstance) => {
         
         console.log(responseJson);
         if (responseJson.success) {
-            
             const fields = responseJson.result.describe.fields;
             const formArray = [];
             const formInstance = [];
             let i = 0;
+            const currencyArr = [];
             for (const fArr of fields) {
                 i++;
                 const fieldObj = { name: fArr.name,
@@ -51,8 +52,17 @@ export const describeRecordHelper = async(addInstance) => {
                                     nullable: fArr.nullable,
                                     editable: fArr.editable,
                                     default: fArr.default };
-                if (fieldObj.editable) {
-                    const type = fieldObj.type.name;
+                // if (fieldObj.name.includes('currency') && fieldObj.name.match(/\d+$/) && addInstance.props.moduleName === 'Products') {
+                //     currencyArr.push({ label: fieldObj.lable, value: fieldObj.lable });
+                // }
+
+                if (fieldObj.editable && !(fieldObj.name.includes('currency') && fieldObj.type.name === 'double')) {
+                    let type = fieldObj.type.name;
+
+                    // if (type === 'currency' && fieldObj.name === 'unit_price' && addInstance.props.moduleName === 'Products') {
+                    //     type = 'picklist';
+                    //     fieldObj.type.picklistValues = currencyArr;
+                    // }
                     switch (type) {
                         case 'string':
                         case 'text' :
@@ -66,6 +76,8 @@ export const describeRecordHelper = async(addInstance) => {
                                     moduleName={addInstance.props.moduleName}
                                     formId={i}
                                     ref={(ref) => formInstance.push(ref)}
+                                    key={i}
+                                    
                                 />
                                     <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
                                 </View>
@@ -80,6 +92,7 @@ export const describeRecordHelper = async(addInstance) => {
                                     moduleName={addInstance.props.moduleName}
                                     formId={i}
                                     ref={(ref) => formInstance.push(ref)}
+                                    key={i}
                                 />
                                 <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
                                 </View>
@@ -94,6 +107,7 @@ export const describeRecordHelper = async(addInstance) => {
                                     moduleName={addInstance.props.moduleName}
                                     formId={i}
                                     ref={(ref) => formInstance.push(ref)}
+                                    key={i}
                                 />
                                 <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
                                 </View>
@@ -112,6 +126,7 @@ export const describeRecordHelper = async(addInstance) => {
                                     moduleName={addInstance.props.moduleName}
                                     formId={i}
                                     ref={(ref) => formInstance.push(ref)}
+                                    key={i}
                                 />
                                 <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
                                 </View>
@@ -126,6 +141,7 @@ export const describeRecordHelper = async(addInstance) => {
                                     moduleName={addInstance.props.moduleName}
                                     formId={i}
                                     ref={(ref) => formInstance.push(ref)}
+                                    key={i}
                                 />
                                 <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
                                 </View>
@@ -140,6 +156,7 @@ export const describeRecordHelper = async(addInstance) => {
                                     moduleName={addInstance.props.moduleName}
                                     formId={i}
                                     ref={(ref) => formInstance.push(ref)}
+                                    key={i}
                                 />
                                 <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
                                 </View>
@@ -155,6 +172,9 @@ export const describeRecordHelper = async(addInstance) => {
                                     moduleName={addInstance.props.moduleName}
                                     formId={i}
                                     ref={(ref) => { (ref !== null) ? formInstance.push(ref.getWrappedInstance()) : undefined; }}
+                                    userId={loginDetails.userId}
+                                    onCopyPriceDetails={addInstance.onCopyPriceDetails.bind(addInstance)}
+                                    key={i}
                                 />
                                 <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
                                 </View>
@@ -169,6 +189,7 @@ export const describeRecordHelper = async(addInstance) => {
                                     moduleName={addInstance.props.moduleName}
                                     formId={i}
                                     ref={(ref) => formInstance.push(ref)}
+                                    key={i}
                                 />
                                 <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
                                 </View>
@@ -183,6 +204,7 @@ export const describeRecordHelper = async(addInstance) => {
                                     moduleName={addInstance.props.moduleName}
                                     formId={i}
                                     ref={(ref) => formInstance.push(ref)}
+                                    key={i}
                                 />
                                 <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
                                 </View>
@@ -211,25 +233,25 @@ export const saveRecordHelper = (addInstance, headerInstance, dispatch) => {
     for (let i = 0; i < formInstance.length; i++) {
         const fieldName = formInstance[i].state.fieldName;
         const value = formInstance[i].state.saveValue;
+        
         jsonObj[fieldName] = value;
         if (addInstance.props.moduleName === 'Invoice') {
-            //do here
-            console.log(formInstance);
+            if (fieldName !== 'quantity' || fieldName !== 'listprice') {
+                jsonObj[fieldName] = value;
+            }
             if (fieldName === 'productid' || fieldName === 'quantity' || fieldName === 'listprice') {
                 const productObj = {};
                 productObj[fieldName] = value;
-                lineitemsObj.push(productObj);
-                
-            }
+                lineitemsObj.push(productObj); 
+            } 
+        } else {
+            jsonObj[fieldName] = value;
         }
     }
     if (addInstance.props.moduleName === 'Invoice') {
         jsonObj['LineItems'] = lineitemsObj;
     }
-    // if (addInstance.props.moduleName === 'Invoice') {
-    //     //do here
-    //     console.log(formInstance);
-    // }
+   
     addRecordHelper(addInstance, headerInstance, jsonObj, dispatch);
 };
 
@@ -256,10 +278,11 @@ const addRecordHelper = async(addInstance, headerInstance, jsonObj, dispatch) =>
             body: param
         });
         
+        console.log(param);
         const responseJson = await response.json();
-        
+        console.log(response);
         if (responseJson.success) {
-            //console.log(responseJson);
+            console.log(responseJson);
             headerInstance.setState({ loading: false });
             Toast.show('Successfully Added');
             dispatch(saveSuccess('saved'));
@@ -272,7 +295,7 @@ const addRecordHelper = async(addInstance, headerInstance, jsonObj, dispatch) =>
             addInstance.props.navigation.dispatch(resetAction);
             //addInstance.props.navigation.goBack(null);
         } else {
-            console.log(responseJson);
+            // console.log(responseJson);
             //console.log('Failed');
             headerInstance.setState({ loading: false });
             if (responseJson.error.message === '') {
@@ -283,8 +306,111 @@ const addRecordHelper = async(addInstance, headerInstance, jsonObj, dispatch) =>
             Toast.show('Added Failed');
         } 
     } catch (Error) {
-        //console.log(Error);
+        console.log(Error);
         headerInstance.setState({ loading: false });
         Alert.alert('', 'Api response error');
+    }
+};
+
+export const copyAddress = (addInstance, headerInstance) => {
+    try {
+        const { auth } = store.getState();
+        const loginDetails = auth.loginDetails;
+    
+        const formInstance = addInstance.state.inputInstance;
+        let emptyFlag = true;
+        for (let i = 0; i < formInstance.length; i++) { 
+            const { recordViewer } = store.getState();
+            const contactAddress = recordViewer.contactAddress;
+            const organisationAddress = recordViewer.organisationAddress;
+            let targetAddress = contactAddress;
+            let checkValue; 
+
+            // console.log(contactAddress);
+            if (headerInstance.state.copyFrom === 'Organisation') {
+                targetAddress = organisationAddress;
+            } 
+
+            switch (formInstance[i].state.fieldName) {
+                case 'bill_street':
+                case 'ship_street':
+                    checkValue = (headerInstance.state.copyFrom === 'Contacts') ? 'mailingstreet' : formInstance[i].state.fieldName;                   
+                break;
+                case 'bill_city':
+                case 'ship_city':
+                    checkValue = (headerInstance.state.copyFrom === 'Contacts') ? 'mailingcity' : formInstance[i].state.fieldName;
+                break;
+                case 'bill_state':
+                case 'ship_state':
+                    checkValue = (headerInstance.state.copyFrom === 'Contacts') ? 'mailingstate' : formInstance[i].state.fieldName;
+                break;
+                case 'bill_code':
+                case 'ship_code':
+                    checkValue = (headerInstance.state.copyFrom === 'Contacts') ? 'mailingzip' : formInstance[i].state.fieldName;
+                break;
+                case 'bill_country':
+                case 'ship_country':
+                    checkValue = (headerInstance.state.copyFrom === 'Contacts') ? 'mailingcountry' : formInstance[i].state.fieldName;
+                break;
+                case 'bill_pobox':
+                case 'ship_pobox':
+                    checkValue = (headerInstance.state.copyFrom === 'Contacts') ? 'mailingpobox' : formInstance[i].state.fieldName;
+                break;
+
+                default:
+                
+            }
+           
+            if (targetAddress !== undefined) {
+                if (checkValue !== '' && targetAddress.length > 0) {
+                    
+                    targetAddress = targetAddress.filter((item) => item.name === checkValue).map(({ value }) => ({ value }));                    
+                    
+                    if (targetAddress.length > 0) {
+                        formInstance[i].setState({ saveValue: (loginDetails.vtigerVersion === 7) ? targetAddress[0].value : targetAddress[0].value.value });               
+                        // formInstance[i].setState({ saveValue: targetAddress[0].value });    
+                        if (targetAddress[0].value !== '') {
+                            emptyFlag = false;
+                        }           
+                    }     
+                } else {    
+                    Toast.show('No values to copy');
+                } 
+            } 
+        }     
+        if (emptyFlag) {
+            Toast.show('Values are empty', Toast.LONG);
+        }    
+    } catch (error) {
+        // console.log(error);
+    }
+};
+
+export const copyPriceDetails = (addInstance, priceFields, stockFields) => {
+    try {
+        const { auth } = store.getState();
+        const loginDetails = auth.loginDetails;
+
+        const formInstance = addInstance.state.inputInstance;
+        let pfields = priceFields;
+        let sfields = stockFields;
+
+        for (let i = 0; i < formInstance.length; i++) { 
+            if (formInstance[i].state.fieldName === 'listprice') {
+                pfields = pfields.filter((item) => item.name === 'unit_price').map(({ value }) => ({ value }));    
+                formInstance[i].setState({ saveValue: (loginDetails.vtigerVersion === 7) ? pfields[0].value : pfields[0].value.value });               
+                // formInstance[i].setState({ saveValue: pfields[0].value });               
+            }
+            if (formInstance[i].state.fieldName === 'quantity') {
+                sfields = sfields.filter((item) => item.name === 'qty_per_unit').map(({ value }) => ({ value }));
+                const qunatity = (loginDetails.vtigerVersion === 7) ? sfields[0].value : sfields[0].value.value;   
+                // const qunatity = (loginDetails.vtigerVersion === 7) ? sfields : sfields[0].value.value;  
+                // const qunatity = sfields[0].value;  
+                formInstance[i].setState({ saveValue: (qunatity === '0.00') ? '1' : qunatity });               
+                
+            } 
+        }         
+    } catch (error) {
+        // console.log(error);
     }
 };

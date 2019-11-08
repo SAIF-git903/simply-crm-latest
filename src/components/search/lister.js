@@ -38,7 +38,7 @@ class Lister extends Component {
 
 
     getRecords() {
-        console.log(this.props.moduleId);
+        // console.log(this.props.moduleId);
         this.setState({ loading: true, data: [], selectedIndex: -1, statusText: 'Fetching Record', statusTextColor: '#000000' });
         this.props.dispatch(fetchRecord(this));
     }

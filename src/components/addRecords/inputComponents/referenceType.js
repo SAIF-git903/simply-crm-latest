@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, Alert } from 'react-native';
 import { SinglePickerMaterialDialog } from 'react-native-material-dialog';
 import { connect } from 'react-redux';
+import { COPY_CONTACT_ADDRESS } from '../../../actions/types';
+import { getUserName, getAddressDetails, getPriceDetails } from '../../../helper';
 
 
 const mapStateToProps = ({ recordViewer }) => {
@@ -19,6 +21,7 @@ class ReferenceType extends Component {
                         formId: 0,
                         saveValue: this.props.obj.default,
                         fieldName: this.props.obj.name,
+                        selectedRefModule: ''
                      };
     }
 
@@ -28,16 +31,26 @@ class ReferenceType extends Component {
             referenceValue: this.props.label
             //referenceValue: label
         });
+        this.assignUserId();
     }
 
     componentWillReceiveProps(newProps) {
         this.props = newProps;
-
+        
         if (this.state.formId === this.props.uniqueId) {
             this.setState({ 
                 referenceValue: this.props.label, 
                 saveValue: this.props.recordId,
                 uniqueId: this.props.uniqueId
+            }, () => { 
+                if (this.props.moduleName === 'Invoice') {
+                    if (this.state.selectedRefModule === 'Contacts' || this.state.selectedRefModule === 'Accounts') {
+                        this.assignAddress(); 
+                    }
+                    if (this.state.selectedRefModule === 'Products' || this.state.selectedRefModule === 'Services' ) {
+                        this.assignPriceDetails();
+                    }  
+                }
             });
         }
     }
@@ -54,12 +67,26 @@ class ReferenceType extends Component {
                     this.setState({ dialogueVisible: true });
                 } else {
                     const { navigate } = this.props.navigate;
+                    this.setState({ selectedRefModule: type.refersTo[0] });
                     navigate('ReferenceScreen', { selectedModule: type.refersTo[0], uniqueId: this.state.formId });
                 }       
             } 
         }     
     }
  
+    assignUserId() {
+        if (this.props.obj.name === 'assigned_user_id') {
+            getUserName(this);
+        }
+    }
+
+    assignAddress() {
+        getAddressDetails(this, this.props.dispatch);
+    }
+
+    assignPriceDetails() {
+        getPriceDetails(this);
+    }
 
     render() {
         const mandatory = this.props.obj.mandatory;
@@ -76,7 +103,9 @@ class ReferenceType extends Component {
 
         const validLable = (this.props.obj.lable.indexOf(amp) !== -1) ? this.props.obj.lable.replace('&amp;', '&') : this.props.obj.lable; 
 
-        
+        // if (this.props.obj.name === 'assigned_user_id') {
+        //     this.se
+        // }
         return (
             <View style={styles.inputHolder}>
             {
@@ -100,6 +129,7 @@ class ReferenceType extends Component {
                 </TouchableOpacity>
                  
                 </View>  
+                
             
                 <SinglePickerMaterialDialog
                 title={'Choose one'}
@@ -109,14 +139,12 @@ class ReferenceType extends Component {
                 onCancel={() => this.setState({ dialogueVisible: false })}
                 onOk={(result) => {
                     //console.log(result);
-                    
-                    
                     if (result.selectedItem === undefined) {
                         //console.log('undefined');
                         this.setState({ dialogueVisible: false });
                     } else {
                         navigate('ReferenceScreen', { selectedModule: result.selectedItem.label, uniqueId: this.state.formId });
-                        this.setState({ dialogueSelectedValue: result.selectedItem });
+                        this.setState({ dialogueSelectedValue: result.selectedItem, selectedRefModule: result.selectedItem.label });
                         this.setState({ dialogueVisible: false });
                     }
                 }}
@@ -170,4 +198,5 @@ const styles = StyleSheet.create(
 
 
 export default connect(mapStateToProps, null, null, { withRef: true })(ReferenceType);
+// export default connect(mapStateToProps, null, null, { withRef: true })(ReferenceType);
 //export default ReferenceType;

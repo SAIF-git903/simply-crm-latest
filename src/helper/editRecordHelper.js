@@ -35,7 +35,7 @@ export const describeEditRecordHelper = async(editInstance) => {
         });
         const responseJson = await response.json();
         
-        console.log(responseJson);
+        // console.log(responseJson);
         if (responseJson.success) {
             //console.log(responseJson);
             const fields = responseJson.result.describe.fields;
@@ -222,6 +222,7 @@ export const getDataHelper = async(editInstance) => {
             param.append('_session', loginDetails.session);
             param.append('_operation', 'fetchRecord');
             param.append('record', editInstance.state.recordId);
+            // param.append('record', editInstance.state.id);
             param.append('module', editInstance.props.moduleName);
         }
         const response = await fetch((`${loginDetails.url}/modules/Mobile/api.php`), {
@@ -235,7 +236,8 @@ export const getDataHelper = async(editInstance) => {
         });
 
         const responseJson = await response.json();
-        console.log(responseJson);
+        // console.log(responseJson);
+        // console.log(param);
         
         if (responseJson.success) {
             const record = responseJson.result.record;
@@ -289,7 +291,7 @@ export const getDataHelper = async(editInstance) => {
                     } 
                 }
             }
-            console.log(formInstance[0].state.saveValue);
+            // console.log(formInstance[0].state.saveValue);
         } else {
             Alert.alert('Api error', 'Api response error.Vtiger is modified');
         }
@@ -306,14 +308,19 @@ export const saveEditRecordHelper = (editInstance, headerInstance, dispatch) => 
     for (let i = 0; i < formInstance.length; i++) {
         const fieldName = formInstance[i].state.fieldName;
         const value = formInstance[i].state.saveValue;
-        jsonObj[fieldName] = value;
+        
         if (editInstance.props.moduleName === 'Invoice') {
-            
+            if (fieldName !== 'quantity' || fieldName !== 'listprice') {
+                jsonObj[fieldName] = value;
+            }
+
             if (fieldName === 'productid' || fieldName === 'quantity' || fieldName === 'listprice') {
                 const productObj = {};
                 productObj[fieldName] = value;
                 lineitemsObj.push(productObj);
             }
+        } else {
+            jsonObj[fieldName] = value;
         }
     }
     if (editInstance.props.moduleName === 'Invoice') {
@@ -326,14 +333,15 @@ const editRecordHelper = async(editInstance, headerInstance, jsonObj, dispatch) 
     const { auth } = store.getState();
     const loginDetails = auth.loginDetails;
     const obj = JSON.stringify(jsonObj);
-    console.log(obj);
+    // console.log(obj);
     const param = new FormData();
     param.append('_session', loginDetails.session);
     param.append('_operation', 'saveRecord');
     param.append('module', editInstance.props.moduleName);
-    param.append('record', editInstance.state.id);
+    param.append('record', editInstance.state.recordId);
     param.append('values', obj);
     
+    console.log(param);
     try {    
         const response = await fetch((`${loginDetails.url}/modules/Mobile/api.php`), {
             method: 'POST',
@@ -347,6 +355,7 @@ const editRecordHelper = async(editInstance, headerInstance, jsonObj, dispatch) 
         
         const responseJson = await response.json();
         
+        console.log(responseJson);
         if (responseJson.success) {
             //console.log(responseJson);
             Toast.show('Successfully Edited');
@@ -361,7 +370,7 @@ const editRecordHelper = async(editInstance, headerInstance, jsonObj, dispatch) 
             editInstance.props.navigation.dispatch(resetAction);
             //editInstance.props.navigation.goBack(null);
         } else {
-            console.log(responseJson);
+            // console.log(responseJson);
             //console.log('Failed');
             headerInstance.setState({ loading: false });
             if (responseJson.error.message === '') {
@@ -372,7 +381,7 @@ const editRecordHelper = async(editInstance, headerInstance, jsonObj, dispatch) 
             Toast.show('Edited Failed');
         } 
     } catch (Error) {
-        console.log(Error);
+        // console.log(Error);
         headerInstance.setState({ loading: false });
         Alert.alert('', 'Api response error');
     }

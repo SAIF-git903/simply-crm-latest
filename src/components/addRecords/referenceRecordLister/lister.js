@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, ActivityIndicator, Text } from 'react-native';
-import store from '../../../store';
 import StatusView from './statusView';
 import { commonStyles } from '../../../styles/common';
 import { fetchRefRecord, refreshRefRecord, getNextRefPageRecord, markReferenceLabel } from '../../../actions';
@@ -34,6 +33,7 @@ class Lister extends Component {
     }
 
     onRecordSelect(id, lable, index) {
+        console.log(id);
         let recordId = id;
         if (this.props.moduleName === 'Users') {
             recordId = `19x${id}`;
@@ -44,18 +44,16 @@ class Lister extends Component {
     }
 
     onEndReached() {
-        if (!this.onEndReachedCalledDuringMomentum) {
+        // if (!this.onEndReachedCalledDuringMomentum) {
             if (this.state.nextPage) {
-                this.props.dispatch(getNextRefPageRecord(this));
+                this.setState({ pageToTake: this.state.pageToTake + 1 }, () => this.props.dispatch(getNextRefPageRecord(this)));
             }
-        }
+        // }
     }
 
-    getModuleId() {
-        const { auth } = store.getState();
-        const loginDetails = auth.loginDetails;
-        console.log(loginDetails);
-    }
+    // getModuleId() {
+        
+    // }
 
     getRecords() {
         this.setState({ loading: true, data: [], selectedIndex: -1, statusText: 'Fetching Record', statusTextColor: '#000000' });

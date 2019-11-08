@@ -31,7 +31,9 @@ class Lister extends Component {
 
     componentWillReceiveProps(newprops) {
         this.props = newprops;
-        this.getRecords();
+        if (this.props.saved !== 'not_saved') {
+            this.getRecords();
+        }   
     }
 
     onRecordSelect(id, index) {
@@ -40,8 +42,8 @@ class Lister extends Component {
     }
 
     onEndReached() {
-        console.log(this.onEndReachedCalledDuringMomentum);
-        console.log(this.state.nextPage);
+        // console.log(this.onEndReachedCalledDuringMomentum);
+        // console.log(this.state.nextPage);
         //if (!this.onEndReachedCalledDuringMomentum) {
             if (this.state.nextPage) {
                 this.setState({ pageToTake: this.state.pageToTake + 1 }, () => this.props.dispatch(getNextPageRecord(this)));
