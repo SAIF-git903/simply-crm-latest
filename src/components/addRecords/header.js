@@ -16,8 +16,26 @@ class Header extends Component {
                         copyFrom: 'Contacts'  
                     };
     }
+   
     componentDidMount() {
         //console.log('Mounting header');
+    }
+
+    componentWillReceiveProps(newprops) {
+        this.props = newprops;
+        
+        if (this.props.moduleName === 'Invoice') {
+            if (this.props.contactAddress.length > 0 && this.props.organisationAddress.length === 0) {
+                //copy contact
+                this.setState({ copyFrom: 'Contacts', dialogueSelectedValue: { label: 'Contacts', value: 0, selected: true } }, () => { this.props.showCopyOptions(this); });
+            } else if (this.props.contactAddress.length === 0 && this.props.organisationAddress.length > 0) {
+                //copy organisation
+                this.setState({ copyFrom: 'Organisation', dialogueSelectedValue: { label: 'Organisation', value: 1, selected: true } }, () => { this.props.showCopyOptions(this); });
+            } else if (this.props.contactAddress.length > 0 && this.props.organisationAddress.length > 0) {
+                //copy user choice
+                this.setState({ dialogueVisible: true });
+            }
+        }
     }
 
     onBackButtonPress() {
@@ -95,30 +113,15 @@ class Header extends Component {
         const copyOptions = [];
         copyOptions.push({ label: 'Contacts', value: 0 });
         copyOptions.push({ label: 'Organisation', value: 1 });
+
+       
         return (
             <View style={commonStyles.headerBackground}>
                 {
                     this.renderBackButton()
                 }
                 <Text style={styles.headerTextStyle}>{this.props.moduleLable}</Text>
-                { //Invoice copy option
-                (this.props.moduleName === 'Invoice' && (this.props.contactAddress.length > 0 || this.props.organisationAddress.length > 0)) ? 
-                  
-                    <View style={{ width: 30, height: 30 }}>
-                        <TouchableOpacity onPress={this.isCopyDialogueVisible.bind(this)}>
-                            <Image 
-                            source={{ uri: 'copy' }}
-                            style={{ 
-                                width: 25,
-                                resizeMode: 'contain',  
-                                tintColor: HEADER_IMAGE_COLOR,
-                                height: 25 }}
-                            />
-                        </TouchableOpacity> 
-                    </View> 
-                :
-                    undefined 
-                }
+         
                 <TouchableOpacity onPress={this.onAddButtonPress.bind(this)}>
                     <View 
                         style={{ 
@@ -140,10 +143,12 @@ class Header extends Component {
             selectedItem={this.state.dialogueSelectedValue}
             onCancel={() => this.setState({ dialogueVisible: false })}
             onOk={(result) => {
+                // console.log(result.selectedItem);
                 this.setState({ dialogueSelectedValue: result.selectedItem, dialogueVisible: false, copyFrom: result.selectedItem.label }, () => { this.onShowCopyOption(); });
             }}
             scrolled={false}    
             />
+            
                
             </View>
         );

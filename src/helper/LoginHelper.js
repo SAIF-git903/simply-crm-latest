@@ -12,7 +12,7 @@ export const userUrlHelper = async(email, password, url, navigation, loginInstan
         if (URLDetails !== null) {
             loginHelper(URLDetails.userName, URLDetails.password, URLDetails.url, navigation, loginInstance, dispatch); 
         } else {
-            const response = await fetch(`https://sai.dev.simplyhq.com/index.php?action=LocateInstance&email=${email}&password=${password}&api_key=jNuaPq7MRfLDvnLs5gZ9XgU1H7n3URma`, {
+            const response = await fetch(`https://sai.simplyhq.com/index.php?action=LocateInstance&email=${email}&password=${password}&api_key=jNuaPq7MRfLDvnLs5gZ9XgU1H7n3URma`, {
                 method: 'GET',
                 headers: {
                     'cache-control': 'no-cache'
@@ -68,6 +68,8 @@ export const loginHelper = async (username, password, url, navigation, loginInst
     param.append('_operation', 'loginAndFetchModules');
     param.append('username', username);
     param.append('password', password);
+    // param.append('username', 'mobileapp-dev');
+    // param.append('password', '45gargle62attain');
 
 
     try {
@@ -80,6 +82,8 @@ export const loginHelper = async (username, password, url, navigation, loginInst
             trimUrl = url.replace('www.', '');
         }
          
+        //hardcoded for testing
+        // trimUrl = 'https://mobileapp-dev.simply-crm.com';
         console.log(trimUrl);
         console.log(username);
         console.log(password);
@@ -156,4 +160,27 @@ const loginUserSuccess = (dispatch, loginDetails, navigation) => {
         ]
       });
       navigation.dispatch(resetAction);
+};
+
+export const resetPassword = async(email, forgotPasswordInstance) => {
+    try {
+            const response = await fetch(`https://sai.simplyhq.com/index.php?action=AppForgotPassword&email=${email}&api_key=pYyjYDS9prMhhI2Ou1zGc5TYIpZQoviK`, {
+                method: 'GET',
+                headers: {
+                    'cache-control': 'no-cache'
+                },
+            });
+            const responseJson = await response.json();
+            console.log(responseJson);
+            if (responseJson.output.success !== 0) {
+                forgotPasswordInstance.setState({ buttonText: 'BACK', loading: false });
+                Toast.show('Thank you - we\'ve now sent password reset instructions to the email you entered.');
+            } else {
+                //Failed
+                forgotPasswordInstance.setState({ buttonText: 'RESET PASSWORD', loading: false });
+                Toast.show('Reset Password Failed');
+            }
+    } catch (error) {
+        console.log(error);
+    }
 };

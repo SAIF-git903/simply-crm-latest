@@ -169,6 +169,17 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
         for (const block of blocks) {
             const fieldViews = [];
             const fields = block.fields;
+            
+            if (viewerInstance.props.moduleName === 'Emails') {
+                if (block.label === 'Emails_Block1') {
+                    block.label = 'Emails_Block1 - Created Time';
+                } else if (block.label === 'Emails_Block2') {
+                    block.label = 'Emails_Block2 - Subject';
+                } else if (block.label === 'Emails_Block3') {
+                    break;
+                }
+            }
+            
             for (const field of fields) {
                 let value;
                 if (typeof field.value === 'string') {
@@ -215,6 +226,8 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
                 }
                 fieldViews.push(<Field label={field.label} value={value} />);
             }
+
+            console.log(block.label);
             blockViews.push(
                 <Section
                     open={(i === 0)}

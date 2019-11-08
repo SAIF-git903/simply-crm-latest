@@ -97,6 +97,17 @@ class InvoiceRecord extends Component {
                             no lable
                         </Text>
                     }
+
+                     {
+                        (this.props.item.invoiceNo !== '') ?
+                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
+                            {this.props.item.invoiceNo}
+                        </Text> :
+                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
+                            no invoice number
+                        </Text>
+                    }
+
                     {
                         (this.props.item.invoiceStatus !== '') ?
                         <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
@@ -121,8 +132,35 @@ class InvoiceRecord extends Component {
                             {this.props.item.invoiceAccountId}
                         </Text> :
                         <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
-                            no account id
+                            no organisation
                         </Text>
+                    } 
+                    {
+                        (this.props.item.invoiceItemName !== '') ?
+                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
+                            {this.props.item.invoiceItemName}
+                        </Text> :
+                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
+                            no assignee
+                        </Text>
+                    }
+                    {
+                        // (this.props.item.invoiceDate !== '') ?
+                        // <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
+                        //     {this.props.item.invoiceDate}
+                        // </Text> :
+                        // <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
+                        //     no invoice date
+                        // </Text>
+                    } 
+                    {
+                        // (this.props.item.dueDate !== '') ?
+                        // <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
+                        //     {this.props.item.dueDate}
+                        // </Text> :
+                        // <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
+                        //     no due date
+                        // </Text>
                     } 
                     
                     </View>
@@ -152,7 +190,7 @@ class InvoiceRecord extends Component {
 const styles = StyleSheet.create({
     backgroundStyle: {
         flex: 1,
-        height: 100,
+        height: 130,
         borderColor: '#d3d3d3',
         paddingLeft: 5,
         justifyContent: 'space-around',

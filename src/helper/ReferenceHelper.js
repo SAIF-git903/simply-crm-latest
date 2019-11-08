@@ -1977,7 +1977,7 @@ export const getPriceDetails = async(referenceInstance) => {
             const responseJson = await response.json();
             
             if (responseJson.success) {
-                // console.log(responseJson);
+                console.log(responseJson);
                 const blocks = responseJson.result.record.blocks;
                 let priceFields;
                 let stockFields;

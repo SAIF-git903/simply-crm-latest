@@ -431,7 +431,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
         case OPPORTUNITIES: {
             for (const record of records) {
                 const modifiedRecord = { potentialLable: record.potentialname,
-                                            amount: record.amount,
+                                            amount: Number(record.amount).toFixed(2),
                                             stage: record.sales_stage,
                                             id: record.id };
                 data.push(modifiedRecord);
@@ -443,7 +443,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
                 const modifiedRecord = { productLable: record.productname,
                                             no: record.product_no,
                                             productcategory: record.productcategory,
-                                            quantity: record.qtyinstock,
+                                            quantity: Number(record.qtyinstock).toFixed(2),
                                             id: record.id };
                 data.push(modifiedRecord);
             }
@@ -585,17 +585,30 @@ const saveInvoiceDetails = async(records, data, vtigerSeven, responseJson, addEx
                 body: param
             });
             const detailResponseJson = await response.json();
+            console.log(detailResponseJson);
         
             const blocks = detailResponseJson.result.record.blocks;
             const detailsFeilds = blocks.filter((item) => item.label === 'Invoice Details').map(({ fields }) => (fields));
+            // const itemdetailsFeilds = blocks.filter((item) => item.label === 'Item Details').map(({ fields }) => (fields));
     
             const accountObj = detailsFeilds[0].filter((item) => item.name === 'account_id').map(({ value }) => (value));
             const amountObj = detailsFeilds[0].filter((item) => item.name === 'hdnGrandTotal').map(({ value }) => (value));
+            const itemObj = detailsFeilds[0].filter((item) => item.name === 'assigned_user_id').map(({ value }) => (value));
+            const invoiceNoObj = detailsFeilds[0].filter((item) => item.name === 'invoice_no').map(({ value }) => (value));
+
             
+            // const invoiceDateObj = detailsFeilds[0].filter((item) => item.name === 'invoicedate').map(({ value }) => (value));
+            // const dueDateObj = detailsFeilds[0].filter((item) => item.name === 'duedate').map(({ value }) => (value));
+            
+
             const modifiedRecord = { invoiceLable: record.subject,
                 invoiceStatus: record.invoicestatus,
-                invoiceAmount: amountObj[0],
+                invoiceAmount: Number(amountObj[0]).toFixed(2),
                 invoiceAccountId: accountObj[0].label,
+                invoiceItemName: itemObj[0].label,
+                invoiceNo: invoiceNoObj[0],
+                // invoiceDate: invoiceDateObj[0],
+                // dueDate: dueDateObj[0],
                 id: record.id };
             data.push(modifiedRecord);    
         }
