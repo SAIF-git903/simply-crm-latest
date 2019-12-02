@@ -8,6 +8,7 @@ import search from './components/search';
 import addRecord from './components/addRecords';
 import editRecord from './components/editRecords';
 import reference from './components/addRecords/referenceRecordLister';
+import forgotPassword from './components/forgotPasswordForm';
 
 
 function getHome() {
@@ -43,7 +44,11 @@ const routerConfig = {
     },
     ReferenceScreen: {
         screen: reference
+    },
+    ForgotPasswordScreen: {
+        screen: forgotPassword
     }
+
 };
 
 const stackNavigatorConfig = {

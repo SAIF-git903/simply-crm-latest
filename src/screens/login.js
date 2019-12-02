@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { AsyncStorage, ActivityIndicator, StatusBar } from 'react-native';
+import { AsyncStorage, ActivityIndicator, StatusBar, View } from 'react-native';
 import SplashComponent from '../components/splashComponent';
 import LoginForm from '../components/loginForm';
 import { loginUser } from '../actions/';
@@ -29,6 +29,7 @@ class Splash extends Component {
                 this.setState({ componentToLoad: LOADER });
             } else {
                 this.setState({ componentToLoad: LOGINFORM });
+                
             }
         } catch (error) {
             this.setState({ componentToLoad: LOGINFORM });
@@ -50,14 +51,14 @@ class Splash extends Component {
 
     renderSplashLoginForm() {
         return (
-            <SplashComponent>
+            <View>
                 <StatusBar
                 backgroundColor="rgba(0, 0, 0, 0.20)"
                 translucent
                 barStyle="light-content"
                 />
                 <LoginForm navigation={this.props.navigation} />
-            </SplashComponent>
+            </View>
         );
     }
 

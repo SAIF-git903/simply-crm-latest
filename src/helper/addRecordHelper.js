@@ -118,6 +118,7 @@ export const describeRecordHelper = async(addInstance) => {
                         case 'currency':
                         case 'integer':
                         case 'double':
+                        if (fieldObj.name !== 'shipping_&_handling_') {
                             formArray.push(
                                 <View>
                                 <NumericForm 
@@ -130,8 +131,9 @@ export const describeRecordHelper = async(addInstance) => {
                                 />
                                 <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
                                 </View>
-                            );
-                            break;
+                            ); 
+                        }
+                        break;
                         case 'date':
                             formArray.push(
                                 <View>
@@ -326,7 +328,7 @@ export const copyAddress = (addInstance, headerInstance) => {
             let targetAddress = contactAddress;
             let checkValue; 
 
-            // console.log(contactAddress);
+            
             if (headerInstance.state.copyFrom === 'Organisation') {
                 targetAddress = organisationAddress;
             } 
@@ -379,8 +381,10 @@ export const copyAddress = (addInstance, headerInstance) => {
             } 
         }     
         if (emptyFlag) {
-            Toast.show('Values are empty', Toast.LONG);
-        }    
+            Toast.show('Values are empty');
+        } else {
+            // Toast.show('Values are copied');
+        }   
     } catch (error) {
         // console.log(error);
     }
@@ -398,7 +402,7 @@ export const copyPriceDetails = (addInstance, priceFields, stockFields) => {
         for (let i = 0; i < formInstance.length; i++) { 
             if (formInstance[i].state.fieldName === 'listprice') {
                 pfields = pfields.filter((item) => item.name === 'unit_price').map(({ value }) => ({ value }));    
-                formInstance[i].setState({ saveValue: (loginDetails.vtigerVersion === 7) ? pfields[0].value : pfields[0].value.value });               
+                formInstance[i].setState({ saveValue: (loginDetails.vtigerVersion === 7) ? Number(pfields[0].value).toFixed(2) : Number(pfields[0].value.value).toFixed(2) });               
                 // formInstance[i].setState({ saveValue: pfields[0].value });               
             }
             if (formInstance[i].state.fieldName === 'quantity') {

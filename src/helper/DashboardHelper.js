@@ -32,9 +32,10 @@ export const fetchWidgetRecordHelper = async (viewerInstance, dispatch) => {
             let param = new FormData();
             param.append('_operation', 'listModuleRecords');
             param.append('module', viewerInstance.props.moduleName);
+            console.log(param);
             const responseJson = await getDatafromNet(param, dispatch);
             if (responseJson.success) {
-                //console.log('get7');
+                console.log(responseJson);
                 await getAndSaveDataVtiger(responseJson, viewerInstance);
             } else {
                 //Show offline data and notify user

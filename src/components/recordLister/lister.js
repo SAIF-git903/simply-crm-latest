@@ -106,7 +106,12 @@ class Lister extends Component {
                     this.renderRecordList()
                 }
                 <StatusView text={this.state.statusText} textColor={this.state.statusTextColor} />
-                <ActionButton buttonColor="rgba(231,76,60,1)" onPress={() => { this.onAddButtonPress(); }} />
+                {
+                    (this.props.moduleName !== 'Emails') ? 
+                    <ActionButton buttonColor="rgba(231,76,60,1)" onPress={() => { this.onAddButtonPress(); }} />
+                    : undefined
+                }
+                
             </View>
         );
     }
