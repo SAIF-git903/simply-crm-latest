@@ -275,7 +275,7 @@ const drawerButtonArrangeHelper = (name) => {
         // case PBXMANAGER:
         //     return PROJECT;
         case DOCUMENTS:
-        case EMAILS:
+        // case EMAILS:
         case REPORTS:
             return TOOLS;
         default:

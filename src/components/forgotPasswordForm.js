@@ -108,14 +108,13 @@ class ForgotPasswordForm extends Component {
                             <Image
                                 source={{ uri: 'login_email' }}
                                 style={styles.inputImageStyle} 
-                                
                             />
                             
                             <TextInput 
                                 clearButtonMode='always'
                                 underlineColorAndroid='rgba(0,0,0,0)' 
                                 style={[styles.inputTextStyle]} 
-                                placeholder='Someone@somemail.com'
+                                placeholder='Enter your e-mail'
                                 placeholderTextColor='#ddd'
                                 ref='email'
                                 autoCapitalize='none'

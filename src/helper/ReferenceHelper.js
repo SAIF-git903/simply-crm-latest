@@ -396,7 +396,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
             for (const record of records) {
                 const modifiedRecord = { invoiceLable: record.subject,
                                             invoiceStatus: record.invoicestatus,
-                                            invoiceAmount: record.purchase_cost,
+                                            invoiceAmount: Number(record.purchase_cost).toFixed(2),
                                             id: record.id };
                 data.push(modifiedRecord);
             }
@@ -452,7 +452,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
         case OPPORTUNITIES: {
             for (const record of records) {
                 const modifiedRecord = { potentialLable: record.potentialname,
-                                            amount: record.amount,
+                                            amount: Number(record.amount).toFixed(2),
                                             stage: record.sales_stage,
                                             id: record.id };
                 data.push(modifiedRecord);
@@ -464,7 +464,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
                 const modifiedRecord = { productLable: record.productname,
                                             no: record.product_no,
                                             productcategory: record.productcategory,
-                                            quantity: record.qtyinstock,
+                                            quantity: Number(record.qtyinstock).toFixed(2),
                                             id: record.id };
                 data.push(modifiedRecord);
             }

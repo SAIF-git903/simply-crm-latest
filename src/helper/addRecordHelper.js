@@ -402,7 +402,7 @@ export const copyPriceDetails = (addInstance, priceFields, stockFields) => {
         for (let i = 0; i < formInstance.length; i++) { 
             if (formInstance[i].state.fieldName === 'listprice') {
                 pfields = pfields.filter((item) => item.name === 'unit_price').map(({ value }) => ({ value }));    
-                formInstance[i].setState({ saveValue: (loginDetails.vtigerVersion === 7) ? pfields[0].value : pfields[0].value.value });               
+                formInstance[i].setState({ saveValue: (loginDetails.vtigerVersion === 7) ? Number(pfields[0].value).toFixed(2) : Number(pfields[0].value.value).toFixed(2) });               
                 // formInstance[i].setState({ saveValue: pfields[0].value });               
             }
             if (formInstance[i].state.fieldName === 'quantity') {

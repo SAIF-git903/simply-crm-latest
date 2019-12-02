@@ -172,9 +172,9 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
             
             if (viewerInstance.props.moduleName === 'Emails') {
                 if (block.label === 'Emails_Block1') {
-                    block.label = 'Emails_Block1 - Created Time';
+                    block.label = 'Created Time';
                 } else if (block.label === 'Emails_Block2') {
-                    block.label = 'Emails_Block2 - Subject';
+                    block.label = 'Subject';
                 } else if (block.label === 'Emails_Block3') {
                     break;
                 }

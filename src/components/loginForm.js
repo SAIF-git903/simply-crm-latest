@@ -183,15 +183,14 @@ class LoginForm extends Component {
                         <View style={styles.inputSubHolder}>
                             <Image
                                 source={{ uri: 'login_email' }}
-                                style={styles.inputImageStyle}
-                                 
+                                style={styles.inputImageStyle} 
                             />
                             
                             <TextInput 
                                 clearButtonMode='always'
                                 underlineColorAndroid='rgba(0,0,0,0)' 
                                 style={[styles.inputTextStyle]} 
-                                placeholder='Someone@somemail.com'
+                                placeholder='Enter your e-mail'
                                 placeholderTextColor='#ddd'
                                 
                                 ref='email'
@@ -222,7 +221,7 @@ class LoginForm extends Component {
                             style={styles.inputTextStyle}
                             ref='password' 
                             secureTextEntry 
-                            placeholder='.........'
+                            placeholder='Enter your password'
                             placeholderTextColor='#ddd'
                             autoCapitalize='none'
                             returnKeyType='done' 
@@ -315,8 +314,7 @@ const styles = StyleSheet.create({
         height: 23,
         width: 23,
         tintColor: 'white',
-        marginLeft: 8,
-        
+        marginLeft: 8
     },
     forgotPasswordHolder: {
         height: 50, 
