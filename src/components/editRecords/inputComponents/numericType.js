@@ -4,7 +4,7 @@ import { View, StyleSheet, Text, TextInput } from 'react-native';
 class NumericType extends Component {
     constructor(props) {
         super(props);
-        this.state = { saveValue: this.props.obj.default,
+        this.state = { saveValue: (this.props.obj.type.name === 'double') ? Number(this.props.obj.default).toFixed(2) : this.props.obj.default,
                        fieldName: this.props.obj.name };
     }
     onTextInputChange(text) {
@@ -21,7 +21,8 @@ class NumericType extends Component {
                     <Text style={{ color: 'red', fontSize: 16 }}>*</Text>
                 </View>
                 :
-                undefined
+                // undefined
+                <View style={styles.mandatory} />
             } 
             
                 <View style={{ flex: 1, justifyContent: 'center' }}>

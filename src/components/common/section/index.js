@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View, Animated } from 'react-native';
-import { DRAWER_SECTION_BACKGROUND_COLOR } from '../../../variables/themeColors';
 import SectionHeader from './sectionHeader';
 import SectionContent from './sectionContent';
 

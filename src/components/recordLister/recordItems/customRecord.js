@@ -87,9 +87,16 @@ class CustomRecord extends Component {
                         (this.props.selectedIndex === this.props.index) ? 
                         RECORD_SELECTED_COLOR : RECORD_COLOR }]}
                     >
-                        <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10 }}>
-                            {this.props.item.lable}
-                        </Text>
+                        {
+                            (this.props.item.lable !== '') ?
+                            <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10, color: 'black' }}>
+                                {this.props.item.lable}
+                            </Text> :
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
+                                no lable
+                            </Text>
+                        
+                        }
                     </View>
                     </TouchableOpacity>
                 </SwipeOut>

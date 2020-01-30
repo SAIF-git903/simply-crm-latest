@@ -1,21 +1,25 @@
 import { Alert } from 'react-native';
 import { DIMENSION_CHANGED, UPDATE_MGR,
    SHOW_SEARCH, DRAWER_BUTTON_SELECTED,
-   UPDATE_SEARCH_MODULE, MODULE_SELECT, SHOW_HOME, REFERENCE_LABEL, SAVE_SUCCESS } from './types';
+   UPDATE_SEARCH_MODULE, MODULE_SELECT, 
+   SHOW_HOME, REFERENCE_LABEL, SAVE_SUCCESS,
+  } from './types';
 import { RECORD_ADDER, HOME_MAIN, RECORD_VIEWER } from '../variables/constants';
-import { loginHelper, renderDrawerView, fetchRecordHelper, fetchRefRecordHelper, viewRecord,
+import { userUrlHelper, loginHelper, renderDrawerView, fetchRecordHelper, fetchRefRecordHelper, viewRecord,
   viewRecordRenderer, deleteRecordHelper, refreshRecordHelper, refreshRefRecordHelper, searchRecordHelper,
-  refreshRecordDataHelper, getNextPageHelper, getNextRefPageHelper, fetchWidgetRecordHelper, refreshRecordWidgetHelper } from '../helper';
+  refreshRecordDataHelper, getNextPageHelper, getNextRefPageHelper, fetchWidgetRecordHelper, refreshRecordWidgetHelper,
+  getAddressDetails } from '../helper';
 
 export const dimensionChanged = (isPortrait, width, height) => ({
   type: DIMENSION_CHANGED,
   payload: { isPortrait, width, height }
 });
 
-export const loginUser = (username, password, url, navigation, loginInstance) => (dispatch) => {
-  if (validData(username, password, url)) {
+export const loginUser = (email, password, url, navigation, loginInstance) => (dispatch) => {
+  if (validData(email, password, url)) {
     loginInstance.setState({ loading: true });  
-    loginHelper(username, password, url, navigation, loginInstance, dispatch);
+    userUrlHelper(email, password, url, navigation, loginInstance, dispatch);
+    // loginHelper(username, password, url, navigation, loginInstance, dispatch);
   }
 };
 
@@ -31,7 +35,7 @@ export const drawerButtonPress = (buttonType, moduleLable, moduleId) => (dispatc
 
 const validData = (username, password, url) => {
     if (username.replace(/ /g, '') === '' || 
-      password.replace(/ /g, '') === '' || url.replace(/ /g, '') === '') {
+      password.replace(/ /g, '') === '') {
       Alert.alert('Empty fields', 'Please fill all the fields',
       [
         { text: 'Ok', onPress: () => {} },
@@ -105,7 +109,7 @@ export const searchRecord = (searchInstance) => (dispatch) => {
 
 export const moduleSelected = (text) => ({
   type: MODULE_SELECT,
-  payload: text,
+  payload: text
 });
 
 export const displayRecords = (viewerInstance) => (dispatch) => {
@@ -124,3 +128,16 @@ export const markReferenceLabel = (recordId, label, uniqueId) => (dispatch) => {
 export const saveSuccess = (saved) => (dispatch) => {
   dispatch({ type: SAVE_SUCCESS, payload: saved });
 };
+ 
+// export const copyAddressAction = (referenceInstance) => (dispatch) => {
+//   getAddressDetails(referenceInstance, dispatch);
+// };
+
+// export const copyContactAddress = (contactAddress) => (dispatch) => {
+  
+//   dispatch({ type: COPY_CONTACT_ADDRESS, payload: contactAddress });
+// };
+
+// export const copyOrganisationAddress = (organisationAddress) => (dispatch) => {
+//   dispatch({ type: COPY_ORGANISATION_ADDRESS, payload: organisationAddress });
+// };

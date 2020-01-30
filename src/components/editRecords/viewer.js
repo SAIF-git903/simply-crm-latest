@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { View, ActivityIndicator } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { describeEditRecordHelper, getDataHelper } from '../../helper';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { describeEditRecordHelper } from '../../helper';
 
 
 class Viewer extends Component {
@@ -19,7 +20,7 @@ class Viewer extends Component {
    
     onFetchCall() {
         const { state } = this.props.navigation;
-        this.setState({ loading: true, id: state.params.id },
+        this.setState({ loading: true, id: state.params.id, recordId: `${this.props.moduleId}x${state.params.id}` },
         () => { describeEditRecordHelper(this, state.params.id); });
         
         //getDataHelper(this, state.params.id);
@@ -33,7 +34,7 @@ class Viewer extends Component {
     }
     renderRecordView() {
         return (
-            <KeyboardAwareScrollView>
+            <KeyboardAwareScrollView keyboardShouldPersistTaps='handled'>
                 {this.state.inputForm}
                 
             </KeyboardAwareScrollView>
@@ -55,5 +56,8 @@ class Viewer extends Component {
         );
     }
 }
-
-export default Viewer;
+const mapStateToProps = ({ drawer }) => {
+    const { moduleId } = drawer;
+    return { moduleId };
+};
+export default connect(mapStateToProps)(Viewer);

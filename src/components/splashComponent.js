@@ -21,18 +21,14 @@ class SplashComponent extends Component {
         }).start();
     }
 
-    onSmackcodersPress() {
-        Linking.openURL('https://www.smackcoders.com').catch(err => console.error('An error occurred', err));        
-    }
-
     renderChildren() {
-        if (Platform.OS === 'ios') {
-            return (
-                <KeyboardAvoidingView behavior={'padding'} style={styles.keyboardAvoidingViewStyle}>
-                    {this.props.children}
-                </KeyboardAvoidingView>
-            );
-        }
+        // if (Platform.OS === 'ios') {
+        //     return (
+        //         // <KeyboardAvoidingView behavior={'padding'} style={styles.keyboardAvoidingViewStyle}>
+        //             this.props.children
+        //         // </KeyboardAvoidingView>
+        //     );
+        // }
         return (
             <View style={styles.keyboardAvoidingViewStyle}>
                  {this.props.children}
@@ -51,53 +47,12 @@ class SplashComponent extends Component {
 
         return (
             <View style={styles.backgroundStyle}>
-                <Animated.Image 
-                style={[{ 
-                    position: 'absolute', 
-                    width: '100%', 
-                    height: '100%',
-                        }, imageScaleStyle]} 
-                source={{ uri: 'loginbackground' }} 
-                />
-                <View 
-                style={{ 
-                    position: 'absolute',
-                    width: '100%', 
-                    height: '100%', 
-                    backgroundColor: 'rgba(100, 100, 100, 0.5)' }}
-                />
-                <View 
-                style={{ 
-                    flex: 1,
-                    backgroundColor: 'rgba(100, 100, 100, 0)',
-                    justifyContent: 'center',
-                    alignItems: 'center' }} 
-                >
-                    <View style={{ width: '100%', alignItems: 'center' }}>
-                    <Animated.View style={animatedStyle}>
-                        <Text style={styles.appNameStyle}> PocketCRM for Vtiger </Text>
-                    </Animated.View>
+
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                     <Image source={{ uri: 'vtigerlogo' }} resizeMode={'contain'} style={styles.logoStyle} />
-                    </View>
                 </View>
-                    {this.renderChildren()}
-                    <TouchableOpacity onPress={this.onSmackcodersPress.bind(this)}>
-                    <View 
-                    style={{ 
-                        flexDirection: 'row', 
-                        backgroundColor: 'rgba(100, 100, 100, 0)',
-                        justifyContent: 'center',
-                        paddingBottom: 10 }}
-                    >
-                            <Text style={{ color: 'white' }}>Powered by</Text>
-                            <Image 
-                            source={{ uri: 'smackcoders' }}
-                            style={{ width: 17, height: 17 }}
-                            resizeMode={'contain'} 
-                            />
-                            <Text style={{ color: 'white' }}> Smackcoders, Inc.</Text>
-                    </View>
-                    </TouchableOpacity>
+                
+                {this.renderChildren()}            
             </View>
         );
     }
@@ -113,29 +68,29 @@ class SplashComponent extends Component {
         
         return (
             <View style={styles.landscapeBackgroundStyle}>
-                 <Animated.Image 
+                 {/* <Animated.Image 
                 style={[{ 
                     position: 'absolute', 
                     width: '100%', 
                     height: '100%',
                         }, imageScaleStyle]} 
                 source={{ uri: 'loginbackground' }} 
-                />
+                /> */}
                 <View 
                 style={{ 
                     flex: 0.9, 
-                    backgroundColor: 'rgba(100, 100, 100, 0.5)',
+                    //backgroundColor: 'rgba(100, 100, 100, 0.5)',
                     justifyContent: 'center',
                     alignItems: 'center' }} 
                 >
                     <View style={{ width: '100%', alignItems: 'center' }}>
-                    <Animated.View style={animatedStyle}>
-                        <Text style={styles.appNameStyle}> PocketCRM for Vtiger </Text>
-                    </Animated.View>
+                    {/* <Animated.View style={animatedStyle}>
+                        <Text style={styles.appNameStyle}>Simply CRM</Text>
+                    </Animated.View> */}
                     <Image source={{ uri: 'vtigerlogo' }} resizeMode={'contain'} style={styles.logoStyle} />
                     </View>
                 </View>
-                <View style={{ flex: 1.1, justifyContent: 'center', backgroundColor: 'rgba(100, 100, 100, 0.5)', }}>
+                {/* <View style={{ flex: 1.1, justifyContent: 'center', backgroundColor: 'rgba(100, 100, 100, 0.5)', }}>
                     {this.renderChildren()}
                     <TouchableOpacity onPress={this.onSmackcodersPress.bind(this)}>
                         <View 
@@ -153,7 +108,7 @@ class SplashComponent extends Component {
                                 <Text style={{ color: 'white' }}> Smackcoders, Inc.</Text>
                         </View>
                     </TouchableOpacity>
-                </View>
+                </View> */}
             </View>
         );
     }
@@ -162,13 +117,15 @@ class SplashComponent extends Component {
         if (this.props.isPortrait) {
             return this.renderSplashPortrait();
         }
-            return this.renderSplashLandscape();
+        return this.renderSplashPortrait();
+            // return this.renderSplashLandscape();
     }
 }
 
 const styles = StyleSheet.create({
     backgroundStyle: {
-        flex: 1
+        flex: 1,
+        backgroundColor: '#0085DE'
     },
     landscapeBackgroundStyle: {
         flex: 1,
@@ -201,7 +158,7 @@ const styles = StyleSheet.create({
     appNameStyle: {
         color: 'white',
         fontWeight: 'bold',
-        fontSize: 22,
+        fontSize: 25,
     }
 });
 

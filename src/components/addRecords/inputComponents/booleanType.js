@@ -24,6 +24,10 @@ class BooleanType extends Component {
 
     render() {
         const mandatory = this.props.obj.mandatory;
+        const amp = '&amp;';
+
+        const validLable = (this.props.obj.lable.indexOf(amp) !== -1) ? this.props.obj.lable.replace('&amp;', '&') : this.props.obj.lable; 
+
         return (
             <View style={styles.inputHolder}>
             {
@@ -32,10 +36,10 @@ class BooleanType extends Component {
                     <Text style={{ color: 'red', fontSize: 16 }}>*</Text>
                 </View>
                 :
-                undefined
+                <View style={styles.mandatory} />
             } 
                 <View style={{ flex: 1, justifyContent: 'center' }}>
-                    <Text style={styles.label}>{this.props.obj.lable}</Text>
+                    <Text style={styles.label}>{validLable}</Text>
                 </View>
                 <TouchableWithoutFeedback onPress={this.toggle.bind(this)}>
                 <View style={{ flex: 1, justifyContent: 'center' }}>
@@ -56,7 +60,8 @@ class BooleanType extends Component {
                             style={{ 
                                 width: 35,
                                 resizeMode: 'contain',  
-                                height: 25 }}
+                                height: 25,
+                                tintColor: 'green' }}
                             />
                             :
                             null

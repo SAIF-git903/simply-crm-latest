@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
-import { DRAWER_MENU_BORDER_COLOR, 
-    DRAWER_MENU_BACKGROUND_COLOR } from '../../../variables/themeColors';    
+import { DRAWER_MENU_BACKGROUND_COLOR, 
+         DRAWER_BORDER_COLOR } from '../../../variables/themeColors';    
 
 export default class Menu extends Component {
     render() {
@@ -15,14 +15,13 @@ export default class Menu extends Component {
 
 const styles = StyleSheet.create({
     menuStyle: {
+        //flex: 1,
         width: '100%',
-        height: 40,
-        marginTop: (Platform.OS === 'ios') ? 55 : 45,
-        borderColor: DRAWER_MENU_BORDER_COLOR,
-        backgroundColor: DRAWER_MENU_BACKGROUND_COLOR,
-        borderTopWidth: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        borderBottomWidth: 1,
+        height: 50,
+        marginTop: (Platform.OS === 'android') ? 10 : 0,
+        borderColor: DRAWER_BORDER_COLOR,
+        backgroundColor: DRAWER_MENU_BACKGROUND_COLOR,      
+        flexDirection: 'row',       
+        borderBottomWidth: 0.5,
     }
 });

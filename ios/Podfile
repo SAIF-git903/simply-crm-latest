@@ -21,4 +21,5 @@ target 'PocketCRM for Vtiger' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+  
 end

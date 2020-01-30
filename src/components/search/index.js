@@ -93,10 +93,11 @@ const styles = StyleSheet.create({
     }
 });
 
-const mapStateToProp = ({ event, mgr }) => {
+const mapStateToProp = ({ event, mgr, drawer }) => {
     const { searchModuleName } = mgr;
     const { isPortrait, width, height } = event;
-    return { searchModuleName, isPortrait, width, height };
+    const { moduleId } = drawer;
+    return { searchModuleName, isPortrait, width, height, moduleId };
 };
 
 export default connect(mapStateToProp)(Search);

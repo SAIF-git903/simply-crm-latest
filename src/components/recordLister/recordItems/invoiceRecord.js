@@ -38,6 +38,7 @@ class InvoiceRecord extends Component {
     }
 
     render() {
+        // console.log(this.props.item);
         const swipeOutButtons = [{
             component: (
             <View 
@@ -87,12 +88,81 @@ class InvoiceRecord extends Component {
                         (this.props.selectedIndex === this.props.index) ? 
                         RECORD_SELECTED_COLOR : RECORD_COLOR }]}
                     >
-                        <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10 }}>
+                    {
+                        (this.props.item.invoiceLable !== '') ?
+                        <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10, color: 'black' }}>
                             {this.props.item.invoiceLable}
+                        </Text> :
+                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
+                            no lable
                         </Text>
-                        <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10 }}>
+                    }
+
+                     {
+                        (this.props.item.invoiceNo !== '') ?
+                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
+                            {this.props.item.invoiceNo}
+                        </Text> :
+                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
+                            no invoice number
+                        </Text>
+                    }
+
+                    {
+                        (this.props.item.invoiceStatus !== '') ?
+                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
                             {this.props.item.invoiceStatus}
+                        </Text> :
+                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
+                            no status
                         </Text>
+                    }
+                    {
+                        (this.props.item.invoiceAmount !== '') ?
+                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
+                            {this.props.item.invoiceAmount}
+                        </Text> :
+                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
+                            no amount
+                        </Text>
+                    }
+                    {
+                        (this.props.item.invoiceAccountId !== '') ?
+                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
+                            {this.props.item.invoiceAccountId}
+                        </Text> :
+                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
+                            no organisation
+                        </Text>
+                    } 
+                    {
+                        (this.props.item.invoiceItemName !== '') ?
+                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
+                            {this.props.item.invoiceItemName}
+                        </Text> :
+                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
+                            no assignee
+                        </Text>
+                    }
+                    {
+                        // (this.props.item.invoiceDate !== '') ?
+                        // <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
+                        //     {this.props.item.invoiceDate}
+                        // </Text> :
+                        // <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
+                        //     no invoice date
+                        // </Text>
+                    } 
+                    {
+                        // (this.props.item.dueDate !== '') ?
+                        // <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
+                        //     {this.props.item.dueDate}
+                        // </Text> :
+                        // <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
+                        //     no due date
+                        // </Text>
+                    } 
+                    
                     </View>
                     </TouchableOpacity>
                 </SwipeOut>
@@ -120,7 +190,7 @@ class InvoiceRecord extends Component {
 const styles = StyleSheet.create({
     backgroundStyle: {
         flex: 1,
-        height: 70,
+        height: 130,
         borderColor: '#d3d3d3',
         paddingLeft: 5,
         justifyContent: 'space-around',

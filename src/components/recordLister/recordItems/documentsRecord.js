@@ -75,6 +75,7 @@ class DocumentRecord extends Component {
         }];
 
         if (!this.state.loading) {
+            // console.log(this.props.item);
             return (
                 <SwipeOut buttonWidth={70} right={swipeOutButtons} autoClose>
                     <TouchableOpacity 
@@ -87,9 +88,16 @@ class DocumentRecord extends Component {
                         (this.props.selectedIndex === this.props.index) ? 
                         RECORD_SELECTED_COLOR : RECORD_COLOR }]}
                     >
-                        <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10 }}>
+                    {
+                        (this.props.item.documentLable !== '') ?
+                        <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10, color: 'black' }}>
                             {this.props.item.documentLable}
+                        </Text> :
+                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
+                            no title
                         </Text>
+                    }
+                        
                     </View>
                     </TouchableOpacity>
                 </SwipeOut>

@@ -31,7 +31,9 @@ class Lister extends Component {
 
     componentWillReceiveProps(newprops) {
         this.props = newprops;
-        this.getRecords();
+        if (this.props.saved !== 'not_saved') {
+            this.getRecords();
+        }   
     }
 
     onRecordSelect(id, index) {
@@ -40,11 +42,13 @@ class Lister extends Component {
     }
 
     onEndReached() {
-        if (!this.onEndReachedCalledDuringMomentum) {
+        // console.log(this.onEndReachedCalledDuringMomentum);
+        // console.log(this.state.nextPage);
+        //if (!this.onEndReachedCalledDuringMomentum) {
             if (this.state.nextPage) {
-                this.props.dispatch(getNextPageRecord(this));
+                this.setState({ pageToTake: this.state.pageToTake + 1 }, () => this.props.dispatch(getNextPageRecord(this)));
             }
-        }
+        //}
     }
     onAddButtonPress() {
         const { navigate } = this.props.navigation;
@@ -102,16 +106,22 @@ class Lister extends Component {
                     this.renderRecordList()
                 }
                 <StatusView text={this.state.statusText} textColor={this.state.statusTextColor} />
-                <ActionButton buttonColor="rgba(231,76,60,1)" onPress={() => { this.onAddButtonPress(); }} />
+                {
+                    (this.props.moduleName !== 'Emails') ? 
+                    <ActionButton buttonColor="rgba(231,76,60,1)" onPress={() => { this.onAddButtonPress(); }} />
+                    : undefined
+                }
+                
             </View>
         );
     }
 }
 
-const mapStateToProps = ({ event, recordViewer }) => {
+const mapStateToProps = ({ event, recordViewer, drawer }) => {
     const { isPortrait, width, height } = event;
     const { saved } = recordViewer;
-    return { isPortrait, width, height, saved };
+    const { moduleId } = drawer;
+    return { isPortrait, width, height, saved, moduleId };
 };
 
 export default connect(mapStateToProps)(Lister);

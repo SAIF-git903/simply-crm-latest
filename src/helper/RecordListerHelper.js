@@ -136,10 +136,12 @@ export const getNextPageHelper = async (listerInstance, dispatch) => {
             }
         } else {
             let param = new FormData();
+            // appendParamFor(listerInstance.props.moduleName, param);
             param.append('_operation', 'listModuleRecords');
             param.append('module', listerInstance.props.moduleName);
             param.append('page', listerInstance.state.pageToTake);
             const responseJson = await getDatafromNet(param, dispatch);
+            // console.log(responseJson);
             if (responseJson.success) {
                 await getAndSaveDataVtiger(responseJson, listerInstance, true, false, true);
             } else {
@@ -227,7 +229,7 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
             //console.log(listerInstance.state.pageToTake);
             param.append('page', listerInstance.state.pageToTake);
             const responseJson = await getDatafromNet(param, dispatch);
-            //console.log(responseJson);
+            // console.log(responseJson);
             if (responseJson.success) {
                 await getAndSaveDataVtiger(responseJson, listerInstance, false, false, false);
             } else {
@@ -251,9 +253,16 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
             }
         } else {
             let param = new FormData();
-            param.append('_operation', 'listModuleRecords');
-            param.append('module', listerInstance.props.moduleName);
+            // if (listerInstance.props.moduleName === 'Invoice') {
+            //     appendParamFor(listerInstance.props.moduleName, param);
+            // } else {
+                param.append('_operation', 'listModuleRecords');
+                param.append('module', listerInstance.props.moduleName);
+            // }
+            
+           
             const responseJson = await getDatafromNet(param, dispatch);
+            console.log(responseJson);
             if (responseJson.success) {
                 await getAndSaveDataVtiger(responseJson, listerInstance, true, false, false);
             } else {
@@ -307,6 +316,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
     } else {
         data = [];
     }
+    // console.log(responseJson);
     let records = responseJson.result.records;
     if (records === null) {
         records = [];
@@ -368,12 +378,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
             break;
         }
         case INVOICE: {
-            for (const record of records) {
-                const modifiedRecord = { invoiceLable: record.subject,
-                                            invoiceStatus: record.invoicestatus,
-                                            id: record.id };
-                data.push(modifiedRecord);
-            }
+            saveInvoiceDetails(records, data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh);
             break;
         }
         case PRICEBOOKS: {
@@ -407,7 +412,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
                 const modifiedRecord = { accountsLable: record.accountname,
                                             website: record.website,
                                             phone: record.phone,
-                                            email: record.email,
+                                            email: record.email1,
                                             id: record.id };
                 data.push(modifiedRecord);
             }
@@ -426,7 +431,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
         case OPPORTUNITIES: {
             for (const record of records) {
                 const modifiedRecord = { potentialLable: record.potentialname,
-                                            amount: record.amount,
+                                            amount: Number(record.amount).toFixed(2),
                                             stage: record.sales_stage,
                                             id: record.id };
                 data.push(modifiedRecord);
@@ -438,7 +443,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
                 const modifiedRecord = { productLable: record.productname,
                                             no: record.product_no,
                                             productcategory: record.productcategory,
-                                            quantity: record.qtyinstock,
+                                            quantity: Number(record.qtyinstock).toFixed(2),
                                             id: record.id };
                 data.push(modifiedRecord);
             }
@@ -550,55 +555,123 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
             }
         }
     }
+    if (listerInstance.props.moduleName !== 'Invoice') {
+        saveData(data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh);
+    } 
+};
 
-    let offlineData = {};
-
-    let statusText;
-    if (data.length > 0) {
-        // the array is defined and has at least one element
-        offlineData = { records: data,
-            nextPage: (vtigerSeven) ? (responseJson.result.moreRecords) : (responseJson.result.nextPage > 0),
-            finishedTime: JSON.stringify(moment()), 
-            pageToTake: (vtigerSeven) ? parseInt(responseJson.result.page, 10) : responseJson.result.nextPage };
-
-        if (addExisting) {
-            if (!previousDataLength > 300) {
-                await AsyncStorage.setItem(listerInstance.props.moduleName, JSON.stringify(offlineData));
-                await addDatabaseKey(listerInstance.props.moduleName);
-
-                statusText = 'Loading complete - Recently updated Pull to refresh';
-            }
-        } else {
-            await AsyncStorage.setItem(listerInstance.props.moduleName, JSON.stringify(offlineData));
-            await addDatabaseKey(listerInstance.props.moduleName);            
-            statusText = 'Loading complete - Recently updated Pull to refresh';
-        }    
+const saveInvoiceDetails = async(records, data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh) => {
+    try {
+        const { auth } = store.getState();
+        const loginDetails = auth.loginDetails;
         
-    } else {
-        offlineData = { records: data,
-            nextPage: false,
-            finishedTime: JSON.stringify(moment()), 
-            pageToTake: 0 };
-        statusText = 'Loading complete - Module is Empty';
+        const moduleId = loginDetails.modules.filter((item) => item.name === 'Invoice').map(({ id }) => (id));
+        
+        for (const record of records) {
+            const param = new FormData();
+            
+            param.append('_operation', 'fetchRecordWithGrouping');
+            param.append('module', 'Invoice');
+            param.append('record', `${moduleId}x${record.id}`);
+            param.append('_session', loginDetails.session);
+    
+            const response = await fetch((`${loginDetails.url}/modules/Mobile/api.php`), {
+                method: 'POST',
+                headers: {
+                // 'Accept': 'application/json',
+                // 'Content-Type': 'multipart/form-data; charset=utf-8',
+                'cache-control': 'no-cache',
+                },
+                body: param
+            });
+            const detailResponseJson = await response.json();
+            console.log(detailResponseJson);
+        
+            const blocks = detailResponseJson.result.record.blocks;
+            const detailsFeilds = blocks.filter((item) => item.label === 'Invoice Details').map(({ fields }) => (fields));
+            // const itemdetailsFeilds = blocks.filter((item) => item.label === 'Item Details').map(({ fields }) => (fields));
+    
+            const accountObj = detailsFeilds[0].filter((item) => item.name === 'account_id').map(({ value }) => (value));
+            const amountObj = detailsFeilds[0].filter((item) => item.name === 'hdnGrandTotal').map(({ value }) => (value));
+            const itemObj = detailsFeilds[0].filter((item) => item.name === 'assigned_user_id').map(({ value }) => (value));
+            const invoiceNoObj = detailsFeilds[0].filter((item) => item.name === 'invoice_no').map(({ value }) => (value));
+
+            
+            // const invoiceDateObj = detailsFeilds[0].filter((item) => item.name === 'invoicedate').map(({ value }) => (value));
+            // const dueDateObj = detailsFeilds[0].filter((item) => item.name === 'duedate').map(({ value }) => (value));
+            
+
+            const modifiedRecord = { invoiceLable: record.subject,
+                invoiceStatus: record.invoicestatus,
+                invoiceAmount: Number(amountObj[0]).toFixed(2),
+                invoiceAccountId: accountObj[0].label,
+                invoiceItemName: itemObj[0].label,
+                invoiceNo: invoiceNoObj[0],
+                // invoiceDate: invoiceDateObj[0],
+                // dueDate: dueDateObj[0],
+                id: record.id };
+            data.push(modifiedRecord);    
+        }
+        saveData(data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh);
+    } catch (error) {
+        console.log(error);
     }
-    if (refresh) {
-        listerInstance.setState({
-            isFlatListRefreshing: false,
-            statusText,
-            statusTextColor: '#000000',
-            data: offlineData.records,
-            nextPage: offlineData.nextPage,
-            pageToTake: offlineData.pageToTake
+};
+
+const saveData = async(data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh) => {
+    try {
+        let offlineData = {};
+
+        let statusText;
+        
+        if (data.length > 0) {
+            // the array is defined and has at least one element
+            statusText = 'Loading complete - Recently updated Pull to refresh';
+            offlineData = { records: data,
+                nextPage: (vtigerSeven) ? (responseJson.result.moreRecords) : (responseJson.result.nextPage > 0),
+                finishedTime: JSON.stringify(moment()), 
+                pageToTake: (vtigerSeven) ? parseInt(responseJson.result.page, 10) : responseJson.result.nextPage };
+    
+            if (addExisting) {
+                if (!previousDataLength > 300) {
+                    await AsyncStorage.setItem(listerInstance.props.moduleName, JSON.stringify(offlineData));
+                    await addDatabaseKey(listerInstance.props.moduleName);
+    
+                    statusText = 'Loading complete - Recently updated Pull to refresh';
+                }
+            } else {
+                await AsyncStorage.setItem(listerInstance.props.moduleName, JSON.stringify(offlineData));
+                await addDatabaseKey(listerInstance.props.moduleName);            
+                statusText = 'Loading complete - Recently updated Pull to refresh';
+            }    
+        } else {
+            offlineData = { records: data,
+                nextPage: false,
+                finishedTime: JSON.stringify(moment()), 
+                pageToTake: 0 };
+            statusText = 'Loading complete - Module is Empty';
+        }
+        if (refresh) {
+            listerInstance.setState({
+                isFlatListRefreshing: false,
+                statusText,
+                statusTextColor: '#000000',
+                data: offlineData.records,
+                nextPage: offlineData.nextPage,
+                pageToTake: offlineData.pageToTake
+            });
+        } else {
+            listerInstance.setState({
+                loading: false,
+                statusText,
+                statusTextColor: '#000000',
+                data: offlineData.records,
+                nextPage: offlineData.nextPage,
+                pageToTake: offlineData.pageToTake
         });
-    } else {
-        listerInstance.setState({
-            loading: false,
-            statusText,
-            statusTextColor: '#000000',
-            data: offlineData.records,
-            nextPage: offlineData.nextPage,
-            pageToTake: offlineData.pageToTake
-    });
+        }
+    } catch (error) {
+        console.log(error);
     }
 };
 
@@ -666,7 +739,7 @@ export const appendParamFor = (moduleName, param) => {
             break;
         case INVOICE:
             param.append('_operation', 'query');
-            param.append('query', 'select invoicestatus,subject,id from Invoice ORDER BY modifiedtime DESC');
+            param.append('query', 'select * from Invoice ORDER BY modifiedtime DESC');
             break;
         case PRICEBOOKS:
             param.append('_operation', 'query');
@@ -678,7 +751,7 @@ export const appendParamFor = (moduleName, param) => {
             break;
         case LEADS:
             param.append('_operation', 'query');
-            param.append('query', 'select firstname,lastname,phone,email,id from Leads ORDER BY modifiedtime DESC');
+            param.append('query', 'select firstnamse,lastname,phone,email,id from Leads ORDER BY modifiedtime DESC');
             break;
         case ACCOUNTS:
             param.append('_operation', 'query');

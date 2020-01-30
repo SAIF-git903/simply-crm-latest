@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, ScrollView, ActivityIndicator, RefreshControl } from 'react-native';
+import store from '../../store';
 import StatusView from './statusView';
 import { commonStyles } from '../../styles/common';
 import { viewRecordRendererActions, refreshRecordData } from '../../actions';
@@ -28,7 +29,11 @@ class Viewer extends Component {
     }
 
     getRecords() {
-        this.setState({ loading: true, data: [], statusText: '', statusTextColor: '#000000' });
+        const { auth } = store.getState();
+        const modules = auth.loginDetails.modules;
+        const moduleId = modules.filter((item) => item.name === this.props.moduleName).map(({ id }) => (id));
+        
+        this.setState({ loading: true, data: [], statusText: '', statusTextColor: '#000000', recordId: `${moduleId}x${this.props.recordId}` });
         this.props.dispatch(viewRecordRendererActions(this));
     }
 
@@ -77,6 +82,9 @@ class Viewer extends Component {
         );
     }
 }
-
+// const mapStateToProps = ({ drawer }) => {
+//     const { moduleId } = drawer;
+//     return { moduleId };
+// };
 export default connect(null)(Viewer);
 

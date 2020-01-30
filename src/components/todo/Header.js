@@ -10,6 +10,7 @@ import {
     AsyncStorage,
 } from 'react-native';
 import Swipeout from 'react-native-swipeout';
+import { HEADER_COLOR } from '../../variables/themeColors';
 
 class Header extends Component {
     constructor(props) {
@@ -102,7 +103,7 @@ class Header extends Component {
                         style={styles.inputStyle}
                         value={this.state.inputValue}
                         onChangeText={this.handleTextChange.bind(this)}
-                        placeholder="Input todo"
+                        placeholder="Enter your todo here..."
                         underlineColorAndroid='rgba(0,0,0,0)'
                         placeholderTextColor="gray"
                     />
@@ -113,10 +114,10 @@ class Header extends Component {
                                     flex: 1, 
                                     marginTop: 2, 
                                     marginBottom: 2, 
-                                    backgroundColor: '#29b87f',
+                                    backgroundColor: '#34bfa3',
                                     justifyContent: 'center',
                                     alignItems: 'center',
-                                    borderRadius: 5 }}
+                                    borderRadius: 2 }}
                         >
                             <Text style={{ color: '#ffffff' }}>Add</Text>
                         </View>
@@ -163,7 +164,8 @@ const styles = {
     subContainer: {
         
         padding: 5,
-        backgroundColor: '#404040',
+        
+        backgroundColor: HEADER_COLOR,
         justifyContent: 'flex-start',
         flexDirection: 'row',
         position: 'relative',
@@ -181,7 +183,7 @@ const styles = {
         
     },
     rowContainer: {
-        height: 35,
+        height: 38,
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
@@ -190,8 +192,9 @@ const styles = {
         color: '#ffffff',
         paddingRight: 5,
         paddingLeft: 5,
-        fontSize: 14,
+        fontSize: 16,
         lineHeight: 15,
+        fontStyle: 'italic', color: 'gray',
         flex: 1
     },
     todoItem: {

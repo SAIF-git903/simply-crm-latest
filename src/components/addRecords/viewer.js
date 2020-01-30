@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { describeRecordHelper } from '../../helper';
+import { describeRecordHelper, copyPriceDetails } from '../../helper';
 
 
 class Viewer extends Component {
@@ -19,6 +19,11 @@ class Viewer extends Component {
         this.setState({ loading: true });
         describeRecordHelper(this);
     }
+    onCopyPriceDetails(priceFields, stockFields) {
+        
+        copyPriceDetails(this, priceFields, stockFields);
+    }
+
     renderLoading() {
         return (
             <View style={{ width: '100%', height: 50, alignItems: 'center', marginTop: 30 }}>
@@ -28,7 +33,7 @@ class Viewer extends Component {
     }
     renderRecordView() {
         return (
-            <KeyboardAwareScrollView>
+            <KeyboardAwareScrollView keyboardShouldPersistTaps='handled'>
                 {this.state.inputForm}
             </KeyboardAwareScrollView>
         );

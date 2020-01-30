@@ -24,6 +24,7 @@ class Lister extends Component {
 
     componentWillMount() {
         this.getRecords();
+        // this.getModuleId();
     }
 
     componentWillReceiveProps(newprops) {
@@ -32,18 +33,27 @@ class Lister extends Component {
     }
 
     onRecordSelect(id, lable, index) {
+        console.log(id);
+        let recordId = id;
+        if (this.props.moduleName === 'Users') {
+            recordId = `19x${id}`;
+        }
         this.setState({ selectedIndex: index });
         this.props.navigation.goBack(null);
-        this.props.dispatch(markReferenceLabel(id, lable, this.props.uniqueId));
+        this.props.dispatch(markReferenceLabel(recordId, lable, this.props.uniqueId));
     }
 
     onEndReached() {
-        if (!this.onEndReachedCalledDuringMomentum) {
+        // if (!this.onEndReachedCalledDuringMomentum) {
             if (this.state.nextPage) {
-                this.props.dispatch(getNextRefPageRecord(this));
+                this.setState({ pageToTake: this.state.pageToTake + 1 }, () => this.props.dispatch(getNextRefPageRecord(this)));
             }
-        }
+        // }
     }
+
+    // getModuleId() {
+        
+    // }
 
     getRecords() {
         this.setState({ loading: true, data: [], selectedIndex: -1, statusText: 'Fetching Record', statusTextColor: '#000000' });
