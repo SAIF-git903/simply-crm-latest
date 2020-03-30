@@ -77,29 +77,33 @@ DEPENDENCIES:
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
+SPEC REPOS:
+  trunk:
+    - boost
+
 EXTERNAL SOURCES:
   DoubleConversion:
-    :podspec: ../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec
+    :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   Folly:
-    :podspec: ../node_modules/react-native/third-party-podspecs/Folly.podspec
+    :podspec: "../node_modules/react-native/third-party-podspecs/Folly.podspec"
   GLog:
-    :podspec: ../node_modules/react-native/third-party-podspecs/GLog.podspec
+    :podspec: "../node_modules/react-native/third-party-podspecs/GLog.podspec"
   React:
-    :path: ../node_modules/react-native
+    :path: "../node_modules/react-native"
   RNVectorIcons:
-    :path: ../node_modules/react-native-vector-icons
+    :path: "../node_modules/react-native-vector-icons"
   yoga:
-    :path: ../node_modules/react-native/ReactCommon/yoga
+    :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
   boost: 30a15ffb6d9aa4646dd3caffc960753f4cb4ca4e
   DoubleConversion: ebb6747c5b66026ad4f97b789c3ceac6f18e57a6
   Folly: b7255b29f1d693c375d642d0f04f0592181156d9
   GLog: 3e4e4ae9746ce6bf6e9420c7fc1e08ad59c8ba1a
-  React: 541ba768b9855e10cdc76f55427a5cd0653ca806
-  RNVectorIcons: 66af4d5c8ff4f584c7b7cd9c4b0780920f27fce2
-  yoga: 17521bbb0dd54a47c0b3ac43253e78cdac7488e0
+  React: 0ba6cae888dc82dc47d6d5f3090615e1b5f6f3e7
+  RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
+  yoga: faecc6be81ca7823ccbb470b93a1b228499fa1c0
 
 PODFILE CHECKSUM: 88b06992171489b11eff3398002ef4523c215a44
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.8.4
