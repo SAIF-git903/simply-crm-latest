@@ -24,20 +24,20 @@ class AddRecords extends Component {
     render() {
         return (
             <View style={styles.backgroundStyle}>
-                <Viewer 
-                navigation={this.props.navigation}
-                moduleName={this.props.selectedButton}
-                moduleId={this.props.moduleId}
-                moduleLable={this.props.moduleLable} 
-                onRef={ref => (this.viewer = ref)}
+                <Viewer
+                    navigation={this.props.navigation}
+                    moduleName={this.props.selectedButton}
+                    moduleId={this.props.moduleId}
+                    moduleLable={this.props.moduleLable}
+                    onRef={ref => (this.viewer = ref)}
                 />
-                <Header 
-                navigation={this.props.navigation}
-                moduleName={this.props.selectedButton}
-                moduleId={this.props.moduleId}
-                moduleLable={this.props.moduleLable} 
-                callViewer={this.callViewer.bind(this)}
-                showCopyOptions={this.showCopyOptions.bind(this)}
+                <Header
+                    navigation={this.props.navigation}
+                    moduleName={this.props.selectedButton}
+                    moduleId={this.props.moduleId}
+                    moduleLable={this.props.moduleLable}
+                    callViewer={this.callViewer.bind(this)}
+                    showCopyOptions={this.showCopyOptions.bind(this)}
                 />
             </View>
         );
@@ -49,8 +49,8 @@ const styles = StyleSheet.create({
         width: '100%',
         flex: 1,
         backgroundColor: 'white',
-       
-        
+
+
     }
 });
 

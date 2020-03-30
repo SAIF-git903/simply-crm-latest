@@ -9,18 +9,18 @@ class Viewer extends Component {
         super(props);
         this.state = { loading: false, inputForm: [] };
     }
-    
+
     componentDidMount() {
         this.props.onRef(this);
-        this.onFetchCall();     
+        this.onFetchCall();
     }
-   
+
     onFetchCall() {
         this.setState({ loading: true });
         describeRecordHelper(this);
     }
     onCopyPriceDetails(priceFields, stockFields) {
-        
+
         copyPriceDetails(this, priceFields, stockFields);
     }
 
@@ -43,13 +43,13 @@ class Viewer extends Component {
         // console.log(this.state.inputForm.length);
         return (
             <View style={{ marginTop: 75, flex: 1 }}>
-            {
-                (this.state.loading) ? 
-                this.renderLoading() :
-                this.renderRecordView() 
-            }
+                {
+                    (this.state.loading) ?
+                        this.renderLoading() :
+                        this.renderRecordView()
+                }
             </View>
-              
+
         );
     }
 }
