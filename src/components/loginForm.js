@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, TextInput, Image, ActivityIndicator, Text, Animated, TouchableWithoutFeedback, 
-    StyleSheet, Alert, Picker, KeyboardAvoidingView, TouchableOpacity, Platform } from 'react-native';
+import {
+    View, TextInput, Image, ActivityIndicator, Text, Animated, TouchableWithoutFeedback,
+    StyleSheet, Alert, Picker, KeyboardAvoidingView, TouchableOpacity, Platform
+} from 'react-native';
 import ModalDropdown from 'react-native-modal-dropdown';
 import { loginUser } from '../actions/';
 import { userUrlHelper, assignUrl } from '../helper';
@@ -37,7 +39,7 @@ class LoginForm extends Component {
             duration: 1000,
         }).start();
     }
-    
+
     onUrlChanged(text) {
         this.setState({ ...this.state, url: text });
     }
@@ -52,7 +54,7 @@ class LoginForm extends Component {
 
     onButtonPress() {
         const { email, password, url, username } = this.state;
-        
+
         console.log(url, this.state.showUrlList);
         if (this.state.showUrlList && url !== '') {
             this.setState({ loading: true });
@@ -65,7 +67,7 @@ class LoginForm extends Component {
     onForgotPasswordPress() {
         console.log('forgot password clicked');
         const { navigate } = this.props.navigation;
-        navigate('ForgotPasswordScreen'); 
+        navigate('ForgotPasswordScreen');
     }
 
     handlePressIn() {
@@ -98,7 +100,7 @@ class LoginForm extends Component {
     render() {
         const animatedStyle = { opacity: this.animatedValue };
         const buttonAnimatedStyle = { transform: [{ scale: this.buttonAnimatedValue }] };
-        
+
         const options = this.state.urlList;
         const optionsForiOS = [];
         options.map((item) => {
@@ -109,135 +111,135 @@ class LoginForm extends Component {
         return (
             <View style={{ width: '100%', height: '100%', backgroundColor: '#0085DE' }}>
 
-                { /*Logo*/ }
+                { /*Logo*/}
                 <View style={styles.logoMainHolder}>
                     <View style={styles.logoSubHolder}>
                         <Image source={{ uri: 'vtigerlogo' }} style={styles.logoStyle} />
                     </View>
-                    
+
                 </View>
 
-                { /*Login Input Component*/ }
+                { /*Login Input Component*/}
                 <View style={{ flex: 1 }} >
-                    
+
                     <KeyboardAvoidingView behavior={'padding'}>
-                    {
-                        (this.state.showUrlList) ? 
-                        <View style={styles.inputMainHolder}>
-                            <View style={styles.inputSubHolder}>
-                                <Image source={{ uri: 'url' }} style={styles.inputImageStyle} />
-                            
-                                {
-                                    (Platform.OS === 'android') ?
+                        {
+                            (this.state.showUrlList) ?
+                                <View style={styles.inputMainHolder}>
+                                    <View style={styles.inputSubHolder}>
+                                        <Image source={{ uri: 'url' }} style={styles.inputImageStyle} />
 
-                                    <Picker
-                                    style={styles.inputTextStyle}
-                                    
-                                    mode={'dropdown'}
-                                    selectedValue={this.state.url} 
-                                    onValueChange={(itemValue) => {
-                                            if (itemValue !== 0) {
-                                                this.setState({ url: itemValue });
-                                                // this.onUrlPickPress(itemValue);
-                                            }
+                                        {
+                                            (Platform.OS === 'android') ?
+
+                                                <Picker
+                                                    style={styles.inputTextStyle}
+
+                                                    mode={'dropdown'}
+                                                    selectedValue={this.state.url}
+                                                    onValueChange={(itemValue) => {
+                                                        if (itemValue !== 0) {
+                                                            this.setState({ url: itemValue });
+                                                            // this.onUrlPickPress(itemValue);
+                                                        }
+                                                    }
+                                                    }
+                                                >
+                                                    <Picker.Item label='Please Select Url' value={0} />
+                                                    {options.map((item, index) => {
+                                                        return (<Picker.Item label={item.url} value={item.url} key={index} color='black' />);
+                                                    })}
+                                                </Picker>
+
+                                                :
+
+
+                                                <ModalDropdown
+                                                    options={optionsForiOS}
+                                                    onSelect={(index, value) => { this.setState({ url: value }); }}
+                                                    // defaultValue={this.state.url}
+                                                    //defaultIndex={0}
+                                                    style={{
+                                                        flex: 1,
+                                                        width: '100%',
+                                                        padding: 5,
+                                                        alignItems: 'flex-start'
+
+                                                    }}
+                                                    textStyle={{ fontSize: 16, color: 'white' }}
+                                                    dropdownStyle={{ width: '80%', flex: 1, paddingRight: 15 }}
+                                                    dropdownTextStyle={{ fontSize: 16 }}
+                                                />
+
                                         }
-                                    }
-                                    >
-                                    <Picker.Item label='Please Select Url' value={0} />
-                                        {options.map((item, index) => {
-                                            return (<Picker.Item label={item.url} value={item.url} key={index} color='black' />); 
-                                        })}
-                                    </Picker>
 
+                                    </View>
+                                </View>
                                 :
+                                <View style={{ height: 30, padding: 10 }} />
 
-                                
-                                <ModalDropdown 
-                                    options={optionsForiOS}
-                                    onSelect={(index, value) => { this.setState({ url: value }); }}
-                                    // defaultValue={this.state.url}
-                                    //defaultIndex={0}
-                                    style={{ 
-                                        flex: 1,
-                                        width: '100%',
-                                        padding: 5,
-                                        alignItems: 'flex-start'
-                                        
-                                    }}
-                                    textStyle={{ fontSize: 16, color: 'white' }}
-                                    dropdownStyle={{ width: '80%', flex: 1, paddingRight: 15 }}
-                                    dropdownTextStyle={{ fontSize: 16 }}
+                        }
+
+                        <View style={styles.inputMainHolder}>
+
+                            <View style={styles.inputSubHolder}>
+                                <Image
+                                    source={{ uri: 'login_email' }}
+                                    style={styles.inputImageStyle}
                                 />
 
-                                }
-                            
+                                <TextInput
+                                    clearButtonMode='always'
+                                    underlineColorAndroid='rgba(0,0,0,0)'
+                                    style={[styles.inputTextStyle]}
+                                    placeholder='Enter your e-mail'
+                                    placeholderTextColor='#ddd'
+
+                                    ref='email'
+                                    onSubmitEditing={() => {
+                                        this.refs.password.focus();
+                                    }}
+                                    autoCapitalize='none'
+                                    returnKeyType='next'
+                                    value={this.state.email}
+                                    onChangeText={this.onEmailChanged.bind(this)}
+                                />
                             </View>
-                        </View> 
-                    :
-                    <View style={{ height: 30, padding: 10 }} />
 
-                    }
-                    
-                    <View style={styles.inputMainHolder}>
 
-                        <View style={styles.inputSubHolder}>
-                            <Image
-                                source={{ uri: 'login_email' }}
-                                style={styles.inputImageStyle} 
-                            />
-                            
-                            <TextInput 
-                                clearButtonMode='always'
-                                underlineColorAndroid='rgba(0,0,0,0)' 
-                                style={[styles.inputTextStyle]} 
-                                placeholder='Enter your e-mail'
-                                placeholderTextColor='#ddd'
-                                
-                                ref='email'
-                                onSubmitEditing={() => { 
-                                    this.refs.password.focus(); 
-                                }} 
-                                autoCapitalize='none'
-                                returnKeyType='next'
-                                value={this.state.email}
-                                onChangeText={this.onEmailChanged.bind(this)}
-                            />
                         </View>
-                    
-                        
-                    </View>
-                    <View style={styles.inputMainHolder}>
-                    
-                        <View style={styles.inputSubHolder}>
-                            <Image 
-                                source={{ uri: 'password' }} 
-                                style={styles.inputImageStyle} 
-                            />
-                            
-                            
-                            <TextInput 
-                            clearButtonMode='always' 
-                            underlineColorAndroid='rgba(0,0,0,0)'
-                            style={styles.inputTextStyle}
-                            ref='password' 
-                            secureTextEntry 
-                            placeholder='Enter your password'
-                            placeholderTextColor='#ddd'
-                            autoCapitalize='none'
-                            returnKeyType='done' 
-                            value={this.state.password}
-                            onChangeText={this.onPasswordChanged.bind(this)}
-                            />
+                        <View style={styles.inputMainHolder}>
+
+                            <View style={styles.inputSubHolder}>
+                                <Image
+                                    source={{ uri: 'password' }}
+                                    style={styles.inputImageStyle}
+                                />
+
+
+                                <TextInput
+                                    clearButtonMode='always'
+                                    underlineColorAndroid='rgba(0,0,0,0)'
+                                    style={styles.inputTextStyle}
+                                    ref='password'
+                                    secureTextEntry
+                                    placeholder='Enter your password'
+                                    placeholderTextColor='#ddd'
+                                    autoCapitalize='none'
+                                    returnKeyType='done'
+                                    value={this.state.password}
+                                    onChangeText={this.onPasswordChanged.bind(this)}
+                                />
+                            </View>
                         </View>
-                    </View>
                     </KeyboardAvoidingView>
-                    
+
 
                     <View style={styles.forgotPasswordHolder}>
                         <TouchableOpacity onPress={this.onForgotPasswordPress.bind(this)}>
                             <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
                         </TouchableOpacity>
-                        
+
                     </View>
                 </View>
 
@@ -246,24 +248,24 @@ class LoginForm extends Component {
 
                     <View style={styles.loginButtonHolder}>
 
-                            <TouchableWithoutFeedback
-                                onPressIn={this.handlePressIn} 
-                                onPressOut={this.handlePressOut}
-                            >
-                                <Animated.View style={[styles.loginButtonStyle, buttonAnimatedStyle]}>
-                                    {(this.state.loading) ? this.renderLoading() : this.renderLoginButton()}
-                                </Animated.View>
-                            </TouchableWithoutFeedback>
-                        
+                        <TouchableWithoutFeedback
+                            onPressIn={this.handlePressIn}
+                            onPressOut={this.handlePressOut}
+                        >
+                            <Animated.View style={[styles.loginButtonStyle, buttonAnimatedStyle]}>
+                                {(this.state.loading) ? this.renderLoading() : this.renderLoginButton()}
+                            </Animated.View>
+                        </TouchableWithoutFeedback>
+
                     </View>
                     <View style={styles.signUpHolder}>
                         {/* <Text style={{ color: 'white', fontSize: 18 }}>Don't have an account? Sign up for free here</Text> */}
                     </View>
                 </View>
-            
+
             </View>
         );
-   }
+    }
 }
 
 const styles = StyleSheet.create({
@@ -274,9 +276,9 @@ const styles = StyleSheet.create({
         // padding: 50,
     },
     logoSubHolder: {
-        width: 200, 
-        height: 100, 
-        alignItems: 'center', 
+        width: 200,
+        height: 100,
+        alignItems: 'center',
         justifyContent: 'center'
     },
     logoStyle: {
@@ -294,13 +296,13 @@ const styles = StyleSheet.create({
     inputSubHolder: {
         backgroundColor: '#0069AE',
         flex: 1,
-        flexDirection: 'row', 
+        flexDirection: 'row',
         alignItems: 'center',
         borderRadius: 5
     },
     inputTextStyle: {
         backgroundColor: '#0069AE',
-        height: '100%', 
+        height: '100%',
         flex: 1,
         color: 'white',
         marginLeft: 5,
@@ -308,7 +310,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Helvetica',
         fontWeight: 'bold',
         fontSize: 18,
-        
+
     },
     inputImageStyle: {
         height: 23,
@@ -317,23 +319,23 @@ const styles = StyleSheet.create({
         marginLeft: 8
     },
     forgotPasswordHolder: {
-        height: 50, 
-        alignItems: 'flex-end', 
-        paddingRight: 15, 
+        height: 50,
+        alignItems: 'flex-end',
+        paddingRight: 15,
         paddingTop: 8
     },
     forgotPasswordText: {
-        color: 'white', 
+        color: 'white',
         fontSize: 18,
         fontFamily: 'Helvetica',
-        
+
     },
     loginButtonHolder: {
-        width: '100%', 
-        flex: 2, 
-        padding: 15, 
+        width: '100%',
+        flex: 2,
+        padding: 15,
         justifyContent: 'center',
-       
+
     },
     loginButtonStyle: {
         width: '100%',
@@ -346,18 +348,18 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0.5, height: 0.5 },
         shadowColor: 'black',
         shadowOpacity: 0.5,
-        
+
     },
     loginButtonTextStyle: {
-        color: '#0069AE', 
-        fontSize: 18, 
+        color: '#0069AE',
+        fontSize: 18,
         fontWeight: 'bold',
         fontFamily: 'Helvetica',
     },
     signUpHolder: {
-        flex: 1, 
-        padding: 10, 
-        justifyContent: 'flex-end', 
+        flex: 1,
+        padding: 10,
+        justifyContent: 'flex-end',
         alignItems: 'center'
     },
 

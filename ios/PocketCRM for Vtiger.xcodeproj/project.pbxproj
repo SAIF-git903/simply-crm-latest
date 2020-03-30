@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		002C366EEE5248688DB27427 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB8AE7EF3EF64640A016F858 /* AntDesign.ttf */; };
 		0322746EF9A24C47ABF94EBF /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 50935CA54FB54F18AB35A98F /* Ionicons.ttf */; };
-		0E6784902315688B0019155F /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E67848D231568540019155F /* libRNSVG.a */; };
 		18395B382B844D27975A8AE8 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA6E01F56B3D48EA93EA3733 /* FontAwesome.ttf */; };
 		213E371CC8CD479C88292C72 /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 583C39B17EF448798B9E110B /* FontAwesome5_Brands.ttf */; };
 		28B31CE180A269B9430E5CF9 /* Pods_PocketCRM_for_Vtiger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6EA8420B7231B22BE2CEA6C /* Pods_PocketCRM_for_Vtiger.framework */; };
@@ -44,24 +43,9 @@
 			remoteGlobalIDString = 15209BEF1D250F63000D0F44;
 			remoteInfo = LRDRCTSimpleToast;
 		};
-		0E67848C231568540019155F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0E678487231568540019155F /* RNSVG.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 0CF68AC11AF0540F00FF9E5C;
-			remoteInfo = RNSVG;
-		};
-		0E67848E231568540019155F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0E678487231568540019155F /* RNSVG.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 94DDAC5C1F3D024300EED511;
-			remoteInfo = "RNSVG-tvOS";
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0E678487231568540019155F /* RNSVG.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNSVG.xcodeproj; path = "../node_modules/react-native-svg/ios/RNSVG.xcodeproj"; sourceTree = "<group>"; };
 		232AFF2DDDD34729BE4CF8D5 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		24000D34738743398040625C /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		2B8A00119CDF4F71B81C6AD6 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
@@ -103,7 +87,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				28B31CE180A269B9430E5CF9 /* Pods_PocketCRM_for_Vtiger.framework in Frameworks */,
-				0E6784902315688B0019155F /* libRNSVG.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -114,15 +97,6 @@
 			isa = PBXGroup;
 			children = (
 				0E678486231552880019155F /* libLRDRCTSimpleToast.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		0E678488231568540019155F /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				0E67848D231568540019155F /* libRNSVG.a */,
-				0E67848F231568540019155F /* libRNSVG-tvOS.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -170,7 +144,6 @@
 		66D05A0F599C41ACAD3F233C /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				0E678487231568540019155F /* RNSVG.xcodeproj */,
 				82ECFD7B3FCA43EF86B45AB0 /* LRDRCTSimpleToast.xcodeproj */,
 			);
 			name = Libraries;
@@ -235,7 +208,6 @@
 				A343FBE61FB1A9B7009A9ADB /* Frameworks */,
 				A343FBE71FB1A9B7009A9ADB /* Resources */,
 				F94043AC391DC7D369ADDE31 /* [CP] Embed Pods Frameworks */,
-				C2EA258C7BEDC549463D1CB4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -258,7 +230,7 @@
 				TargetAttributes = {
 					A343FBE81FB1A9B7009A9ADB = {
 						CreatedOnToolsVersion = 9.1;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -278,10 +250,6 @@
 					ProductGroup = 0E678482231552880019155F /* Products */;
 					ProjectRef = 82ECFD7B3FCA43EF86B45AB0 /* LRDRCTSimpleToast.xcodeproj */;
 				},
-				{
-					ProductGroup = 0E678488231568540019155F /* Products */;
-					ProjectRef = 0E678487231568540019155F /* RNSVG.xcodeproj */;
-				},
 			);
 			projectRoot = "";
 			targets = (
@@ -296,20 +264,6 @@
 			fileType = archive.ar;
 			path = libLRDRCTSimpleToast.a;
 			remoteRef = 0E678485231552880019155F /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		0E67848D231568540019155F /* libRNSVG.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNSVG.a;
-			remoteRef = 0E67848C231568540019155F /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		0E67848F231568540019155F /* libRNSVG-tvOS.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libRNSVG-tvOS.a";
-			remoteRef = 0E67848E231568540019155F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -345,25 +299,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		C2EA258C7BEDC549463D1CB4 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PocketCRM for Vtiger/Pods-PocketCRM for Vtiger-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		E0531B10CA6538932DE455DC /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -388,7 +323,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-PocketCRM for Vtiger/Pods-PocketCRM for Vtiger-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-PocketCRM for Vtiger/Pods-PocketCRM for Vtiger-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/DoubleConversion/DoubleConversion.framework",
 				"${BUILT_PRODUCTS_DIR}/Folly/folly.framework",
 				"${BUILT_PRODUCTS_DIR}/GLog/glog.framework",
@@ -407,7 +342,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PocketCRM for Vtiger/Pods-PocketCRM for Vtiger-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PocketCRM for Vtiger/Pods-PocketCRM for Vtiger-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -559,18 +494,19 @@
 			baseConfigurationReference = 94A6BF6FA9F7974B5B96563D /* Pods-PocketCRM for Vtiger.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = 6JWQQD5699;
 				INFOPLIST_FILE = "PocketCRM for Vtiger/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.simply.vtigercrm;
+				PRODUCT_BUNDLE_IDENTIFIER = com.simplycrm.mobileapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "37a55dcc-cd23-4ff7-9f5b-0709ca0e93b0";
-				PROVISIONING_PROFILE_SPECIFIER = VtigerAppAdHocProfile;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -581,18 +517,19 @@
 			baseConfigurationReference = 75122CB25C8F722506118012 /* Pods-PocketCRM for Vtiger.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = 6JWQQD5699;
 				INFOPLIST_FILE = "PocketCRM for Vtiger/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.simply.vtigercrm;
+				PRODUCT_BUNDLE_IDENTIFIER = com.simplycrm.mobileapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "37a55dcc-cd23-4ff7-9f5b-0709ca0e93b0";
-				PROVISIONING_PROFILE_SPECIFIER = VtigerAppAdHocProfile;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

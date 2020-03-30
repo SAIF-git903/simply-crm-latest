@@ -5,12 +5,12 @@ import { LOGINDETAILSKEY, LOGINFORM, URLDETAILSKEY } from '../variables/strings'
 import { LOGIN_USER_SUCCESS } from '../actions/types';
 import { addDatabaseKey } from '.';
 
-export const userUrlHelper = async(email, password, url, navigation, loginInstance, dispatch) => {
-    
+export const userUrlHelper = async (email, password, url, navigation, loginInstance, dispatch) => {
+
     try {
         const URLDetails = JSON.parse(await AsyncStorage.getItem(URLDETAILSKEY));
         if (URLDetails !== null) {
-            loginHelper(URLDetails.userName, URLDetails.password, URLDetails.url, navigation, loginInstance, dispatch); 
+            loginHelper(URLDetails.userName, URLDetails.password, URLDetails.url, navigation, loginInstance, dispatch);
         } else {
             const response = await fetch(`https://sai.simplyhq.com/index.php?action=LocateInstance&email=${email}&password=${password}&api_key=jNuaPq7MRfLDvnLs5gZ9XgU1H7n3URma`, {
                 method: 'GET',
@@ -19,12 +19,11 @@ export const userUrlHelper = async(email, password, url, navigation, loginInstan
                 },
             });
             const responseJson = await response.json();
-           
-            
+
             if (responseJson.output.success !== 0) {
                 const output = responseJson.output;
                 let crmUrl; let crmUsername; let crmPassword;
-                if (output.length > 1) { 
+                if (output.length > 1) {
                     // multi urls
                     Toast.show('Please select the url to login');
                     loginInstance.setState({ loading: false, showUrlList: true, urlList: output, password, username: output[0].username, dispatch });
@@ -36,28 +35,28 @@ export const userUrlHelper = async(email, password, url, navigation, loginInstan
                     //no urls
                     Toast.show('No Url Found');
                     loginInstance.setState({ loading: false });
-                }     
+                }
             } else {
                 loginInstance.setState({ loading: false });
                 Alert.alert('Login failed', 'Please check your email and password',
-                [
-                  { text: 'Ok', onPress: () => {} },
-                ],
-                { cancelable: true }
-              );  
-            }  
+                    [
+                        { text: 'Ok', onPress: () => { } },
+                    ],
+                    { cancelable: true }
+                );
+            }
         }
     } catch (error) {
         console.log(error);
     }
 };
 
-export const assignUrl = async(crmUrl, crmUsername, crmPassword, navigation, loginInstance, dispatch) => {
+export const assignUrl = async (crmUrl, crmUsername, crmPassword, navigation, loginInstance, dispatch) => {
     try {
         const urlDetails = { url: crmUrl, userName: crmUsername, password: crmPassword };
         AsyncStorage.setItem(URLDETAILSKEY, JSON.stringify(urlDetails));
         await addDatabaseKey(URLDETAILSKEY);
-        loginHelper(crmUsername, crmPassword, crmUrl, navigation, loginInstance, dispatch); 
+        loginHelper(crmUsername, crmPassword, crmUrl, navigation, loginInstance, dispatch);
     } catch (error) {
         console.log(error);
     }
@@ -74,27 +73,27 @@ export const loginHelper = async (username, password, url, navigation, loginInst
 
     try {
         // console.log('URL', url);
-        
+
         let trimUrl = url.replace(/ /g, '');
-        
-        trimUrl = (trimUrl.indexOf('://') === -1) ? 'https://' + trimUrl : trimUrl;   
-        if (url.includes('www')) { 
+
+        trimUrl = (trimUrl.indexOf('://') === -1) ? 'https://' + trimUrl : trimUrl;
+        if (url.includes('www')) {
             trimUrl = url.replace('www.', '');
         }
-         
+
         //hardcoded for testing
         // trimUrl = 'https://mobileapp-dev.simply-crm.com';
         console.log(trimUrl);
         console.log(username);
         console.log(password);
         const response = await fetch(`${trimUrl}/modules/Mobile/api.php`, {
-        method: 'POST',
-        headers: {
-            //'Accept': 'application/json',
-            'cache-control': 'no-cache',
-            //'Content-Type': 'multipart/form-data; charset=utf-8',
-        },
-        body: param
+            method: 'POST',
+            headers: {
+                //'Accept': 'application/json',
+                'cache-control': 'no-cache',
+                //'Content-Type': 'multipart/form-data; charset=utf-8',
+            },
+            body: param
         });
         // console.log(response);
         const responseJson = await response.json();
@@ -117,13 +116,13 @@ export const loginHelper = async (username, password, url, navigation, loginInst
             await addDatabaseKey(LOGINDETAILSKEY);
             loginUserSuccess(dispatch, loginDetails, navigation);
         } else {
-            loginInstance.setState({ loading: false, showUrlList: false });            
+            loginInstance.setState({ loading: false, showUrlList: false });
             Alert.alert('Authentication failed', 'Check your username and password',
                 [
-                  { text: 'Ok', onPress: () => {} },
+                    { text: 'Ok', onPress: () => { } },
                 ],
                 { cancelable: true }
-              );     
+            );
         }
     } catch (error) {
         console.log(error);
@@ -144,42 +143,42 @@ export const loginHelper = async (username, password, url, navigation, loginInst
 const showNetworkError = (loginInstance) => {
     loginInstance.setState({ loading: false, showUrlList: false });
     Alert.alert('Wrong url or Network error', 'Check your internet connection and your url.',
-    [
-      { text: 'Ok', onPress: () => {} },
-    ],
-    { cancelable: true }
-  );
-}; 
+        [
+            { text: 'Ok', onPress: () => { } },
+        ],
+        { cancelable: true }
+    );
+};
 
 const loginUserSuccess = (dispatch, loginDetails, navigation) => {
     dispatch({ type: LOGIN_USER_SUCCESS, payload: loginDetails });
     const resetAction = NavigationActions.reset({
         index: 0,
         actions: [
-          NavigationActions.navigate({ routeName: 'HomeScreen' })
+            NavigationActions.navigate({ routeName: 'HomeScreen' })
         ]
-      });
-      navigation.dispatch(resetAction);
+    });
+    navigation.dispatch(resetAction);
 };
 
-export const resetPassword = async(email, forgotPasswordInstance) => {
+export const resetPassword = async (email, forgotPasswordInstance) => {
     try {
-            const response = await fetch(`https://sai.simplyhq.com/index.php?action=AppForgotPassword&email=${email}&api_key=pYyjYDS9prMhhI2Ou1zGc5TYIpZQoviK`, {
-                method: 'GET',
-                headers: {
-                    'cache-control': 'no-cache'
-                },
-            });
-            const responseJson = await response.json();
-            console.log(responseJson);
-            if (responseJson.output.success !== 0) {
-                forgotPasswordInstance.setState({ buttonText: 'BACK', loading: false });
-                Toast.show('Thank you - we\'ve now sent password reset instructions to the email you entered.');
-            } else {
-                //Failed
-                forgotPasswordInstance.setState({ buttonText: 'RESET PASSWORD', loading: false });
-                Toast.show('Reset Password Failed');
-            }
+        const response = await fetch(`https://sai.simplyhq.com/index.php?action=AppForgotPassword&email=${email}&api_key=pYyjYDS9prMhhI2Ou1zGc5TYIpZQoviK`, {
+            method: 'GET',
+            headers: {
+                'cache-control': 'no-cache'
+            },
+        });
+        const responseJson = await response.json();
+        console.log(responseJson);
+        if (responseJson.output.success !== 0) {
+            forgotPasswordInstance.setState({ buttonText: 'BACK', loading: false });
+            Toast.show('Thank you - we\'ve now sent password reset instructions to the email you entered.');
+        } else {
+            //Failed
+            forgotPasswordInstance.setState({ buttonText: 'RESET PASSWORD', loading: false });
+            Toast.show('Reset Password Failed');
+        }
     } catch (error) {
         console.log(error);
     }
