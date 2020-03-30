@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, TextInput, 
-         TouchableWithoutFeedback, Picker, TouchableOpacity } from 'react-native';
+import {
+    View, StyleSheet, Text, TextInput,
+    TouchableWithoutFeedback, Picker, TouchableOpacity
+} from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { DatePickerDialog } from 'react-native-datepicker-dialog';
@@ -12,16 +14,17 @@ import moment from 'moment';
 class InputForm extends Component {
     constructor(props) {
         super(props);
-        this.state = { checked: false, 
-                       pickerValue: this.props.obj.type.defaultValue,
-                       pickDate: null,
-                       multiPickerValue: [],
-                       dialogueVisible: false,
-                       dialogueSelectedValue: undefined,
-                       referenceValue: '', 
-                       formId: 0,
-                       saveValue: '',
-                     };
+        this.state = {
+            checked: false,
+            pickerValue: this.props.obj.type.defaultValue,
+            pickDate: null,
+            multiPickerValue: [],
+            dialogueVisible: false,
+            dialogueSelectedValue: undefined,
+            referenceValue: '',
+            formId: 0,
+            saveValue: '',
+        };
     }
 
     componentWillMount() {
@@ -43,38 +46,38 @@ class InputForm extends Component {
     onDatePress = () => {
         let pickedDate = this.state.pickDate;
         const dob = this.props.obj.name;
-        
+
         if (!pickedDate || pickedDate == null) {
-          pickedDate = new Date();
-          this.setState({
-            pickDate: pickedDate
-          });
+            pickedDate = new Date();
+            this.setState({
+                pickDate: pickedDate
+            });
         }
         if (dob === 'birthday') {
-             //To open the dialog
+            //To open the dialog
             this.refs.dateDialog.open({
-            date: pickedDate,
-            maxDate: new Date() //To restirct future date
-          });
+                date: pickedDate,
+                maxDate: new Date() //To restirct future date
+            });
         } else {
             //To open the dialog
             this.refs.dateDialog.open({
                 date: pickedDate,
-              });
-        } 
+            });
+        }
     }
 
     onDatePicked = (date) => {
         //Here you will get the selected date
         const formatDate = this.props.obj.type.format.toUpperCase();
         this.setState({
-          pickDate: date,
-          dateText: moment(date).format(formatDate)
+            pickDate: date,
+            dateText: moment(date).format(formatDate)
         });
     }
 
     onReferencePress(refersTo) {
-       
+
         if (refersTo.length > 1) {
             this.setState({ dialogueVisible: true });
         } else {
@@ -86,32 +89,33 @@ class InputForm extends Component {
     toggle() {
         this.setState({ checked: !this.state.checked });
     }
-    
+
     renderStringType() {
         const mandatory = this.props.obj.mandatory;
         return (
-            <View style={styles.inputHolder}> 
-            {
-                (mandatory) ? 
-                <View style={styles.mandatory}>
-                    <Text style={{ color: 'red', fontSize: 16 }}>*</Text>
-                </View>
-                :
-                undefined
-            } 
+            <View style={styles.inputHolder}>
+                {
+                    (mandatory) ?
+                        <View style={styles.mandatory}>
+                            <Text style={{ color: 'red', fontSize: 16 }}>*</Text>
+                        </View>
+                        :
+                        undefined
+                }
                 <View style={{ flex: 1, justifyContent: 'center' }}>
                     <Text style={styles.label}>{this.props.obj.lable}</Text>
                 </View>
                 <View style={{ flex: 1 }}>
                     <TextInput
                         placeholder={this.props.obj.lable}
+                        placeholderTextColor={'#C5C5C5'}
                         autoCorrect={false}
-                        autoCapitalize='none' 
+                        autoCapitalize='none'
                         style={styles.label}
                         value={this.state.saveValue}
                         onChangeText={this.onTextInputChange.bind(this)}
                     />
-                </View>  
+                </View>
             </View>
         );
     }
@@ -120,41 +124,42 @@ class InputForm extends Component {
         const mandatory = this.props.obj.mandatory;
         return (
             <View style={styles.inputHolder}>
-            {
-                (mandatory) ? 
-                <View style={styles.mandatory}>
-                    <Text style={{ color: 'red', fontSize: 16 }}>*</Text>
-                </View>
-                :
-                undefined
-            } 
-            
+                {
+                    (mandatory) ?
+                        <View style={styles.mandatory}>
+                            <Text style={{ color: 'red', fontSize: 16 }}>*</Text>
+                        </View>
+                        :
+                        undefined
+                }
+
                 <View style={{ flex: 1, justifyContent: 'center' }}>
                     <Text style={styles.label}>{this.props.obj.lable}</Text>
                 </View>
                 <View style={{ flex: 1 }}>
-                {
-                    
-                    (type === 'integer' || type === 'double' || type === 'currency' || type === 'phone') ?
-                    <TextInput
-                        placeholder={this.props.obj.lable}
-                        autoCorrect={false}
-                        autoCapitalize='none' 
-                        style={styles.label}
-                        
-                        keyboardType='numeric'
-                    />
-                    :
-                    <TextInput
-                        placeholder={this.props.obj.lable}
-                        autoCorrect={false}
-                        autoCapitalize='none' 
-                        style={styles.label}
-                        keyboardType='email-address'
-                    />
-                }
+                    {
 
-                </View>  
+                        (type === 'integer' || type === 'double' || type === 'currency' || type === 'phone') ?
+                            <TextInput
+                                placeholder={this.props.obj.lable}
+                                autoCorrect={false}
+                                autoCapitalize='none'
+                                style={styles.label}
+                                placeholderTextColor={'#C5C5C5'}
+                                keyboardType='numeric'
+                            />
+                            :
+                            <TextInput
+                                placeholderTextColor={'#C5C5C5'}
+                                placeholder={this.props.obj.lable}
+                                autoCorrect={false}
+                                autoCapitalize='none'
+                                style={styles.label}
+                                keyboardType='email-address'
+                            />
+                    }
+
+                </View>
             </View>
         );
     }
@@ -162,42 +167,42 @@ class InputForm extends Component {
         const mandatory = this.props.obj.mandatory;
         return (
             <View style={styles.inputHolder}>
-            {
-                (mandatory) ? 
-                <View style={styles.mandatory}>
-                    <Text style={{ color: 'red', fontSize: 16 }}>*</Text>
-                </View>
-                :
-                undefined
-            } 
+                {
+                    (mandatory) ?
+                        <View style={styles.mandatory}>
+                            <Text style={{ color: 'red', fontSize: 16 }}>*</Text>
+                        </View>
+                        :
+                        undefined
+                }
                 <View style={{ flex: 1, justifyContent: 'center' }}>
                     <Text style={styles.label}>{this.props.obj.lable}</Text>
                 </View>
                 <View style={{ flex: 1, justifyContent: 'center' }}>
-                
-                <TouchableWithoutFeedback onPress={this.toggle.bind(this)}>
-                    <View 
-                        style={{ 
-                            width: 25, 
-                            height: 25, 
-                            borderColor: '#ddd', 
-                            borderWidth: 1, 
-                            alignItems: 'center' 
-                        }}
-                    >
-                        {
-                            (this.state.checked) ?
-                            <Icon name="check" size={20} color='green' />
-                            :
-                            null
-                        }
-                    </View>
-                </TouchableWithoutFeedback>
-               
+
+                    <TouchableWithoutFeedback onPress={this.toggle.bind(this)}>
+                        <View
+                            style={{
+                                width: 25,
+                                height: 25,
+                                borderColor: '#ddd',
+                                borderWidth: 1,
+                                alignItems: 'center'
+                            }}
+                        >
+                            {
+                                (this.state.checked) ?
+                                    <Icon name="check" size={20} color='green' />
+                                    :
+                                    null
+                            }
+                        </View>
+                    </TouchableWithoutFeedback>
+
                 </View>
-                
+
             </View>
-        );       
+        );
     }
     renderPicklistType() {
         const mandatory = this.props.obj.mandatory;
@@ -206,33 +211,33 @@ class InputForm extends Component {
 
         return (
             <View style={styles.inputHolder}>
-            {
-                (mandatory) ? 
-                <View style={styles.mandatory}>
-                    <Text style={{ color: 'red', fontSize: 16 }}>*</Text>
-                </View>
-                :
-                undefined
-            } 
+                {
+                    (mandatory) ?
+                        <View style={styles.mandatory}>
+                            <Text style={{ color: 'red', fontSize: 16 }}>*</Text>
+                        </View>
+                        :
+                        undefined
+                }
                 <View style={{ flex: 1, justifyContent: 'center' }}>
                     <Text style={styles.label}>{this.props.obj.lable}</Text>
                 </View>
                 <View style={{ flex: 1 }}>
-                <Picker 
-                    mode='dropdown'
-                    selectedValue={this.state.pickerValue} 
-                    onValueChange={(itemValue) => this.setState({ pickerValue: itemValue })}
-                >
-                    {options.map((item, index) => {
-                        return (<Picker.Item label={item.label} value={item.value} key={index} />); 
-                    })}
-                </Picker>
+                    <Picker
+                        mode='dropdown'
+                        selectedValue={this.state.pickerValue}
+                        onValueChange={(itemValue) => this.setState({ pickerValue: itemValue })}
+                    >
+                        {options.map((item, index) => {
+                            return (<Picker.Item label={item.label} value={item.value} key={index} />);
+                        })}
+                    </Picker>
                 </View>
-                
+
             </View>
-        );       
+        );
     }
-   
+
     renderMultiPicklistType() {
         const mandatory = this.props.obj.mandatory;
         let options = [];
@@ -241,69 +246,70 @@ class InputForm extends Component {
         options.map((item) => {
             items.push({ id: item.label, name: item.value });
         });
-       
+
 
         return (
             <View style={styles.inputHolder}>
-            {
-                (mandatory) ? 
-                <View style={styles.mandatory}>
-                    <Text style={{ color: 'red', fontSize: 16 }}>*</Text>
-                </View>
-                :
-                undefined
-            } 
+                {
+                    (mandatory) ?
+                        <View style={styles.mandatory}>
+                            <Text style={{ color: 'red', fontSize: 16 }}>*</Text>
+                        </View>
+                        :
+                        undefined
+                }
                 <View style={{ flex: 1, justifyContent: 'center' }}>
                     <Text style={styles.label}>{this.props.obj.lable}</Text>
                 </View>
                 <View style={{ flex: 1 }}>
-                <MultiSelect
-                    items={items}
-                    uniqueKey="id"
-                    onSelectedItemsChange={
-                        (selectedItems) => { 
-                            this.setState({ multiPickerValue: selectedItems 
-                        }); 
-                    }}
-                    selectedItems={this.state.multiPickerValue}
-                    selectText="Pick Items"
-                    tagRemoveIconColor="#CCC"
-                    tagBorderColor="#CCC"
-                    tagTextColor="#CCC"
-                    selectedItemTextColor="#CCC"
-                    selectedItemIconColor="#CCC"
-                    itemTextColor="#000"
-                />
+                    <MultiSelect
+                        items={items}
+                        uniqueKey="id"
+                        onSelectedItemsChange={
+                            (selectedItems) => {
+                                this.setState({
+                                    multiPickerValue: selectedItems
+                                });
+                            }}
+                        selectedItems={this.state.multiPickerValue}
+                        selectText="Pick Items"
+                        tagRemoveIconColor="#CCC"
+                        tagBorderColor="#CCC"
+                        tagTextColor="#CCC"
+                        selectedItemTextColor="#CCC"
+                        selectedItemIconColor="#CCC"
+                        itemTextColor="#000"
+                    />
                 </View>
-                
+
             </View>
-        );       
+        );
     }
 
     renderDateType() {
         const mandatory = this.props.obj.mandatory;
         return (
             <View style={styles.inputHolder}>
-            {
-                (mandatory) ? 
-                <View style={styles.mandatory}>
-                    <Text style={{ color: 'red', fontSize: 16 }}>*</Text>
-                </View>
-                :
-                undefined
-            } 
-            
+                {
+                    (mandatory) ?
+                        <View style={styles.mandatory}>
+                            <Text style={{ color: 'red', fontSize: 16 }}>*</Text>
+                        </View>
+                        :
+                        undefined
+                }
+
                 <View style={{ flex: 1, justifyContent: 'center' }}>
                     <Text style={styles.label}>{this.props.obj.lable}</Text>
                 </View>
                 <View style={{ flex: 1 }}>
-                <TouchableOpacity onPress={this.onDatePress.bind(this)} >
-                    <View style={styles.textbox}>
-                        <Text style={styles.text}>{this.state.dateText}</Text>
-                    </View>
-                </TouchableOpacity>
-               
-                </View>  
+                    <TouchableOpacity onPress={this.onDatePress.bind(this)} >
+                        <View style={styles.textbox}>
+                            <Text style={styles.text}>{this.state.dateText}</Text>
+                        </View>
+                    </TouchableOpacity>
+
+                </View>
                 <DatePickerDialog ref="dateDialog" onDatePicked={this.onDatePicked.bind(this)} />
             </View>
         );
@@ -311,7 +317,7 @@ class InputForm extends Component {
 
     renderReferenceType() {
         const mandatory = this.props.obj.mandatory;
-        
+
         const { navigate } = this.props.navigate;
         const items = [];
         const refersTo = this.props.obj.type.refersTo;
@@ -319,64 +325,64 @@ class InputForm extends Component {
             items.push({ label: row, value: index });
         });
 
-        
+
         return (
             <View style={styles.inputHolder}>
-            {
-                (mandatory) ? 
-                <View style={styles.mandatory}>
-                    <Text style={{ color: 'red', fontSize: 16 }}>*</Text>
-                </View>
-                :
-                undefined
-            } 
-            
+                {
+                    (mandatory) ?
+                        <View style={styles.mandatory}>
+                            <Text style={{ color: 'red', fontSize: 16 }}>*</Text>
+                        </View>
+                        :
+                        undefined
+                }
+
                 <View style={{ flex: 1, justifyContent: 'center' }}>
                     <Text style={styles.label}>{this.props.obj.lable}</Text>
                 </View>
                 <View style={{ flex: 1 }}>
-                <TouchableOpacity onPress={this.onReferencePress.bind(this, refersTo)} >
-                    <View style={styles.textbox}>
-                        <Text style={styles.text}>{this.state.referenceValue}</Text>
-                    </View>
-                </TouchableOpacity>
-                 
-                </View>  
-            
+                    <TouchableOpacity onPress={this.onReferencePress.bind(this, refersTo)} >
+                        <View style={styles.textbox}>
+                            <Text style={styles.text}>{this.state.referenceValue}</Text>
+                        </View>
+                    </TouchableOpacity>
+
+                </View>
+
                 <SinglePickerMaterialDialog
-                title={'Choose one'}
-                items={items}
-                visible={this.state.dialogueVisible}
-                selectedItem={this.state.dialogueSelectedValue}
-                //selectedItem={this.state.dialogueSelectedValue}
-                onCancel={() => this.setState({ dialogueVisible: false })}
-                onOk={(result) => {
-                    //console.log(result);
-                    
-                    
-                    if (result.selectedItem === undefined) {
-                        //console.log('undefined');
-                        this.setState({ dialogueVisible: false });
-                    } else {
-                        navigate('ReferenceScreen', { selectedModule: result.selectedItem.label, uniqueId: this.state.formId });
-                        this.setState({ dialogueSelectedValue: result.selectedItem });
-                        this.setState({ dialogueVisible: false });
-                    }
-                }}
-                scrolled    
+                    title={'Choose one'}
+                    items={items}
+                    visible={this.state.dialogueVisible}
+                    selectedItem={this.state.dialogueSelectedValue}
+                    //selectedItem={this.state.dialogueSelectedValue}
+                    onCancel={() => this.setState({ dialogueVisible: false })}
+                    onOk={(result) => {
+                        //console.log(result);
+
+
+                        if (result.selectedItem === undefined) {
+                            //console.log('undefined');
+                            this.setState({ dialogueVisible: false });
+                        } else {
+                            navigate('ReferenceScreen', { selectedModule: result.selectedItem.label, uniqueId: this.state.formId });
+                            this.setState({ dialogueSelectedValue: result.selectedItem });
+                            this.setState({ dialogueVisible: false });
+                        }
+                    }}
+                    scrolled
                 />
-                                    
+
             </View>
         );
     }
 
     render() {
         const type = this.props.obj.type.name;
-        
+
         switch (type) {
             case 'string':
-            case 'text' :
-            case 'url' :
+            case 'text':
+            case 'url':
                 return this.renderStringType();
             case 'boolean':
                 return this.renderBooleanType();
@@ -397,25 +403,25 @@ class InputForm extends Component {
             default:
                 return this.renderStringType();
         }
-    }   
+    }
 }
 
 const styles = StyleSheet.create(
     {
         inputHolder: {
-            flex: 1, 
-            flexDirection: 'row', 
-            marginTop: 10, 
+            flex: 1,
+            flexDirection: 'row',
+            marginTop: 10,
         },
         label: {
             fontSize: 16,
             padding: 10
         },
         mandatory: {
-            width: 10, 
-            height: 25, 
-            justifyContent: 'center', 
-            alignItems: 'center', 
+            width: 10,
+            height: 25,
+            justifyContent: 'center',
+            alignItems: 'center',
             marginTop: 5,
         },
         textbox: {
@@ -429,7 +435,7 @@ const styles = StyleSheet.create(
             borderBottomRightRadius: 4,
             height: 38,
             justifyContent: 'center'
-          },
+        },
         text: {
             fontSize: 14,
             marginLeft: 5,
