@@ -21,4 +21,4 @@ class AppReduxConnected extends Component {
   }
 }
 
-AppRegistry.registerComponent('simplycrm', () => AppReduxConnected);
+AppRegistry.registerComponent('vtiger', () => AppReduxConnected);
