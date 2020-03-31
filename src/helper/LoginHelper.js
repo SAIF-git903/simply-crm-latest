@@ -163,7 +163,7 @@ const loginUserSuccess = (dispatch, loginDetails, navigation) => {
 
 export const resetPassword = async (email, forgotPasswordInstance) => {
     try {
-        const response = await fetch(`https://sai.simplyhq.com/index.php?action=AppForgotPassword&email=${email}&api_key=pYyjYDS9prMhhI2Ou1zGc5TYIpZQoviK`, {
+        const response = await fetch(`https://sai.simplyhq.com/index.php?action=AppForgotPassword&email=${email}&api_key=jNuaPq7MRfLDvnLs5gZ9XgU1H7n3URma`, {
             method: 'GET',
             headers: {
                 'cache-control': 'no-cache'
@@ -177,7 +177,8 @@ export const resetPassword = async (email, forgotPasswordInstance) => {
         } else {
             //Failed
             forgotPasswordInstance.setState({ buttonText: 'RESET PASSWORD', loading: false });
-            Toast.show('Reset Password Failed');
+            const information = responseJson.output.information
+            Toast.show(information);
         }
     } catch (error) {
         console.log(error);
