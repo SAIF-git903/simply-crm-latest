@@ -10,6 +10,8 @@ import { connect } from 'react-redux';
 import MainNavigator from './MainNavigator';
 import { dimensionChanged } from './actions';
 
+console.disableYellowBox = true;
+
 class App extends Component {
     componentWillMount() {
         Dimensions.addEventListener('change', this.onDimensionChange.bind(this));
