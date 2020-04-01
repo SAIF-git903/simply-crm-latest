@@ -129,7 +129,7 @@ class Header extends Component {
 
                 </View>
                 <View style={styles.messageStyle}>
-                    <Text style={{ textAlign: 'center', color: '#000000', fontSize: 12 }}>Swipe right to complete the notes</Text>
+                    <Text style={{ textAlign: 'center', color: '#000000', fontSize: 12 }}>Swipe left to complete the notes</Text>
                 </View>
                 <View style={styles.listContainer}>
 
