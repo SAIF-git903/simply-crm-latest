@@ -20,6 +20,8 @@ export const userUrlHelper = async (email, password, url, navigation, loginInsta
             });
             const responseJson = await response.json();
 
+            console.log(responseJson)
+
             if (responseJson.output.success !== 0) {
                 const output = responseJson.output;
                 let crmUrl; let crmUsername; let crmPassword;
@@ -81,11 +83,12 @@ export const loginHelper = async (username, password, url, navigation, loginInst
             trimUrl = url.replace('www.', '');
         }
 
+        if (url.includes('http://')) {
+            trimUrl = url.replace('http://', 'https://')
+        }
+
         //hardcoded for testing
         // trimUrl = 'https://mobileapp-dev.simply-crm.com';
-        console.log(trimUrl);
-        console.log(username);
-        console.log(password);
         const response = await fetch(`${trimUrl}/modules/Mobile/api.php`, {
             method: 'POST',
             headers: {
