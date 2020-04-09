@@ -10,6 +10,7 @@ export const userUrlHelper = async (email, password, url, navigation, loginInsta
     try {
         const URLDetails = JSON.parse(await AsyncStorage.getItem(URLDETAILSKEY));
         if (URLDetails !== null) {
+            console.log(URLDetails)
             loginHelper(URLDetails.userName, URLDetails.password, URLDetails.url, navigation, loginInstance, dispatch);
         } else {
             const response = await fetch(`https://sai.simplyhq.com/index.php?action=LocateInstance&email=${email}&password=${password}&api_key=jNuaPq7MRfLDvnLs5gZ9XgU1H7n3URma`, {
