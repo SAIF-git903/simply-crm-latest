@@ -97,6 +97,16 @@ class LoginForm extends Component {
         );
     }
 
+    onUrlSelected(url) {
+        const selectedUrlDetails = this.state.urlList.find(x => x.url === url);
+
+        this.setState({
+            url: selectedUrlDetails.url,
+            username: selectedUrlDetails.username
+        });
+
+    }
+
     render() {
         const animatedStyle = { opacity: this.animatedValue };
         const buttonAnimatedStyle = { transform: [{ scale: this.buttonAnimatedValue }] };
@@ -138,12 +148,8 @@ class LoginForm extends Component {
                                                     mode={'dropdown'}
                                                     selectedValue={this.state.url}
                                                     onValueChange={(itemValue) => {
-                                                        if (itemValue !== 0) {
-                                                            this.setState({ url: itemValue });
-                                                            // this.onUrlPickPress(itemValue);
-                                                        }
-                                                    }
-                                                    }
+                                                        this.onUrlSelected(itemValue)
+                                                    }}
                                                 >
                                                     <Picker.Item label='Please Select Url' value={0} />
                                                     {options.map((item, index) => {
@@ -156,7 +162,9 @@ class LoginForm extends Component {
 
                                                 <ModalDropdown
                                                     options={optionsForiOS}
-                                                    onSelect={(index, value) => { this.setState({ url: value }); }}
+                                                    onSelect={(index, value) => {
+                                                        this.onUrlSelected(value);
+                                                    }}
                                                     // defaultValue={this.state.url}
                                                     //defaultIndex={0}
                                                     style={{
