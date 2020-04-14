@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, TextInput, Image, ActivityIndicator, Text, Animated, TouchableWithoutFeedback, 
-    StyleSheet, Alert, Picker, KeyboardAvoidingView, TouchableOpacity, Platform } from 'react-native';
+import {
+    View, TextInput, Image, ActivityIndicator, Text, Animated, TouchableWithoutFeedback,
+    StyleSheet, Alert, Picker, KeyboardAvoidingView, TouchableOpacity, Platform
+} from 'react-native';
 import ModalDropdown from 'react-native-modal-dropdown';
 import { loginUser } from '../actions/';
 import { resetPassword } from '../helper';
@@ -34,7 +36,7 @@ class ForgotPasswordForm extends Component {
             duration: 1000,
         }).start();
     }
-    
+
     onEmailChanged(text) {
         this.setState({ ...this.state, email: text });
     }
@@ -51,7 +53,7 @@ class ForgotPasswordForm extends Component {
     onBackPress() {
         this.props.navigation.goBack(null);
     }
-    
+
     handlePressIn() {
         Animated.spring(this.buttonAnimatedValue, {
             toValue: 0.7
@@ -82,11 +84,11 @@ class ForgotPasswordForm extends Component {
     render() {
         const animatedStyle = { opacity: this.animatedValue };
         const buttonAnimatedStyle = { transform: [{ scale: this.buttonAnimatedValue }] };
-    
+
         return (
             <View style={{ width: '100%', height: '100%', backgroundColor: '#0085DE' }}>
 
-                { /*Logo*/ }
+                { /*Logo*/}
                 <View style={styles.logoMainHolder}>
                     <View style={{ width: '100%', flex: 1, padding: 20, paddingTop: 40 }}>
                         <TouchableOpacity onPress={this.onBackPress.bind(this)}>
@@ -96,24 +98,26 @@ class ForgotPasswordForm extends Component {
                     <View style={styles.logoSubHolder}>
                         <Image source={{ uri: 'vtigerlogo' }} style={styles.logoStyle} />
                     </View>
-                    
+
                 </View>
 
-                { /*Input Component*/ }
+                { /*Input Component*/}
                 <View style={{ flex: 1.5 }} >
-                 
+
                     <View style={styles.inputMainHolder}>
 
                         <View style={styles.inputSubHolder}>
                             <Image
                                 source={{ uri: 'login_email' }}
-                                style={styles.inputImageStyle} 
+                                style={styles.inputImageStyle}
                             />
-                            
-                            <TextInput 
+
+                            <TextInput
+                                autoCorrect={false}
+                                spellCheck={false}
                                 clearButtonMode='always'
-                                underlineColorAndroid='rgba(0,0,0,0)' 
-                                style={[styles.inputTextStyle]} 
+                                underlineColorAndroid='rgba(0,0,0,0)'
+                                style={[styles.inputTextStyle]}
                                 placeholder='Enter your e-mail'
                                 placeholderTextColor='#ddd'
                                 ref='email'
@@ -123,13 +127,13 @@ class ForgotPasswordForm extends Component {
                                 onChangeText={this.onEmailChanged.bind(this)}
                             />
                         </View>
-                    
-                        
+
+
                     </View>
                     <View style={styles.loginButtonHolder}>
-                
+
                         <TouchableWithoutFeedback
-                            onPressIn={this.handlePressIn} 
+                            onPressIn={this.handlePressIn}
                             onPressOut={this.handlePressOut}
                         >
                             <Animated.View style={[styles.loginButtonStyle, buttonAnimatedStyle]}>
@@ -137,13 +141,13 @@ class ForgotPasswordForm extends Component {
                             </Animated.View>
                         </TouchableWithoutFeedback>
                     </View>
-                    
-                
+
+
                 </View>
-      
+
             </View>
         );
-   }
+    }
 }
 
 const styles = StyleSheet.create({
@@ -154,11 +158,11 @@ const styles = StyleSheet.create({
         // padding: 50,
     },
     logoSubHolder: {
-        width: 200, 
-        height: 100, 
-        alignItems: 'center', 
+        width: 200,
+        height: 100,
+        alignItems: 'center',
         justifyContent: 'center',
-        
+
     },
     logoStyle: {
         height: 80,
@@ -170,19 +174,19 @@ const styles = StyleSheet.create({
         height: 60,
         padding: 5,
         paddingLeft: 15,
-        paddingRight: 15, 
-       
+        paddingRight: 15,
+
     },
     inputSubHolder: {
         backgroundColor: '#0069AE',
         flex: 1,
-        flexDirection: 'row', 
+        flexDirection: 'row',
         alignItems: 'center',
         borderRadius: 5
     },
     inputTextStyle: {
         backgroundColor: '#0069AE',
-        height: '100%', 
+        height: '100%',
         flex: 1,
         color: 'white',
         marginLeft: 5,
@@ -190,7 +194,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Helvetica',
         fontWeight: 'bold',
         fontSize: 18,
-        
+
     },
     inputImageStyle: {
         height: 23,
@@ -199,21 +203,21 @@ const styles = StyleSheet.create({
         marginLeft: 8
     },
     forgotPasswordHolder: {
-        height: 50, 
-        alignItems: 'flex-end', 
-        paddingRight: 15, 
+        height: 50,
+        alignItems: 'flex-end',
+        paddingRight: 15,
         paddingTop: 8
     },
     forgotPasswordText: {
-        color: 'white', 
+        color: 'white',
         fontSize: 18,
         fontFamily: 'Helvetica',
-        
+
     },
     loginButtonHolder: {
-        width: '100%', 
+        width: '100%',
         height: '40%',
-        padding: 15, 
+        padding: 15,
         justifyContent: 'center'
     },
     loginButtonStyle: {
@@ -227,18 +231,18 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0.5, height: 0.5 },
         shadowColor: 'black',
         shadowOpacity: 0.5,
-        
+
     },
     loginButtonTextStyle: {
-        color: '#0069AE', 
-        fontSize: 18, 
+        color: '#0069AE',
+        fontSize: 18,
         fontWeight: 'bold',
         fontFamily: 'Helvetica',
     },
     signUpHolder: {
-        flex: 1, 
-        padding: 10, 
-        justifyContent: 'flex-end', 
+        flex: 1,
+        padding: 10,
+        justifyContent: 'flex-end',
         alignItems: 'center'
     },
 
