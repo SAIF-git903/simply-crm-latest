@@ -197,6 +197,8 @@ class LoginForm extends Component {
                                 />
 
                                 <TextInput
+                                    autoCorrect={false}
+                                    spellCheck={false}
                                     clearButtonMode='always'
                                     underlineColorAndroid='rgba(0,0,0,0)'
                                     style={[styles.inputTextStyle]}
@@ -226,6 +228,8 @@ class LoginForm extends Component {
 
 
                                 <TextInput
+                                    autoCorrect={false}
+                                    spellCheck={false}
                                     clearButtonMode='always'
                                     underlineColorAndroid='rgba(0,0,0,0)'
                                     style={styles.inputTextStyle}
