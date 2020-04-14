@@ -10,17 +10,19 @@ class RecordViewer extends Component {
     }
 
     render() {
+
+        console.log(this.props.recordId)
         return (
             <View style={styles.backgroundStyle}>
                 <Header
-                navigation={this.props.navigation}
-                showBackButton
-                moduleLable={this.props.moduleLable}
+                    navigation={this.props.navigation}
+                    showBackButton
+                    moduleLable={this.props.moduleLable}
                 />
-                <Viewer 
-                navigation={this.props.navigation}
-                moduleName={this.props.moduleName}
-                recordId={this.props.recordId}
+                <Viewer
+                    navigation={this.props.navigation}
+                    moduleName={this.props.moduleName}
+                    recordId={this.props.recordId}
                 />
             </View>
         );

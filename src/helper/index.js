@@ -8,3 +8,4 @@ export * from './SearchHelper';
 export * from './addRecordHelper';
 export * from './editRecordHelper';
 export * from './ReferenceHelper';
+export * from './recordHelper';
