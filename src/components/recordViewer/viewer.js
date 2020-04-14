@@ -7,15 +7,15 @@ import { commonStyles } from '../../styles/common';
 import { viewRecordRendererActions, refreshRecordData } from '../../actions';
 
 class Viewer extends Component {
-    
+
     constructor(props) {
         super(props);
         this.state = {
             loading: false,
-            isScrollViewRefreshing: false,            
+            isScrollViewRefreshing: false,
             data: [],
             statusText: '',
-            statusTextColor: '#000000', 
+            statusTextColor: '#000000',
         };
     }
 
@@ -29,11 +29,7 @@ class Viewer extends Component {
     }
 
     getRecords() {
-        const { auth } = store.getState();
-        const modules = auth.loginDetails.modules;
-        const moduleId = modules.filter((item) => item.name === this.props.moduleName).map(({ id }) => (id));
-        
-        this.setState({ loading: true, data: [], statusText: '', statusTextColor: '#000000', recordId: `${moduleId}x${this.props.recordId}` });
+        this.setState({ loading: true, data: [], statusText: '', statusTextColor: '#000000', recordId: this.props.recordId });
         this.props.dispatch(viewRecordRendererActions(this));
     }
 
@@ -52,21 +48,21 @@ class Viewer extends Component {
 
     renderRecordView() {
         return (
-            <ScrollView 
-            refreshControl={
-                <RefreshControl
-                    refreshing={this.state.isScrollViewRefreshing}
-                    onRefresh={this.refreshData.bind(this)}
-                />
-            }
-            onRefresh={this.refreshData.bind(this)}
-            refreshing={this.state.isFlatListRefreshing}
-            style={{ backgroundColor: 'white', marginTop: 20 }}
+            <ScrollView
+                refreshControl={
+                    <RefreshControl
+                        refreshing={this.state.isScrollViewRefreshing}
+                        onRefresh={this.refreshData.bind(this)}
+                    />
+                }
+                onRefresh={this.refreshData.bind(this)}
+                refreshing={this.state.isFlatListRefreshing}
+                style={{ backgroundColor: 'white', marginTop: 20 }}
             >
                 {this.state.data}
                 <View style={{ width: '100%', minHeight: '100%', backgroundColor: 'white' }} />
             </ScrollView>
-            );
+        );
     }
 
     render() {
@@ -74,8 +70,8 @@ class Viewer extends Component {
             <View style={commonStyles.recordViewerBackground} >
                 {
                     (this.state.loading) ?
-                    this.renderLoading() :
-                    this.renderRecordView()
+                        this.renderLoading() :
+                        this.renderRecordView()
                 }
                 <StatusView text={this.state.statusText} textColor={this.state.statusTextColor} />
             </View>

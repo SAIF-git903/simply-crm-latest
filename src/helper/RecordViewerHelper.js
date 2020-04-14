@@ -4,15 +4,17 @@ import store from '../store';
 import { getDatafromNet } from './networkHelper';
 import Section from '../components/common/section';
 import Field from '../components/recordViewer/field';
-import { DRAWER_SECTION_HEADER_IMAGE_SELECTED_COLOR, 
-    DRAWER_SECTION_HEADER_IMAGE_COLOR } from '../variables/themeColors';
+import {
+    DRAWER_SECTION_HEADER_IMAGE_SELECTED_COLOR,
+    DRAWER_SECTION_HEADER_IMAGE_COLOR
+} from '../variables/themeColors';
 import { addDatabaseKey } from '.';
-    
+
 
 const moment = require('moment-timezone');
 
 export const viewRecordRenderer = async (viewerInstance, dispatch) => {
-     //First check data is on database based on vtiger version
+    //First check data is on database based on vtiger version
     const { auth } = store.getState();
     const loginDetails = auth.loginDetails;
     let recordOfflineData;
@@ -35,7 +37,7 @@ export const viewRecordRenderer = async (viewerInstance, dispatch) => {
             if (durationMinutes < 1) {
                 await getAndSaveData(recordOfflineData.record, viewerInstance, true, 'Loading complete - Recently updated Pull to refresh');
             } else {
-                await getDataFromInternet(viewerInstance, true, recordOfflineData, dispatch);     
+                await getDataFromInternet(viewerInstance, true, recordOfflineData, dispatch);
             }
         } else {
             //Offline data is not available
@@ -72,23 +74,26 @@ export const refreshRecordDataHelper = async (viewerInstance, dispatch) => {
             await getAndSaveData(responseJson, viewerInstance, false, '');
         } else {
             if (responseJson.error.code === 1) {
-                viewerInstance.setState({ 
-                    isScrollViewRefreshing: false, 
-                    statusText: 'Loading...', 
-                    recordId: viewerInstance.props.recordId }, 
-                    async() => { await refreshRecordDataHelper(viewerInstance, dispatch); });
+                viewerInstance.setState({
+                    isScrollViewRefreshing: false,
+                    statusText: 'Loading...',
+                    recordId: viewerInstance.props.recordId
+                },
+                    async () => { await refreshRecordDataHelper(viewerInstance, dispatch); });
             } else {
-                viewerInstance.setState({ 
-                    isScrollViewRefreshing: false, 
-                    statusText: 'Something went wrong', 
-                    statusTextColor: 'red' });
-            } 
+                viewerInstance.setState({
+                    isScrollViewRefreshing: false,
+                    statusText: 'Something went wrong',
+                    statusTextColor: 'red'
+                });
+            }
         }
     } catch (error) {
-        viewerInstance.setState({ 
-            isScrollViewRefreshing: false, 
-            statusText: 'Looks like no network connection', 
-            statusTextColor: 'red' });
+        viewerInstance.setState({
+            isScrollViewRefreshing: false,
+            statusText: 'Looks like no network connection',
+            statusTextColor: 'red'
+        });
     }
 };
 
@@ -115,34 +120,37 @@ const getDataFromInternet = async (viewerInstance, offlineAvailable, offlineData
         console.log(responseJson);
         if (responseJson.success) {
             await getAndSaveData(responseJson, viewerInstance, false, '');
-        } else {     
+        } else {
             if (responseJson.error.code === 1) {
-                viewerInstance.setState({ 
-                    isScrollViewRefreshing: false, 
-                    statusText: 'Loading...', 
-                    recordId: viewerInstance.props.recordId }, 
-                    async() => { await getDataFromInternet(viewerInstance, false, {}, dispatch); });
+                viewerInstance.setState({
+                    isScrollViewRefreshing: false,
+                    statusText: 'Loading...',
+                    recordId: viewerInstance.props.recordId
+                },
+                    async () => { await getDataFromInternet(viewerInstance, false, {}, dispatch); });
             } else {
                 if (offlineAvailable) {
                     await getAndSaveData(offlineData.record, viewerInstance, true, 'Showing Offline data - No internet Pull to refresh');
                 } else {
                     //Show error to user that something went wrong.
-                    viewerInstance.setState({ 
-                        loading: false, 
-                        statusText: 'Something went wrong', 
-                        statusTextColor: 'red' });
-                }   
+                    viewerInstance.setState({
+                        loading: false,
+                        statusText: 'Something went wrong',
+                        statusTextColor: 'red'
+                    });
+                }
             }
         }
     } catch (error) {
         if (offlineAvailable) {
-            await getAndSaveData(offlineData.record, viewerInstance, true, 'Showing Offline data - No internet Pull to refresh');            
+            await getAndSaveData(offlineData.record, viewerInstance, true, 'Showing Offline data - No internet Pull to refresh');
         } else {
             //Show error to user that something went wrong.
-            viewerInstance.setState({ 
-                loading: false, 
-                statusText: 'Looks like no internet connection', 
-                statusTextColor: 'red' });
+            viewerInstance.setState({
+                loading: false,
+                statusText: 'Looks like no internet connection',
+                statusTextColor: 'red'
+            });
         }
     }
 };
@@ -162,14 +170,14 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
                 loading: false,
                 isScrollViewRefreshing: false,
                 statusText: 'No data available',
-                statusTextColor: '#000000',                    
+                statusTextColor: '#000000',
             });
             return;
-        } 
+        }
         for (const block of blocks) {
             const fieldViews = [];
             const fields = block.fields;
-            
+
             if (viewerInstance.props.moduleName === 'Emails') {
                 if (block.label === 'Emails_Block1') {
                     block.label = 'Created Time';
@@ -179,7 +187,7 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
                     break;
                 }
             }
-            
+
             for (const field of fields) {
                 let value;
                 if (typeof field.value === 'string') {
@@ -188,12 +196,12 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
                             const uiType = parseInt(field.uitype, 10);
                             if (uiType === 252) {
                                 const crmValue = moment.tz(`${field.value}`, 'HH:mm:ss', loginDetails.crmTz);
-                                const userValue = crmValue.clone().tz(loginDetails.userTz);  
-                                value = userValue.format('hh:mmA');  
+                                const userValue = crmValue.clone().tz(loginDetails.userTz);
+                                value = userValue.format('hh:mmA');
                             } else if (uiType === 70) {
                                 const crmValue = moment.tz(`${field.value}`, 'YYYY-MM-DD HH:mm:ss', loginDetails.crmTz);
-                                const userValue = crmValue.clone().tz(loginDetails.userTz); 
-                                value = userValue.format('D-MM-YYYY hh:mmA'); 
+                                const userValue = crmValue.clone().tz(loginDetails.userTz);
+                                value = userValue.format('D-MM-YYYY hh:mmA');
                             } else {
                                 value = field.value;
                             }
@@ -206,13 +214,13 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
                             const uiType = field.uitype;
                             if (uiType === 252) {
                                 const crmValue = moment.tz(`${field.value}`, 'HH:mm:ss', loginDetails.crmTz);
-                                const userValue = crmValue.clone().tz(loginDetails.userTz);  
+                                const userValue = crmValue.clone().tz(loginDetails.userTz);
                                 value = userValue.format('hh:mmA');
                                 //console.log(value);  
                             } else if (uiType === 70) {
                                 const crmValue = moment.tz(`${field.value}`, 'YYYY-MM-DD HH:mm:ss', loginDetails.crmTz);
-                                const userValue = crmValue.clone().tz(loginDetails.userTz); 
-                                value = userValue.format('D-MM-YYYY hh:mmA'); 
+                                const userValue = crmValue.clone().tz(loginDetails.userTz);
+                                value = userValue.format('D-MM-YYYY hh:mmA');
                             } else {
                                 value = field.value;
                             }
@@ -234,23 +242,25 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
                     sectionBackgroundColor={'white'}
                     sectionHeaderBackground={'white'}
                     sectionHeaderImageColor={DRAWER_SECTION_HEADER_IMAGE_COLOR}
-                    sectionHeaderImageSelectedColor={DRAWER_SECTION_HEADER_IMAGE_SELECTED_COLOR}  
-                    headerName={block.label} 
-                    content={fieldViews} 
+                    sectionHeaderImageSelectedColor={DRAWER_SECTION_HEADER_IMAGE_SELECTED_COLOR}
+                    headerName={block.label}
+                    content={fieldViews}
                     contentHeight={fieldViews.length * 35}
                 />);
-                i++;
+            i++;
         }
         const viewData = [];
         viewData.push(blockViews);
 
         if (!offline) {
-            const offlineData = { record: responseJson,
-                finishedTime: moment() };
-                
+            const offlineData = {
+                record: responseJson,
+                finishedTime: moment()
+            };
+
             if (loginDetails.vtigerVersion < 7) {
                 await AsyncStorage.setItem(viewerInstance.props.recordId, JSON.stringify(offlineData));
-                await addDatabaseKey(viewerInstance.props.recordId);    
+                await addDatabaseKey(viewerInstance.props.recordId);
             } else {
                 await AsyncStorage.setItem(`${viewerInstance.props.moduleName}
                 x${viewerInstance.props.recordId}`, JSON.stringify(offlineData));
@@ -262,7 +272,7 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
                 loading: false,
                 isScrollViewRefreshing: false,
                 statusText: 'Loading complete - Recently updated Pull to refresh',
-                statusTextColor: '#000000',                    
+                statusTextColor: '#000000',
                 data: viewData,
             });
         } else {
@@ -270,9 +280,9 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
                 loading: false,
                 isScrollViewRefreshing: false,
                 statusText: message,
-                statusTextColor: '#000000',                        
+                statusTextColor: '#000000',
                 data: viewData
-           });
+            });
         }
     }
 };

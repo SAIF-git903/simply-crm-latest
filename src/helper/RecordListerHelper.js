@@ -2,6 +2,7 @@ import React from 'react';
 import Toast from 'react-native-simple-toast';
 import { AsyncStorage, FlatList } from 'react-native';
 import { getDatafromNet } from './networkHelper';
+import { attachModuleIdToRecords } from './recordHelper';
 import store from '../store';
 import CampaignsRecord from '../components/recordLister/recordItems/campaignsRecord';
 import ContactsRecord from '../components/recordLister/recordItems/contactsRecord';
@@ -338,12 +339,15 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
     if (records === null) {
         records = [];
     }
+    console.log(responseJson)
+    console.log(listerInstance.props.moduleName)
+
     switch (listerInstance.props.moduleName) {
         case CAMPAIGNS: {
             for (const record of records) {
                 const modifiedRecord = {
                     lable: record.campaignname,
-                    id: record.id
+                    id: `${listerInstance.props.moduleId}x${record.id}`
                 };
                 data.push(modifiedRecord);
             }
@@ -356,7 +360,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
                     vendorEmail: record.email,
                     vendorPhone: record.phone,
                     vendorWebsite: record.website,
-                    id: record.id
+                    id: `${listerInstance.props.moduleId}x${record.id}`
                 };
                 data.push(modifiedRecord);
             }
@@ -366,7 +370,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
             for (const record of records) {
                 const modifiedRecord = {
                     question: record.question,
-                    id: record.id
+                    id: `${listerInstance.props.moduleId}x${record.id}`
                 };
                 data.push(modifiedRecord);
             }
@@ -378,7 +382,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
                     quoteLable: record.subject,
                     total: record.hdnGrandTotal,
                     quoteStage: record.quotestage,
-                    id: record.id
+                    id: `${listerInstance.props.moduleId}x${record.id}`
                 };
                 data.push(modifiedRecord);
             }
@@ -389,7 +393,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
                 const modifiedRecord = {
                     poLable: record.subject,
                     status: record.postatus,
-                    id: record.id
+                    id: `${listerInstance.props.moduleId}x${record.id}`
                 };
                 data.push(modifiedRecord);
             }
@@ -400,7 +404,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
                 const modifiedRecord = {
                     soLable: record.subject,
                     status: record.sostatus,
-                    id: record.id
+                    id: `${listerInstance.props.moduleId}x${record.id}`
                 };
                 data.push(modifiedRecord);
             }
@@ -414,7 +418,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
             for (const record of records) {
                 const modifiedRecord = {
                     bookLable: record.bookname,
-                    id: record.id
+                    id: `${listerInstance.props.moduleId}x${record.id}`
                 };
                 data.push(modifiedRecord);
             }
@@ -424,7 +428,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
             for (const record of records) {
                 const modifiedRecord = {
                     eventLable: record.subject,
-                    id: record.id
+                    id: `${listerInstance.props.moduleId}x${record.id}`
                 };
                 data.push(modifiedRecord);
             }
@@ -436,7 +440,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
                     leadsLable: `${record.firstname} ${record.lastname}`,
                     phone: record.phone,
                     email: record.email,
-                    id: record.id
+                    id: `${listerInstance.props.moduleId}x${record.id}`
                 };
                 data.push(modifiedRecord);
             }
@@ -449,7 +453,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
                     website: record.website,
                     phone: record.phone,
                     email: record.email1,
-                    id: record.id
+                    id: `${listerInstance.props.moduleId}x${record.id}`
                 };
                 data.push(modifiedRecord);
             }
@@ -461,7 +465,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
                     contactsLable: `${record.firstname} ${record.lastname}`,
                     phone: record.phone,
                     email: record.email,
-                    id: record.id
+                    id: `${listerInstance.props.moduleId}x${record.id}`
                 };
                 data.push(modifiedRecord);
             }
@@ -473,7 +477,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
                     potentialLable: record.potentialname,
                     amount: Number(record.amount).toFixed(2),
                     stage: record.sales_stage,
-                    id: record.id
+                    id: `${listerInstance.props.moduleId}x${record.id}`
                 };
                 data.push(modifiedRecord);
             }
@@ -486,7 +490,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
                     no: record.product_no,
                     productcategory: record.productcategory,
                     quantity: Number(record.qtyinstock).toFixed(2),
-                    id: `14x${record.id}`
+                    id: `${listerInstance.props.moduleId}x${record.id}`
                 };
                 data.push(modifiedRecord);
             }
@@ -496,7 +500,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
             for (const record of records) {
                 const modifiedRecord = {
                     documentLable: record.notes_title,
-                    id: record.id
+                    id: `${listerInstance.props.moduleId}x${record.id}`
                 };
                 data.push(modifiedRecord);
             }
@@ -507,7 +511,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
                 const modifiedRecord = {
                     ticketLable: record.ticket_title,
                     priority: record.ticketpriorities,
-                    id: record.id
+                    id: `${listerInstance.props.moduleId}x${record.id}`
                 };
                 data.push(modifiedRecord);
             }
@@ -517,7 +521,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
             for (const record of records) {
                 const modifiedRecord = {
                     number: record.customernumber,
-                    id: record.id
+                    id: `${listerInstance.props.moduleId}x${record.id}`
                 };
                 data.push(modifiedRecord);
             }
@@ -527,7 +531,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
             for (const record of records) {
                 const modifiedRecord = {
                     scLable: record.subject,
-                    id: record.id
+                    id: `${listerInstance.props.moduleId}x${record.id}`
                 };
                 data.push(modifiedRecord);
             }
@@ -537,7 +541,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
             for (const record of records) {
                 const modifiedRecord = {
                     serviceLable: record.servicename,
-                    id: record.id
+                    id: `${listerInstance.props.moduleId}x${record.id}`
                 };
                 data.push(modifiedRecord);
             }
@@ -547,7 +551,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
             for (const record of records) {
                 const modifiedRecord = {
                     assetLable: record.assetname,
-                    id: record.id
+                    id: `${listerInstance.props.moduleId}x${record.id}`
                 };
                 data.push(modifiedRecord);
             }
@@ -557,7 +561,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
             for (const record of records) {
                 const modifiedRecord = {
                     message: record.message,
-                    id: record.id
+                    id: `${listerInstance.props.moduleId}x${record.id}`
                 };
                 data.push(modifiedRecord);
             }
@@ -567,7 +571,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
             for (const record of records) {
                 const modifiedRecord = {
                     pmLable: record.projectmilestonename,
-                    id: record.id
+                    id: `${listerInstance.props.moduleId}x${record.id}`
                 };
                 data.push(modifiedRecord);
             }
@@ -577,7 +581,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
             for (const record of records) {
                 const modifiedRecord = {
                     ptLable: record.projecttaskname,
-                    id: record.id
+                    id: `${listerInstance.props.moduleId}x${record.id}`
                 };
                 data.push(modifiedRecord);
             }
@@ -587,7 +591,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
             for (const record of records) {
                 const modifiedRecord = {
                     projectLable: record.projectname,
-                    id: record.id
+                    id: `${listerInstance.props.moduleId}x${record.id}`
                 };
                 data.push(modifiedRecord);
             }
@@ -597,7 +601,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
             for (const record of records) {
                 const modifiedRecord = {
                     comment: record.commentcontent,
-                    id: record.id
+                    id: `${listerInstance.props.moduleId}x${record.id}`
                 };
                 data.push(modifiedRecord);
             }
@@ -607,7 +611,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
             for (const record of records) {
                 const modifiedRecord = {
                     currency_name: record.currency_name,
-                    id: record.id
+                    id: `${listerInstance.props.moduleId}x${record.id}`
                 };
                 data.push(modifiedRecord);
             }
@@ -618,7 +622,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
                 const modifiedRecord = {
                     lable: (vtigerSeven) ?
                         record[responseJson.result.headers[0].name] : record.label,
-                    id: record.id
+                    id: `${listerInstance.props.moduleId}x${record.id}`
                 };
                 data.push(modifiedRecord);
             }
@@ -679,7 +683,7 @@ const saveInvoiceDetails = async (records, data, vtigerSeven, responseJson, addE
                 invoiceNo: invoiceNoObj[0],
                 // invoiceDate: invoiceDateObj[0],
                 // dueDate: dueDateObj[0],
-                id: record.id
+                id: `${moduleId}x${record.id}`
             };
             data.push(modifiedRecord);
         }
@@ -788,6 +792,7 @@ const saveData = async (data, vtigerSeven, responseJson, addExisting, previousDa
 // };
 
 export const appendParamFor = (moduleName, param) => {
+    console.log(`Appending module name: ${moduleName}`)
     switch (moduleName) {
         case CAMPAIGNS:
             param.append('_operation', 'query');

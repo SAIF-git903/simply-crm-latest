@@ -79,6 +79,7 @@ export const fetchRefRecordHelper = async (listerInstance, dispatch) => {
 
         if (offlineData !== null) {
             //Offline data is avialable
+            console.log(offlineData)
             const offlineFinishedTime = JSON.parse(offlineData.finishedTime);
             const currentTime = moment();
             const duration = moment.duration(currentTime.diff(offlineFinishedTime));
