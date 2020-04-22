@@ -5,12 +5,21 @@
  */
 
 import React, { Component } from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions, Text } from 'react-native';
 import { connect } from 'react-redux';
 import MainNavigator from './MainNavigator';
 import { dimensionChanged } from './actions';
 
 console.disableYellowBox = true;
+
+let defaultRender = Text.prototype.render;
+Text.prototype.render = function (...args) {
+    let origin = defaultRender.call(this, ...args);
+
+    return React.cloneElement(origin, {
+        style: [{ color: 'black', fontFamily: 'Poppins-Regular' }, origin.props.style]
+    })
+}
 
 class App extends Component {
     componentWillMount() {

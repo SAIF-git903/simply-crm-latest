@@ -4,7 +4,7 @@ import { SinglePickerMaterialDialog } from 'react-native-material-dialog';
 import { connect } from 'react-redux';
 import { COPY_CONTACT_ADDRESS } from '../../../actions/types';
 import { getUserName, getAddressDetails, getPriceDetails } from '../../../helper';
-
+import { fontStyles } from '../../../styles/common';
 
 const mapStateToProps = ({ recordViewer }) => {
     const { label, recordId, uniqueId } = recordViewer;
@@ -14,19 +14,19 @@ const mapStateToProps = ({ recordViewer }) => {
 class ReferenceType extends Component {
     constructor(props) {
         super(props);
-        this.state = { 
-                        dialogueVisible: false,
-                        dialogueSelectedValue: undefined,
-                        referenceValue: '', 
-                        formId: 0,
-                        saveValue: this.props.obj.default,
-                        fieldName: this.props.obj.name,
-                        selectedRefModule: ''
-                     };
+        this.state = {
+            dialogueVisible: false,
+            dialogueSelectedValue: undefined,
+            referenceValue: '',
+            formId: 0,
+            saveValue: this.props.obj.default,
+            fieldName: this.props.obj.name,
+            selectedRefModule: ''
+        };
     }
 
     componentWillMount() {
-        this.setState({ 
+        this.setState({
             formId: this.props.formId,
             referenceValue: this.props.label
             //referenceValue: label
@@ -36,20 +36,20 @@ class ReferenceType extends Component {
 
     componentWillReceiveProps(newProps) {
         this.props = newProps;
-        
+
         if (this.state.formId === this.props.uniqueId) {
-            this.setState({ 
-                referenceValue: this.props.label, 
+            this.setState({
+                referenceValue: this.props.label,
                 saveValue: this.props.recordId,
                 uniqueId: this.props.uniqueId
-            }, () => { 
+            }, () => {
                 if (this.props.moduleName === 'Invoice') {
                     if (this.state.selectedRefModule === 'Contacts' || this.state.selectedRefModule === 'Accounts') {
-                        this.assignAddress(); 
+                        this.assignAddress();
                     }
-                    if (this.state.selectedRefModule === 'Products' || this.state.selectedRefModule === 'Services' ) {
+                    if (this.state.selectedRefModule === 'Products' || this.state.selectedRefModule === 'Services') {
                         this.assignPriceDetails();
-                    }  
+                    }
                 }
             });
         }
@@ -69,11 +69,11 @@ class ReferenceType extends Component {
                     const { navigate } = this.props.navigate;
                     this.setState({ selectedRefModule: type.refersTo[0] });
                     navigate('ReferenceScreen', { selectedModule: type.refersTo[0], uniqueId: this.state.formId });
-                }       
-            } 
-        }     
+                }
+            }
+        }
     }
- 
+
     assignUserId() {
         if (this.props.obj.name === 'assigned_user_id') {
             getUserName(this);
@@ -101,56 +101,56 @@ class ReferenceType extends Component {
         }
         const amp = '&amp;';
 
-        const validLable = (this.props.obj.lable.indexOf(amp) !== -1) ? this.props.obj.lable.replace('&amp;', '&') : this.props.obj.lable; 
+        const validLable = (this.props.obj.lable.indexOf(amp) !== -1) ? this.props.obj.lable.replace('&amp;', '&') : this.props.obj.lable;
 
         // if (this.props.obj.name === 'assigned_user_id') {
         //     this.se
         // }
         return (
             <View style={styles.inputHolder}>
-            {
-                (mandatory) ? 
-                <View style={styles.mandatory}>
-                    <Text style={{ color: 'red', fontSize: 16 }}>*</Text>
-                </View>
-                :
-                // undefined
-                <View style={styles.mandatory} />
-            } 
-            
+                {
+                    (mandatory) ?
+                        <View style={styles.mandatory}>
+                            <Text style={[fontStyles.fieldLabel, { color: 'red', fontSize: 16 }]}>*</Text>
+                        </View>
+                        :
+                        // undefined
+                        <View style={styles.mandatory} />
+                }
+
                 <View style={{ flex: 1, justifyContent: 'center' }}>
-                    <Text style={styles.label}>{validLable}</Text>
+                    <Text style={[styles.label, fontStyles.fieldLabel]}>{validLable}</Text>
                 </View>
                 <View style={{ flex: 1 }}>
-                <TouchableOpacity onPress={this.onReferencePress.bind(this, type)} >
-                    <View style={styles.textbox}>
-                        <Text style={styles.text}>{this.state.referenceValue}</Text>
-                    </View>
-                </TouchableOpacity>
-                 
-                </View>  
-                
-            
+                    <TouchableOpacity onPress={this.onReferencePress.bind(this, type)} >
+                        <View style={styles.textbox}>
+                            <Text style={[styles.text, fontStyles.fieldValue]}>{this.state.referenceValue}</Text>
+                        </View>
+                    </TouchableOpacity>
+
+                </View>
+
+
                 <SinglePickerMaterialDialog
-                title={'Choose one'}
-                items={items}
-                visible={this.state.dialogueVisible}
-                selectedItem={this.state.dialogueSelectedValue}
-                onCancel={() => this.setState({ dialogueVisible: false })}
-                onOk={(result) => {
-                    //console.log(result);
-                    if (result.selectedItem === undefined) {
-                        //console.log('undefined');
-                        this.setState({ dialogueVisible: false });
-                    } else {
-                        navigate('ReferenceScreen', { selectedModule: result.selectedItem.label, uniqueId: this.state.formId });
-                        this.setState({ dialogueSelectedValue: result.selectedItem, selectedRefModule: result.selectedItem.label });
-                        this.setState({ dialogueVisible: false });
-                    }
-                }}
-                scrolled    
+                    title={'Choose one'}
+                    items={items}
+                    visible={this.state.dialogueVisible}
+                    selectedItem={this.state.dialogueSelectedValue}
+                    onCancel={() => this.setState({ dialogueVisible: false })}
+                    onOk={(result) => {
+                        //console.log(result);
+                        if (result.selectedItem === undefined) {
+                            //console.log('undefined');
+                            this.setState({ dialogueVisible: false });
+                        } else {
+                            navigate('ReferenceScreen', { selectedModule: result.selectedItem.label, uniqueId: this.state.formId });
+                            this.setState({ dialogueSelectedValue: result.selectedItem, selectedRefModule: result.selectedItem.label });
+                            this.setState({ dialogueVisible: false });
+                        }
+                    }}
+                    scrolled
                 />
-                                    
+
             </View>
         );
     }
@@ -159,9 +159,9 @@ class ReferenceType extends Component {
 const styles = StyleSheet.create(
     {
         inputHolder: {
-            flex: 1, 
-            flexDirection: 'row', 
-            marginTop: 10, 
+            flex: 1,
+            flexDirection: 'row',
+            marginVertical: 10,
             marginRight: 2
         },
         label: {
@@ -169,10 +169,10 @@ const styles = StyleSheet.create(
             padding: 10
         },
         mandatory: {
-            width: 10, 
-            height: 25, 
-            justifyContent: 'center', 
-            alignItems: 'center', 
+            width: 10,
+            height: 25,
+            justifyContent: 'center',
+            alignItems: 'center',
             marginTop: 5,
         },
         textbox: {
@@ -180,13 +180,14 @@ const styles = StyleSheet.create(
             borderColor: '#ABABAB',
             borderWidth: 0.5,
             padding: 0,
+            paddingLeft: 5,
             borderTopLeftRadius: 4,
             borderTopRightRadius: 4,
             borderBottomLeftRadius: 4,
             borderBottomRightRadius: 4,
-            height: 38,
+            height: 42,
             justifyContent: 'center'
-          },
+        },
         text: {
             fontSize: 14,
             marginLeft: 5,

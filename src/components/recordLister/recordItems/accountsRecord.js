@@ -67,7 +67,7 @@ class AccountsRecord extends Component {
                         alignItems: 'center',
                         backgroundColor: '#f2f3f8',
                         borderColor: 'white',
-                        borderRightWidth: 1
+                        borderRightWidth: 1,
                     }}
                 >
                     <FontAwesomeIcon
@@ -106,7 +106,8 @@ class AccountsRecord extends Component {
                 >
                     <SwipeOut
                         style={{
-                            backgroundColor: 'white'
+                            backgroundColor: 'white',
+
                         }}
                         buttonWidth={70}
                         right={swipeOutButtons}

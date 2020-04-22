@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text, TextInput } from 'react-native';
+import { fontStyles } from '../../../styles/common';
 
 class NumericType extends Component {
     constructor(props) {
@@ -25,7 +26,7 @@ class NumericType extends Component {
                 {
                     (mandatory) ?
                         <View style={styles.mandatory}>
-                            <Text style={{ color: 'red', fontSize: 16 }}>*</Text>
+                            <Text style={[fontStyles.fieldLabel, { color: 'red', fontSize: 16 }]}>*</Text>
                         </View>
                         :
                         // undefined
@@ -33,7 +34,7 @@ class NumericType extends Component {
                 }
 
                 <View style={{ flex: 1, justifyContent: 'center' }}>
-                    <Text style={styles.label}>{validLable}</Text>
+                    <Text style={[styles.label, fontStyles.fieldLabel]}>{validLable}</Text>
                 </View>
                 <View style={{ flex: 1 }}>
                     <TextInput
@@ -41,7 +42,7 @@ class NumericType extends Component {
                         placeholder={validLable}
                         autoCorrect={false}
                         autoCapitalize='none'
-                        style={styles.label}
+                        style={[styles.label, fontStyles.fieldValue]}
                         keyboardType='numeric'
                         value={this.state.saveValue}
                         onChangeText={this.onTextInputChange.bind(this)}

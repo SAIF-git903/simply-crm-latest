@@ -170,6 +170,10 @@ class Lister extends Component {
         );
     }
 
+    renderSearch() {
+        return <Text>Search</Text>
+    }
+
     render() {
         return (
             <View style={commonStyles.recordListerBackground} >

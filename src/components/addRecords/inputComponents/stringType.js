@@ -7,6 +7,8 @@ import store from '../../../store';
 import { copyAddress } from '../../../helper';
 // import { connect } from 'react-redux';
 // import { saveData } from '../../../actions';
+import { fontStyles } from '../../../styles/common';
+
 
 
 class StringType extends Component {
@@ -35,14 +37,14 @@ class StringType extends Component {
                 {
                     (mandatory) ?
                         <View style={styles.mandatory}>
-                            <Text style={{ color: 'red', fontSize: 16 }}>*</Text>
+                            <Text style={[fontStyles.fieldLabel, { color: 'red', fontSize: 16 }]}>*</Text>
                         </View>
                         :
                         // undefined
                         <View style={styles.mandatory} />
                 }
                 <View style={{ flex: 1, justifyContent: 'center' }}>
-                    <Text style={styles.label}>{validLable}</Text>
+                    <Text style={[styles.label, fontStyles.fieldLabel]}>{validLable}</Text>
                 </View>
 
 
@@ -54,7 +56,7 @@ class StringType extends Component {
                                 placeholder={validLable}
                                 autoCorrect={false}
                                 autoCapitalize='none'
-                                style={styles.label}
+                                style={[styles.label, fontStyles.fieldValue]}
                                 keyboardType='email-address'
                                 value={this.state.saveValue}
                                 onChangeText={this.onTextInputChange.bind(this)}
@@ -65,7 +67,7 @@ class StringType extends Component {
                                 placeholder={validLable}
                                 autoCorrect={false}
                                 autoCapitalize='none'
-                                style={styles.label}
+                                style={[styles.label, fontStyles.fieldValue]}
                                 value={this.state.saveValue}
                                 onChangeText={this.onTextInputChange.bind(this)}
                                 placeholderTextColor={'#C5C5C5'}

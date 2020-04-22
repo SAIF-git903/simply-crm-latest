@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { SinglePickerMaterialDialog } from 'react-native-material-dialog';
 import { connect } from 'react-redux';
 import store from '../../../store';
+import { fontStyles } from '../../../styles/common';
 
 const mapStateToProps = ({ recordViewer }) => {
     const { label, recordId, uniqueId } = recordViewer;
@@ -12,19 +13,19 @@ const mapStateToProps = ({ recordViewer }) => {
 class ReferenceType extends Component {
     constructor(props) {
         super(props);
-        this.state = { 
-                        dialogueVisible: false,
-                        dialogueSelectedValue: undefined,
-                        referenceValue: '', 
-                        formId: 0,
-                        saveValue: this.props.obj.default,
-                        fieldName: this.props.obj.name,
-                        reference: true
-                     };
+        this.state = {
+            dialogueVisible: false,
+            dialogueSelectedValue: undefined,
+            referenceValue: '',
+            formId: 0,
+            saveValue: this.props.obj.default,
+            fieldName: this.props.obj.name,
+            reference: true
+        };
     }
 
     componentWillMount() {
-        this.setState({ 
+        this.setState({
             formId: this.props.formId,
             referenceValue: this.props.label
             //referenceValue: label
@@ -35,8 +36,8 @@ class ReferenceType extends Component {
         this.props = newProps;
 
         if (this.state.formId === this.props.uniqueId) {
-            this.setState({ 
-                referenceValue: this.props.label, 
+            this.setState({
+                referenceValue: this.props.label,
                 saveValue: this.props.recordId,
                 uniqueId: this.props.uniqueId
             });
@@ -48,13 +49,13 @@ class ReferenceType extends Component {
             const { navigate } = this.props.navigate;
             navigate('ReferenceScreen', { selectedModule: 'Users', uniqueId: this.state.formId });
         } else if (type.refersTo.length > 1) {
-             this.setState({ dialogueVisible: true });
+            this.setState({ dialogueVisible: true });
         } else {
-             const { navigate } = this.props.navigate;
-             navigate('ReferenceScreen', { selectedModule: type.refersTo[0], uniqueId: this.state.formId });
+            const { navigate } = this.props.navigate;
+            navigate('ReferenceScreen', { selectedModule: type.refersTo[0], uniqueId: this.state.formId });
         }
-     }
- 
+    }
+
 
     render() {
         const mandatory = this.props.obj.mandatory;
@@ -68,53 +69,53 @@ class ReferenceType extends Component {
             });
         }
 
-        
+
         return (
             <View style={styles.inputHolder}>
-            {
-                (mandatory) ? 
-                <View style={styles.mandatory}>
-                    <Text style={{ color: 'red', fontSize: 16 }}>*</Text>
-                </View>
-                :
-                // undefined
-                <View style={styles.mandatory} />
-            } 
-            
+                {
+                    (mandatory) ?
+                        <View style={styles.mandatory}>
+                            <Text style={[fontStyles.fieldLabel, { color: 'red', fontSize: 16 }]}>*</Text>
+                        </View>
+                        :
+                        // undefined
+                        <View style={styles.mandatory} />
+                }
+
                 <View style={{ flex: 1, justifyContent: 'center' }}>
-                    <Text style={styles.label}>{this.props.obj.lable}</Text>
+                    <Text style={[styles.label, fontStyles.fieldLabel]}>{this.props.obj.lable}</Text>
                 </View>
                 <View style={{ flex: 1 }}>
-                <TouchableOpacity onPress={this.onReferencePress.bind(this, type)} >
-                    <View style={styles.textbox}>
-                        <Text style={styles.text}>{this.state.referenceValue}</Text>
-                    </View>
-                </TouchableOpacity>
-                 
-                </View>  
-            
+                    <TouchableOpacity onPress={this.onReferencePress.bind(this, type)} >
+                        <View style={styles.textbox}>
+                            <Text style={[styles.text, fontStyles.fieldValue]}>{this.state.referenceValue}</Text>
+                        </View>
+                    </TouchableOpacity>
+
+                </View>
+
                 <SinglePickerMaterialDialog
-                title={'Choose one'}
-                items={items}
-                visible={this.state.dialogueVisible}
-                selectedItem={this.state.dialogueSelectedValue}
-                onCancel={() => this.setState({ dialogueVisible: false })}
-                onOk={(result) => {
-                    //console.log(result);
-                    
-                    
-                    if (result.selectedItem === undefined) {
-                        //console.log('undefined');
-                        this.setState({ dialogueVisible: false });
-                    } else {
-                        navigate('ReferenceScreen', { selectedModule: result.selectedItem.label, uniqueId: this.state.formId });
-                        this.setState({ dialogueSelectedValue: result.selectedItem });
-                        this.setState({ dialogueVisible: false });
-                    }
-                }}
-                scrolled    
+                    title={'Choose one'}
+                    items={items}
+                    visible={this.state.dialogueVisible}
+                    selectedItem={this.state.dialogueSelectedValue}
+                    onCancel={() => this.setState({ dialogueVisible: false })}
+                    onOk={(result) => {
+                        //console.log(result);
+
+
+                        if (result.selectedItem === undefined) {
+                            //console.log('undefined');
+                            this.setState({ dialogueVisible: false });
+                        } else {
+                            navigate('ReferenceScreen', { selectedModule: result.selectedItem.label, uniqueId: this.state.formId });
+                            this.setState({ dialogueSelectedValue: result.selectedItem });
+                            this.setState({ dialogueVisible: false });
+                        }
+                    }}
+                    scrolled
                 />
-                                    
+
             </View>
         );
     }
@@ -123,9 +124,9 @@ class ReferenceType extends Component {
 const styles = StyleSheet.create(
     {
         inputHolder: {
-            flex: 1, 
-            flexDirection: 'row', 
-            marginTop: 10, 
+            flex: 1,
+            flexDirection: 'row',
+            marginVertical: 10,
             marginRight: 2
         },
         label: {
@@ -133,10 +134,10 @@ const styles = StyleSheet.create(
             padding: 10
         },
         mandatory: {
-            width: 10, 
-            height: 25, 
-            justifyContent: 'center', 
-            alignItems: 'center', 
+            width: 10,
+            height: 25,
+            justifyContent: 'center',
+            alignItems: 'center',
             marginTop: 5,
         },
         textbox: {
@@ -144,13 +145,14 @@ const styles = StyleSheet.create(
             borderColor: '#ABABAB',
             borderWidth: 0.5,
             padding: 0,
+            paddingLeft: 5,
             borderTopLeftRadius: 4,
             borderTopRightRadius: 4,
             borderBottomLeftRadius: 4,
             borderBottomRightRadius: 4,
             height: 38,
             justifyContent: 'center'
-          },
+        },
         text: {
             fontSize: 14,
             marginLeft: 5,

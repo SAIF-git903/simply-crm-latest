@@ -2,73 +2,74 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { DatePickerDialog } from 'react-native-datepicker-dialog';
 import moment from 'moment';
+import { fontStyles } from '../../../styles/common';
 
 class DateType extends Component {
     constructor(props) {
         super(props);
-        this.state = { 
-                       pickDate: null,
-                       saveValue: this.props.obj.default,
-                       fieldName: this.props.obj.name 
-                     };
+        this.state = {
+            pickDate: null,
+            saveValue: this.props.obj.default,
+            fieldName: this.props.obj.name
+        };
     }
     onDatePress = () => {
         let pickedDate = this.state.pickDate;
         const dob = this.props.obj.name;
-        
+
         if (!pickedDate || pickedDate == null) {
-          pickedDate = new Date();
-          this.setState({
-            pickDate: pickedDate
-          });
+            pickedDate = new Date();
+            this.setState({
+                pickDate: pickedDate
+            });
         }
         if (dob === 'birthday') {
-             //To open the dialog
+            //To open the dialog
             this.refs.dateDialog.open({
-            date: pickedDate,
-            maxDate: new Date() //To restirct future date
-          });
+                date: pickedDate,
+                maxDate: new Date() //To restirct future date
+            });
         } else {
             //To open the dialog
             this.refs.dateDialog.open({
                 date: pickedDate,
-              });
-        } 
+            });
+        }
     }
 
     onDatePicked = (date) => {
         //Here you will get the selected date
         const formatDate = this.props.obj.type.format.toUpperCase();
         this.setState({
-          pickDate: date,
-          saveValue: moment(date).format(formatDate)
+            pickDate: date,
+            saveValue: moment(date).format(formatDate)
         });
     }
     render() {
         const mandatory = this.props.obj.mandatory;
         return (
             <View style={styles.inputHolder}>
-            {
-                (mandatory) ? 
-                <View style={styles.mandatory}>
-                    <Text style={{ color: 'red', fontSize: 16 }}>*</Text>
-                </View>
-                :
-                // undefined
-                <View style={styles.mandatory} />
-            } 
-            
+                {
+                    (mandatory) ?
+                        <View style={styles.mandatory}>
+                            <Text style={[fontStyles.fieldLabel, { color: 'red', fontSize: 16 }]}>*</Text>
+                        </View>
+                        :
+                        // undefined
+                        <View style={styles.mandatory} />
+                }
+
                 <View style={{ flex: 1, justifyContent: 'center' }}>
-                    <Text style={styles.label}>{this.props.obj.lable}</Text>
+                    <Text style={[styles.label, fontStyles.fieldLabel]}>{this.props.obj.lable}</Text>
                 </View>
                 <View style={{ flex: 1 }}>
-                <TouchableOpacity onPress={this.onDatePress.bind(this)} >
-                    <View style={styles.textbox}>
-                        {/* <Text style={styles.text}>{this.state.saveValue}</Text> */}
-                    </View>
-                </TouchableOpacity>
-               
-                </View>  
+                    <TouchableOpacity onPress={this.onDatePress.bind(this)} >
+                        <View style={styles.textbox}>
+                            <Text style={[styles.text, fontStyles.fieldValue]}>{this.state.saveValue}</Text>
+                        </View>
+                    </TouchableOpacity>
+
+                </View>
                 <DatePickerDialog ref="dateDialog" okLabel="ok" cancelLabel="cancel" onDatePicked={this.onDatePicked.bind(this)} />
             </View>
         );
@@ -78,9 +79,9 @@ class DateType extends Component {
 const styles = StyleSheet.create(
     {
         inputHolder: {
-            flex: 1, 
-            flexDirection: 'row', 
-            marginTop: 10, 
+            flex: 1,
+            flexDirection: 'row',
+            marginVertical: 10,
             marginRight: 2
         },
         label: {
@@ -88,10 +89,10 @@ const styles = StyleSheet.create(
             padding: 10
         },
         mandatory: {
-            width: 10, 
-            height: 25, 
-            justifyContent: 'center', 
-            alignItems: 'center', 
+            width: 10,
+            height: 25,
+            justifyContent: 'center',
+            alignItems: 'center',
             marginTop: 5,
         },
         textbox: {
@@ -99,13 +100,14 @@ const styles = StyleSheet.create(
             borderColor: '#ABABAB',
             borderWidth: 0.5,
             padding: 0,
+            paddingLeft: 5,
             borderTopLeftRadius: 4,
             borderTopRightRadius: 4,
             borderBottomLeftRadius: 4,
             borderBottomRightRadius: 4,
             height: 38,
             justifyContent: 'center'
-          },
+        },
         text: {
             fontSize: 14,
             marginLeft: 5,

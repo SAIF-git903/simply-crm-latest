@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text, Picker, } from 'react-native';
+import { fontStyles } from '../../../styles/common';
 
 class PickListType extends Component {
     constructor(props) {
         super(props);
-        this.state = { 
-                       saveValue: this.props.obj.type.defaultValue,
-                       fieldName: this.props.obj.name    
-                     };
+        this.state = {
+            saveValue: this.props.obj.type.defaultValue,
+            fieldName: this.props.obj.name
+        };
     }
     render() {
         const mandatory = this.props.obj.mandatory;
@@ -16,47 +17,47 @@ class PickListType extends Component {
 
         return (
             <View style={styles.inputHolder}>
-            {
-                (mandatory) ? 
-                <View style={styles.mandatory}>
-                    <Text style={{ color: 'red', fontSize: 16 }}>*</Text>
-                </View>
-                :
-                // undefined
-                <View style={styles.mandatory} />
-            } 
+                {
+                    (mandatory) ?
+                        <View style={styles.mandatory}>
+                            <Text style={[fontStyles.fieldLabel, { color: 'red', fontSize: 16 }]}>*</Text>
+                        </View>
+                        :
+                        // undefined
+                        <View style={styles.mandatory} />
+                }
                 <View style={{ flex: 1, justifyContent: 'center' }}>
-                    <Text style={styles.label}>{this.props.obj.lable}</Text>
+                    <Text style={[styles.label, fontStyles.fieldLabel]}>{this.props.obj.lable}</Text>
                 </View>
                 <View style={{ flex: 1 }}>
-                <Picker 
-                    mode='dropdown'
-                    selectedValue={this.state.saveValue} 
-                    onValueChange={(itemValue) => {
+                    <Picker
+                        mode='dropdown'
+                        selectedValue={this.state.saveValue}
+                        onValueChange={(itemValue) => {
                             if (itemValue !== 0) {
                                 this.setState({ saveValue: itemValue });
                             }
                         }
-                    }
-                >
-                <Picker.Item label='Please Select' value={0} />
-                    {options.map((item, index) => {
-                        return (<Picker.Item label={item.label} value={item.value} key={index} />); 
-                    })}
-                </Picker>
+                        }
+                    >
+                        <Picker.Item label='Please Select' value={0} />
+                        {options.map((item, index) => {
+                            return (<Picker.Item label={item.label} value={item.value} key={index} />);
+                        })}
+                    </Picker>
                 </View>
-                
+
             </View>
-        );   
+        );
     }
 }
 
 const styles = StyleSheet.create(
     {
         inputHolder: {
-            flex: 1, 
-            flexDirection: 'row', 
-            marginTop: 10, 
+            flex: 1,
+            flexDirection: 'row',
+            marginTop: 10,
             marginRight: 2
         },
         label: {
@@ -64,10 +65,10 @@ const styles = StyleSheet.create(
             padding: 10
         },
         mandatory: {
-            width: 10, 
-            height: 25, 
-            justifyContent: 'center', 
-            alignItems: 'center', 
+            width: 10,
+            height: 25,
+            justifyContent: 'center',
+            alignItems: 'center',
             marginTop: 5,
         },
     }

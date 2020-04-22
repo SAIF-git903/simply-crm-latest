@@ -1269,7 +1269,6 @@ export const recordListRendererHelper = (listerInstance) => {
             return (
                 <FlatList
                     ListEmptyComponent={renderEmpty()}
-
                     style={styles.listWrapper}
                     contentContainerStyle={styles.list}
                     onRefresh={listerInstance.refreshData.bind(listerInstance)}
@@ -1344,7 +1343,6 @@ export const recordListRendererHelper = (listerInstance) => {
             return (
                 <FlatList
                     ListEmptyComponent={renderEmpty()}
-
                     style={styles.listWrapper}
                     contentContainerStyle={styles.list}
                     onRefresh={listerInstance.refreshData.bind(listerInstance)}

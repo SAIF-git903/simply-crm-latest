@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator, ScrollView } from 'react-native';
 import StatusView from './statusView';
 import { commonStyles } from '../../styles/common';
 import { fetchRecord, viewRecordAction } from '../../actions';
@@ -16,7 +16,7 @@ class Lister extends Component {
             selectedIndex: -1,
             pageToTake: 0,
             statusText: 'Click search button to search',
-            statusTextColor: '#000000', 
+            statusTextColor: '#000000',
             navigation: this.props.navigation,
             //recordId: `${this.props.moduleId}x${this.props.recordId}`
         };
@@ -56,7 +56,7 @@ class Lister extends Component {
             <View style={{ flex: 1, width: '100%', marginTop: 20 }}>
                 {searchRecordListRendererHelper(this)}
             </View>
-            );
+        );
     }
 
     render() {
@@ -64,8 +64,8 @@ class Lister extends Component {
             <View style={commonStyles.recordListerBackground} >
                 {
                     (this.state.loading) ?
-                    this.renderLoading() :
-                    this.renderRecordList()
+                        this.renderLoading() :
+                        this.renderRecordList()
                 }
                 <StatusView text={this.state.statusText} textColor={this.state.statusTextColor} />
             </View>
@@ -75,7 +75,7 @@ class Lister extends Component {
 
 const mapStateToProps = ({ event }) => {
     const { isPortrait, width, height } = event;
-    
+
     return { isPortrait, width, height };
 };
 

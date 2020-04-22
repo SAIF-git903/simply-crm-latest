@@ -249,7 +249,7 @@ const getSectionContent = (marketingSectionContent, salesSectionContent, invento
                     fillSection(toolsModulesButtons, module, false);
                     break;
                 case CUSTOM:
-                    fillSection(customModulesButtons, module, true);
+                    // fillSection(customModulesButtons, module, true);
                     break;
                 default:
                 //fillSection(customModulesButtons, module, true);
@@ -275,10 +275,10 @@ const getMenuHolder = (module, custom) => <MenuHolder module={module} custom={cu
 const drawerButtonArrangeHelper = (name) => {
     switch (name) {
         // case ACCOUNTS:
-        case LEADS:
+        // case LEADS:
         // case CAMPAIGNS:
         // case CONTACTS:
-        case CALENDAR:
+        // case CALENDAR:
         //     return MARKETING;
         //case QUOTES:
         case PRODUCTS:
@@ -298,7 +298,7 @@ const drawerButtonArrangeHelper = (name) => {
         // case ASSETS:
         //     return SUPPORT;
         // case MODULE_PROJECT:
-        case PROJECT_TASK:
+        // case PROJECT_TASK:
         // case PROJECT_MILESTONE:
         // case PBXMANAGER:
         //     return PROJECT;
