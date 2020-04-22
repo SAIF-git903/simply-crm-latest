@@ -57,23 +57,26 @@ class Viewer extends Component {
                 }
                 onRefresh={this.refreshData.bind(this)}
                 refreshing={this.state.isFlatListRefreshing}
-                style={{ backgroundColor: 'white', marginTop: 20 }}
+                style={{ height: '100%' }}
             >
                 {this.state.data}
-                <View style={{ width: '100%', minHeight: '100%', backgroundColor: 'white' }} />
+                <View style={{ width: '100%' }} />
             </ScrollView>
         );
     }
 
     render() {
         return (
-            <View style={commonStyles.recordViewerBackground} >
+            <View style={[commonStyles.recordViewerBackground, {
+                backgroundColor: '#f2f3f8',
+                paddingBottom: 10
+            }]} >
                 {
                     (this.state.loading) ?
                         this.renderLoading() :
                         this.renderRecordView()
                 }
-                <StatusView text={this.state.statusText} textColor={this.state.statusTextColor} />
+                {/* <StatusView text={this.state.statusText} textColor={this.state.statusTextColor} /> */}
             </View>
         );
     }

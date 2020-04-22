@@ -4,8 +4,13 @@ import { NavigationActions } from 'react-navigation';
 import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { commonStyles } from '../../styles/common';
 import { viewSearchAction, updateSearchModule } from '../../actions';
-import { HEADER_TEXT_COLOR, HEADER_IMAGE_COLOR,
-HEADER_IMAGE_SELECTED_COLOR } from '../../variables/themeColors';
+import {
+    HEADER_TEXT_COLOR, HEADER_IMAGE_COLOR,
+    HEADER_IMAGE_SELECTED_COLOR
+} from '../../variables/themeColors';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faBars } from '@fortawesome/pro-regular-svg-icons';
 
 class Header extends Component {
     componentDidMount() {
@@ -15,22 +20,14 @@ class Header extends Component {
     onMenuButtonPress() {
         const { state } = this.props.navigation;
         if (state.routeName === 'DrawerOpen') {
-          this.props.navigation.navigate('DrawerClose');      
+            this.props.navigation.navigate('DrawerClose');
         } else {
-          this.props.navigation.navigate('DrawerOpen');
+            this.props.navigation.navigate('DrawerOpen');
         }
     }
 
     onSearchButtonPress() {
-        if (this.props.width < 600) {
-            this.props.updateSearchModule(this.props.moduleName);
-            this.props.navigation.navigate('SearchScreen');
-        } else if (!this.props.isPortrait) {
-            this.props.viewSearchAction(this.props.moduleName);
-        } else {
-            this.props.updateSearchModule(this.props.moduleName);
-            this.props.navigation.navigate('SearchScreen');            
-        }             
+        this.props.navigation.navigate('AddRecordScreen');
     }
 
     renderMenuButton() {
@@ -41,13 +38,10 @@ class Header extends Component {
             //This is phone
             return (
                 <TouchableOpacity onPress={this.onMenuButtonPress.bind(this)}>
-                    <Image 
-                    source={{ uri: 'menu' }}
-                    style={{ 
-                        width: 30,
-                        resizeMode: 'contain',  
-                        tintColor: HEADER_IMAGE_COLOR,
-                        height: 40 }}
+                    <FontAwesomeIcon
+                        icon={faBars}
+                        color={'white'}
+                        size={28}
                     />
                 </TouchableOpacity>
             );
@@ -62,14 +56,22 @@ class Header extends Component {
                 }
                 <Text style={styles.headerTextStyle}>{this.props.moduleLable}</Text>
                 <TouchableOpacity onPress={this.onSearchButtonPress.bind(this)}>
-                    <Image 
-                    source={{ uri: 'search' }}
-                    style={{ 
-                        width: 27,
-                        resizeMode: 'contain', 
-                        tintColor: HEADER_IMAGE_COLOR,
-                        height: 27 }}
-                    />
+                    <View
+                        style={{
+                            backgroundColor: 'rgba(255,255,255,.2)',
+                            width: 27,
+                            height: 27,
+                            borderRadius: 3,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}
+                    >
+                        <FontAwesomeIcon
+                            icon={faPlus}
+                            size={18}
+                            color={'white'}
+                        />
+                    </View>
                 </TouchableOpacity>
             </View>
         );

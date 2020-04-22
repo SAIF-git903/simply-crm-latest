@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { commonStyles } from './../styles/common';
-import { HEADER_TEXT_COLOR, HEADER_IMAGE_COLOR,
-HEADER_IMAGE_SELECTED_COLOR } from './../variables/themeColors';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faBars } from '@fortawesome/pro-regular-svg-icons';
+import { commonStyles, fontStyles } from './../styles/common';
+import {
+    HEADER_TEXT_COLOR, HEADER_IMAGE_COLOR,
+    HEADER_IMAGE_SELECTED_COLOR
+} from './../variables/themeColors';
 
 class DashboardHeader extends Component {
     componentDidMount() {
@@ -13,11 +17,11 @@ class DashboardHeader extends Component {
     onMenuButtonPress() {
         const { state } = this.props.navigation;
         if (state.routeName === 'DrawerOpen') {
-          this.props.navigation.navigate('DrawerClose');      
+            this.props.navigation.navigate('DrawerClose');
         } else {
-          this.props.navigation.navigate('DrawerOpen');
+            this.props.navigation.navigate('DrawerOpen');
         }
-      }
+    }
 
     renderMenuButton() {
         if (this.props.width > 600) {
@@ -27,13 +31,10 @@ class DashboardHeader extends Component {
             //This is phone
             return (
                 <TouchableOpacity onPress={this.onMenuButtonPress.bind(this)}>
-                    <Image 
-                    source={{ uri: 'menu' }}
-                    style={{ 
-                        width: 30,
-                        resizeMode: 'contain',  
-                        tintColor: HEADER_IMAGE_COLOR,
-                        height: 40 }}
+                    <FontAwesomeIcon
+                        icon={faBars}
+                        color={'white'}
+                        size={28}
                     />
                 </TouchableOpacity>
             );
@@ -46,7 +47,12 @@ class DashboardHeader extends Component {
                 {
                     this.renderMenuButton()
                 }
-                <Text style={styles.headerTextStyle}>{this.props.moduleLable}</Text>
+                <Text
+                    style={[fontStyles.navbarTitle, { marginLeft: -30, backgroundColor: 'transparent' }]}
+                    pointerEvents={'none'}
+                >
+                    {this.props.moduleLable}
+                </Text>
             </View>
         );
     }

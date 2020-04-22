@@ -5,8 +5,14 @@ import {
     StyleSheet, Alert, Picker, KeyboardAvoidingView, TouchableOpacity, Platform
 } from 'react-native';
 import ModalDropdown from 'react-native-modal-dropdown';
+import IconButton from '../components/IconButton';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faEnvelope, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { faAngleLeft } from '@fortawesome/pro-regular-svg-icons';
+
 import { loginUser } from '../actions/';
 import { resetPassword } from '../helper';
+import { fontStyles } from '../styles/common';
 
 class ForgotPasswordForm extends Component {
     static navigationOptions = {
@@ -77,7 +83,7 @@ class ForgotPasswordForm extends Component {
 
     renderLoginButton() {
         return (
-            <Text style={styles.loginButtonTextStyle} >{this.state.buttonText}</Text>
+            <Text style={fontStyles.loginButtonLabel} >{this.state.buttonText}</Text>
         );
     }
 
@@ -90,9 +96,13 @@ class ForgotPasswordForm extends Component {
 
                 { /*Logo*/}
                 <View style={styles.logoMainHolder}>
-                    <View style={{ width: '100%', flex: 1, padding: 20, paddingTop: 40 }}>
+                    <View style={{ width: '100%', flex: 1, padding: 10, paddingTop: 40 }}>
                         <TouchableOpacity onPress={this.onBackPress.bind(this)}>
-                            <Image source={{ uri: 'leftarrow' }} style={{ width: 30, height: 30, tintColor: 'white' }} />
+                            <FontAwesomeIcon
+                                icon={faAngleLeft}
+                                color={'white'}
+                                size={30}
+                            />
                         </TouchableOpacity>
                     </View>
                     <View style={styles.logoSubHolder}>
@@ -106,18 +116,18 @@ class ForgotPasswordForm extends Component {
 
                     <View style={styles.inputMainHolder}>
 
-                        <View style={styles.inputSubHolder}>
-                            <Image
-                                source={{ uri: 'login_email' }}
-                                style={styles.inputImageStyle}
+                        <View style={styles.textInputWrapper}>
+                            <FontAwesomeIcon
+                                icon={faEnvelope}
+                                color={'#92ADD1'}
+                                size={23}
                             />
 
                             <TextInput
                                 autoCorrect={false}
                                 spellCheck={false}
-                                clearButtonMode='always'
                                 underlineColorAndroid='rgba(0,0,0,0)'
-                                style={[styles.inputTextStyle]}
+                                style={[fontStyles.loginInputFieldLabel, styles.inputFieldLabel]}
                                 placeholder='Enter your e-mail'
                                 placeholderTextColor='#ddd'
                                 ref='email'
@@ -126,6 +136,16 @@ class ForgotPasswordForm extends Component {
                                 value={this.state.email}
                                 onChangeText={this.onEmailChanged.bind(this)}
                             />
+
+                            {this.state.email.length !== 0 ?
+                                <IconButton
+                                    icon={faTimesCircle}
+                                    size={14}
+                                    onPress={() => this.setState({ email: '' })}
+                                />
+                                :
+                                null
+                            }
                         </View>
 
 
@@ -227,11 +247,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         justifyContent: 'center',
         alignItems: 'center',
-        elevation: 3,
-        shadowOffset: { width: 0.5, height: 0.5 },
-        shadowColor: 'black',
-        shadowOpacity: 0.5,
-
     },
     loginButtonTextStyle: {
         color: '#0069AE',
@@ -245,6 +260,18 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         alignItems: 'center'
     },
-
+    textInputWrapper: {
+        backgroundColor: '#245BA2',
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderRadius: 3,
+        height: 50,
+        paddingHorizontal: 15,
+        marginBottom: 10
+    },
+    inputFieldLabel: {
+        paddingLeft: 10,
+        flex: 1
+    },
 });
 export default connect(null)(ForgotPasswordForm);

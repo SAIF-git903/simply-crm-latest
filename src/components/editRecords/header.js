@@ -2,9 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, Image, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { commonStyles } from '../../styles/common';
-import { HEADER_TEXT_COLOR, HEADER_IMAGE_COLOR,
-HEADER_IMAGE_SELECTED_COLOR } from '../../variables/themeColors';
+import {
+    HEADER_TEXT_COLOR, HEADER_IMAGE_COLOR,
+    HEADER_IMAGE_SELECTED_COLOR
+} from '../../variables/themeColors';
 import { saveSuccess } from '../../actions';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faAngleLeft } from '@fortawesome/pro-regular-svg-icons';
+import { faSave } from '@fortawesome/free-regular-svg-icons';
 
 class Header extends Component {
     constructor(props) {
@@ -23,7 +28,7 @@ class Header extends Component {
         this.props.navigation.goBack(null);
     }
     onAddButtonPress() {
-       this.props.callViewer(this);
+        this.props.callViewer(this);
     }
     renderBackButton() {
         if (this.props.width > 600) {
@@ -31,13 +36,10 @@ class Header extends Component {
             if (this.props.isPortrait) {
                 return (
                     <TouchableOpacity onPress={this.onBackButtonPress.bind(this)}>
-                        <Image 
-                        source={{ uri: 'leftarrow' }}
-                        style={{ 
-                            width: 30,
-                            resizeMode: 'contain',  
-                            tintColor: HEADER_IMAGE_COLOR,
-                            height: 40 }}
+                        <FontAwesomeIcon
+                            icon={faAngleLeft}
+                            color={'white'}
+                            size={30}
                         />
                     </TouchableOpacity>
                 );
@@ -47,13 +49,10 @@ class Header extends Component {
             //This is phone
             return (
                 <TouchableOpacity onPress={this.onBackButtonPress.bind(this)}>
-                    <Image 
-                    source={{ uri: 'leftarrow' }}
-                    style={{ 
-                        width: 30,
-                        resizeMode: 'contain',  
-                        tintColor: HEADER_IMAGE_COLOR,
-                        height: 40 }}
+                    <FontAwesomeIcon
+                        icon={faAngleLeft}
+                        color={'white'}
+                        size={30}
                     />
                 </TouchableOpacity>
             );
@@ -68,14 +67,11 @@ class Header extends Component {
     }
     renderSaveButton() {
         return (
-            
-            <Image 
-            source={{ uri: 'save' }}
-            style={{ 
-                width: 25,
-                resizeMode: 'contain',  
-                tintColor: HEADER_IMAGE_COLOR,
-                height: 25 }}
+
+            <FontAwesomeIcon
+                icon={faSave}
+                color={'white'}
+                size={30}
             />
         );
     }
@@ -88,8 +84,8 @@ class Header extends Component {
                 }
                 <Text style={styles.headerTextStyle}>{this.props.moduleLable}</Text>
                 <TouchableOpacity onPress={this.onAddButtonPress.bind(this)}>
-                    <View 
-                        style={{ 
+                    <View
+                        style={{
                             width: 50,
                             height: 30,
                             alignItems: 'center',

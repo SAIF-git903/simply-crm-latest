@@ -21,6 +21,8 @@ target 'PocketCRM for Vtiger' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+  pod 'RNSVG', :path => '../node_modules/react-native-svg'
+
   post_install do |installer|
 	react_project = Xcodeproj::Project.open("../node_modules/react-native/React/React.xcodeproj")
 	react_project.main_group["React/Views"].files.each do |file|

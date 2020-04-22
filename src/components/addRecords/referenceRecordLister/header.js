@@ -3,8 +3,10 @@ import { connect } from 'react-redux';
 import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { commonStyles } from '../../../styles/common';
 import { viewSearchAction, updateSearchModule } from '../../../actions';
-import { HEADER_TEXT_COLOR, HEADER_IMAGE_COLOR,
-HEADER_IMAGE_SELECTED_COLOR } from '../../../variables/themeColors';
+import {
+    HEADER_TEXT_COLOR, HEADER_IMAGE_COLOR,
+    HEADER_IMAGE_SELECTED_COLOR
+} from '../../../variables/themeColors';
 
 class Header extends Component {
     componentDidMount() {
@@ -24,8 +26,8 @@ class Header extends Component {
             this.props.viewSearchAction(this.props.moduleName);
         } else {
             this.props.updateSearchModule(this.props.moduleName);
-            this.props.navigation.navigate('SearchScreen');            
-        }             
+            this.props.navigation.navigate('SearchScreen');
+        }
     }
 
     renderBackButton() {
@@ -34,13 +36,14 @@ class Header extends Component {
             if (this.props.isPortrait) {
                 return (
                     <TouchableOpacity onPress={this.onBackButtonPress.bind(this)}>
-                        <Image 
-                        source={{ uri: 'leftarrow' }}
-                        style={{ 
-                            width: 30,
-                            resizeMode: 'contain',  
-                            tintColor: HEADER_IMAGE_COLOR,
-                            height: 40 }}
+                        <Image
+                            source={{ uri: 'leftarrow' }}
+                            style={{
+                                width: 30,
+                                resizeMode: 'contain',
+                                tintColor: HEADER_IMAGE_COLOR,
+                                height: 40
+                            }}
                         />
                     </TouchableOpacity>
                 );
@@ -50,13 +53,14 @@ class Header extends Component {
             //This is phone
             return (
                 <TouchableOpacity onPress={this.onBackButtonPress.bind(this)}>
-                    <Image 
-                    source={{ uri: 'leftarrow' }}
-                    style={{ 
-                        width: 30,
-                        resizeMode: 'contain',  
-                        tintColor: HEADER_IMAGE_COLOR,
-                        height: 40 }}
+                    <Image
+                        source={{ uri: 'leftarrow' }}
+                        style={{
+                            width: 30,
+                            resizeMode: 'contain',
+                            tintColor: HEADER_IMAGE_COLOR,
+                            height: 40
+                        }}
                     />
                 </TouchableOpacity>
             );
@@ -71,13 +75,14 @@ class Header extends Component {
                 }
                 <Text style={styles.headerTextStyle}>{this.props.moduleName}</Text>
                 <TouchableOpacity onPress={this.onSearchButtonPress.bind(this)}>
-                    <Image 
-                    source={{ uri: 'search' }}
-                    style={{ 
-                        width: 27,
-                        resizeMode: 'contain', 
-                        tintColor: HEADER_IMAGE_COLOR,
-                        height: 27 }}
+                    <Image
+                        source={{ uri: 'search' }}
+                        style={{
+                            width: 27,
+                            resizeMode: 'contain',
+                            tintColor: HEADER_IMAGE_COLOR,
+                            height: 27
+                        }}
                     />
                 </TouchableOpacity>
             </View>

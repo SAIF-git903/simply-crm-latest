@@ -11,8 +11,8 @@ export const getDatafromNet = async (param, dispatch) => {
     const response = await fetch((`${loginDetails.url}/modules/Mobile/api.php`), {
         method: 'POST',
         headers: {
-            // 'Accept': 'application/json',
-            // 'Content-Type': 'multipart/form-data; charset=utf-8',
+            'Accept': 'application/json',
+            'Content-Type': 'multipart/form-data; charset=utf-8',
             'cache-control': 'no-cache',
         },
         body: param

@@ -17,9 +17,9 @@ class HomeTablet extends Component {
         return (
             <View style={styles.landscapeStyle} >
                 <View style={styles.homeMainStyle}>
-                {
-                    this.renderRecordLister()
-                }
+                    {
+                        this.renderRecordLister()
+                    }
                 </View>
                 {
                     this.renderRecordMgr()
@@ -34,7 +34,7 @@ class HomeTablet extends Component {
         switch (this.props.ltrComponentToShow) {
             case HOME_MAIN:
                 return (
-                    <HomeMain navigation={this.props.navigation} />                
+                    <HomeMain navigation={this.props.navigation} />
                 );
             case SEARCH_COMPONENT:
                 return (
@@ -65,11 +65,11 @@ class HomeTablet extends Component {
     }
 
     renderTabletPortrait() {
-         return (
+        return (
             <View style={styles.homeMainStyle}>
                 <HomeMain navigation={this.props.navigation} />
             </View>
-         );
+        );
     }
 
     render() {
@@ -80,10 +80,10 @@ class HomeTablet extends Component {
                 </View>
                 {
                     (this.props.isPortrait) ?
-                    this.renderTabletPortrait() :
-                    this.renderTabletLandscape()
+                        this.renderTabletPortrait() :
+                        this.renderTabletLandscape()
                 }
-                
+
             </View>
         );
     }

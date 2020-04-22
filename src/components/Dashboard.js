@@ -7,16 +7,15 @@ import UpdateWidget from './dashboardUpdates';
 import DashboardHeader from './DashboardHeader';
 
 class Dashboard extends Component {
-    
+
     render() {
         return (
             <View style={styles.backgroundStyle}>
                 <View style={styles.recordListerBackground}>
                     <UpdateWidget navigation={this.props.navigation} />
-                    <Todo />          
                 </View>
-                
-                <DashboardHeader 
+
+                <DashboardHeader
                     moduleLable={'Home'}
                     navigation={this.props.navigation}
                 />
@@ -29,11 +28,10 @@ const styles = StyleSheet.create({
     backgroundStyle: {
         width: '100%',
         flex: 1,
-        backgroundColor: 'red'
+        backgroundColor: '#f2f3f8'
     },
     recordListerBackground: {
         flex: 1,
-        backgroundColor: 'white',
         marginTop: (Platform.OS === 'ios') ? (isIphoneX() ? 80 : 60) : 45,
     },
 });

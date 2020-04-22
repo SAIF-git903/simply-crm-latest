@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
-import { View, StatusBar, ScrollView, StyleSheet, ActivityIndicator, 
-    TouchableOpacity, Text, Alert, Image } from 'react-native';
+import {
+    View, StatusBar, ScrollView, StyleSheet, ActivityIndicator,
+    TouchableOpacity, Text, Alert, Image, SafeAreaView
+} from 'react-native';
 // import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 // import { faPowerOff } from '@fortawesome/pro-regular-svg-icons';
 import { renderDrawerView, removeAllDatabase } from '../helper';
-import { DRAWER_BACKGROUND, HEADER_COLOR, DRAWER_INNER_BACKGROUND, 
-    DRAWER_SECTION_HEADER_TEXT_COLOR, DRAWER_SECTION_HEADER_IMAGE_COLOR } from '../variables/themeColors';
+import {
+    DRAWER_BACKGROUND, HEADER_COLOR, DRAWER_INNER_BACKGROUND,
+    DRAWER_SECTION_HEADER_TEXT_COLOR, DRAWER_SECTION_HEADER_IMAGE_COLOR
+} from '../variables/themeColors';
+import { fontStyles } from '../styles/common';
 
 
 class HomeDrawer extends Component {
@@ -30,28 +35,28 @@ class HomeDrawer extends Component {
 
     onSignOutPress() {
         Alert.alert('Logout !', 'Are you sure all your offline data will be deleted?',
-        [
-          { text: 'Cancel', style: 'cancel' },
-          { text: 'Ok', onPress: this.logout.bind(this) },
-        ],
-        { cancelable: true }
+            [
+                { text: 'Cancel', style: 'cancel' },
+                { text: 'Ok', onPress: this.logout.bind(this) },
+            ],
+            { cancelable: true }
         );
     }
 
     signOut() {
         return (
-            <TouchableOpacity style={styles.singOutWrapper}onPress={this.onSignOutPress.bind(this)} >
+            <TouchableOpacity style={styles.singOutWrapper} onPress={this.onSignOutPress.bind(this)} >
                 <View style={styles.signOut}>
                     <View style={styles.imageStyle}>
-                    <Image 
-                        source={{ uri: 'logout' }}
-                        style={[styles.imageStyle, { tintColor: DRAWER_SECTION_HEADER_IMAGE_COLOR }]}
-                    /> 
+                        <Image
+                            source={{ uri: 'logout' }}
+                            style={[styles.imageStyle, { tintColor: DRAWER_SECTION_HEADER_IMAGE_COLOR }]}
+                        />
                         {/* <FontAwesomeIcon icon={faPowerOff} size={20} color={DRAWER_SECTION_HEADER_IMAGE_COLOR} />  */}
                     </View>
-                    <Text style={styles.textStyle}>Sign Out</Text>
-            </View>
-        </ TouchableOpacity>
+                    <Text style={[styles.textStyle, fontStyles.drawerMenuButtonText]}>Sign Out</Text>
+                </View>
+            </ TouchableOpacity>
         );
     }
 
@@ -63,33 +68,42 @@ class HomeDrawer extends Component {
         const resetAction = NavigationActions.reset({
             index: 0,
             actions: [
-              NavigationActions.navigate({ routeName: 'SplashScreen' })
+                NavigationActions.navigate({ routeName: 'SplashScreen' })
             ]
-          });
-          this.props.navigation.dispatch(resetAction);
+        });
+        this.props.navigation.dispatch(resetAction);
     }
 
     render() {
         return (
-            <View style={{ flex: 1, backgroundColor: DRAWER_BACKGROUND }} >
+            <SafeAreaView style={{
+                flex: 1,
+                backgroundColor: DRAWER_BACKGROUND
+            }} >
                 <StatusBar
-                backgroundColor={HEADER_COLOR}
-                barStyle="light-content"
+                    backgroundColor={HEADER_COLOR}
+                    barStyle="light-content"
                 />
-               
+
+                {/* header section */}
+                <View style={styles.header}>
+                    <Image
+                        source={require('../../assets/images/logo_new_white.png')}
+                    />
+                </View>
                 {
-                    (this.state.loading) ? 
-                    <ActivityIndicator /> :
-                    <ScrollView style={{ backgroundColor: DRAWER_BACKGROUND }}>
-                        {this.state.drawerViews}
-                        <View style={{ width: '100%', minHeight: '100%', backgroundColor: DRAWER_BACKGROUND }} />
-                        
-                    </ScrollView>
+                    (this.state.loading) ?
+                        <ActivityIndicator /> :
+                        <ScrollView style={{ backgroundColor: DRAWER_BACKGROUND }}>
+                            {this.state.drawerViews}
+                            <View style={{ width: '100%', minHeight: '100%', backgroundColor: DRAWER_BACKGROUND }} />
+
+                        </ScrollView>
                 }
                 {
                     this.signOut()
                 }
-            </View>
+            </SafeAreaView>
         );
     }
 
@@ -98,14 +112,14 @@ class HomeDrawer extends Component {
 const styles = StyleSheet.create({
     singOutWrapper: {
         height: 40,
-        width: '100%', 
+        width: '100%',
         backgroundColor: DRAWER_INNER_BACKGROUND
     },
     signOut: {
         flexDirection: 'row',
         flex: 1,
         alignItems: 'center',
-        
+
     },
     wrapper: {
         borderTopWidth: 1,
@@ -114,12 +128,12 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
     slide: {
-        height: 50 
+        height: 50
     },
     textStyle: {
         fontSize: 16,
         color: DRAWER_SECTION_HEADER_TEXT_COLOR,
-
+        paddingLeft: 5
     },
     imageStyle: {
         height: 20,
@@ -127,7 +141,13 @@ const styles = StyleSheet.create({
         marginRight: 15,
         marginLeft: 10
     },
-  
+    header: {
+        minHeight: '20%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderBottomWidth: .5,
+        borderBottomColor: '#868d98'
+    }
 });
 
 const mapStateToProps = ({ auth }) => {

@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, ActivityIndicator, Text, TouchableOpacity, 
-    StyleSheet } from 'react-native';
+import {
+    View, ActivityIndicator, Text, TouchableOpacity,
+    StyleSheet
+} from 'react-native';
 import { RECORD_COLOR, RECORD_SELECTED_COLOR } from '../../../../variables/themeColors';
 
 class AccountsRecord extends Component {
@@ -15,73 +17,75 @@ class AccountsRecord extends Component {
     render() {
         if (!this.state.loading) {
             return (
-                
-                    <TouchableOpacity 
+
+                <TouchableOpacity
                     onPress={() => { this.props.onRecordSelect(this.props.item.id, this.props.item.accountsLable, this.props.index); }}
+                >
+                    <View
+                        style={[styles.backgroundStyle, {
+                            borderTopWidth: (this.props.index === 0) ? 1 : 0,
+                            backgroundColor:
+                                (this.props.selectedIndex === this.props.index) ?
+                                    RECORD_SELECTED_COLOR : RECORD_COLOR
+                        }]}
                     >
-                    <View 
-                    style={[styles.backgroundStyle, { 
-                        borderTopWidth: (this.props.index === 0) ? 1 : 0,
-                        backgroundColor: 
-                        (this.props.selectedIndex === this.props.index) ? 
-                        RECORD_SELECTED_COLOR : RECORD_COLOR }]}
-                    >
                         {
-                            (this.props.item.accountsLable !== '') ? 
-                            <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10, color: 'black' }}>
-                            {this.props.item.accountsLable}
-                            </Text>
-                            : 
-                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
-                                no lable
+                            (this.props.item.accountsLable !== '') ?
+                                <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10, color: 'black' }}>
+                                    {this.props.item.accountsLable}
+                                </Text>
+                                :
+                                <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
+                                    no lable
                             </Text>
                         }
-                        
+
                         {
-                            (this.props.item.website !== '') ? 
-                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
-                                {this.props.item.website}
-                            </Text>
-                            : 
-                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
-                                no website
+                            (this.props.item.website !== '') ?
+                                <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
+                                    {this.props.item.website}
+                                </Text>
+                                :
+                                <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
+                                    no website
                             </Text>
                         }
                         {
-                            (this.props.item.phone !== '') ? 
-                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
-                                {this.props.item.phone}
-                            </Text>
-                            : 
-                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
-                                no phone number
+                            (this.props.item.phone !== '') ?
+                                <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
+                                    {this.props.item.phone}
+                                </Text>
+                                :
+                                <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
+                                    no phone number
                             </Text>
                         }
                         {
-                            (this.props.item.email !== '') ? 
-                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
-                                {this.props.item.email}
-                            </Text>
-                            : 
-                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
-                                no email
+                            (this.props.item.email !== '') ?
+                                <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
+                                    {this.props.item.email}
+                                </Text>
+                                :
+                                <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
+                                    no email
                             </Text>
                         }
                     </View>
-                    </TouchableOpacity>
+                </TouchableOpacity>
             );
-        } 
+        }
 
         return (
-            <View 
-            style={[styles.backgroundStyle, { 
-                borderTopWidth: (this.props.index === 0) ? 1 : 0,
-                justifyContent: 'space-around',
-                flexDirection: 'row',
-                alignItems: 'center',
-                backgroundColor: 
-                (this.props.selectedIndex === this.props.index) ? 
-                RECORD_SELECTED_COLOR : RECORD_COLOR }]}
+            <View
+                style={[styles.backgroundStyle, {
+                    borderTopWidth: (this.props.index === 0) ? 1 : 0,
+                    justifyContent: 'space-around',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    backgroundColor:
+                        (this.props.selectedIndex === this.props.index) ?
+                            RECORD_SELECTED_COLOR : RECORD_COLOR
+                }]}
             >
                 <Text>Deleting.....</Text>
                 <ActivityIndicator />

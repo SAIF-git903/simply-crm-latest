@@ -26,7 +26,7 @@ class Search extends Component {
     componentWillReceiveProps(newProps) {
         this.props = newProps;
     }
-    
+
     componentWillUnmount() {
         this.setState({
             data: [],
@@ -54,7 +54,7 @@ class Search extends Component {
             statusTextColor: '#000000',
             searchNo: this.state.searchNo + 1
         });
-        this.props.navigation.goBack(null);     
+        this.props.navigation.goBack(null);
     }
 
     searchTextChange(text) {
@@ -64,22 +64,25 @@ class Search extends Component {
     }
 
     render() {
+        console.log('old serach')
+        console.log(this.props)
+        console.log(this.state)
         return (
             <View style={styles.backgroundStyle}>
                 <Header
-                navigation={this.props.navigation}
-                showBackButton
-                searchTextChange={this.searchTextChange.bind(this)}
-                onSearch={this.onSearch.bind(this)}
-                onBack={this.onBack.bind(this)}
-                /> 
-                <Lister 
+                    navigation={this.props.navigation}
+                    showBackButton
+                    searchTextChange={this.searchTextChange.bind(this)}
+                    onSearch={this.onSearch.bind(this)}
+                    onBack={this.onBack.bind(this)}
+                />
+                <Lister
                     data={this.state.data}
                     statusText={this.state.statusText}
                     navigation={this.props.navigation}
                     statusTextColor={this.state.statusTextColor}
                     moduleName={this.state.moduleName}
-                />          
+                />
             </View>
         );
     }

@@ -2,11 +2,16 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
     View, TextInput, Image, ActivityIndicator, Text, Animated, TouchableWithoutFeedback,
-    StyleSheet, Alert, Picker, KeyboardAvoidingView, TouchableOpacity, Platform
+    StyleSheet, Alert, Picker, TouchableOpacity, Platform, Linking, SafeAreaView
 } from 'react-native';
 import ModalDropdown from 'react-native-modal-dropdown';
+import IconButton from '../components/IconButton';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faEye, faEyeSlash, faEnvelope, faTimesCircle, faGlobe } from '@fortawesome/free-solid-svg-icons';
+import { faLockAlt } from '@fortawesome/pro-solid-svg-icons';
 import { loginUser } from '../actions/';
 import { userUrlHelper, assignUrl } from '../helper';
+import { fontStyles } from '../styles/common';
 
 class LoginForm extends Component {
     static navigationOptions = {
@@ -21,7 +26,8 @@ class LoginForm extends Component {
             password: '',
             showUrlList: false,
             urlList: [],
-            username: ''
+            username: '',
+            showPassword: false,
         };
         this.handlePressIn = this.handlePressIn.bind(this);
         this.handlePressOut = this.handlePressOut.bind(this);
@@ -93,7 +99,7 @@ class LoginForm extends Component {
 
     renderLoginButton() {
         return (
-            <Text style={styles.loginButtonTextStyle} >LOGIN</Text>
+            <Text style={fontStyles.loginButtonLabel} >LOGIN</Text>
         );
     }
 
@@ -107,8 +113,20 @@ class LoginForm extends Component {
 
     }
 
+    async openSignUpUrl() {
+        const url = `https://auth.simply-crm.com/?email=${this.state.email}`
+        const supported = await Linking.canOpenURL(url);
+
+        if (supported) {
+            await Linking.openURL(url);
+        } else {
+            Alert.alert(`Cannot open URL on this device, please visit: ${url}`);
+        }
+    }
+
     render() {
-        const animatedStyle = { opacity: this.animatedValue };
+        const { password, showPassword } = this.state;
+
         const buttonAnimatedStyle = { transform: [{ scale: this.buttonAnimatedValue }] };
 
         const options = this.state.urlList;
@@ -117,237 +135,237 @@ class LoginForm extends Component {
             optionsForiOS.push(item.url);
         });
 
-
         return (
-            <View style={{ width: '100%', height: '100%', backgroundColor: '#0085DE' }}>
-
-                { /*Logo*/}
-                <View style={styles.logoMainHolder}>
-                    <View style={styles.logoSubHolder}>
-                        <Image source={{ uri: 'vtigerlogo' }} style={styles.logoStyle} />
+            <View style={styles.wrapper}>
+                <SafeAreaView style={{ flex: 1 }}>
+                    <View style={styles.logoSection}>
+                        <Image source={{ uri: 'vtigerlogo' }} style={styles.logo} />
                     </View>
 
-                </View>
-
-                { /*Login Input Component*/}
-                <View style={{ flex: 1 }} >
-
-                    <KeyboardAvoidingView behavior={'padding'}>
+                    <View style={styles.formSection}>
+                        {/* url selector */}
                         {
                             (this.state.showUrlList) ?
-                                <View style={styles.inputMainHolder}>
-                                    <View style={styles.inputSubHolder}>
-                                        <Image source={{ uri: 'url' }} style={styles.inputImageStyle} />
+                                <View style={styles.textInputWrapper}>
+                                    <FontAwesomeIcon
+                                        icon={faGlobe}
+                                        color={'#92ADD1'}
+                                        size={23}
+                                        style={{ marginRight: 5 }}
+                                    />
 
-                                        {
-                                            (Platform.OS === 'android') ?
+                                    {
+                                        (Platform.OS === 'android') ?
 
-                                                <Picker
-                                                    style={styles.inputTextStyle}
+                                            <Picker
+                                                style={fontStyles.loginInputFieldLabel}
 
-                                                    mode={'dropdown'}
-                                                    selectedValue={this.state.url}
-                                                    onValueChange={(itemValue) => {
-                                                        this.onUrlSelected(itemValue)
-                                                    }}
-                                                >
-                                                    <Picker.Item label='Please Select Url' value={0} />
-                                                    {options.map((item, index) => {
-                                                        return (<Picker.Item label={item.url} value={item.url} key={index} color='black' />);
-                                                    })}
-                                                </Picker>
+                                                mode={'dropdown'}
+                                                selectedValue={this.state.url}
+                                                onValueChange={(itemValue) => {
+                                                    this.onUrlSelected(itemValue)
+                                                }}
+                                            >
+                                                <Picker.Item label='Please Select Url' value={0} />
+                                                {options.map((item, index) => {
+                                                    return (<Picker.Item label={item.url} value={item.url} key={index} color='black' />);
+                                                })}
+                                            </Picker>
 
-                                                :
+                                            :
 
 
-                                                <ModalDropdown
-                                                    options={optionsForiOS}
-                                                    onSelect={(index, value) => {
-                                                        this.onUrlSelected(value);
-                                                    }}
-                                                    // defaultValue={this.state.url}
-                                                    //defaultIndex={0}
-                                                    style={{
-                                                        flex: 1,
-                                                        width: '100%',
-                                                        padding: 5,
-                                                        alignItems: 'flex-start'
+                                            <ModalDropdown
+                                                options={optionsForiOS}
+                                                onSelect={(index, value) => {
+                                                    this.onUrlSelected(value);
+                                                }}
+                                                style={{
+                                                    flex: 1,
+                                                    width: '100%',
+                                                    padding: 5,
+                                                    alignItems: 'flex-start'
+                                                }}
+                                                textStyle={fontStyles.loginInputFieldLabel}
+                                                dropdownStyle={{ width: '80%', flex: 1 }}
+                                                dropdownTextStyle={[fontStyles.loginInputFieldLabel, { fontSize: 14, color: 'black' }]}
+                                            />
 
-                                                    }}
-                                                    textStyle={{ fontSize: 16, color: 'white' }}
-                                                    dropdownStyle={{ width: '80%', flex: 1, paddingRight: 15 }}
-                                                    dropdownTextStyle={{ fontSize: 16 }}
-                                                />
+                                    }
 
-                                        }
-
-                                    </View>
                                 </View>
                                 :
                                 <View style={{ height: 30, padding: 10 }} />
 
                         }
 
-                        <View style={styles.inputMainHolder}>
+                        {/* e-mail field */}
+                        <View style={styles.textInputWrapper}>
+                            <FontAwesomeIcon
+                                icon={faEnvelope}
+                                color={'#92ADD1'}
+                                size={23}
+                            />
 
-                            <View style={styles.inputSubHolder}>
-                                <Image
-                                    source={{ uri: 'login_email' }}
-                                    style={styles.inputImageStyle}
+                            <TextInput
+                                autoCorrect={false}
+                                spellCheck={false}
+                                underlineColorAndroid='rgba(0,0,0,0)'
+                                style={[fontStyles.loginInputFieldLabel, styles.inputFieldLabel]}
+                                placeholder='Enter e-mail'
+                                placeholderTextColor='#92ADD1'
+                                ref='email'
+                                onSubmitEditing={() => {
+                                    this.refs.password.focus();
+                                }}
+                                autoCapitalize='none'
+                                returnKeyType='next'
+                                value={this.state.email}
+                                onChangeText={this.onEmailChanged.bind(this)}
+                            />
+                            {this.state.email.length !== 0 ?
+                                <IconButton
+                                    icon={faTimesCircle}
+                                    size={14}
+                                    onPress={() => this.setState({ email: '' })}
                                 />
+                                :
+                                null
+                            }
+                        </View>
 
-                                <TextInput
-                                    autoCorrect={false}
-                                    spellCheck={false}
-                                    clearButtonMode='always'
-                                    underlineColorAndroid='rgba(0,0,0,0)'
-                                    style={[styles.inputTextStyle]}
-                                    placeholder='Enter your e-mail'
-                                    placeholderTextColor='#ddd'
+                        {/* password field */}
+                        <View style={styles.textInputWrapper}>
 
-                                    ref='email'
-                                    onSubmitEditing={() => {
-                                        this.refs.password.focus();
-                                    }}
-                                    autoCapitalize='none'
-                                    returnKeyType='next'
-                                    value={this.state.email}
-                                    onChangeText={this.onEmailChanged.bind(this)}
-                                />
-                            </View>
+                            <FontAwesomeIcon
+                                icon={faLockAlt}
+                                color={'#92ADD1'}
+                                size={23}
+                            />
 
+
+                            <TextInput
+                                autoCorrect={false}
+                                spellCheck={false}
+                                underlineColorAndroid='rgba(0,0,0,0)'
+                                style={[fontStyles.loginInputFieldLabel, styles.inputFieldLabel]}
+                                ref='password'
+                                clearTextOnFocus={false}
+                                placeholder='Enter your password'
+                                placeholderTextColor='#92ADD1'
+                                autoCapitalize='none'
+                                returnKeyType='done'
+                                secureTextEntry={!showPassword}
+                                value={password}
+                                onChangeText={this.onPasswordChanged.bind(this)}
+                            />
+
+                            {
+                                password.length !== 0 ?
+
+                                    <View style={{
+                                        flexDirection: 'row',
+                                        alignItems: 'center'
+                                    }}>
+                                        {/* <IconButton
+                                        icon={faTimesCircle}
+                                        size={14}
+                                        onPress={() => this.setState({ password: '' })}
+                                    /> */}
+
+                                        <IconButton
+                                            icon={showPassword ? faEyeSlash : faEye}
+                                            size={16}
+                                            onPress={() => this.setState({ showPassword: !showPassword })}
+                                        />
+                                    </View>
+                                    :
+                                    null
+                            }
+                        </View>
+
+                        {/* forgot password */}
+                        <View style={styles.forgotPasswordHolder}>
+                            <TouchableOpacity onPress={this.onForgotPasswordPress.bind(this)}>
+                                <Text style={fontStyles.forgotPasswordLabel}>Forgot Password?</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                        {/*Login Button */}
+                        <View style={styles.loginButtonHolder}>
+                            <TouchableWithoutFeedback
+                                onPressIn={this.handlePressIn}
+                                onPressOut={this.handlePressOut}
+                            >
+                                <Animated.View style={[styles.loginButtonStyle, buttonAnimatedStyle]}>
+                                    {(this.state.loading) ? this.renderLoading() : this.renderLoginButton()}
+                                </Animated.View>
+                            </TouchableWithoutFeedback>
 
                         </View>
-                        <View style={styles.inputMainHolder}>
-
-                            <View style={styles.inputSubHolder}>
-                                <Image
-                                    source={{ uri: 'password' }}
-                                    style={styles.inputImageStyle}
-                                />
-
-
-                                <TextInput
-                                    autoCorrect={false}
-                                    spellCheck={false}
-                                    clearButtonMode='always'
-                                    underlineColorAndroid='rgba(0,0,0,0)'
-                                    style={styles.inputTextStyle}
-                                    ref='password'
-                                    secureTextEntry
-                                    placeholder='Enter your password'
-                                    placeholderTextColor='#ddd'
-                                    autoCapitalize='none'
-                                    returnKeyType='done'
-                                    value={this.state.password}
-                                    onChangeText={this.onPasswordChanged.bind(this)}
-                                />
-                            </View>
-                        </View>
-                    </KeyboardAvoidingView>
-
-
-                    <View style={styles.forgotPasswordHolder}>
-                        <TouchableOpacity onPress={this.onForgotPasswordPress.bind(this)}>
-                            <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
-                        </TouchableOpacity>
-
                     </View>
-                </View>
 
-                { /*Login Button */}
-                <View style={{ flex: 1 }} >
-
-                    <View style={styles.loginButtonHolder}>
-
-                        <TouchableWithoutFeedback
-                            onPressIn={this.handlePressIn}
-                            onPressOut={this.handlePressOut}
+                    <View style={styles.signupSection}>
+                        <Text
+                            style={fontStyles.signUpLabel}
+                            onPress={() => this.openSignUpUrl()}
                         >
-                            <Animated.View style={[styles.loginButtonStyle, buttonAnimatedStyle]}>
-                                {(this.state.loading) ? this.renderLoading() : this.renderLoginButton()}
-                            </Animated.View>
-                        </TouchableWithoutFeedback>
-
+                            Don't have an account? Sign up for free here
+                        </Text>
                     </View>
-                    <View style={styles.signUpHolder}>
-                        {/* <Text style={{ color: 'white', fontSize: 18 }}>Don't have an account? Sign up for free here</Text> */}
-                    </View>
-                </View>
-
-            </View>
+                </SafeAreaView>
+            </View >
         );
     }
 }
 
 const styles = StyleSheet.create({
-    logoMainHolder: {
+    wrapper: {
+        width: '100%',
+        height: '100%',
+        backgroundColor: '#0085DE'
+    },
+    logoSection: {
         flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    formSection: {
+        justifyContent: 'flex-start',
         alignItems: 'center',
+        marginHorizontal: 15
+    },
+    signupSection: {
+        flex: .2,
         justifyContent: 'flex-end',
-        // padding: 50,
-    },
-    logoSubHolder: {
-        width: 200,
-        height: 100,
         alignItems: 'center',
-        justifyContent: 'center'
+        paddingVertical: 30
     },
-    logoStyle: {
+    logo: {
         height: 80,
         width: 180,
         resizeMode: 'contain'
     },
-
-    inputMainHolder: {
-        height: 60,
-        padding: 5,
-        paddingLeft: 15,
-        paddingRight: 15
-    },
-    inputSubHolder: {
-        backgroundColor: '#0069AE',
-        flex: 1,
+    textInputWrapper: {
+        backgroundColor: '#245BA2',
         flexDirection: 'row',
         alignItems: 'center',
-        borderRadius: 5
+        borderRadius: 3,
+        height: 50,
+        paddingHorizontal: 15,
+        marginBottom: 10
     },
-    inputTextStyle: {
-        backgroundColor: '#0069AE',
-        height: '100%',
-        flex: 1,
-        color: 'white',
-        marginLeft: 5,
-        marginRight: 5,
-        fontFamily: 'Helvetica',
-        fontWeight: 'bold',
-        fontSize: 18,
-
-    },
-    inputImageStyle: {
-        height: 23,
-        width: 23,
-        tintColor: 'white',
-        marginLeft: 8
+    inputFieldLabel: {
+        paddingLeft: 10,
+        flex: 1
     },
     forgotPasswordHolder: {
-        height: 50,
-        alignItems: 'flex-end',
-        paddingRight: 15,
-        paddingTop: 8
-    },
-    forgotPasswordText: {
-        color: 'white',
-        fontSize: 18,
-        fontFamily: 'Helvetica',
-
+        alignSelf: 'flex-end'
     },
     loginButtonHolder: {
         width: '100%',
-        flex: 2,
-        padding: 15,
         justifyContent: 'center',
-
+        paddingTop: 40
     },
     loginButtonStyle: {
         width: '100%',
@@ -356,24 +374,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         justifyContent: 'center',
         alignItems: 'center',
-        elevation: 3,
-        shadowOffset: { width: 0.5, height: 0.5 },
-        shadowColor: 'black',
-        shadowOpacity: 0.5,
-
     },
-    loginButtonTextStyle: {
-        color: '#0069AE',
-        fontSize: 18,
-        fontWeight: 'bold',
-        fontFamily: 'Helvetica',
-    },
-    signUpHolder: {
-        flex: 1,
-        padding: 10,
-        justifyContent: 'flex-end',
-        alignItems: 'center'
-    },
-
 });
+
 export default connect(undefined, { loginUser })(LoginForm);

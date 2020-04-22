@@ -1,8 +1,9 @@
 import React from 'react';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, View } from 'react-native';
 import store from '../store';
 import { getDatafromNet } from './networkHelper';
 import Section from '../components/common/section';
+import SectionBox from '../components/common/section/sectionBox';
 import Field from '../components/recordViewer/field';
 import {
     DRAWER_SECTION_HEADER_IMAGE_SELECTED_COLOR,
@@ -115,6 +116,8 @@ const getDataFromInternet = async (viewerInstance, offlineAvailable, offlineData
             param.append('module', viewerInstance.props.moduleName);
             param.append('record', viewerInstance.state.recordId);
             responseJson = await getDatafromNet(param, dispatch);
+            console.log('here')
+            console.log(param)
         }
 
         console.log(responseJson);
@@ -238,15 +241,18 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
             console.log(block.label);
             blockViews.push(
                 <Section
+                    headerStyle={{ paddingLeft: 15 }}
+                    style={{ paddingTop: 5 }}
                     open={(i === 0)}
-                    sectionBackgroundColor={'white'}
-                    sectionHeaderBackground={'white'}
+                    sectionBackgroundColor={'#f2f3f8'}
+                    sectionHeaderBackground={'#f2f3f8'}
                     sectionHeaderImageColor={DRAWER_SECTION_HEADER_IMAGE_COLOR}
                     sectionHeaderImageSelectedColor={DRAWER_SECTION_HEADER_IMAGE_SELECTED_COLOR}
                     headerName={block.label}
-                    content={fieldViews}
-                    contentHeight={fieldViews.length * 35}
+                    content={<SectionBox style={{ padding: 5 }}>{fieldViews}</SectionBox>}
+                    contentHeight={fieldViews.length * 60 + 5}
                 />);
+
             i++;
         }
         const viewData = [];

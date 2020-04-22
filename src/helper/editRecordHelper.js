@@ -13,7 +13,7 @@ import MultiPickerForm from '../components/editRecords/inputComponents/multipick
 import ReferenceForm from '../components/editRecords/inputComponents/referenceType';
 import { saveSuccess } from '../actions';
 
-export const describeEditRecordHelper = async(editInstance) => {  
+export const describeEditRecordHelper = async (editInstance) => {
     const { auth } = store.getState();
     const loginDetails = auth.loginDetails;
 
@@ -21,21 +21,21 @@ export const describeEditRecordHelper = async(editInstance) => {
     param.append('_session', loginDetails.session);
     param.append('_operation', 'describe');
     param.append('module', editInstance.props.moduleName);
-    //console.log(param);
-    
-    try {    
+    console.log(param);
+
+    try {
         const response = await fetch((`${loginDetails.url}/modules/Mobile/api.php`), {
             method: 'POST',
             headers: {
-            // 'Accept': 'application/json',
-            // 'Content-Type': 'multipart/form-data; charset=utf-8',
-            'cache-control': 'no-cache',
+                // 'Accept': 'application/json',
+                // 'Content-Type': 'multipart/form-data; charset=utf-8',
+                'cache-control': 'no-cache',
             },
             body: param
         });
         const responseJson = await response.json();
-        
-        // console.log(responseJson);
+
+        console.log(responseJson);
         if (responseJson.success) {
             //console.log(responseJson);
             const fields = responseJson.result.describe.fields;
@@ -44,104 +44,106 @@ export const describeEditRecordHelper = async(editInstance) => {
             let i = 0;
             for (const fArr of fields) {
                 i++;
-                const fieldObj = { name: fArr.name,
-                                    lable: fArr.label,
-                                    mandatory: fArr.mandatory,
-                                    type: fArr.type,
-                                    nullable: fArr.nullable,
-                                    editable: fArr.editable,
-                                    default: fArr.default };
+                const fieldObj = {
+                    name: fArr.name,
+                    lable: fArr.label,
+                    mandatory: fArr.mandatory,
+                    type: fArr.type,
+                    nullable: fArr.nullable,
+                    editable: fArr.editable,
+                    default: fArr.default
+                };
                 if (fieldObj.editable) {
                     const type = fieldObj.type.name;
                     switch (type) {
                         case 'string':
-                        case 'text' :
-                        case 'url' :
+                        case 'text':
+                        case 'url':
                         case 'email':
                             formArray.push(
                                 <View>
-                                <StringForm 
-                                    obj={fieldObj}
-                                    navigate={editInstance.props.navigation} 
-                                    moduleName={editInstance.props.moduleName}
-                                    formId={i}
-                                    ref={(ref) => formInstance.push(ref)}
-                                />
-                                <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
+                                    <StringForm
+                                        obj={fieldObj}
+                                        navigate={editInstance.props.navigation}
+                                        moduleName={editInstance.props.moduleName}
+                                        formId={i}
+                                        ref={(ref) => formInstance.push(ref)}
+                                    />
+                                    <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
                                 </View>
-                            ); 
+                            );
                             break;
                         case 'boolean':
                             formArray.push(
                                 <View>
-                                <BooleanForm 
-                                    obj={fieldObj}
-                                    navigate={editInstance.props.navigation} 
-                                    moduleName={editInstance.props.moduleName}
-                                    formId={i}
-                                    ref={(ref) => formInstance.push(ref)}
-                                />
-                                <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
+                                    <BooleanForm
+                                        obj={fieldObj}
+                                        navigate={editInstance.props.navigation}
+                                        moduleName={editInstance.props.moduleName}
+                                        formId={i}
+                                        ref={(ref) => formInstance.push(ref)}
+                                    />
+                                    <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
                                 </View>
                             );
                             break;
                         case 'picklist':
                             formArray.push(
                                 <View>
-                                <PickerForm 
-                                    obj={fieldObj}
-                                    navigate={editInstance.props.navigation} 
-                                    moduleName={editInstance.props.moduleName}
-                                    formId={i}
-                                    ref={(ref) => formInstance.push(ref)}
-                                />
-                                <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
+                                    <PickerForm
+                                        obj={fieldObj}
+                                        navigate={editInstance.props.navigation}
+                                        moduleName={editInstance.props.moduleName}
+                                        formId={i}
+                                        ref={(ref) => formInstance.push(ref)}
+                                    />
+                                    <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
                                 </View>
                             );
                             break;
-                        
+
                         case 'phone':
                         case 'currency':
                         case 'integer':
                         case 'double':
                             formArray.push(
                                 <View>
-                                <NumericForm 
-                                    obj={fieldObj}
-                                    navigate={editInstance.props.navigation} 
-                                    moduleName={editInstance.props.moduleName}
-                                    formId={i}
-                                    ref={(ref) => formInstance.push(ref)}
-                                />
-                                <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
+                                    <NumericForm
+                                        obj={fieldObj}
+                                        navigate={editInstance.props.navigation}
+                                        moduleName={editInstance.props.moduleName}
+                                        formId={i}
+                                        ref={(ref) => formInstance.push(ref)}
+                                    />
+                                    <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
                                 </View>
                             );
                             break;
                         case 'date':
                             formArray.push(
                                 <View>
-                                <DateForm 
-                                    obj={fieldObj}
-                                    navigate={editInstance.props.navigation} 
-                                    moduleName={editInstance.props.moduleName}
-                                    formId={i}
-                                    ref={(ref) => formInstance.push(ref)}
-                                />
-                                <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
+                                    <DateForm
+                                        obj={fieldObj}
+                                        navigate={editInstance.props.navigation}
+                                        moduleName={editInstance.props.moduleName}
+                                        formId={i}
+                                        ref={(ref) => formInstance.push(ref)}
+                                    />
+                                    <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
                                 </View>
                             );
                             break;
                         case 'multipicklist':
                             formArray.push(
                                 <View>
-                                <MultiPickerForm 
-                                    obj={fieldObj}
-                                    navigate={editInstance.props.navigation} 
-                                    moduleName={editInstance.props.moduleName}
-                                    formId={i}
-                                    ref={(ref) => formInstance.push(ref)}
-                                />
-                                <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
+                                    <MultiPickerForm
+                                        obj={fieldObj}
+                                        navigate={editInstance.props.navigation}
+                                        moduleName={editInstance.props.moduleName}
+                                        formId={i}
+                                        ref={(ref) => formInstance.push(ref)}
+                                    />
+                                    <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
                                 </View>
                             );
                             break;
@@ -149,48 +151,48 @@ export const describeEditRecordHelper = async(editInstance) => {
                         case 'owner':
                             formArray.push(
                                 <View>
-                                <ReferenceForm 
-                                    obj={fieldObj}
-                                    navigate={editInstance.props.navigation} 
-                                    moduleName={editInstance.props.moduleName}
-                                    formId={i}
-                                    ref={(ref) => { (ref !== null) ? formInstance.push(ref.getWrappedInstance()) : undefined; }}
-                                />
-                                <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
+                                    <ReferenceForm
+                                        obj={fieldObj}
+                                        navigate={editInstance.props.navigation}
+                                        moduleName={editInstance.props.moduleName}
+                                        formId={i}
+                                        ref={(ref) => { (ref !== null) ? formInstance.push(ref.getWrappedInstance()) : undefined; }}
+                                    />
+                                    <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
                                 </View>
                             );
                             break;
                         case 'time':
                             formArray.push(
                                 <View>
-                                <TimeForm 
-                                    obj={fieldObj}
-                                    navigate={editInstance.props.navigation} 
-                                    moduleName={editInstance.props.moduleName}
-                                    formId={i}
-                                    ref={(ref) => formInstance.push(ref)}
-                                />
-                                <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
+                                    <TimeForm
+                                        obj={fieldObj}
+                                        navigate={editInstance.props.navigation}
+                                        moduleName={editInstance.props.moduleName}
+                                        formId={i}
+                                        ref={(ref) => formInstance.push(ref)}
+                                    />
+                                    <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
                                 </View>
                             );
                             break;
                         default:
                             formArray.push(
                                 <View>
-                                <StringForm 
-                                    obj={fieldObj}
-                                    navigate={editInstance.props.navigation} 
-                                    moduleName={editInstance.props.moduleName}
-                                    formId={i}
-                                    ref={(ref) => formInstance.push(ref)}
-                                />
-                                <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
+                                    <StringForm
+                                        obj={fieldObj}
+                                        navigate={editInstance.props.navigation}
+                                        moduleName={editInstance.props.moduleName}
+                                        formId={i}
+                                        ref={(ref) => formInstance.push(ref)}
+                                    />
+                                    <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
                                 </View>
                             );
                             break;
                     }
 
-                }                
+                }
             }
             editInstance.setState(
                 { ...editInstance.state, inputForm: formArray, inputInstance: formInstance, loading: false },
@@ -200,7 +202,7 @@ export const describeEditRecordHelper = async(editInstance) => {
             //console.log('Failed');
             editInstance.setState({ loading: false });
             Alert.alert('Api error', 'Api response error.Vtiger is modified');
-        } 
+        }
     } catch (error) {
         //console.log(error);
         editInstance.setState({ loading: false });
@@ -208,12 +210,14 @@ export const describeEditRecordHelper = async(editInstance) => {
     }
 };
 
-export const getDataHelper = async(editInstance) => {
+export const getDataHelper = async (editInstance) => {
     const { auth } = store.getState();
     const loginDetails = auth.loginDetails;
     const param = new FormData();
-    
-    try {     
+    console.log(editInstance.props)
+    console.log(editInstance.state);
+
+    try {
         if (loginDetails.vtigerVersion < 7) {
             param.append('_session', loginDetails.session);
             param.append('_operation', 'fetchRecord');
@@ -221,24 +225,26 @@ export const getDataHelper = async(editInstance) => {
         } else {
             param.append('_session', loginDetails.session);
             param.append('_operation', 'fetchRecord');
-            param.append('record', editInstance.state.recordId);
+            param.append('record', editInstance.state.id);
             // param.append('record', editInstance.state.id);
             param.append('module', editInstance.props.moduleName);
         }
+
+        console.log(param);
+
         const response = await fetch((`${loginDetails.url}/modules/Mobile/api.php`), {
             method: 'POST',
             headers: {
-            // 'Accept': 'application/json',
-            // 'Content-Type': 'multipart/form-data; charset=utf-8',
-            'cache-control': 'no-cache',
+                // 'Accept': 'application/json',
+                // 'Content-Type': 'multipart/form-data; charset=utf-8',
+                'cache-control': 'no-cache',
             },
             body: param
         });
 
         const responseJson = await response.json();
-        // console.log(responseJson);
-        // console.log(param);
-        
+        console.log(responseJson);
+
         if (responseJson.success) {
             const record = responseJson.result.record;
             const formInstance = editInstance.state.inputInstance;
@@ -259,7 +265,7 @@ export const getDataHelper = async(editInstance) => {
                         tmpArray.push({ feild: formArray[j], feildValue: record[feilds[i]] });
                         break;
                     }
-                }  
+                }
             }
 
             if (loginDetails.vtigerVersion < 7) {
@@ -273,8 +279,8 @@ export const getDataHelper = async(editInstance) => {
                                 formInstance[i].setState({ saveValue: tmpArray[j].feildValue });
                             }
                             break;
-                        }   
-                    }    
+                        }
+                    }
                 }
             } else {
                 for (let i = 0; i < formInstance.length; i++) {
@@ -287,16 +293,17 @@ export const getDataHelper = async(editInstance) => {
                                 formInstance[i].setState({ saveValue: tmpArray[j].feildValue });
                             }
                             break;
-                        }  
-                    } 
+                        }
+                    }
                 }
             }
             // console.log(formInstance[0].state.saveValue);
         } else {
+            console.log('here')
             Alert.alert('Api error', 'Api response error.Vtiger is modified');
         }
     } catch (error) {
-        //console.log(error);
+        console.log(error);
         Alert.alert('No network connection', 'Please check your internet connection and tryagin');
     }
 };
@@ -308,7 +315,7 @@ export const saveEditRecordHelper = (editInstance, headerInstance, dispatch) => 
     for (let i = 0; i < formInstance.length; i++) {
         const fieldName = formInstance[i].state.fieldName;
         const value = formInstance[i].state.saveValue;
-        
+
         if (editInstance.props.moduleName === 'Invoice') {
             if (fieldName !== 'quantity' || fieldName !== 'listprice') {
                 jsonObj[fieldName] = value;
@@ -329,7 +336,7 @@ export const saveEditRecordHelper = (editInstance, headerInstance, dispatch) => 
     editRecordHelper(editInstance, headerInstance, jsonObj, dispatch);
 };
 
-const editRecordHelper = async(editInstance, headerInstance, jsonObj, dispatch) => {  
+const editRecordHelper = async (editInstance, headerInstance, jsonObj, dispatch) => {
     const { auth } = store.getState();
     const loginDetails = auth.loginDetails;
     const obj = JSON.stringify(jsonObj);
@@ -338,23 +345,23 @@ const editRecordHelper = async(editInstance, headerInstance, jsonObj, dispatch) 
     param.append('_session', loginDetails.session);
     param.append('_operation', 'saveRecord');
     param.append('module', editInstance.props.moduleName);
-    param.append('record', editInstance.state.recordId);
+    param.append('record', editInstance.state.id);
     param.append('values', obj);
-    
+
     console.log(param);
-    try {    
+    try {
         const response = await fetch((`${loginDetails.url}/modules/Mobile/api.php`), {
             method: 'POST',
             headers: {
-            // 'Accept': 'application/json',
-            // 'Content-Type': 'multipart/form-data; charset=utf-8',
-            'cache-control': 'no-cache',
+                // 'Accept': 'application/json',
+                // 'Content-Type': 'multipart/form-data; charset=utf-8',
+                'cache-control': 'no-cache',
             },
             body: param
         });
-        
+
         const responseJson = await response.json();
-        
+
         console.log(responseJson);
         if (responseJson.success) {
             //console.log(responseJson);
@@ -364,9 +371,9 @@ const editRecordHelper = async(editInstance, headerInstance, jsonObj, dispatch) 
             const resetAction = NavigationActions.reset({
                 index: 0,
                 actions: [
-                  NavigationActions.navigate({ routeName: 'HomeScreen' })
+                    NavigationActions.navigate({ routeName: 'HomeScreen' })
                 ]
-              });
+            });
             editInstance.props.navigation.dispatch(resetAction);
             //editInstance.props.navigation.goBack(null);
         } else {
@@ -374,14 +381,14 @@ const editRecordHelper = async(editInstance, headerInstance, jsonObj, dispatch) 
             //console.log('Failed');
             headerInstance.setState({ loading: false });
             if (responseJson.error.message === '') {
-                Alert.alert('','Vtiger API error');
+                Alert.alert('', 'Vtiger API error');
             } else {
                 Alert.alert('', responseJson.error.message);
             }
             Toast.show('Edited Failed');
-        } 
+        }
     } catch (Error) {
-        // console.log(Error);
+        console.log(Error);
         headerInstance.setState({ loading: false });
         Alert.alert('', 'Api response error');
     }

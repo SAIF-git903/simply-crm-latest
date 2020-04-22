@@ -3,14 +3,17 @@ import { connect } from 'react-redux';
 import { View, StyleSheet, TouchableOpacity, Text, Platform, Image } from 'react-native';
 // import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 // import { faBuilding, faUser, faTachometerAlt } from '@fortawesome/pro-regular-svg-icons';
-import { drawerButtonPress } from '../../../actions'; 
-import { DRAWER_MODULE_BUTTON_TEXT_SELECTED_COLOR, DRAWER_SECTION_HEADER_TEXT_COLOR,
+import { drawerButtonPress } from '../../../actions';
+import {
+    DRAWER_MODULE_BUTTON_TEXT_SELECTED_COLOR, DRAWER_SECTION_HEADER_TEXT_COLOR,
     DRAWER_SECTION_HEADER_IMAGE_COLOR
-} from '../../../variables/themeColors';   
+} from '../../../variables/themeColors';
 import { ACCOUNTS, CONTACTS, HOME } from '../../../variables/constants';
+import { fontStyles } from '../../../styles/common';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
 class ImageButton extends Component {
-    
+
     constructor(props) {
         super(props);
         // this.state = { iconName: faTachometerAlt };
@@ -24,9 +27,9 @@ class ImageButton extends Component {
         if (this.props.type === HOME) {
             this.props.dispatch(drawerButtonPress(this.props.type));
         } else {
-            this.props.dispatch(drawerButtonPress(this.props.module.name, 
+            this.props.dispatch(drawerButtonPress(this.props.module.name,
                 this.props.module.label, this.props.module.id));
-        }   
+        }
     }
 
     assignIcons() {
@@ -34,76 +37,65 @@ class ImageButton extends Component {
             case ACCOUNTS:
                 // this.setState({ iconName: faBuilding });
                 break;
-           
-            case CONTACTS: 
+
+            case CONTACTS:
                 // this.setState({ iconName: faUser });
                 break;
-           
+
             default:
 
 
-        } 
+        }
     }
 
 
     render() {
         // console.log(this.props.selectedButton, this.props.type);
         return (
-            <TouchableOpacity 
-                style={{ flex: 1, marginTop: (Platform.OS === 'ios' && this.props.type === HOME) ? 30 : 0, paddingBottom: (Platform.OS === 'ios' && this.props.type === HOME) ? 15 : 0 }} 
+            <TouchableOpacity
+                style={{ flex: 1 }}
                 onPress={this.onButtonPress.bind(this)}
             >
-                <View 
-                style={{ 
-                    flexDirection: 'row',
-                    flex: 1,
-                    alignItems: 'center',
-                  
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        flex: 1,
+                        alignItems: 'center',
+
                     }}
                 >
-{/*             
+                    {/*             
                     <View style={styles.imageStyle}>
                         <FontAwesomeIcon icon={this.state.iconName} size={23} color={(this.props.selectedButton !== this.props.type) ? DRAWER_SECTION_HEADER_TEXT_COLOR : DRAWER_MODULE_BUTTON_TEXT_SELECTED_COLOR} />
                     </View> */}
-                    
-                    
-                    <Image 
-                    source={{ uri: this.props.type.toLowerCase() }} 
-                    style={[styles.imageStyle, { tintColor: (this.props.selectedButton !== this.props.type) ? DRAWER_SECTION_HEADER_TEXT_COLOR : DRAWER_MODULE_BUTTON_TEXT_SELECTED_COLOR }]}
-                     
-                    />
-                
-                
-                    <Text style={(this.props.selectedButton === this.props.type) ? styles.textSelectedStyle : styles.textStyle}>{this.props.label}</Text>
+                    <View
+                        style={{ width: 43 }}
+                    >
+                        <FontAwesomeIcon
+                            style={styles.iconStyle}
+                            icon={this.props.icon}
+                            size={20}
+                            color={(this.props.selectedButton !== this.props.type) ? DRAWER_SECTION_HEADER_TEXT_COLOR : DRAWER_MODULE_BUTTON_TEXT_SELECTED_COLOR}
+                        />
+                    </View>
+                    <Text style={[fontStyles.drawerMenuButtonText, { color: this.props.selectedButton === this.props.type ? DRAWER_MODULE_BUTTON_TEXT_SELECTED_COLOR : DRAWER_SECTION_HEADER_IMAGE_COLOR }]}>{this.props.label}</Text>
                 </View>
             </ TouchableOpacity>
 
-        );  
+        );
     }
 }
 
 const styles = StyleSheet.create({
-    imageStyle: {
-        height: 20,
-        width: 20,
+    iconStyle: {
         marginRight: 10,
         marginLeft: 10
     },
-    
-    textStyle: {
-        color: DRAWER_SECTION_HEADER_IMAGE_COLOR,
-        fontSize: 16,
-
-    },
-    textSelectedStyle: {
-        color: DRAWER_MODULE_BUTTON_TEXT_SELECTED_COLOR,
-        fontSize: 16
-    }
 });
 
 const mapStateToProps = ({ drawer }) => {
     const { selectedButton } = drawer;
-    return { selectedButton };    
+    return { selectedButton };
 };
 
 export default connect(mapStateToProps)(ImageButton);

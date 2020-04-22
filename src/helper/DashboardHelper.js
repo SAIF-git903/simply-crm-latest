@@ -1,11 +1,40 @@
 import React from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, View, Text, StyleSheet } from 'react-native';
+import Accounts from '../components/dashboardUpdates/Accounts';
 import Contacts from '../components/dashboardUpdates/Contacts';
 import Calendar from '../components/dashboardUpdates/Calendar';
 import Leads from '../components/dashboardUpdates/Leads';
 import { getDatafromNet } from './networkHelper';
 import store from '../store';
+import { fontStyles } from '../styles/common';
 
+const styles = StyleSheet.create({
+    list: {
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 0,
+        },
+        shadowOpacity: 0.05,
+        shadowRadius: 5,
+        borderRadius: 3,
+        elevation: 2,
+        backgroundColor: 'white'
+    },
+    emptyList: {
+        padding: 20,
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
+})
+
+const renderEmpty = () => {
+    return <View
+        style={styles.emptyList}
+    >
+        <Text style={fontStyles.fieldLabel}>No records found.</Text>
+    </View>
+}
 
 export const fetchWidgetRecordHelper = async (viewerInstance, dispatch) => {
     try {
@@ -188,6 +217,35 @@ const getAndSaveDataVtiger = async (responseJson, viewerInstance, vtigerSeven, r
                 data: tmpdata
             });
             break;
+        case 'Accounts':
+
+            for (const rec of records) {
+                const {
+                    id,
+                    accountname,
+                    website,
+                    phone,
+                    email1: email
+                } = rec;
+
+                if (i < 5) {
+                    const tmp = {
+                        id: `11x${id}`,
+                        accountname,
+                        website,
+                        phone,
+                        email
+                    };
+                    tmpdata.push(tmp);
+                    i++;
+                } else {
+                    break;
+                }
+            }
+            viewerInstance.setState({
+                data: tmpdata
+            });
+            break;
         default:
     }
     i++;
@@ -226,12 +284,14 @@ export const dashboardHelper = (viewerInstance) => {
         case 'Contacts': {
             return (
                 <FlatList
+                    contentContainerStyle={styles.list}
                     onRefresh={viewerInstance.refreshData.bind(viewerInstance)}
                     data={viewerInstance.state.data}
                     refreshing={viewerInstance.state.isFlatListRefreshing}
                     ListFooterComponent={(viewerInstance.state.nextPage) ? viewerInstance.renderFooter.bind(viewerInstance) : undefined}
                     onEndReached={viewerInstance.onEndReached.bind(viewerInstance)}
                     onMomentumScrollBegin={() => { viewerInstance.onEndReachedCalledDuringMomentum = false; }}
+                    ListEmptyComponent={renderEmpty()}
                     renderItem={({ item, index }) =>
                         <Contacts
                             index={index}
@@ -246,12 +306,14 @@ export const dashboardHelper = (viewerInstance) => {
         case 'Calendar': {
             return (
                 <FlatList
+                    contentContainerStyle={styles.list}
                     onRefresh={viewerInstance.refreshData.bind(viewerInstance)}
                     data={viewerInstance.state.data}
                     refreshing={viewerInstance.state.isFlatListRefreshing}
                     ListFooterComponent={(viewerInstance.state.nextPage) ? viewerInstance.renderFooter.bind(viewerInstance) : undefined}
                     onEndReached={viewerInstance.onEndReached.bind(viewerInstance)}
                     onMomentumScrollBegin={() => { viewerInstance.onEndReachedCalledDuringMomentum = false; }}
+                    ListEmptyComponent={renderEmpty()}
                     renderItem={({ item, index }) =>
                         <Calendar
                             index={index}
@@ -266,14 +328,38 @@ export const dashboardHelper = (viewerInstance) => {
         case 'Leads': {
             return (
                 <FlatList
+                    contentContainerStyle={styles.list}
                     onRefresh={viewerInstance.refreshData.bind(viewerInstance)}
                     data={viewerInstance.state.data}
                     refreshing={viewerInstance.state.isFlatListRefreshing}
                     ListFooterComponent={(viewerInstance.state.nextPage) ? viewerInstance.renderFooter.bind(viewerInstance) : undefined}
                     onEndReached={viewerInstance.onEndReached.bind(viewerInstance)}
                     onMomentumScrollBegin={() => { viewerInstance.onEndReachedCalledDuringMomentum = false; }}
+                    ListEmptyComponent={renderEmpty()}
                     renderItem={({ item, index }) =>
                         <Leads
+                            index={index}
+                            selectedIndex={viewerInstance.state.selectedIndex}
+                            viewerInstance={viewerInstance}
+                            item={item}
+                            onRecordSelect={viewerInstance.onRecordSelect.bind(viewerInstance)}
+                        />}
+                />
+            );
+        }
+        case 'Accounts': {
+            return (
+                <FlatList
+                    contentContainerStyle={styles.list}
+                    onRefresh={viewerInstance.refreshData.bind(viewerInstance)}
+                    data={viewerInstance.state.data}
+                    refreshing={viewerInstance.state.isFlatListRefreshing}
+                    ListFooterComponent={(viewerInstance.state.nextPage) ? viewerInstance.renderFooter.bind(viewerInstance) : undefined}
+                    onEndReached={viewerInstance.onEndReached.bind(viewerInstance)}
+                    onMomentumScrollBegin={() => { viewerInstance.onEndReachedCalledDuringMomentum = false; }}
+                    ListEmptyComponent={renderEmpty()}
+                    renderItem={({ item, index }) =>
+                        <Accounts
                             index={index}
                             selectedIndex={viewerInstance.state.selectedIndex}
                             viewerInstance={viewerInstance}
