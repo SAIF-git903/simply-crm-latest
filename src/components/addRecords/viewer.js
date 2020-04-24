@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { describeRecordHelper, copyPriceDetails } from '../../helper';
-
+import SectionBox from '../common/section/sectionBox';
 
 class Viewer extends Component {
     constructor(props) {
@@ -33,8 +33,13 @@ class Viewer extends Component {
     }
     renderRecordView() {
         return (
-            <KeyboardAwareScrollView keyboardShouldPersistTaps='handled'>
-                {this.state.inputForm}
+            <KeyboardAwareScrollView
+                keyboardShouldPersistTaps='handled'
+                contentContainerStyle={{ paddingTop: 75 }}
+            >
+                <SectionBox style={{ paddingRight: 10 }}>
+                    {this.state.inputForm}
+                </SectionBox>
             </KeyboardAwareScrollView>
         );
     }
@@ -42,14 +47,13 @@ class Viewer extends Component {
     render() {
         // console.log(this.state.inputForm.length);
         return (
-            <View style={{ marginTop: 75, flex: 1 }}>
+            <View style={{ flex: 1 }}>
                 {
                     (this.state.loading) ?
                         this.renderLoading() :
                         this.renderRecordView()
                 }
             </View>
-
         );
     }
 }

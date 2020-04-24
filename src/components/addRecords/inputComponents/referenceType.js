@@ -118,13 +118,13 @@ class ReferenceType extends Component {
                         <View style={styles.mandatory} />
                 }
 
-                <View style={{ flex: 1, justifyContent: 'center' }}>
+                <View style={{ flex: .5, justifyContent: 'center' }}>
                     <Text style={[styles.label, fontStyles.fieldLabel]}>{validLable}</Text>
                 </View>
                 <View style={{ flex: 1 }}>
                     <TouchableOpacity onPress={this.onReferencePress.bind(this, type)} >
                         <View style={styles.textbox}>
-                            <Text style={[styles.text, fontStyles.fieldValue]}>{this.state.referenceValue}</Text>
+                            <Text numberOfLines={1} style={[styles.text, fontStyles.fieldValue]}>{this.state.referenceValue}</Text>
                         </View>
                     </TouchableOpacity>
 

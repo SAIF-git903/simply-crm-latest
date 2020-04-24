@@ -36,7 +36,7 @@ class BooleanType extends Component {
                         // undefined
                         <View style={styles.mandatory} />
                 }
-                <View style={{ flex: 1, justifyContent: 'center' }}>
+                <View style={{ flex: .5, justifyContent: 'center' }}>
                     <Text style={[styles.label, fontStyles.fieldLabel]}>{this.props.obj.lable}</Text>
                 </View>
                 <View style={{ flex: 1, justifyContent: 'center' }}>

@@ -9,7 +9,7 @@ import {
 import { saveSuccess } from '../../actions';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faAngleLeft } from '@fortawesome/pro-regular-svg-icons';
-import { faSave } from '@fortawesome/free-regular-svg-icons';
+import { faSave } from '@fortawesome/free-solid-svg-icons';
 
 class Header extends Component {
     constructor(props) {

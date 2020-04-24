@@ -72,6 +72,11 @@ class UpdateWidget extends Component {
                     <IconButton
                         icon={faCalendarAlt}
                         title={'Calendar'}
+                        onPress={() => this.props.dispatch(drawerButtonPress(
+                            'Calendar',
+                            'Calendar',
+                            9
+                        ))}
                     />
 
                     <IconButton

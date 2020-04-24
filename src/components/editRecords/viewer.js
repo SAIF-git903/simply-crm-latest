@@ -3,26 +3,29 @@ import { connect } from 'react-redux';
 import { View, ActivityIndicator } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { describeEditRecordHelper } from '../../helper';
+import SectionBox from '../common/section/sectionBox';
 
 
 class Viewer extends Component {
     constructor(props) {
         super(props);
-        this.state = { loading: false,
-                       inputForm: [],
-                       id: 0 };
+        this.state = {
+            loading: false,
+            inputForm: [],
+            id: 0
+        };
     }
-    
+
     componentDidMount() {
         this.props.onRef(this);
-        this.onFetchCall();     
+        this.onFetchCall();
     }
-   
+
     onFetchCall() {
         const { state } = this.props.navigation;
         this.setState({ loading: true, id: state.params.id, recordId: `${this.props.moduleId}x${state.params.id}` },
-        () => { describeEditRecordHelper(this, state.params.id); });
-        
+            () => { describeEditRecordHelper(this, state.params.id); });
+
         //getDataHelper(this, state.params.id);
     }
     renderLoading() {
@@ -34,9 +37,13 @@ class Viewer extends Component {
     }
     renderRecordView() {
         return (
-            <KeyboardAwareScrollView keyboardShouldPersistTaps='handled'>
-                {this.state.inputForm}
-                
+            <KeyboardAwareScrollView
+                keyboardShouldPersistTaps='handled'
+                contentContainerStyle={{ paddingTop: 75 }}
+            >
+                <SectionBox style={{ paddingRight: 10 }}>
+                    {this.state.inputForm}
+                </SectionBox>
             </KeyboardAwareScrollView>
 
         );
@@ -45,14 +52,14 @@ class Viewer extends Component {
     render() {
         //console.log(this.state.inputForm.length);
         return (
-            <View style={{ marginTop: 75, flex: 1 }}>
-            {
-                (this.state.loading) ? 
-                this.renderLoading() :
-                this.renderRecordView() 
-            }
+            <View style={{ flex: 1 }}>
+                {
+                    (this.state.loading) ?
+                        this.renderLoading() :
+                        this.renderRecordView()
+                }
             </View>
-              
+
         );
     }
 }

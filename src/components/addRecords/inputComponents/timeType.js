@@ -30,7 +30,7 @@ class TimeType extends Component {
                         <View style={styles.mandatory} />
                 }
 
-                <View style={{ flex: 1, justifyContent: 'center' }}>
+                <View style={{ flex: .5, justifyContent: 'center' }}>
                     <Text style={[styles.label, fontStyles.fieldLabel]}>{validLable}</Text>
                 </View>
                 <View style={{ flex: 1 }}>

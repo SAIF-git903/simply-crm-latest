@@ -15,7 +15,7 @@ export default class Field extends Component {
                 alignItems: 'center',
                 padding: 10
             }}>
-                <View style={{ flex: .8, alignItems: 'flex-start', paddingRight: 5 }}>
+                <View style={{ flex: .6, alignItems: 'flex-start', paddingRight: 5 }}>
                     <Text
                         style={fontStyles.fieldLabel}
                         numberOfLines={2}
@@ -23,7 +23,7 @@ export default class Field extends Component {
                         {this.props.label}:
                     </Text>
                 </View>
-                <View style={{ flex: 1.2, paddingLeft: 10, alignItems: 'flex-start' }}>
+                <View style={{ flex: 1.4, paddingLeft: 10, alignItems: 'flex-start' }}>
                     <Text
                         style={fontStyles.fieldValue}
                         numberOfLines={2}

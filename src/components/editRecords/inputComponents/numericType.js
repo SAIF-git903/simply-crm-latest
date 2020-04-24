@@ -28,7 +28,7 @@ class NumericType extends Component {
                         <View style={styles.mandatory} />
                 }
 
-                <View style={{ flex: 1, justifyContent: 'center' }}>
+                <View style={{ flex: .5, justifyContent: 'center' }}>
                     <Text style={[styles.label, fontStyles.fieldLabel]}>{this.props.obj.lable}</Text>
                 </View>
                 <View style={{ flex: 1 }}>
@@ -37,7 +37,7 @@ class NumericType extends Component {
                         placeholder={this.props.obj.lable}
                         autoCorrect={false}
                         autoCapitalize='none'
-                        style={[styles.label, fontStyles.fieldValue]}
+                        style={[styles.label, fontStyles.fieldValue, { paddingLeft: 0 }]}
                         keyboardType='numeric'
                         value={this.state.saveValue}
                         onChangeText={this.onTextInputChange.bind(this)}

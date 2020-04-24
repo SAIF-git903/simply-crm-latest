@@ -81,7 +81,7 @@ export const describeRecordHelper = async (addInstance) => {
                                         key={i}
 
                                     />
-                                    <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
+                                    <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
                                 </View>
                             );
                             break;
@@ -96,7 +96,7 @@ export const describeRecordHelper = async (addInstance) => {
                                         ref={(ref) => formInstance.push(ref)}
                                         key={i}
                                     />
-                                    <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
+                                    <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
                                 </View>
                             );
                             break;
@@ -111,7 +111,7 @@ export const describeRecordHelper = async (addInstance) => {
                                         ref={(ref) => formInstance.push(ref)}
                                         key={i}
                                     />
-                                    <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
+                                    <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
                                 </View>
                             );
                             break;
@@ -131,7 +131,7 @@ export const describeRecordHelper = async (addInstance) => {
                                             ref={(ref) => formInstance.push(ref)}
                                             key={i}
                                         />
-                                        <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
+                                        <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
                                     </View>
                                 );
                             }
@@ -147,7 +147,7 @@ export const describeRecordHelper = async (addInstance) => {
                                         ref={(ref) => formInstance.push(ref)}
                                         key={i}
                                     />
-                                    <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
+                                    <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
                                 </View>
                             );
                             break;
@@ -162,7 +162,7 @@ export const describeRecordHelper = async (addInstance) => {
                                         ref={(ref) => formInstance.push(ref)}
                                         key={i}
                                     />
-                                    <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
+                                    <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
                                 </View>
                             );
                             break;
@@ -180,7 +180,7 @@ export const describeRecordHelper = async (addInstance) => {
                                         onCopyPriceDetails={addInstance.onCopyPriceDetails.bind(addInstance)}
                                         key={i}
                                     />
-                                    <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
+                                    <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
                                 </View>
                             );
                             break;
@@ -195,7 +195,7 @@ export const describeRecordHelper = async (addInstance) => {
                                         ref={(ref) => formInstance.push(ref)}
                                         key={i}
                                     />
-                                    <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
+                                    <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
                                 </View>
                             );
                             break;
@@ -210,7 +210,7 @@ export const describeRecordHelper = async (addInstance) => {
                                         ref={(ref) => formInstance.push(ref)}
                                         key={i}
                                     />
-                                    <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
+                                    <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
                                 </View>
                             );
                             break;

@@ -48,9 +48,6 @@ const styles = StyleSheet.create({
     backgroundStyle: {
         width: '100%',
         flex: 1,
-        backgroundColor: 'white',
-
-
     }
 });
 

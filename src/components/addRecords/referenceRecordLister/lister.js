@@ -18,7 +18,7 @@ class Lister extends Component {
             nextPage: false,
             pageToTake: 0,
             statusText: '',
-            statusTextColor: '#000000', 
+            statusTextColor: '#000000',
         };
     }
 
@@ -45,14 +45,14 @@ class Lister extends Component {
 
     onEndReached() {
         // if (!this.onEndReachedCalledDuringMomentum) {
-            if (this.state.nextPage) {
-                this.setState({ pageToTake: this.state.pageToTake + 1 }, () => this.props.dispatch(getNextRefPageRecord(this)));
-            }
+        if (this.state.nextPage) {
+            this.setState({ pageToTake: this.state.pageToTake + 1 }, () => this.props.dispatch(getNextRefPageRecord(this)));
+        }
         // }
     }
 
     // getModuleId() {
-        
+
     // }
 
     getRecords() {
@@ -68,19 +68,19 @@ class Lister extends Component {
     renderFooter() {
         if (this.state.nextPage) {
             return (
-            <View 
-            style={{ width: '100%', justifyContent: 'space-around', alignItems: 'center', height: 50, flexDirection: 'row' }}
-            >
-                <Text>Getting next page</Text>
-                <ActivityIndicator />
-            </View>
-            );  
-        } 
+                <View
+                    style={{ width: '100%', justifyContent: 'space-around', alignItems: 'center', height: 50, flexDirection: 'row' }}
+                >
+                    <Text>Getting next page</Text>
+                    <ActivityIndicator />
+                </View>
+            );
+        }
     }
 
     renderLoading() {
         return (
-            <View style={{ width: '100%', height: 50, alignItems: 'center', marginTop: 20 }}>
+            <View style={{ width: '100%', height: 50, alignItems: 'center', paddingTop: 10 }}>
                 <ActivityIndicator color={'#000000'} />
             </View>
         );
@@ -88,10 +88,10 @@ class Lister extends Component {
 
     renderRecordList() {
         return (
-            <View style={{ flex: 1, width: '100%', marginTop: 20 }}>
+            <View style={{ flex: 1, width: '100%' }}>
                 {recordRefListRendererHelper(this)}
             </View>
-            );
+        );
     }
 
     render() {
@@ -99,10 +99,9 @@ class Lister extends Component {
             <View style={commonStyles.recordListerBackground} >
                 {
                     (this.state.loading) ?
-                    this.renderLoading() :
-                    this.renderRecordList()
+                        this.renderLoading() :
+                        this.renderRecordList()
                 }
-                <StatusView text={this.state.statusText} textColor={this.state.statusTextColor} />
             </View>
         );
     }

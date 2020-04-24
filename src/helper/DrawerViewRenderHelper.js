@@ -278,7 +278,7 @@ const drawerButtonArrangeHelper = (name) => {
         // case LEADS:
         // case CAMPAIGNS:
         // case CONTACTS:
-        // case CALENDAR:
+        case CALENDAR:
         //     return MARKETING;
         //case QUOTES:
         case PRODUCTS:

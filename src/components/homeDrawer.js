@@ -88,7 +88,9 @@ class HomeDrawer extends Component {
                 {/* header section */}
                 <View style={styles.header}>
                     <Image
-                        source={require('../../assets/images/logo_new_white.png')}
+                        source={{ uri: 'logo_new_white' }}
+                        resizeMode={'contain'}
+                        style={{ flex: 1, width: '50%', height: '100%' }}
                     />
                 </View>
                 {

@@ -34,7 +34,7 @@ class StringType extends Component {
                         // undefined
                         <View style={styles.mandatory} />
                 }
-                <View style={{ flex: 1, justifyContent: 'center' }}>
+                <View style={{ flex: .5, justifyContent: 'center' }}>
                     <Text style={[styles.label, fontStyles.fieldLabel]}>{this.props.obj.lable}</Text>
                 </View>
                 <View style={{ flex: 1 }}>
@@ -45,7 +45,7 @@ class StringType extends Component {
                                 placeholder={this.props.obj.lable}
                                 autoCorrect={false}
                                 autoCapitalize='none'
-                                style={[styles.label, fontStyles.fieldValue]}
+                                style={[styles.label, fontStyles.fieldValue, { paddingLeft: 0 }]}
                                 keyboardType='email-address'
                                 value={this.state.saveValue}
                                 onChangeText={this.onTextInputChange.bind(this)}
@@ -56,8 +56,7 @@ class StringType extends Component {
                                 placeholder={this.props.obj.lable}
                                 autoCorrect={false}
                                 autoCapitalize='none'
-                                style={[styles.label, fontStyles.fieldValue]}
-
+                                style={[styles.label, fontStyles.fieldValue, { paddingLeft: 0 }]}
                                 value={this.state.saveValue}
                                 onChangeText={this.onTextInputChange.bind(this)}
                                 placeholderTextColor={'#C5C5C5'}

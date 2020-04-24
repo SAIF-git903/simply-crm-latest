@@ -40,9 +40,11 @@ class DateType extends Component {
     onDatePicked = (date) => {
         //Here you will get the selected date
         const formatDate = this.props.obj.type.format.toUpperCase();
+
         this.setState({
             pickDate: date,
-            saveValue: moment(date).format(formatDate)
+            saveValue: moment(date).format('YYYY-MM-DD')
+
         });
     }
     render() {
@@ -59,7 +61,7 @@ class DateType extends Component {
                         <View style={styles.mandatory} />
                 }
 
-                <View style={{ flex: 1, justifyContent: 'center' }}>
+                <View style={{ flex: .5, justifyContent: 'center' }}>
                     <Text style={[styles.label, fontStyles.fieldLabel]}>{this.props.obj.lable}</Text>
                 </View>
                 <View style={{ flex: 1 }}>

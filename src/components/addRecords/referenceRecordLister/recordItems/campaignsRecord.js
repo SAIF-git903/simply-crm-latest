@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { View, Image, Alert, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { RECORD_COLOR, RECORD_SELECTED_COLOR } from '../../../../variables/themeColors';
 
+import { fontStyles } from '../../../../styles/common';
+
 class CampaignsRecord extends Component {
     constructor(props) {
         super(props);
@@ -13,20 +15,24 @@ class CampaignsRecord extends Component {
 
     render() {
         return (
-            <TouchableOpacity 
-            onPress={() => { this.props.onRecordSelect(this.props.id, this.props.lable, this.props.index); }}
+            <TouchableOpacity
+                onPress={() => { this.props.onRecordSelect(this.props.id, this.props.lable, this.props.index); }}
             >
-            <View 
-            style={[styles.backgroundStyle, { 
-                borderTopWidth: (this.props.index === 0) ? 1 : 0,
-                backgroundColor: 
-                (this.props.selectedIndex === this.props.index) ? 
-                RECORD_SELECTED_COLOR : RECORD_COLOR }]}
-            >
-                <Text style={{ flex: 1, marginLeft: 10 }}>
-                    {this.props.lable}
-                </Text>
-            </View>
+                <View
+                    style={[styles.backgroundStyle, {
+                        borderTopWidth: (this.props.index === 0) ? 1 : 0,
+                        backgroundColor:
+                            (this.props.selectedIndex === this.props.index) ?
+                                RECORD_SELECTED_COLOR : RECORD_COLOR
+                    }]}
+                >
+                    <Text
+                        numberOfLines={1}
+                        style={fontStyles.dashboardRecordLabelBig}
+                    >
+                        {this.props.item.lable}
+                    </Text>
+                </View>
             </TouchableOpacity>
         );
     }
@@ -35,14 +41,9 @@ class CampaignsRecord extends Component {
 const styles = StyleSheet.create({
     backgroundStyle: {
         flex: 1,
-        height: 50,
-        borderColor: '#d3d3d3',
-        paddingLeft: 5,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingRight: 5,
-        borderBottomWidth: 1
+        borderColor: '#f2f3f8',
+        borderBottomWidth: 1,
+        padding: 15
     }
 });
 

@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
     View, TextInput, Image, ActivityIndicator, Text, Animated, TouchableWithoutFeedback,
-    StyleSheet, Alert, Picker, TouchableOpacity, Platform, Linking, SafeAreaView
+    StyleSheet, Alert, Picker, TouchableOpacity, Platform, Linking, SafeAreaView, KeyboardAvoidingView, KeyboardAvoidingViewBase
 } from 'react-native';
+import KeyboardSpacer from 'react-native-keyboard-spacer';
 import ModalDropdown from 'react-native-modal-dropdown';
 import IconButton from '../components/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -138,6 +139,7 @@ class LoginForm extends Component {
         return (
             <View style={styles.wrapper}>
                 <SafeAreaView style={{ flex: 1 }}>
+
                     <View style={styles.logoSection}>
                         <Image source={{ uri: 'vtigerlogo' }} style={styles.logo} />
                     </View>
@@ -282,6 +284,7 @@ class LoginForm extends Component {
                                     :
                                     null
                             }
+
                         </View>
 
                         {/* forgot password */}
@@ -303,6 +306,7 @@ class LoginForm extends Component {
                             </TouchableWithoutFeedback>
 
                         </View>
+
                     </View>
 
                     <View style={styles.signupSection}>
@@ -312,8 +316,10 @@ class LoginForm extends Component {
                         >
                             Don't have an account? Sign up for free here
                         </Text>
+
                     </View>
                 </SafeAreaView>
+
             </View >
         );
     }
@@ -323,7 +329,7 @@ const styles = StyleSheet.create({
     wrapper: {
         width: '100%',
         height: '100%',
-        backgroundColor: '#0085DE'
+        backgroundColor: '#0085DE',
     },
     logoSection: {
         flex: 1,
@@ -339,7 +345,8 @@ const styles = StyleSheet.create({
         flex: .2,
         justifyContent: 'flex-end',
         alignItems: 'center',
-        paddingVertical: 30
+        paddingVertical: 30,
+        paddingHorizontal: 10
     },
     logo: {
         height: 80,

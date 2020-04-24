@@ -69,7 +69,7 @@ export const describeEditRecordHelper = async (editInstance) => {
                                         formId={i}
                                         ref={(ref) => formInstance.push(ref)}
                                     />
-                                    <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
+                                    <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
                                 </View>
                             );
                             break;
@@ -83,7 +83,7 @@ export const describeEditRecordHelper = async (editInstance) => {
                                         formId={i}
                                         ref={(ref) => formInstance.push(ref)}
                                     />
-                                    <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
+                                    <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
                                 </View>
                             );
                             break;
@@ -97,7 +97,7 @@ export const describeEditRecordHelper = async (editInstance) => {
                                         formId={i}
                                         ref={(ref) => formInstance.push(ref)}
                                     />
-                                    <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
+                                    <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
                                 </View>
                             );
                             break;
@@ -115,7 +115,7 @@ export const describeEditRecordHelper = async (editInstance) => {
                                         formId={i}
                                         ref={(ref) => formInstance.push(ref)}
                                     />
-                                    <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
+                                    <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
                                 </View>
                             );
                             break;
@@ -129,7 +129,7 @@ export const describeEditRecordHelper = async (editInstance) => {
                                         formId={i}
                                         ref={(ref) => formInstance.push(ref)}
                                     />
-                                    <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
+                                    <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
                                 </View>
                             );
                             break;
@@ -143,7 +143,7 @@ export const describeEditRecordHelper = async (editInstance) => {
                                         formId={i}
                                         ref={(ref) => formInstance.push(ref)}
                                     />
-                                    <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
+                                    <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
                                 </View>
                             );
                             break;
@@ -158,7 +158,7 @@ export const describeEditRecordHelper = async (editInstance) => {
                                         formId={i}
                                         ref={(ref) => { (ref !== null) ? formInstance.push(ref.getWrappedInstance()) : undefined; }}
                                     />
-                                    <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
+                                    <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
                                 </View>
                             );
                             break;
@@ -172,7 +172,7 @@ export const describeEditRecordHelper = async (editInstance) => {
                                         formId={i}
                                         ref={(ref) => formInstance.push(ref)}
                                     />
-                                    <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
+                                    <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
                                 </View>
                             );
                             break;
@@ -186,7 +186,7 @@ export const describeEditRecordHelper = async (editInstance) => {
                                         formId={i}
                                         ref={(ref) => formInstance.push(ref)}
                                     />
-                                    <View style={{ width: '100%', height: 1, backgroundColor: '#d3d3d3' }} />
+                                    <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
                                 </View>
                             );
                             break;

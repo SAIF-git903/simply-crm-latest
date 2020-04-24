@@ -257,10 +257,8 @@
 		5B06EA89931403D72805D10304AC6A02 /* RCTAlertManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 36BD947623E5D8998AFA73C568B463B2 /* RCTAlertManager.m */; };
 		5B64BA1CB656F51AEE7FB654A5C0D68A /* RNSVGSymbolManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 720055C3D8DF73C778133A2AB216CB38 /* RNSVGSymbolManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5B6C1E9E45E3E11F327FE0325EF73C92 /* RCTBlobManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 3438999948FEA5D07989B2F82FDC5BF1 /* RCTBlobManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		5BAB1F44244F299500BD6110 /* glog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E3CF3B6E684B126667F6131A0E6FBBE /* glog.framework */; };
-		5BAB1F45244F299500BD6110 /* glog.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3E3CF3B6E684B126667F6131A0E6FBBE /* glog.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		5BAB1F49244F299B00BD6110 /* DoubleConversion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FFB7B2992BB53405E6B771A5BA1E97D /* DoubleConversion.framework */; };
-		5BAB1F4A244F299B00BD6110 /* DoubleConversion.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6FFB7B2992BB53405E6B771A5BA1E97D /* DoubleConversion.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5BAB1F5724511E1400BD6110 /* glog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E3CF3B6E684B126667F6131A0E6FBBE /* glog.framework */; };
+		5BAB1F5C24511E1A00BD6110 /* DoubleConversion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FFB7B2992BB53405E6B771A5BA1E97D /* DoubleConversion.framework */; };
 		5BC361EF041B193E6BBE96DC423B3CCD /* RNSVGDefs.h in Headers */ = {isa = PBXBuildFile; fileRef = 0C35E03277372938DC515F4C363A1458 /* RNSVGDefs.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5C361DC9825E207E168BF52A86754E7F /* UIView+React.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C4EFB2C79066529943FE2F616020509 /* UIView+React.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5C74741D8D1EDECC687743330C736364 /* RCTRedBox.m in Sources */ = {isa = PBXBuildFile; fileRef = F51122584EC92DBF0C3F67D51674CEF4 /* RCTRedBox.m */; };
@@ -769,14 +767,14 @@
 			remoteGlobalIDString = 36D3A9951900CC94B812565A2CCCEA78;
 			remoteInfo = GLog;
 		};
-		5BAB1F46244F299500BD6110 /* PBXContainerItemProxy */ = {
+		5BAB1F5924511E1400BD6110 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 36D3A9951900CC94B812565A2CCCEA78;
 			remoteInfo = GLog;
 		};
-		5BAB1F4B244F299B00BD6110 /* PBXContainerItemProxy */ = {
+		5BAB1F5E24511E1A00BD6110 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
@@ -840,21 +838,6 @@
 			remoteInfo = RNSVG;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		5BAB1F48244F299500BD6110 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				5BAB1F45244F299500BD6110 /* glog.framework in Embed Frameworks */,
-				5BAB1F4A244F299B00BD6110 /* DoubleConversion.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0009BA9700818C45EE997D3D6C9B4E7D /* RNSVGLine.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RNSVGLine.h; sourceTree = "<group>"; };
@@ -1638,11 +1621,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				051035FF1C0A0B033AA656E0C730B17D /* folly.framework in Frameworks */,
-				5BAB1F44244F299500BD6110 /* glog.framework in Frameworks */,
+				5BAB1F5724511E1400BD6110 /* glog.framework in Frameworks */,
 				DC785A30FA3055B4B88C5E4903EA0541 /* Foundation.framework in Frameworks */,
 				28B299DEBD45929C8B0AC2557F77DA4E /* JavaScriptCore.framework in Frameworks */,
 				B7114C49DE7D517988C54B9A467398EB /* yoga.framework in Frameworks */,
-				5BAB1F49244F299B00BD6110 /* DoubleConversion.framework in Frameworks */,
+				5BAB1F5C24511E1A00BD6110 /* DoubleConversion.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3332,7 +3315,6 @@
 				DC2868489DB9DC209E51D5D5DC3EF2E3 /* Sources */,
 				A1D9658B99B88C9634158D6077356F4D /* Frameworks */,
 				7EFD19B4584579B8C420B2A436D5CF1B /* Resources */,
-				5BAB1F48244F299500BD6110 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -3340,8 +3322,8 @@
 				72BC27FCCBEDB5EB88F065D9D7475739 /* PBXTargetDependency */,
 				945A5B7150CCD6F6437C46E132540897 /* PBXTargetDependency */,
 				FF56F1C52A68976E3EC36D7A40583F65 /* PBXTargetDependency */,
-				5BAB1F47244F299500BD6110 /* PBXTargetDependency */,
-				5BAB1F4C244F299B00BD6110 /* PBXTargetDependency */,
+				5BAB1F5A24511E1400BD6110 /* PBXTargetDependency */,
+				5BAB1F5F24511E1A00BD6110 /* PBXTargetDependency */,
 			);
 			name = React;
 			productName = React;
@@ -3984,15 +3966,15 @@
 			target = 1BEE828C124E6416179B904A9F66D794 /* React */;
 			targetProxy = 0A98C2BBE31C119F85C56DD3A560D83E /* PBXContainerItemProxy */;
 		};
-		5BAB1F47244F299500BD6110 /* PBXTargetDependency */ = {
+		5BAB1F5A24511E1400BD6110 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 36D3A9951900CC94B812565A2CCCEA78 /* GLog */;
-			targetProxy = 5BAB1F46244F299500BD6110 /* PBXContainerItemProxy */;
+			targetProxy = 5BAB1F5924511E1400BD6110 /* PBXContainerItemProxy */;
 		};
-		5BAB1F4C244F299B00BD6110 /* PBXTargetDependency */ = {
+		5BAB1F5F24511E1A00BD6110 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 2AB2EF542954AB1C999E03BFEF8DE806 /* DoubleConversion */;
-			targetProxy = 5BAB1F4B244F299B00BD6110 /* PBXContainerItemProxy */;
+			targetProxy = 5BAB1F5E24511E1A00BD6110 /* PBXContainerItemProxy */;
 		};
 		612F0D9B6F03515BB50C62BB6E85EAF2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
