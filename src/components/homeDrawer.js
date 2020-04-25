@@ -76,7 +76,7 @@ class HomeDrawer extends Component {
 
     render() {
         return (
-            <SafeAreaView style={{
+            <View style={{
                 flex: 1,
                 backgroundColor: DRAWER_BACKGROUND
             }} >
@@ -105,7 +105,7 @@ class HomeDrawer extends Component {
                 {
                     this.signOut()
                 }
-            </SafeAreaView>
+            </View>
         );
     }
 

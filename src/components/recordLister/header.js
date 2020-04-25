@@ -51,7 +51,7 @@ class Header extends Component {
     render() {
         return (
             <View style={commonStyles.headerBackground}>
-                <SafeAreaView style={commonStyles.headerContentStyle}>
+                <View style={commonStyles.headerContentStyle}>
                     {
                         this.renderMenuButton()
                     }
@@ -74,7 +74,7 @@ class Header extends Component {
                             />
                         </View>
                     </TouchableOpacity>
-                </SafeAreaView>
+                </View>
             </View>
         );
     }

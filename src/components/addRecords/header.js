@@ -116,7 +116,7 @@ class Header extends Component {
 
         return (
             <View style={commonStyles.headerBackground}>
-                <SafeAreaView
+                <View
                     style={commonStyles.headerContentStyle}
                 >
                     {
@@ -151,7 +151,7 @@ class Header extends Component {
                         scrolled={false}
                     />
 
-                </SafeAreaView>
+                </View>
             </View>
         );
     }

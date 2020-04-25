@@ -44,7 +44,7 @@ class DashboardHeader extends Component {
     render() {
         return (
             <View style={commonStyles.headerBackground}>
-                <SafeAreaView style={commonStyles.headerContentStyle}>
+                <View style={commonStyles.headerContentStyle}>
                     {
                         this.renderMenuButton()
                     }
@@ -54,7 +54,7 @@ class DashboardHeader extends Component {
                     >
                         {this.props.moduleLable}
                     </Text>
-                </SafeAreaView>
+                </View>
             </View>
         );
     }

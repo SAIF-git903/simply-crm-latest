@@ -35,7 +35,6 @@ export const describeEditRecordHelper = async (editInstance) => {
         });
         const responseJson = await response.json();
 
-        console.log(responseJson);
         if (responseJson.success) {
             //console.log(responseJson);
             const fields = responseJson.result.describe.fields;
@@ -214,8 +213,6 @@ export const getDataHelper = async (editInstance) => {
     const { auth } = store.getState();
     const loginDetails = auth.loginDetails;
     const param = new FormData();
-    console.log(editInstance.props)
-    console.log(editInstance.state);
 
     try {
         if (loginDetails.vtigerVersion < 7) {
@@ -243,7 +240,6 @@ export const getDataHelper = async (editInstance) => {
         });
 
         const responseJson = await response.json();
-        console.log(responseJson);
 
         if (responseJson.success) {
             const record = responseJson.result.record;
@@ -299,7 +295,6 @@ export const getDataHelper = async (editInstance) => {
             }
             // console.log(formInstance[0].state.saveValue);
         } else {
-            console.log('here')
             Alert.alert('Api error', 'Api response error.Vtiger is modified');
         }
     } catch (error) {
@@ -349,6 +344,7 @@ const editRecordHelper = async (editInstance, headerInstance, jsonObj, dispatch)
     param.append('values', obj);
 
     console.log(param);
+
     try {
         const response = await fetch((`${loginDetails.url}/modules/Mobile/api.php`), {
             method: 'POST',

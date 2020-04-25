@@ -1,5 +1,6 @@
 import { StyleSheet, Platform } from 'react-native';
 import { HEADER_COLOR } from '../variables/themeColors';
+import { isIphoneX } from 'react-native-iphone-x-helper';
 
 export const commonStyles = StyleSheet.create({
     headerBackground: {
@@ -8,10 +9,10 @@ export const commonStyles = StyleSheet.create({
         paddingVertical: 15,
         alignItems: 'center',
         backgroundColor: HEADER_COLOR,
+        paddingTop: (Platform.OS === 'ios') ? (isIphoneX() ? 42 : 30) : 20
     },
     headerContentStyle: {
         flexDirection: 'row',
-        paddingHorizontal: 10,
         alignItems: 'center',
     },
     recordListerBackground: {

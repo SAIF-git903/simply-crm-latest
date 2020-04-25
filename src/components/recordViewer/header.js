@@ -59,7 +59,7 @@ class Header extends Component {
     render() {
         return (
             <View style={commonStyles.headerBackground}>
-                <SafeAreaView style={commonStyles.headerContentStyle}>
+                <View style={commonStyles.headerContentStyle}>
                     {
                         this.renderBackButton()
                     }
@@ -69,7 +69,7 @@ class Header extends Component {
                     >
                         Record Details
                     </Text>
-                </SafeAreaView>
+                </View>
             </View>
         );
     }
