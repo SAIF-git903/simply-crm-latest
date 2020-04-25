@@ -30,6 +30,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window?.rootViewController = rootViewController;
         self.window?.makeKeyAndVisible()
         rootViewController.viewDidLoad()
+        
+        // force light theme to avoid white text in white background TextInput
+     if #available(iOS 13.0, *) {
+            window?.overrideUserInterfaceStyle = .light
+        }
+        
         return true
     }
 
