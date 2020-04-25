@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Image, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faAngleLeft } from '@fortawesome/pro-regular-svg-icons';
 
@@ -59,15 +59,17 @@ class Header extends Component {
     render() {
         return (
             <View style={commonStyles.headerBackground}>
-                {
-                    this.renderBackButton()
-                }
-                <Text
-                    style={[fontStyles.navbarTitle, { marginLeft: -30, backgroundColor: 'transparent' }]}
-                    pointerEvents={'none'}
-                >
-                    Record Details
+                <SafeAreaView style={commonStyles.headerContentStyle}>
+                    {
+                        this.renderBackButton()
+                    }
+                    <Text
+                        style={[fontStyles.navbarTitle, { marginLeft: -30, backgroundColor: 'transparent' }]}
+                        pointerEvents={'none'}
+                    >
+                        Record Details
                     </Text>
+                </SafeAreaView>
             </View>
         );
     }

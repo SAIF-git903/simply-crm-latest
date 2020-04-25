@@ -35,7 +35,7 @@ class Viewer extends Component {
         return (
             <KeyboardAwareScrollView
                 keyboardShouldPersistTaps='handled'
-                contentContainerStyle={{ paddingTop: 75 }}
+                contentContainerStyle={{ paddingTop: 10 }}
             >
                 <SectionBox style={{ paddingRight: 10 }}>
                     {this.state.inputForm}

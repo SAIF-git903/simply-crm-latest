@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Image, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { SafeAreaView, View, Image, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { SinglePickerMaterialDialog } from 'react-native-material-dialog';
 import { commonStyles } from '../../styles/common';
 import {
@@ -116,39 +116,42 @@ class Header extends Component {
 
         return (
             <View style={commonStyles.headerBackground}>
-                {
-                    this.renderBackButton()
-                }
-                <Text style={styles.headerTextStyle}>{this.props.moduleLable}</Text>
+                <SafeAreaView
+                    style={commonStyles.headerContentStyle}
+                >
+                    {
+                        this.renderBackButton()
+                    }
+                    <Text style={styles.headerTextStyle}>{this.props.moduleLable}</Text>
 
-                <TouchableOpacity onPress={this.onAddButtonPress.bind(this)}>
-                    <View
-                        style={{
-                            width: 50,
-                            height: 30,
-                            alignItems: 'center',
-                            justifyContent: 'center'
+                    <TouchableOpacity onPress={this.onAddButtonPress.bind(this)}>
+                        <View
+                            style={{
+                                width: 50,
+                                height: 30,
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}
+                        >
+                            {(this.state.loading) ? this.renderLoading() : this.renderSaveButton()}
+                        </View>
+                    </TouchableOpacity>
+
+
+                    <SinglePickerMaterialDialog
+                        title={'Copy Billing & Shipping Address From'}
+                        items={copyOptions}
+                        visible={this.state.dialogueVisible}
+                        selectedItem={this.state.dialogueSelectedValue}
+                        onCancel={() => this.setState({ dialogueVisible: false })}
+                        onOk={(result) => {
+                            // console.log(result.selectedItem);
+                            this.setState({ dialogueSelectedValue: result.selectedItem, dialogueVisible: false, copyFrom: result.selectedItem.label }, () => { this.onShowCopyOption(); });
                         }}
-                    >
-                        {(this.state.loading) ? this.renderLoading() : this.renderSaveButton()}
-                    </View>
-                </TouchableOpacity>
+                        scrolled={false}
+                    />
 
-
-                <SinglePickerMaterialDialog
-                    title={'Copy Billing & Shipping Address From'}
-                    items={copyOptions}
-                    visible={this.state.dialogueVisible}
-                    selectedItem={this.state.dialogueSelectedValue}
-                    onCancel={() => this.setState({ dialogueVisible: false })}
-                    onOk={(result) => {
-                        // console.log(result.selectedItem);
-                        this.setState({ dialogueSelectedValue: result.selectedItem, dialogueVisible: false, copyFrom: result.selectedItem.label }, () => { this.onShowCopyOption(); });
-                    }}
-                    scrolled={false}
-                />
-
-
+                </SafeAreaView>
             </View>
         );
     }

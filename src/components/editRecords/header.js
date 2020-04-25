@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Image, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { SafeAreaView, View, Image, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { commonStyles } from '../../styles/common';
 import {
     HEADER_TEXT_COLOR, HEADER_IMAGE_COLOR,
@@ -79,22 +79,24 @@ class Header extends Component {
     render() {
         return (
             <View style={commonStyles.headerBackground}>
-                {
-                    this.renderBackButton()
-                }
-                <Text style={styles.headerTextStyle}>{this.props.moduleLable}</Text>
-                <TouchableOpacity onPress={this.onAddButtonPress.bind(this)}>
-                    <View
-                        style={{
-                            width: 50,
-                            height: 30,
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}
-                    >
-                        {(this.state.loading) ? this.renderLoading() : this.renderSaveButton()}
-                    </View>
-                </TouchableOpacity>
+                <SafeAreaView style={commonStyles.headerContentStyle}>
+                    {
+                        this.renderBackButton()
+                    }
+                    <Text style={styles.headerTextStyle}>{this.props.moduleLable}</Text>
+                    <TouchableOpacity onPress={this.onAddButtonPress.bind(this)}>
+                        <View
+                            style={{
+                                width: 50,
+                                height: 30,
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}
+                        >
+                            {(this.state.loading) ? this.renderLoading() : this.renderSaveButton()}
+                        </View>
+                    </TouchableOpacity>
+                </SafeAreaView>
             </View>
         );
     }

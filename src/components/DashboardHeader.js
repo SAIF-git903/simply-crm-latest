@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBars } from '@fortawesome/pro-regular-svg-icons';
 import { commonStyles, fontStyles } from './../styles/common';
@@ -44,15 +44,17 @@ class DashboardHeader extends Component {
     render() {
         return (
             <View style={commonStyles.headerBackground}>
-                {
-                    this.renderMenuButton()
-                }
-                <Text
-                    style={[fontStyles.navbarTitle, { marginLeft: -30, backgroundColor: 'transparent' }]}
-                    pointerEvents={'none'}
-                >
-                    {this.props.moduleLable}
-                </Text>
+                <SafeAreaView style={commonStyles.headerContentStyle}>
+                    {
+                        this.renderMenuButton()
+                    }
+                    <Text
+                        style={[fontStyles.navbarTitle, { marginLeft: -30, backgroundColor: 'transparent' }]}
+                        pointerEvents={'none'}
+                    >
+                        {this.props.moduleLable}
+                    </Text>
+                </SafeAreaView>
             </View>
         );
     }

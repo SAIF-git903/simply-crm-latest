@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
-import { isIphoneX } from 'react-native-iphone-x-helper';
 import { connect } from 'react-redux';
 import Todo from './todo';
 import UpdateWidget from './dashboardUpdates';
@@ -11,14 +10,13 @@ class Dashboard extends Component {
     render() {
         return (
             <View style={styles.backgroundStyle}>
-                <View style={styles.recordListerBackground}>
-                    <UpdateWidget navigation={this.props.navigation} />
-                </View>
-
                 <DashboardHeader
                     moduleLable={'Home'}
                     navigation={this.props.navigation}
                 />
+                <View style={styles.recordListerBackground}>
+                    <UpdateWidget navigation={this.props.navigation} />
+                </View>
             </View>
         );
     }
@@ -32,7 +30,6 @@ const styles = StyleSheet.create({
     },
     recordListerBackground: {
         flex: 1,
-        marginTop: (Platform.OS === 'ios') ? (isIphoneX() ? 80 : 60) : 45,
     },
 });
 

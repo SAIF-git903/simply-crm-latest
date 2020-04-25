@@ -20,15 +20,6 @@ class AddRecords extends Component {
     render() {
         return (
             <View style={styles.backgroundStyle}>
-
-                <Viewer
-                    navigation={this.props.navigation}
-                    moduleName={this.props.selectedButton}
-                    moduleId={this.props.moduleId}
-                    moduleLable={this.props.moduleLable}
-                    onRef={ref => (this.viewer = ref)}
-                />
-
                 <Header
                     navigation={this.props.navigation}
                     moduleName={this.props.selectedButton}
@@ -36,8 +27,13 @@ class AddRecords extends Component {
                     moduleLable={this.props.moduleLable}
                     callViewer={this.callViewer.bind(this)}
                 />
-
-
+                <Viewer
+                    navigation={this.props.navigation}
+                    moduleName={this.props.selectedButton}
+                    moduleId={this.props.moduleId}
+                    moduleLable={this.props.moduleLable}
+                    onRef={ref => (this.viewer = ref)}
+                />
             </View>
         );
     }
