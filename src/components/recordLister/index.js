@@ -7,16 +7,16 @@ export default class RecordLister extends Component {
     render() {
         return (
             <View style={styles.backgroundStyle}>
+                <Header
+                    moduleName={this.props.moduleName}
+                    moduleLable={this.props.moduleLable}
+                    navigation={this.props.navigation}
+                />
                 <Lister
                     navigation={this.props.navigation}
                     moduleName={this.props.moduleName}
                     moduleLable={this.props.moduleLable}
                     moduleId={this.props.moduleId}
-                />
-                <Header
-                    moduleName={this.props.moduleName}
-                    moduleLable={this.props.moduleLable}
-                    navigation={this.props.navigation}
                 />
             </View>
         );

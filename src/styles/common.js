@@ -1,27 +1,25 @@
 import { StyleSheet, Platform } from 'react-native';
-import { isIphoneX } from 'react-native-iphone-x-helper';
 import { HEADER_COLOR } from '../variables/themeColors';
 
 export const commonStyles = StyleSheet.create({
     headerBackground: {
-        height: (Platform.OS === 'ios') ? (isIphoneX() ? 80 : 60) : 45,
         width: '100%',
-        paddingTop: (Platform.OS === 'ios') ? (isIphoneX() ? 27 : 15) : 5,
-        flexDirection: 'row',
-        paddingRight: 10,
-        position: 'absolute',
-        paddingLeft: 10,
+        padding: 10,
+        paddingVertical: 15,
         alignItems: 'center',
         backgroundColor: HEADER_COLOR,
+    },
+    headerContentStyle: {
+        flexDirection: 'row',
+        paddingHorizontal: 10,
+        alignItems: 'center',
     },
     recordListerBackground: {
         flex: 1,
         backgroundColor: '#f2f3f8',
-        marginTop: (Platform.OS === 'ios') ? (isIphoneX() ? 80 : 60) : 45,
     },
     recordViewerBackground: {
         flex: 1,
-        marginTop: (Platform.OS === 'ios') ? (isIphoneX() ? 80 : 60) : 45,
         backgroundColor: 'white',
     },
     listModuleBackground: {
@@ -33,11 +31,9 @@ export const commonStyles = StyleSheet.create({
         flex: 1,
         top: 5,
         right: 5,
-        marginTop: (Platform.OS === 'ios') ? (isIphoneX() ? 80 : 60) : 45,
     },
     contentBackground: {
         flex: 1,
-        marginTop: (Platform.OS === 'ios') ? (isIphoneX() ? 80 : 60) : 45,
         backgroundColor: 'white'
     },
     loadingDetailsStyle: {

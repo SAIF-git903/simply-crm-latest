@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
-import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Image, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import { commonStyles } from '../../styles/common';
 import { viewSearchAction, updateSearchModule } from '../../actions';
 import {
@@ -51,28 +51,30 @@ class Header extends Component {
     render() {
         return (
             <View style={commonStyles.headerBackground}>
-                {
-                    this.renderMenuButton()
-                }
-                <Text style={styles.headerTextStyle}>{this.props.moduleLable}</Text>
-                <TouchableOpacity onPress={this.onSearchButtonPress.bind(this)}>
-                    <View
-                        style={{
-                            backgroundColor: 'rgba(255,255,255,.2)',
-                            width: 27,
-                            height: 27,
-                            borderRadius: 3,
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                        }}
-                    >
-                        <FontAwesomeIcon
-                            icon={faPlus}
-                            size={18}
-                            color={'white'}
-                        />
-                    </View>
-                </TouchableOpacity>
+                <SafeAreaView style={commonStyles.headerContentStyle}>
+                    {
+                        this.renderMenuButton()
+                    }
+                    <Text style={styles.headerTextStyle}>{this.props.moduleLable}</Text>
+                    <TouchableOpacity onPress={this.onSearchButtonPress.bind(this)}>
+                        <View
+                            style={{
+                                backgroundColor: 'rgba(255,255,255,.2)',
+                                width: 27,
+                                height: 27,
+                                borderRadius: 3,
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }}
+                        >
+                            <FontAwesomeIcon
+                                icon={faPlus}
+                                size={18}
+                                color={'white'}
+                            />
+                        </View>
+                    </TouchableOpacity>
+                </SafeAreaView>
             </View>
         );
     }
