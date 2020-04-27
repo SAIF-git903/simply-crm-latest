@@ -133,6 +133,7 @@ const getDataFromInternet = async (viewerInstance, offlineAvailable, offlineData
                     async () => { await getDataFromInternet(viewerInstance, false, {}, dispatch); });
             } else {
                 if (offlineAvailable) {
+                    console.log('offline')
                     await getAndSaveData(offlineData.record, viewerInstance, true, 'Showing Offline data - No internet Pull to refresh');
                 } else {
                     //Show error to user that something went wrong.
@@ -145,7 +146,10 @@ const getDataFromInternet = async (viewerInstance, offlineAvailable, offlineData
             }
         }
     } catch (error) {
+        console.log(error)
+
         if (offlineAvailable) {
+            console.log('offline')
             await getAndSaveData(offlineData.record, viewerInstance, true, 'Showing Offline data - No internet Pull to refresh');
         } else {
             //Show error to user that something went wrong.

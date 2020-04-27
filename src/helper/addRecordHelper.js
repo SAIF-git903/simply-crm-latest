@@ -299,15 +299,14 @@ const addRecordHelper = async (addInstance, headerInstance, jsonObj, dispatch) =
             addInstance.props.navigation.dispatch(resetAction);
             //addInstance.props.navigation.goBack(null);
         } else {
-            // console.log(responseJson);
-            //console.log('Failed');
+            console.log(responseJson);
+            console.log('Failed');
             headerInstance.setState({ loading: false });
             if (responseJson.error.message === '') {
                 Alert.alert('', 'Vtiger API error');
             } else {
                 Alert.alert('', responseJson.error.message);
             }
-            Toast.show('Added Failed');
         }
     } catch (Error) {
         console.log(Error);

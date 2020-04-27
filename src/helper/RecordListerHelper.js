@@ -82,30 +82,32 @@ const renderEmpty = () => {
 export const fetchRecordHelper = async (listerInstance, dispatch) => {
     //First checking if any data in offline.
     try {
-        const offlineData = JSON.parse(await AsyncStorage.getItem(listerInstance.props.moduleName));
-        if (offlineData !== null) {
-            //Offline data is avialable
-            const offlineFinishedTime = JSON.parse(offlineData.finishedTime);
-            const currentTime = moment();
-            const duration = moment.duration(currentTime.diff(offlineFinishedTime));
-            const durationMinutes = parseInt(duration.asMinutes(), 10);
-            if (durationMinutes < 5) {
-                //Show this is data itself
-                listerInstance.setState({
-                    loading: false,
-                    statusText: 'Loading complete - Recently updated Pull to refresh',
-                    statusTextColor: '#000000',
-                    data: offlineData.records,
-                    nextPage: offlineData.nextPage,
-                    pageToTake: offlineData.pageToTake
-                });
-            } else {
-                await getDataFromInternet(listerInstance, true, offlineData, dispatch);
-            }
-        } else {
-            //Offline data is not available
-            await getDataFromInternet(listerInstance, false, {}, dispatch);
-        }
+        // const offlineData = JSON.parse(await AsyncStorage.getItem(listerInstance.props.moduleName));
+        // if (offlineData !== null) {
+        //     console.log('offline data available')
+        //     //Offline data is avialable
+        //     const offlineFinishedTime = JSON.parse(offlineData.finishedTime);
+        //     const currentTime = moment();
+        //     const duration = moment.duration(currentTime.diff(offlineFinishedTime));
+        //     const durationMinutes = parseInt(duration.asMinutes(), 10);
+        //     if (durationMinutes < 5) {
+        //         //Show this is data itself
+        //         listerInstance.setState({
+        //             loading: false,
+        //             statusText: 'Loading complete - Recently updated Pull to refresh',
+        //             statusTextColor: '#000000',
+        //             data: offlineData.records,
+        //             nextPage: offlineData.nextPage,
+        //             pageToTake: offlineData.pageToTake
+        //         });
+        //     } else {
+        //         await getDataFromInternet(listerInstance, true, offlineData, dispatch);
+        //     }
+        // } else {
+
+        //Offline data is not available
+        await getDataFromInternet(listerInstance, false, {}, dispatch);
+        // }
     } catch (error) {
         //Offline data is not available
         await getDataFromInternet(listerInstance, false, {}, dispatch);
@@ -312,7 +314,6 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
             param.append('module', listerInstance.props.moduleName);
             // }
 
-
             const responseJson = await getDatafromNet(param, dispatch);
             console.log(responseJson);
             if (responseJson.success) {
@@ -375,8 +376,6 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
     if (records === null) {
         records = [];
     }
-    console.log(responseJson)
-    console.log(listerInstance.props.moduleName)
 
     switch (listerInstance.props.moduleName) {
         case CAMPAIGNS: {
@@ -464,7 +463,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
             for (const record of records) {
                 const modifiedRecord = {
                     eventLable: record.subject,
-                    id: `${listerInstance.props.moduleId}x${record.id}`
+                    id: `18x${record.id}`
                 };
                 data.push(modifiedRecord);
             }
@@ -708,7 +707,6 @@ const saveInvoiceDetails = async (records, data, vtigerSeven, responseJson, addE
 
             // const invoiceDateObj = detailsFeilds[0].filter((item) => item.name === 'invoicedate').map(({ value }) => (value));
             // const dueDateObj = detailsFeilds[0].filter((item) => item.name === 'duedate').map(({ value }) => (value));
-
 
             const modifiedRecord = {
                 invoiceLable: record.subject,

@@ -31,16 +31,16 @@ class BooleanType extends Component {
 
         return (
             <View style={styles.inputHolder}>
-                {
-                    (mandatory) ?
-                        <View style={styles.mandatory}>
-                            <Text style={[fontStyles.fieldLabel, { color: 'red', fontSize: 16 }]}>*</Text>
-                        </View>
-                        :
-                        <View style={styles.mandatory} />
-                }
-                <View style={{ flex: .5, justifyContent: 'center' }}>
+                <View style={{ flex: .5, justifyContent: 'flex-start' }}>
                     <Text style={[styles.label, fontStyles.fieldLabel]}>{validLable}</Text>
+                    {
+                        (mandatory) ?
+                            <View style={styles.mandatory}>
+                                <Text style={[fontStyles.fieldLabel, { color: 'red', fontSize: 16 }]}>*</Text>
+                            </View>
+                            :
+                            <View style={styles.mandatory} />
+                    }
                 </View>
                 <TouchableWithoutFeedback onPress={this.toggle.bind(this)}>
                     <View style={{ flex: 1, justifyContent: 'center' }}>
@@ -87,14 +87,17 @@ const styles = StyleSheet.create(
         },
         label: {
             fontSize: 16,
-            padding: 10
+            padding: 10,
+            paddingLeft: 20
         },
         mandatory: {
+            position: 'absolute',
+            marginTop: 10,
+            marginLeft: 5,
             width: 10,
             height: 25,
             justifyContent: 'center',
-            alignItems: 'center',
-            marginTop: 5,
+            alignItems: 'flex-end',
         },
     }
 );

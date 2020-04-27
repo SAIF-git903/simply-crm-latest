@@ -12,17 +12,17 @@ class RecordLister extends Component {
         const { state } = this.props.navigation;
         return (
             <View style={styles.backgroundStyle}>
+                <Header
+                    moduleName={state.params.selectedModule}
+                    moduleLable={this.props.moduleLable}
+                    navigation={this.props.navigation}
+                />
                 <Lister
                     navigation={this.props.navigation}
                     moduleName={state.params.selectedModule}
                     moduleLable={this.props.moduleLable}
                     moduleId={this.props.moduleId}
                     uniqueId={state.params.uniqueId}
-                />
-                <Header
-                    moduleName={state.params.selectedModule}
-                    moduleLable={this.props.moduleLable}
-                    navigation={this.props.navigation}
                 />
             </View>
         );

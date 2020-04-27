@@ -27,7 +27,6 @@ class Viewer extends Component {
     }
 
     componentWillMount() {
-        //console.log(this.props.moduleName);
         this.fetchRecord();
     }
 
@@ -96,6 +95,8 @@ class Viewer extends Component {
     }
 
     render() {
+        console.log('dashboardUpdates/Viewer')
+        console.log(this.props);
         return (
             <View style={styles.subContainer}>
                 {

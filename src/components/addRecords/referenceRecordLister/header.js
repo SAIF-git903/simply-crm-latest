@@ -70,21 +70,24 @@ class Header extends Component {
     render() {
         return (
             <View style={commonStyles.headerBackground}>
-                {
-                    this.renderBackButton()
-                }
-                <Text style={styles.headerTextStyle}>{this.props.moduleName}</Text>
-                <TouchableOpacity onPress={this.onSearchButtonPress.bind(this)}>
-                    <Image
-                        source={{ uri: 'search' }}
-                        style={{
-                            width: 27,
-                            resizeMode: 'contain',
-                            tintColor: HEADER_IMAGE_COLOR,
-                            height: 27
-                        }}
-                    />
-                </TouchableOpacity>
+                <View style={commonStyles.headerContentStyle}>
+
+                    {
+                        this.renderBackButton()
+                    }
+                    <Text style={styles.headerTextStyle}>{this.props.moduleName}</Text>
+                    <TouchableOpacity onPress={this.onSearchButtonPress.bind(this)}>
+                        <Image
+                            source={{ uri: 'search' }}
+                            style={{
+                                width: 27,
+                                resizeMode: 'contain',
+                                tintColor: HEADER_IMAGE_COLOR,
+                                height: 27
+                            }}
+                        />
+                    </TouchableOpacity>
+                </View>
             </View>
         );
     }

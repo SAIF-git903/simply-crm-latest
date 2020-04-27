@@ -46,7 +46,7 @@ export const fetchWidgetRecordHelper = async (viewerInstance, dispatch) => {
             param.append('query', `select * from ${viewerInstance.props.moduleName} orderby modifiedtime desc`);
             const responseJson = await getDatafromNet(param, dispatch);
             if (responseJson.success) {
-                //console.log('get6');
+                // console.log('get6');
                 await getAndSaveDataVtiger(responseJson, viewerInstance);
             } else {
                 //Show offline data and notify user

@@ -571,7 +571,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = 6JWQQD5699;
 				INFOPLIST_FILE = "PocketCRM for Vtiger/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11;
@@ -594,7 +594,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = 6JWQQD5699;
 				INFOPLIST_FILE = "PocketCRM for Vtiger/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11;
