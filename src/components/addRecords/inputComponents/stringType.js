@@ -53,6 +53,7 @@ class StringType extends Component {
 
                         (type === 'email') ?
                             <TextInput
+                                autoGrow={true}
                                 placeholder={validLable}
                                 autoCorrect={false}
                                 autoCapitalize='none'
@@ -64,6 +65,7 @@ class StringType extends Component {
                             />
                             :
                             <TextInput
+                                autoGrow={true}
                                 placeholder={validLable}
                                 autoCorrect={false}
                                 autoCapitalize='none'

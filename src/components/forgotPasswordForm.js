@@ -124,6 +124,7 @@ class ForgotPasswordForm extends Component {
                             />
 
                             <TextInput
+                                autoGrow={true}
                                 autoCorrect={false}
                                 spellCheck={false}
                                 underlineColorAndroid='rgba(0,0,0,0)'

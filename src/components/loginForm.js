@@ -212,6 +212,7 @@ class LoginForm extends Component {
                             />
 
                             <TextInput
+                                autoGrow={true}
                                 autoCorrect={false}
                                 spellCheck={false}
                                 underlineColorAndroid='rgba(0,0,0,0)'
@@ -251,6 +252,7 @@ class LoginForm extends Component {
                             />
 
                             <TextInput
+                                autoGrow={true}
                                 autoCorrect={false}
                                 spellCheck={false}
                                 underlineColorAndroid='rgba(0,0,0,0)'

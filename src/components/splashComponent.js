@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Image, Linking, Text, Platform, 
-    StyleSheet, KeyboardAvoidingView, TouchableOpacity, Animated } from 'react-native';
+import {
+    View, Image, Linking, Text, Platform,
+    StyleSheet, KeyboardAvoidingView, TouchableOpacity, Animated
+} from 'react-native';
 
 class SplashComponent extends Component {
     componentWillMount() {
@@ -31,9 +33,9 @@ class SplashComponent extends Component {
         // }
         return (
             <View style={styles.keyboardAvoidingViewStyle}>
-                 {this.props.children}
+                {this.props.children}
             </View>
-        ); 
+        );
     }
 
     renderSplashPortrait() {
@@ -41,7 +43,7 @@ class SplashComponent extends Component {
             transform: [{ scale: this.animatedValue }]
         };
 
-        const imageScaleStyle = { 
+        const imageScaleStyle = {
             transform: [{ scale: this.imageScale }]
         };
 
@@ -51,8 +53,8 @@ class SplashComponent extends Component {
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                     <Image source={{ uri: 'vtigerlogo' }} resizeMode={'contain'} style={styles.logoStyle} />
                 </View>
-                
-                {this.renderChildren()}            
+
+                {this.renderChildren()}
             </View>
         );
     }
@@ -62,13 +64,13 @@ class SplashComponent extends Component {
             transform: [{ scale: this.animatedValue }]
         };
 
-        const imageScaleStyle = { 
+        const imageScaleStyle = {
             transform: [{ scale: this.imageScale }]
         };
-        
+
         return (
             <View style={styles.landscapeBackgroundStyle}>
-                 {/* <Animated.Image 
+                {/* <Animated.Image 
                 style={[{ 
                     position: 'absolute', 
                     width: '100%', 
@@ -76,18 +78,19 @@ class SplashComponent extends Component {
                         }, imageScaleStyle]} 
                 source={{ uri: 'loginbackground' }} 
                 /> */}
-                <View 
-                style={{ 
-                    flex: 0.9, 
-                    //backgroundColor: 'rgba(100, 100, 100, 0.5)',
-                    justifyContent: 'center',
-                    alignItems: 'center' }} 
+                <View
+                    style={{
+                        flex: 0.9,
+                        //backgroundColor: 'rgba(100, 100, 100, 0.5)',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}
                 >
                     <View style={{ width: '100%', alignItems: 'center' }}>
-                    {/* <Animated.View style={animatedStyle}>
+                        {/* <Animated.View style={animatedStyle}>
                         <Text style={styles.appNameStyle}>Simply CRM</Text>
                     </Animated.View> */}
-                    <Image source={{ uri: 'vtigerlogo' }} resizeMode={'contain'} style={styles.logoStyle} />
+                        <Image source={{ uri: 'vtigerlogo' }} resizeMode={'contain'} style={styles.logoStyle} />
                     </View>
                 </View>
                 {/* <View style={{ flex: 1.1, justifyContent: 'center', backgroundColor: 'rgba(100, 100, 100, 0.5)', }}>
@@ -118,7 +121,7 @@ class SplashComponent extends Component {
             return this.renderSplashPortrait();
         }
         return this.renderSplashPortrait();
-            // return this.renderSplashLandscape();
+        // return this.renderSplashLandscape();
     }
 }
 
@@ -148,7 +151,6 @@ const styles = StyleSheet.create({
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.3,
-        elevation: 3
     },
     keyboardAvoidingViewStyle: {
         flex: 1,

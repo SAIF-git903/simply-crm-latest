@@ -23,7 +23,6 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.5,
         position: 'absolute',
         shadowOffset: { width: 5, height: 2 },
-        elevation: 3,
         alignItems: 'center',
         backgroundColor: STATUS_BACKGROUND_COLOR
     }

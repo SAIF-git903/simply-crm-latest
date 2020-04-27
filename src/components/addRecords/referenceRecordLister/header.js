@@ -7,6 +7,7 @@ import {
     HEADER_TEXT_COLOR, HEADER_IMAGE_COLOR,
     HEADER_IMAGE_SELECTED_COLOR
 } from '../../../variables/themeColors';
+import Icon from 'react-native-vector-icons/FontAwesome5Pro';
 
 class Header extends Component {
     componentDidMount() {
@@ -36,14 +37,10 @@ class Header extends Component {
             if (this.props.isPortrait) {
                 return (
                     <TouchableOpacity onPress={this.onBackButtonPress.bind(this)}>
-                        <Image
-                            source={{ uri: 'leftarrow' }}
-                            style={{
-                                width: 30,
-                                resizeMode: 'contain',
-                                tintColor: HEADER_IMAGE_COLOR,
-                                height: 40
-                            }}
+                        <Icon
+                            name='angle-left'
+                            size={28}
+                            color='white'
                         />
                     </TouchableOpacity>
                 );
@@ -53,14 +50,10 @@ class Header extends Component {
             //This is phone
             return (
                 <TouchableOpacity onPress={this.onBackButtonPress.bind(this)}>
-                    <Image
-                        source={{ uri: 'leftarrow' }}
-                        style={{
-                            width: 30,
-                            resizeMode: 'contain',
-                            tintColor: HEADER_IMAGE_COLOR,
-                            height: 40
-                        }}
+                    <Icon
+                        name='angle-left'
+                        size={28}
+                        color='white'
                     />
                 </TouchableOpacity>
             );
@@ -71,12 +64,15 @@ class Header extends Component {
         return (
             <View style={commonStyles.headerBackground}>
                 <View style={commonStyles.headerContentStyle}>
-
-                    {
-                        this.renderBackButton()
-                    }
-                    <Text style={styles.headerTextStyle}>{this.props.moduleName}</Text>
-                    <TouchableOpacity onPress={this.onSearchButtonPress.bind(this)}>
+                    <View style={{ width: 40 }}>
+                        {
+                            this.renderBackButton()
+                        }
+                    </View>
+                    <View style={{ flex: 1, marginRight: 40 }}>
+                        <Text style={styles.headerTextStyle}>{this.props.moduleLable}</Text>
+                    </View>
+                    {/* <TouchableOpacity onPress={this.onSearchButtonPress.bind(this)}>
                         <Image
                             source={{ uri: 'search' }}
                             style={{
@@ -86,7 +82,7 @@ class Header extends Component {
                                 height: 27
                             }}
                         />
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
             </View>
         );

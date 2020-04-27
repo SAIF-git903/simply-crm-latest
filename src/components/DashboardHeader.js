@@ -48,12 +48,13 @@ class DashboardHeader extends Component {
                     {
                         this.renderMenuButton()
                     }
-                    <Text
-                        style={[fontStyles.navbarTitle, { marginLeft: -30, backgroundColor: 'transparent' }]}
-                        pointerEvents={'none'}
-                    >
-                        {this.props.moduleLable}
-                    </Text>
+                    <View style={{ flex: 1, marginRight: 30 }}>
+                        <Text
+                            style={fontStyles.navbarTitle}
+                        >
+                            {this.props.moduleLable}
+                        </Text>
+                    </View>
                 </View>
             </View>
         );

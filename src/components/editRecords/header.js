@@ -80,10 +80,14 @@ class Header extends Component {
         return (
             <View style={commonStyles.headerBackground}>
                 <View style={commonStyles.headerContentStyle}>
-                    {
-                        this.renderBackButton()
-                    }
-                    <Text style={styles.headerTextStyle}>{this.props.moduleLable}</Text>
+                    <View style={{ width: 40 }}>
+                        {
+                            this.renderBackButton()
+                        }
+                    </View>
+                    <View style={{ flex: 1 }}>
+                        <Text style={styles.headerTextStyle}>{this.props.moduleLable}</Text>
+                    </View>
                     <TouchableOpacity onPress={this.onAddButtonPress.bind(this)}>
                         <View
                             style={{

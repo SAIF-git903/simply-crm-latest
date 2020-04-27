@@ -57,7 +57,6 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.05,
         shadowRadius: 5,
         borderRadius: 3,
-        elevation: 2,
         overflow: 'visible'
     },
     listWrapper: {

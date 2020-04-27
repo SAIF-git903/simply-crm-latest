@@ -107,6 +107,7 @@ class InputForm extends Component {
                 </View>
                 <View style={{ flex: 1 }}>
                     <TextInput
+                        autoGrow={true}
                         placeholder={this.props.obj.lable}
                         placeholderTextColor={'#C5C5C5'}
                         autoCorrect={false}
@@ -141,6 +142,7 @@ class InputForm extends Component {
 
                         (type === 'integer' || type === 'double' || type === 'currency' || type === 'phone') ?
                             <TextInput
+                                autoGrow={true}
                                 placeholder={this.props.obj.lable}
                                 autoCorrect={false}
                                 autoCapitalize='none'
@@ -150,6 +152,7 @@ class InputForm extends Component {
                             />
                             :
                             <TextInput
+                                autoGrow={true}
                                 placeholderTextColor={'#C5C5C5'}
                                 placeholder={this.props.obj.lable}
                                 autoCorrect={false}

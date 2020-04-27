@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TextInput } from 'react-native';
 import { fontStyles } from '../../styles/common';
-import { faSearch } from '@fortawesome/pro-regular-svg-icons';
 import IconButton from '../../components/IconButton';
 import { searchRecord } from '../../actions';
 import { connect } from 'react-redux';
@@ -57,6 +56,7 @@ class SearchBox extends Component {
                 style={[style, styles.wrapper]}
             >
                 <TextInput
+                    autoGrow={true}
                     autoCorrect={false}
                     spellCheck={false}
                     underlineColorAndroid='rgba(0,0,0,0)'
@@ -73,7 +73,7 @@ class SearchBox extends Component {
                     onChangeText={this.onChangeText.bind(this)}
                 />
                 <IconButton
-                    icon={faSearch}
+                    icon={'search'}
                     color={'#707070'}
                     size={16}
                     onPress={() => {

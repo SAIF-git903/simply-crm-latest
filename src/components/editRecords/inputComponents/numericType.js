@@ -32,6 +32,7 @@ class NumericType extends Component {
                 </View>
                 <View style={{ flex: 1 }}>
                     <TextInput
+                        autoGrow={true}
                         placeholderTextColor={'#C5C5C5'}
                         placeholder={this.props.obj.lable}
                         autoCorrect={false}

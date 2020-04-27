@@ -54,7 +54,9 @@ class Header extends Component {
                     {
                         this.renderMenuButton()
                     }
-                    <Text style={styles.headerTextStyle}>{this.props.moduleLable}</Text>
+                    <View style={{ flex: 1 }}>
+                        <Text style={styles.headerTextStyle}>{this.props.moduleLable}</Text>
+                    </View>
                     <TouchableOpacity onPress={this.onSearchButtonPress.bind(this)}>
                         <View
                             style={{

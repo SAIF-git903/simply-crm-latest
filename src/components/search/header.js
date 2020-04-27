@@ -3,15 +3,17 @@ import { connect } from 'react-redux';
 import { View, Image, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import { commonStyles } from '../../styles/common';
 import { tabletSearchBackPress } from '../../actions';
-import { HEADER_TEXT_COLOR, HEADER_IMAGE_COLOR,
-HEADER_IMAGE_SELECTED_COLOR } from '../../variables/themeColors';
+import {
+    HEADER_TEXT_COLOR, HEADER_IMAGE_COLOR,
+    HEADER_IMAGE_SELECTED_COLOR
+} from '../../variables/themeColors';
 
 class Header extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             searchText: ''
-        }; 
+        };
     }
 
     onBackButtonPress() {
@@ -38,13 +40,14 @@ class Header extends Component {
             //This is Phone
             return (
                 <TouchableOpacity onPress={this.onBackButtonPress.bind(this)}>
-                    <Image 
-                    source={{ uri: 'leftarrow' }}
-                    style={{ 
-                        width: 30,
-                        resizeMode: 'contain',  
-                        tintColor: HEADER_IMAGE_COLOR,
-                        height: 40 }}
+                    <Image
+                        source={{ uri: 'leftarrow' }}
+                        style={{
+                            width: 30,
+                            resizeMode: 'contain',
+                            tintColor: HEADER_IMAGE_COLOR,
+                            height: 40
+                        }}
                     />
                 </TouchableOpacity>
             );
@@ -52,13 +55,14 @@ class Header extends Component {
             //This is Tablet landscape
             return (
                 <TouchableOpacity onPress={this.onTabletBackButtonPress.bind(this)}>
-                    <Image 
-                    source={{ uri: 'leftarrow' }}
-                    style={{ 
-                        width: 30,
-                        resizeMode: 'contain',  
-                        tintColor: HEADER_IMAGE_COLOR,
-                        height: 40 }}
+                    <Image
+                        source={{ uri: 'leftarrow' }}
+                        style={{
+                            width: 30,
+                            resizeMode: 'contain',
+                            tintColor: HEADER_IMAGE_COLOR,
+                            height: 40
+                        }}
                     />
                 </TouchableOpacity>
             );
@@ -66,20 +70,21 @@ class Header extends Component {
             //This is tablet portrait
             return (
                 <TouchableOpacity onPress={this.onBackButtonPress.bind(this)}>
-                    <Image 
-                    source={{ uri: 'leftarrow' }}
-                    style={{ 
-                        width: 30,
-                        resizeMode: 'contain',  
-                        tintColor: HEADER_IMAGE_COLOR,
-                        height: 40 }}
+                    <Image
+                        source={{ uri: 'leftarrow' }}
+                        style={{
+                            width: 30,
+                            resizeMode: 'contain',
+                            tintColor: HEADER_IMAGE_COLOR,
+                            height: 40
+                        }}
                     />
                 </TouchableOpacity>
             );
         }
     }
 
-    
+
 
     render() {
         return (
@@ -87,23 +92,25 @@ class Header extends Component {
                 {
                     this.renderBackButton()
                 }
-                <TextInput 
-                clearButtonMode='always'
-                underlineColorAndroid='rgba(0,0,0,0)'
-                placeholder='Enter search keyword here'
-                placeholderTextColor='#d3d3d3'
-                value={this.state.searchText}
-                onChangeText={this.searchTextChange.bind(this)}  
-                style={styles.headerTextStyle} 
+                <TextInput
+                    autoGrow={true}
+                    clearButtonMode='always'
+                    underlineColorAndroid='rgba(0,0,0,0)'
+                    placeholder='Enter search keyword here'
+                    placeholderTextColor='#d3d3d3'
+                    value={this.state.searchText}
+                    onChangeText={this.searchTextChange.bind(this)}
+                    style={styles.headerTextStyle}
                 />
                 <TouchableOpacity onPress={this.onSearchButtonPress.bind(this)}>
-                    <Image 
-                    source={{ uri: 'search' }}
-                    style={{ 
-                        width: 27,
-                        resizeMode: 'contain', 
-                        tintColor: HEADER_IMAGE_COLOR,
-                        height: 27 }}
+                    <Image
+                        source={{ uri: 'search' }}
+                        style={{
+                            width: 27,
+                            resizeMode: 'contain',
+                            tintColor: HEADER_IMAGE_COLOR,
+                            height: 27
+                        }}
                     />
                 </TouchableOpacity>
             </View>

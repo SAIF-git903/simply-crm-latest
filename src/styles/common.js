@@ -13,7 +13,7 @@ export const commonStyles = StyleSheet.create({
     },
     headerContentStyle: {
         flexDirection: 'row',
-        alignItems: 'center',
+        width: '100%'
     },
     recordListerBackground: {
         flex: 1,
@@ -38,7 +38,6 @@ export const commonStyles = StyleSheet.create({
         backgroundColor: 'white'
     },
     loadingDetailsStyle: {
-        elevation: 3,
         width: '100%',
         height: 17,
         justifyContent: 'center',

@@ -57,7 +57,6 @@ class Header extends Component {
                                 },
                                 shadowOpacity: 0.05,
                                 shadowRadius: 5,
-                                elevation: 2,
                                 justifyContent: 'space-between',
                                 alignItems: 'center',
                                 flexDirection: 'row',

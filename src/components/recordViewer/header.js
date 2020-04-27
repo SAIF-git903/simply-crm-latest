@@ -60,15 +60,19 @@ class Header extends Component {
         return (
             <View style={commonStyles.headerBackground}>
                 <View style={commonStyles.headerContentStyle}>
-                    {
-                        this.renderBackButton()
-                    }
-                    <Text
-                        style={[fontStyles.navbarTitle, { marginLeft: -30, backgroundColor: 'transparent' }]}
-                        pointerEvents={'none'}
-                    >
-                        Record Details
+                    <View style={{ width: 40 }}>
+                        {
+                            this.renderBackButton()
+                        }
+                    </View>
+                    <View style={{ flex: 1, marginRight: 40 }} >
+                        <Text
+                            style={fontStyles.navbarTitle}
+                            pointerEvents={'none'}
+                        >
+                            Record Details
                     </Text>
+                    </View>
                 </View>
             </View>
         );

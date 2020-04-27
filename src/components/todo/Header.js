@@ -100,6 +100,7 @@ class Header extends Component {
                     <View style={styles.subContainer}>
                         <View style={styles.rowContainer}>
                             <TextInput
+                                autoGrow={true}
                                 style={styles.inputStyle}
                                 value={this.state.inputValue}
                                 onChangeText={this.handleTextChange.bind(this)}
@@ -160,7 +161,6 @@ const styles = {
         shadowOpacity: 0.1,
         shadowRadius: 2,
         backgroundColor: '#ffffff',
-        elevation: 1,
 
     },
     subContainer: {
@@ -225,7 +225,6 @@ const styles = {
         shadowOffset: { width: 5, height: 2 },
         shadowOpacity: 0.5,
         shadowRadius: 2,
-        elevation: 3,
         borderColor: '#ddd',
         borderWidth: 1,
         borderBottomWidth: 0
