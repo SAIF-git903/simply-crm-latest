@@ -4,12 +4,11 @@ import {
     View, TextInput, Image, ActivityIndicator, Text, Animated, TouchableWithoutFeedback,
     StyleSheet, Alert, Picker, TouchableOpacity, Platform, Linking, SafeAreaView, KeyboardAvoidingView, KeyboardAvoidingViewBase
 } from 'react-native';
-import KeyboardSpacer from 'react-native-keyboard-spacer';
 import ModalDropdown from 'react-native-modal-dropdown';
 import IconButton from '../components/IconButton';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faEye, faEyeSlash, faEnvelope, faTimesCircle, faGlobe } from '@fortawesome/free-solid-svg-icons';
-import { faLockAlt } from '@fortawesome/pro-solid-svg-icons';
+
+import Icon from 'react-native-vector-icons/FontAwesome5Pro';
+
 import { loginUser } from '../actions/';
 import { userUrlHelper, assignUrl } from '../helper';
 import { fontStyles } from '../styles/common';
@@ -149,11 +148,12 @@ class LoginForm extends Component {
                         {
                             (this.state.showUrlList) ?
                                 <View style={styles.textInputWrapper}>
-                                    <FontAwesomeIcon
-                                        icon={faGlobe}
-                                        color={'#92ADD1'}
+                                    <Icon
+                                        name='globe'
+                                        solid
                                         size={23}
-                                        style={{ marginRight: 5 }}
+                                        color='#92ADD1'
+                                        style={{ width: 24 }}
                                     />
 
                                     {
@@ -203,10 +203,12 @@ class LoginForm extends Component {
 
                         {/* e-mail field */}
                         <View style={styles.textInputWrapper}>
-                            <FontAwesomeIcon
-                                icon={faEnvelope}
-                                color={'#92ADD1'}
+                            <Icon
+                                name='envelope'
+                                solid
                                 size={23}
+                                color='#92ADD1'
+                                style={{ width: 24 }}
                             />
 
                             <TextInput
@@ -227,7 +229,8 @@ class LoginForm extends Component {
                             />
                             {this.state.email.length !== 0 ?
                                 <IconButton
-                                    icon={faTimesCircle}
+                                    icon={'times-circle'}
+                                    solid
                                     size={14}
                                     onPress={() => this.setState({ email: '' })}
                                 />
@@ -239,12 +242,13 @@ class LoginForm extends Component {
                         {/* password field */}
                         <View style={styles.textInputWrapper}>
 
-                            <FontAwesomeIcon
-                                icon={faLockAlt}
-                                color={'#92ADD1'}
+                            <Icon
+                                name='lock-alt'
+                                solid
                                 size={23}
+                                color='#92ADD1'
+                                style={{ width: 24 }}
                             />
-
 
                             <TextInput
                                 autoCorrect={false}
@@ -276,7 +280,8 @@ class LoginForm extends Component {
                                     /> */}
 
                                         <IconButton
-                                            icon={showPassword ? faEyeSlash : faEye}
+                                            solid
+                                            icon={showPassword ? 'eye-slash' : 'eye'}
                                             size={16}
                                             onPress={() => this.setState({ showPassword: !showPassword })}
                                         />

@@ -5,7 +5,7 @@
  */
 
 import React, { Component } from 'react';
-import { Dimensions, Text } from 'react-native';
+import { Dimensions, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import MainNavigator from './MainNavigator';
 import { dimensionChanged } from './actions';

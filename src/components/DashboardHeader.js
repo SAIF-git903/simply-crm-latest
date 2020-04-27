@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faBars } from '@fortawesome/pro-regular-svg-icons';
 import { commonStyles, fontStyles } from './../styles/common';
 import {
     HEADER_TEXT_COLOR, HEADER_IMAGE_COLOR,
     HEADER_IMAGE_SELECTED_COLOR
 } from './../variables/themeColors';
+
+import Icon from 'react-native-vector-icons/FontAwesome5Pro';
 
 class DashboardHeader extends Component {
     componentDidMount() {
@@ -31,10 +31,10 @@ class DashboardHeader extends Component {
             //This is phone
             return (
                 <TouchableOpacity onPress={this.onMenuButtonPress.bind(this)}>
-                    <FontAwesomeIcon
-                        icon={faBars}
-                        color={'white'}
+                    <Icon
+                        name='bars'
                         size={28}
+                        color='white'
                     />
                 </TouchableOpacity>
             );

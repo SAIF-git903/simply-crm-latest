@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, StyleSheet, Image, TouchableOpacity, Text } from 'react-native';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faBuilding, faLuggageCart, faUser, faWrench, faShoppingCart, faFileInvoiceDollar, faSearchDollar, faEnvelope, faChartBar, faFileAlt, faCalendarAlt, faShield, faBoxOpen } from '@fortawesome/pro-regular-svg-icons';
+import Icon from 'react-native-vector-icons/FontAwesome5Pro';
 
 import { drawerButtonPress } from '../../../actions';
 import {
@@ -16,7 +15,7 @@ class MenuHolder extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { iconName: faLuggageCart };
+        this.state = { iconName: 'luggage-cart' };
     }
 
     componentWillMount() {
@@ -30,57 +29,59 @@ class MenuHolder extends Component {
     assignIcons() {
         switch (this.props.module.name) {
             case 'Accounts':
-                this.setState({ iconName: faBuilding });
+                this.setState({ iconName: 'building' });
                 break;
             case 'Sales':
-                this.setState({ iconName: faLuggageCart });
+                this.setState({ iconName: 'luggage-cart' });
                 break;
             case 'Contacts':
-                this.setState({ iconName: faUser });
+                this.setState({ iconName: 'user' });
                 break;
             case 'Tools':
-                this.setState({ iconName: faWrench });
+                this.setState({ iconName: 'wrench' });
                 break;
             case 'Products':
-                this.setState({ iconName: faShoppingCart });
+                this.setState({ iconName: 'shopping-cart' });
                 break;
             case 'Invoice':
-                this.setState({ iconName: faFileInvoiceDollar });
+                this.setState({ iconName: 'file-invoice-dollar' });
                 break;
             case 'Potentials':
-                this.setState({ iconName: faSearchDollar });
+                this.setState({ iconName: 'search-dollar' });
                 break;
             case 'Emails':
-                this.setState({ iconName: faEnvelope });
+                this.setState({ iconName: 'envelope' });
                 break;
             case 'Reports':
-                this.setState({ iconName: faChartBar });
+                this.setState({ iconName: 'chart-bar' });
                 break;
             case 'Documents':
-                this.setState({ iconName: faFileAlt });
+                this.setState({ iconName: 'file-alt' });
                 break;
             case 'Calendar':
-                this.setState({ iconName: faCalendarAlt });
+                this.setState({ iconName: 'calendar-alt' });
                 break;
             case 'Vendors':
-                this.setState({ iconName: faShield });
+                this.setState({ iconName: 'shield' });
                 break;
             case 'Services':
-                this.setState({ iconName: faBoxOpen });
+                this.setState({ iconName: 'box-open' });
                 break;
             default:
         }
     }
 
     render() {
-        console.log('menuHolder')
-        console.log(this.props)
         // console.log(this.props.module.name.toLowerCase());
         return (
             <TouchableOpacity onPress={this.onButtonPress.bind(this)}>
                 <View style={[styles.holder]}>
                     <View style={styles.image}>
-                        <FontAwesomeIcon icon={this.state.iconName} size={20} color={(this.props.selectedButton !== this.props.module.name) ? DRAWER_SECTION_HEADER_IMAGE_COLOR : DRAWER_MODULE_BUTTON_TEXT_SELECTED_COLOR} />
+                        <Icon
+                            name={this.state.iconName}
+                            size={20}
+                            color={(this.props.selectedButton !== this.props.module.name) ? DRAWER_SECTION_HEADER_IMAGE_COLOR : DRAWER_MODULE_BUTTON_TEXT_SELECTED_COLOR}
+                        />
                     </View>
 
                     <Text style={[styles.text, fontStyles.drawerMenuButtonText, { color: (this.props.selectedButton !== this.props.module.name) ? DRAWER_SECTION_HEADER_TEXT_COLOR : DRAWER_MODULE_BUTTON_TEXT_SELECTED_COLOR }]}>{this.props.module.label}</Text>
@@ -103,8 +104,8 @@ const styles = StyleSheet.create({
     image: {
 
         marginLeft: 40,
-        marginRight: 10,
-        width: 20,
+        marginRight: -12,
+        width: 46,
         height: 20
 
     },

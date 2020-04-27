@@ -43,7 +43,7 @@ class DateType extends Component {
 
         this.setState({
             pickDate: date,
-            saveValue: moment(date).format('YYYY-MM-DD')
+            saveValue: moment(date).format(formatDate)
 
         });
     }

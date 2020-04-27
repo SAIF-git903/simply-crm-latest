@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, Image, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faAngleLeft } from '@fortawesome/pro-regular-svg-icons';
+
+import Icon from 'react-native-vector-icons/FontAwesome5Pro';
 
 import { commonStyles, fontStyles } from '../../styles/common';
 import {
@@ -46,10 +46,10 @@ class Header extends Component {
                 <TouchableOpacity
                     onPress={this.onBackButtonPress.bind(this)}
                 >
-                    <FontAwesomeIcon
-                        icon={faAngleLeft}
-                        color={'white'}
+                    <Icon
+                        name='angle-left'
                         size={28}
+                        color='white'
                     />
                 </TouchableOpacity>
             );

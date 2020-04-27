@@ -3,8 +3,7 @@ import { View, Text } from 'react-native';
 import ModalDropdown from 'react-native-modal-dropdown';
 import { connect } from 'react-redux';
 import { moduleSelected } from '../../actions';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faAngleRight } from '@fortawesome/pro-regular-svg-icons';
+import Icon from 'react-native-vector-icons/FontAwesome5Pro';
 
 class Header extends Component {
     handleDisplayModule(value) {
@@ -74,10 +73,10 @@ class Header extends Component {
                                 }}
                             >{dropdownText}
                             </Text>
-                            <FontAwesomeIcon
-                                icon={faAngleRight}
-                                color={'#707070'}
+                            <Icon
+                                name={'angle-right'}
                                 size={23}
+                                color={'#707070'}
                             />
                         </View>
                     </ModalDropdown>

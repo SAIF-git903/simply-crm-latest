@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { View, Image, Text, StyleSheet, TouchableWithoutFeedback, Platform } from 'react-native';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faAngleRight, faAngleDown } from '@fortawesome/pro-regular-svg-icons';
-import { faFolder } from '@fortawesome/free-regular-svg-icons';
+
+import Icon from 'react-native-vector-icons/FontAwesome5Pro';
 
 import { DRAWER_BORDER_COLOR } from '../../../variables/themeColors';
 import { TOOLS, SALES } from '../../../variables/constants';
@@ -37,11 +36,11 @@ export default class SectionHeader extends Component {
     }
 
     getIcon() {
-        return faFolder;
+        return 'folder';
     }
 
     render() {
-        let arrowIcon = this.state.selected ? faAngleRight : faAngleDown;
+        let arrowIcon = this.state.selected ? 'angle-right' : 'angle-down';
         return (
             <TouchableWithoutFeedback onPress={this.onToggleSection.bind(this)}>
                 <View style={[styles.headerBackground,
@@ -53,13 +52,12 @@ export default class SectionHeader extends Component {
                         <View
                             style={{ width: 40 }}
                         >
-                            <FontAwesomeIcon
-                                icon={this.getIcon()}
+                            <Icon
+                                name={this.getIcon()}
                                 size={20}
                                 color={this.props.imageColor}
                                 style={{
-                                    marginRight: 10,
-                                    marginLeft: 8
+                                    marginLeft: 10
                                 }}
                             />
                         </View>
@@ -71,9 +69,13 @@ export default class SectionHeader extends Component {
                     <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end' }}>
                         <TouchableWithoutFeedback onPress={this.onToggleSection.bind(this)}>
                             <View style={{ width: 40, height: 40, alignItems: 'flex-end', justifyContent: 'center', paddingRight: 6 }}>
-                                <FontAwesomeIcon
-                                    icon={arrowIcon}
+                                <Icon
+                                    name={arrowIcon}
+                                    size={16}
                                     color={'#707070'}
+                                    style={{
+                                        marginLeft: 10
+                                    }}
                                 />
                             </View>
 

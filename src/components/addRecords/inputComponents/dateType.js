@@ -42,7 +42,7 @@ class DateType extends Component {
         const formatDate = this.props.obj.type.format.toUpperCase();
         this.setState({
             pickDate: date,
-            saveValue: moment(date).format('YYYY-MM-DD')
+            saveValue: moment(date).format(formatDate)
         });
     }
     render() {

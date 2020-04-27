@@ -7,9 +7,8 @@ import {
 import SwipeOut from 'react-native-swipeout';
 import { deleteRecord } from '../../../actions';
 import { RECORD_COLOR, RECORD_SELECTED_COLOR } from '../../../variables/themeColors';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-import { faPencilAlt } from '@fortawesome/pro-solid-svg-icons';
+
+import Icon from 'react-native-vector-icons/FontAwesome5Pro';
 
 import { fontStyles } from '../../../styles/common';
 
@@ -70,10 +69,11 @@ class ContactsRecord extends Component {
                         borderRightWidth: 1
                     }}
                 >
-                    <FontAwesomeIcon
-                        icon={faPencilAlt}
-                        color={'black'}
+                    <Icon
+                        name='pencil-alt'
+                        solid
                         size={30}
+                        color='black'
                     />
                 </View>
             ),
@@ -89,10 +89,11 @@ class ContactsRecord extends Component {
                         backgroundColor: '#f2f3f8'
                     }}
                 >
-                    <FontAwesomeIcon
-                        icon={faTrashAlt}
-                        color={'black'}
+                    <Icon
+                        name='trash-alt'
+                        solid
                         size={30}
+                        color='black'
                     />
                 </View>
             ),

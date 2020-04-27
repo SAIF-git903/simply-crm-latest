@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, StyleSheet, TouchableOpacity, Text, Platform, Image } from 'react-native';
-// import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-// import { faBuilding, faUser, faTachometerAlt } from '@fortawesome/pro-regular-svg-icons';
 import { drawerButtonPress } from '../../../actions';
 import {
     DRAWER_MODULE_BUTTON_TEXT_SELECTED_COLOR, DRAWER_SECTION_HEADER_TEXT_COLOR,
@@ -10,7 +8,8 @@ import {
 } from '../../../variables/themeColors';
 import { ACCOUNTS, CONTACTS, HOME } from '../../../variables/constants';
 import { fontStyles } from '../../../styles/common';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+
+import Icon from 'react-native-vector-icons/FontAwesome5Pro';
 
 class ImageButton extends Component {
 
@@ -64,16 +63,11 @@ class ImageButton extends Component {
 
                     }}
                 >
-                    {/*             
-                    <View style={styles.imageStyle}>
-                        <FontAwesomeIcon icon={this.state.iconName} size={23} color={(this.props.selectedButton !== this.props.type) ? DRAWER_SECTION_HEADER_TEXT_COLOR : DRAWER_MODULE_BUTTON_TEXT_SELECTED_COLOR} />
-                    </View> */}
                     <View
-                        style={{ width: 43 }}
+                        style={{ paddingLeft: 15, width: 46 }}
                     >
-                        <FontAwesomeIcon
-                            style={styles.iconStyle}
-                            icon={this.props.icon}
+                        <Icon
+                            name={this.props.icon}
                             size={20}
                             color={(this.props.selectedButton !== this.props.type) ? DRAWER_SECTION_HEADER_TEXT_COLOR : DRAWER_MODULE_BUTTON_TEXT_SELECTED_COLOR}
                         />

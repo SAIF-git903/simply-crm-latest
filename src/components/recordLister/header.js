@@ -8,9 +8,8 @@ import {
     HEADER_TEXT_COLOR, HEADER_IMAGE_COLOR,
     HEADER_IMAGE_SELECTED_COLOR
 } from '../../variables/themeColors';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { faBars } from '@fortawesome/pro-regular-svg-icons';
+
+import Icon from 'react-native-vector-icons/FontAwesome5Pro';
 
 class Header extends Component {
     componentDidMount() {
@@ -38,10 +37,10 @@ class Header extends Component {
             //This is phone
             return (
                 <TouchableOpacity onPress={this.onMenuButtonPress.bind(this)}>
-                    <FontAwesomeIcon
-                        icon={faBars}
-                        color={'white'}
+                    <Icon
+                        name='bars'
                         size={28}
+                        color='white'
                     />
                 </TouchableOpacity>
             );
@@ -67,10 +66,10 @@ class Header extends Component {
                                 alignItems: 'center'
                             }}
                         >
-                            <FontAwesomeIcon
-                                icon={faPlus}
+                            <Icon
+                                name='plus'
                                 size={18}
-                                color={'white'}
+                                color='white'
                             />
                         </View>
                     </TouchableOpacity>

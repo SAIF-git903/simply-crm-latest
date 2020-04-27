@@ -20,8 +20,6 @@ import {
     DRAWER_SECTION_HEADER_TEXT_COLOR
 } from '../variables/themeColors';
 import MenuHolder from '../components/drawer/layouts/menuHolder';
-import { faHome } from '@fortawesome/free-solid-svg-icons';
-import { faUser, faBuilding } from '@fortawesome/free-regular-svg-icons';
 
 export const renderDrawerView = async (loginDetails, drawerInstance) => {
     const drawerViews = [];
@@ -33,7 +31,7 @@ export const renderDrawerView = async (loginDetails, drawerInstance) => {
         type={HOME}
         label={HOME}
         key='home_menu'
-        icon={faHome}
+        icon={'home'}
     />;
 
     let menuButtons = [homeButton];
@@ -50,7 +48,7 @@ export const renderDrawerView = async (loginDetails, drawerInstance) => {
                 label={module.label}
                 module={module}
                 key='contact_menu'
-                icon={faUser}
+                icon={'user'}
             />;
 
             menuButtons = [homeButton];
@@ -66,7 +64,7 @@ export const renderDrawerView = async (loginDetails, drawerInstance) => {
                 label={module.label}
                 module={module}
                 key='account_menu'
-                icon={faBuilding}
+                icon={'building'}
             />;
 
             menuButtons = [homeButton];

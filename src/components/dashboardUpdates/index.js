@@ -5,9 +5,9 @@ import { connect } from 'react-redux';
 import Header from './Header';
 import Viewer from './Viewer';
 import { drawerButtonPress } from '../../actions/index';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faBuilding, faUser, faCalendarAlt } from '@fortawesome/free-regular-svg-icons';
 import { faTasks } from '@fortawesome/free-solid-svg-icons';
+
+import Icon from 'react-native-vector-icons/FontAwesome5Pro';
 
 import { fontStyles } from '../../styles/common';
 
@@ -22,9 +22,9 @@ const IconButton = ({ icon, title, style, onPress }) => {
                 minWidth: 60
             }
         ]}>
-        <FontAwesomeIcon
+        <Icon
+            name={icon}
             size={36}
-            icon={icon}
             color={'#797f8b'}
         />
         <Text style={[fontStyles.iconButtonLabel, { paddingTop: 10 }]}>
@@ -50,7 +50,7 @@ class UpdateWidget extends Component {
                 >
                     {/* buttons */}
                     <IconButton
-                        icon={faBuilding}
+                        icon={'building'}
                         title={'Organizations'}
                         onPress={() => this.props.dispatch(drawerButtonPress(
                             'Accounts',
@@ -60,7 +60,7 @@ class UpdateWidget extends Component {
                     />
 
                     <IconButton
-                        icon={faUser}
+                        icon={'user'}
                         title={'Contacts'}
                         onPress={() => this.props.dispatch(drawerButtonPress(
                             'Contacts',
@@ -70,7 +70,7 @@ class UpdateWidget extends Component {
                     />
 
                     <IconButton
-                        icon={faCalendarAlt}
+                        icon={'calendar-alt'}
                         title={'Calendar'}
                         onPress={() => this.props.dispatch(drawerButtonPress(
                             'Calendar',
@@ -80,7 +80,7 @@ class UpdateWidget extends Component {
                     />
 
                     <IconButton
-                        icon={faTasks}
+                        icon={'tasks'}
                         title={'Tasks'}
                     />
                 </View>

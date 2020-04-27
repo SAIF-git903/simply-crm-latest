@@ -6,9 +6,7 @@ import {
 } from 'react-native';
 import ModalDropdown from 'react-native-modal-dropdown';
 import IconButton from '../components/IconButton';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faEnvelope, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-import { faAngleLeft } from '@fortawesome/pro-regular-svg-icons';
+import Icon from 'react-native-vector-icons/FontAwesome5Pro';
 
 import { loginUser } from '../actions/';
 import { resetPassword } from '../helper';
@@ -98,10 +96,10 @@ class ForgotPasswordForm extends Component {
                 <View style={styles.logoMainHolder}>
                     <View style={{ width: '100%', flex: 1, padding: 10, paddingTop: 40 }}>
                         <TouchableOpacity onPress={this.onBackPress.bind(this)}>
-                            <FontAwesomeIcon
-                                icon={faAngleLeft}
-                                color={'white'}
-                                size={30}
+                            <Icon
+                                name='angle-left'
+                                size={28}
+                                color='white'
                             />
                         </TouchableOpacity>
                     </View>
@@ -117,10 +115,12 @@ class ForgotPasswordForm extends Component {
                     <View style={styles.inputMainHolder}>
 
                         <View style={styles.textInputWrapper}>
-                            <FontAwesomeIcon
-                                icon={faEnvelope}
-                                color={'#92ADD1'}
+                            <Icon
+                                name='envelope'
+                                solid
                                 size={23}
+                                color='#92ADD1'
+                                style={{ width: 24 }}
                             />
 
                             <TextInput
@@ -139,7 +139,8 @@ class ForgotPasswordForm extends Component {
 
                             {this.state.email.length !== 0 ?
                                 <IconButton
-                                    icon={faTimesCircle}
+                                    icon={'times-circle'}
+                                    solid
                                     size={14}
                                     onPress={() => this.setState({ email: '' })}
                                 />

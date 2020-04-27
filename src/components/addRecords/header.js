@@ -10,10 +10,7 @@ import {
 import { addRecordHelper } from '../../helper';
 import { saveSuccess } from '../../actions';
 
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faAngleLeft } from '@fortawesome/pro-regular-svg-icons';
-import { faSave } from '@fortawesome/free-solid-svg-icons';
-
+import Icon from 'react-native-vector-icons/FontAwesome5Pro';
 
 class Header extends Component {
     constructor(props) {
@@ -68,10 +65,10 @@ class Header extends Component {
             if (this.props.isPortrait) {
                 return (
                     <TouchableOpacity onPress={this.onBackButtonPress.bind(this)}>
-                        <FontAwesomeIcon
-                            icon={faAngleLeft}
-                            color={'white'}
-                            size={30}
+                        <Icon
+                            name='angle-left'
+                            size={28}
+                            color='white'
                         />
                     </TouchableOpacity>
                 );
@@ -81,10 +78,10 @@ class Header extends Component {
             //This is phone
             return (
                 <TouchableOpacity onPress={this.onBackButtonPress.bind(this)}>
-                    <FontAwesomeIcon
-                        icon={faAngleLeft}
-                        color={'white'}
-                        size={30}
+                    <Icon
+                        name='angle-left'
+                        size={28}
+                        color='white'
                     />
                 </TouchableOpacity>
             );
@@ -99,11 +96,12 @@ class Header extends Component {
     }
     renderSaveButton() {
         return (
-
-            <FontAwesomeIcon
-                icon={faSave}
-                color={'white'}
-                size={30}
+            <Icon
+                style={{ alignSelf: 'flex-end' }}
+                name='save'
+                solid
+                size={28}
+                color='white'
             />
         );
     }

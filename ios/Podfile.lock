@@ -57,7 +57,7 @@ PODS:
     - React/Core
     - React/fishhook
     - React/RCTBlob
-  - RNSVG (9.6.4):
+  - RNSVG (6.5.3):
     - React
   - RNVectorIcons (6.6.0):
     - React
@@ -106,10 +106,10 @@ SPEC CHECKSUMS:
   Folly: b7255b29f1d693c375d642d0f04f0592181156d9
   GLog: 3e4e4ae9746ce6bf6e9420c7fc1e08ad59c8ba1a
   React: 0ba6cae888dc82dc47d6d5f3090615e1b5f6f3e7
-  RNSVG: a53a5de0d90ec96a6502cc3a4534dfcc0c130622
+  RNSVG: 4501a5e968f1eb962f5481b0da53dfb59260e9b6
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   yoga: faecc6be81ca7823ccbb470b93a1b228499fa1c0
 
-PODFILE CHECKSUM: 36a19e3bbb3803f38b81b71ba00814254bcde8a4
+PODFILE CHECKSUM: db0d01f9525cd5beb86bd4fc9276ef07e0d4b5f3
 
 COCOAPODS: 1.8.4

@@ -1,16 +1,16 @@
 import React from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faEye, faEyeSlash, faLock, faEnvelope, faTimesCircle, faGlobe } from '@fortawesome/free-solid-svg-icons';
+import Icon from 'react-native-vector-icons/FontAwesome5Pro';
 
-export default function IconButton({ icon, size, onPress, color }) {
+export default function IconButton({ icon, size, onPress, color, solid }) {
     return (
         <TouchableOpacity
             style={styles.wrapper}
             onPress={onPress}
         >
-            <FontAwesomeIcon
-                icon={icon}
+            <Icon
+                solid={solid}
+                name={icon}
                 color={color || '#92ADD1'}
                 size={size}
             />
