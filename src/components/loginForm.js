@@ -73,7 +73,7 @@ class LoginForm extends Component {
     onForgotPasswordPress() {
         console.log('forgot password clicked');
         const { navigate } = this.props.navigation;
-        navigate('ForgotPasswordScreen');
+        navigate('ForgotPasswordScreen', { email: this.state.email });
     }
 
     handlePressIn() {
@@ -216,7 +216,7 @@ class LoginForm extends Component {
                                 autoCorrect={false}
                                 spellCheck={false}
                                 underlineColorAndroid='rgba(0,0,0,0)'
-                                style={[fontStyles.loginInputFieldLabel, styles.inputFieldLabel]}
+                                style={[fontStyles.loginInputFieldLabel, styles.inputFieldLabel, { marginBottom: Platform.OS === 'android' ? -5 : 0 }]}
                                 placeholder='Enter e-mail'
                                 placeholderTextColor='#92ADD1'
                                 ref='email'
@@ -256,7 +256,7 @@ class LoginForm extends Component {
                                 autoCorrect={false}
                                 spellCheck={false}
                                 underlineColorAndroid='rgba(0,0,0,0)'
-                                style={[fontStyles.loginInputFieldLabel, styles.inputFieldLabel]}
+                                style={[fontStyles.loginInputFieldLabel, styles.inputFieldLabel, { marginBottom: Platform.OS === 'android' ? -5 : 0 }]}
                                 ref='password'
                                 clearTextOnFocus={false}
                                 placeholder='Enter your password'

@@ -45,44 +45,56 @@ class UpdateWidget extends Component {
                         paddingTop: 30,
                         paddingBottom: 20,
                         paddingHorizontal: 20,
-                        justifyContent: 'space-between'
+                        justifyContent: 'center'
                     }}
                 >
-                    {/* buttons */}
-                    <IconButton
-                        icon={'building'}
-                        title={'Organizations'}
-                        onPress={() => this.props.dispatch(drawerButtonPress(
-                            'Accounts',
-                            'Organizations',
-                            11
-                        ))}
-                    />
+                    <View
+                        style={styles.iconButtonContainer}
+                    >
+                        {/* buttons */}
+                        <IconButton
+                            icon={'building'}
+                            title={'Organizations'}
+                            onPress={() => this.props.dispatch(drawerButtonPress(
+                                'Accounts',
+                                'Organizations',
+                                11
+                            ))}
+                        />
+                    </View>
 
-                    <IconButton
-                        icon={'user'}
-                        title={'Contacts'}
-                        onPress={() => this.props.dispatch(drawerButtonPress(
-                            'Contacts',
-                            'Contacts',
-                            12
-                        ))}
-                    />
+                    <View
+                        style={styles.iconButtonContainer}
+                    >
+                        <IconButton
+                            icon={'user'}
+                            title={'Contacts'}
+                            onPress={() => this.props.dispatch(drawerButtonPress(
+                                'Contacts',
+                                'Contacts',
+                                12
+                            ))}
+                        />
+                    </View>
 
-                    <IconButton
-                        icon={'calendar-alt'}
-                        title={'Calendar'}
-                        onPress={() => this.props.dispatch(drawerButtonPress(
-                            'Calendar',
-                            'Calendar',
-                            9
-                        ))}
-                    />
-
+                    <View
+                        style={styles.iconButtonContainer}
+                    >
+                        <IconButton
+                            icon={'calendar-alt'}
+                            title={'Calendar'}
+                            onPress={() => this.props.dispatch(drawerButtonPress(
+                                'Calendar',
+                                'Calendar',
+                                9
+                            ))}
+                        />
+                    </View>
+                    {/* 
                     <IconButton
                         icon={'tasks'}
                         title={'Tasks'}
-                    />
+                    /> */}
                 </View>
                 <View style={{ padding: 10, paddingBottom: 0 }}>
                     <Header />
@@ -102,6 +114,9 @@ const styles = {
     container: {
         flex: 1
     },
+    iconButtonContainer: {
+        paddingHorizontal: 15
+    }
 };
 
 export default connect(null)(UpdateWidget);

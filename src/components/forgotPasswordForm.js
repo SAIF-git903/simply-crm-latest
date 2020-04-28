@@ -20,7 +20,7 @@ class ForgotPasswordForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: '',
+            email: this.props.navigation.state.params.email || '',
             buttonText: 'RESET PASWORD',
             loading: false
         };
@@ -128,7 +128,7 @@ class ForgotPasswordForm extends Component {
                                 autoCorrect={false}
                                 spellCheck={false}
                                 underlineColorAndroid='rgba(0,0,0,0)'
-                                style={[fontStyles.loginInputFieldLabel, styles.inputFieldLabel]}
+                                style={[fontStyles.loginInputFieldLabel, styles.inputFieldLabel, { marginBottom: Platform.OS === 'android' ? -5 : 0 }]}
                                 placeholder='Enter your e-mail'
                                 placeholderTextColor='#ddd'
                                 ref='email'

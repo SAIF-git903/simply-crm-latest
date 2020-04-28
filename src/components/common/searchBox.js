@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TextInput } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Platform } from 'react-native';
 import { fontStyles } from '../../styles/common';
 import IconButton from '../../components/IconButton';
 import { searchRecord } from '../../actions';
@@ -59,8 +59,8 @@ class SearchBox extends Component {
                     autoGrow={true}
                     autoCorrect={false}
                     spellCheck={false}
-                    underlineColorAndroid='rgba(0,0,0,0)'
-                    style={[fontStyles.searchBoxLabel, styles.searchBoxField]}
+                    underlineColorAndroid={'transparent'}
+                    style={[fontStyles.searchBoxLabel, styles.searchBoxField, { marginBottom: Platform.OS === 'android' ? -5 : 0 }]}
                     placeholder='Search'
                     placeholderTextColor='#707070'
                     ref='searchbox'
