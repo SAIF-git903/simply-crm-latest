@@ -212,6 +212,7 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
                             } else {
                                 value = field.value;
                             }
+
                         } catch (error) {
                             //console.log(error);
                             value = field.value;
@@ -239,6 +240,7 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
                 } else {
                     value = field.value.label;
                 }
+
                 fieldViews.push(<Field label={field.label} value={value} />);
             }
 

@@ -265,9 +265,7 @@
 		5B6F396B797BED97869DF9FC58CBFC39 /* JSCSamplingProfiler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8EA94769403D9213E925803A5F9392D9 /* JSCSamplingProfiler.cpp */; settings = {COMPILER_FLAGS = "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1"; }; };
 		5B98DB12F7F86E4AED6E74587B92B295 /* RCTTextFieldManager.h in Headers */ = {isa = PBXBuildFile; fileRef = BC36E817D5FCDB8172AFEAAF32FBBFF0 /* RCTTextFieldManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5BD5D17E245712C900900477 /* glog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E3CF3B6E684B126667F6131A0E6FBBE /* glog.framework */; };
-		5BD5D17F245712C900900477 /* glog.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3E3CF3B6E684B126667F6131A0E6FBBE /* glog.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5BD5D183245712D000900477 /* DoubleConversion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FFB7B2992BB53405E6B771A5BA1E97D /* DoubleConversion.framework */; };
-		5BD5D184245712D000900477 /* DoubleConversion.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6FFB7B2992BB53405E6B771A5BA1E97D /* DoubleConversion.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5CA503036753D4126C03224692C9633A /* RCTDisplayLink.h in Headers */ = {isa = PBXBuildFile; fileRef = 4BB891C19B3C59B0D676EDA7D39B7912 /* RCTDisplayLink.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5D02810B7F8D6A7753749E0943D97034 /* RCTImageSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 72E3CC79AA48D060350DE5AF0D444FF1 /* RCTImageSource.m */; };
 		5DB07216292A9B68C92E07BA7ADC53BB /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 65710B505C1D8F5E5F2543FE0B5C9A63 /* Octicons.ttf */; };
@@ -832,21 +830,6 @@
 			remoteInfo = RNSVG;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		5BD5D182245712C900900477 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				5BD5D17F245712C900900477 /* glog.framework in Embed Frameworks */,
-				5BD5D184245712D000900477 /* DoubleConversion.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0039D3D41CD27F0431FFCFE84E5865B2 /* RCTRefreshControlManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RCTRefreshControlManager.m; sourceTree = "<group>"; };
@@ -3304,7 +3287,6 @@
 				C0ACDBA501B141BF85D413AF9716D8B1 /* Sources */,
 				31F12678A7AD75362B4534EF857679A8 /* Frameworks */,
 				76EC8FD933C5E9ADCBC2484205F78621 /* Resources */,
-				5BD5D182245712C900900477 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

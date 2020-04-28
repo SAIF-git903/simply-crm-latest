@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
-import RecordLister from './recordLister'; 
+import RecordLister from './recordLister';
 import { HOME, PROFILE, SETTINGS } from '../variables/constants';
 import Dashboard from './Dashboard';
 
 class HomeMain extends Component {
-    componentWillMount() {
+    componentDidMount() {
         this.init();
     }
 
@@ -28,11 +28,11 @@ class HomeMain extends Component {
             case SETTINGS:
                 return (<View />);
             default:
-                return (<RecordLister 
+                return (<RecordLister
                     navigation={this.props.navigation}
                     moduleName={this.props.selectedButton}
                     moduleId={this.props.moduleId}
-                    moduleLable={this.props.moduleLable} 
+                    moduleLable={this.props.moduleLable}
                 />
                 );
         }
@@ -43,8 +43,8 @@ class HomeMain extends Component {
     }
 }
 
-const mapStateToProps = ({ drawer }) => {
-    const { selectedButton, moduleId, moduleLable } = drawer;
+const mapStateToProps = (state) => {
+    const { selectedButton, moduleId, moduleLable } = state.drawer;
     return { selectedButton, moduleId, moduleLable };
 };
 

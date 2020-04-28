@@ -16,6 +16,7 @@ class DashboardHeader extends Component {
 
     onMenuButtonPress() {
         const { state } = this.props.navigation;
+
         if (state.routeName === 'DrawerOpen') {
             this.props.navigation.navigate('DrawerClose');
         } else {

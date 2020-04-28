@@ -2,6 +2,7 @@ import React from 'react';
 import { Alert, View } from 'react-native';
 import Toast from 'react-native-simple-toast';
 import { NavigationActions } from 'react-navigation';
+import moment from 'moment';
 import store from '../store';
 import StringForm from '../components/editRecords/inputComponents/stringType';
 import BooleanForm from '../components/editRecords/inputComponents/booleanType';
@@ -282,11 +283,19 @@ export const getDataHelper = async (editInstance) => {
                 for (let i = 0; i < formInstance.length; i++) {
                     for (let j = 0; j < tmpArray.length; j++) {
                         if (tmpArray[j].feild === formInstance[i].state.fieldName) {
+
+                            let formattedDate;
+
+                            if (formInstance[i].props.obj.type && formInstance[i].props.obj.type.format) {
+                                const formatDate = formInstance[i].props.obj.type.format.toUpperCase();
+                                formattedDate = moment(tmpArray[j].feildValue).format(formatDate)
+                            }
+
                             if (formInstance[i].state.reference) {
                                 formInstance[i].setState({ referenceValue: tmpArray[j].feildValue.label });
                                 formInstance[i].setState({ saveValue: tmpArray[j].feildValue.value });
                             } else {
-                                formInstance[i].setState({ saveValue: tmpArray[j].feildValue });
+                                formInstance[i].setState({ saveValue: formattedDate || tmpArray[j].feildValue });
                             }
                             break;
                         }
