@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
     View, TextInput, Image, ActivityIndicator, Text, Animated, TouchableWithoutFeedback,
-    StyleSheet, Alert, Picker, TouchableOpacity, Platform, Linking, SafeAreaView, KeyboardAvoidingView, KeyboardAvoidingViewBase
+    StyleSheet, Alert, Picker, TouchableOpacity, Platform, Linking, SafeAreaView, KeyboardAvoidingView, KeyboardAvoidingViewBase, AsyncStorage
 } from 'react-native';
 import ModalDropdown from 'react-native-modal-dropdown';
 import IconButton from '../components/IconButton';
 
 import Icon from 'react-native-vector-icons/FontAwesome5Pro';
 
+import { URLDETAILSKEY, LOGINDETAILSKEY } from '../variables/strings';
 import { loginUser } from '../actions/';
 import { userUrlHelper, assignUrl } from '../helper';
 import { fontStyles } from '../styles/common';
@@ -59,11 +60,15 @@ class LoginForm extends Component {
     }
 
     onButtonPress() {
+        AsyncStorage.removeItem(URLDETAILSKEY);
+        AsyncStorage.removeItem(LOGINDETAILSKEY);
+
         const { email, password, url, username } = this.state;
 
         console.log(url, this.state.showUrlList);
         if (this.state.showUrlList && url !== '') {
             this.setState({ loading: true });
+            console.log('assign url called in loginform');
             assignUrl(url, username, password, this.props.navigation, this, this.state.dispatch);
         } else {
             this.props.loginUser(email, password, '', this.props.navigation, this);
