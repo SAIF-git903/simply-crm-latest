@@ -57,7 +57,7 @@ class Splash extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { componentToLoad: LOADER };
+        this.state = { componentToLoad: null };
     }
 
     componentDidMount() {
@@ -139,7 +139,6 @@ class Splash extends Component {
                 renderItem={this.renderItem}
                 slides={introSlides}
                 onDone={this.onIntroDone}
-                showSkipButton={true}
                 dotStyle={{ backgroundColor: 'rgba(0, 0, 0, .1)' }}
                 activeDotStyle={{ backgroundColor: 'rgba(0, 0, 0, .2)' }}
                 buttonTextStyle={{
@@ -147,6 +146,9 @@ class Splash extends Component {
                     fontFamily: 'Poppins-Regular'
                 }}
             />
+
+            {/* this scrollview is only here to register native events on android for flatlist (used in AppIntroSlider) */}
+            {/* ¯\_(ツ)_/¯ */}
             <ScrollView style={{ height: 0, width: 0, position: 'absolute' }} />
         </View>
     }
@@ -160,20 +162,9 @@ class Splash extends Component {
             case LOGINFORM:
                 return this.renderSplashLoginForm();
             default:
-                return this.renderSplashLoader();
+                return <View style={{ flex: 1, backgroundColor: '#F8FAFD' }} />;
         }
     }
 }
-
-const styles = StyleSheet.create({
-    slide: {
-    },
-    title: {
-
-    },
-    text: {
-
-    }
-})
 
 export default connect(undefined, { loginUser })(Splash);
