@@ -1,10 +1,54 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { AsyncStorage, ActivityIndicator, StatusBar, View } from 'react-native';
+import { AsyncStorage, ActivityIndicator, StatusBar, View, Text, StyleSheet, ScrollView } from 'react-native';
+import AppIntroSlider from 'react-native-app-intro-slider';
 import SplashComponent from '../components/splashComponent';
 import LoginForm from '../components/loginForm';
 import { loginUser } from '../actions/';
-import { LOGINDETAILSKEY, LOADER, LOGINFORM } from '../variables/strings';
+import { LOGINDETAILSKEY, LOADER, LOGINFORM, INTRO } from '../variables/strings';
+import IntroSlide from '../components/introSlide';
+
+const introSlides = [
+    {
+        key: 'first',
+        content: () => <IntroSlide
+            subtitle={'GOOGLE & MICROSOFT SUPPORTED'}
+            title={'Integrates with your Email and Calendar'}
+            image={require('../../assets/images/swipe_1.png')}
+            bullets={[
+                'Integrates with all popular emails and calendars',
+                'Add events (and customers!) to your calendar',
+                'Send emails from your email address inside Simply'
+            ]}
+        />
+    },
+    {
+        key: 'second',
+        content: () => <IntroSlide
+            subtitle={'DASHBOARDS FOR EACH CUSTOMER'}
+            title={'Get full customer overview'}
+            image={require('../../assets/images/swipe_2.png')}
+            bullets={[
+                'Check who had the last dialogue – and what it was about',
+                'See related Events, Calls, Emails, Documents, etc.',
+                'Actionable: What is next step on this customer'
+            ]}
+        />
+    },
+    {
+        key: 'third',
+        content: () => <IntroSlide
+            subtitle={'VISUALISE YOUR SALES PROCESS'}
+            title={'CRM made visual'}
+            image={require('../../assets/images/swipe_3.png')}
+            bullets={[
+                'Dashboards',
+                'GANTT charts for projects',
+                'Visual Pipeline (KANBAN) for sales & processes'
+            ]}
+        />
+    },
+];
 
 class Splash extends Component {
     static navigationOptions = {
@@ -20,29 +64,56 @@ class Splash extends Component {
         this.getUserCredential();
     }
 
+    async didShowIntro() {
+        try {
+            const wasShown = await AsyncStorage.getItem(INTRO);
+            if (wasShown !== 'true') return false;
+        } catch (e) {
+            console.log(e);
+        }
+        return true;
+    }
+
     async getUserCredential() {
         try {
             const loginDetails = JSON.parse(await AsyncStorage.getItem(LOGINDETAILSKEY));
             if (loginDetails !== null) {
-                this.props.loginUser(loginDetails.username, loginDetails.password, 
+                this.props.loginUser(loginDetails.username, loginDetails.password,
                     loginDetails.url, this.props.navigation, this);
                 this.setState({ componentToLoad: LOADER });
             } else {
-                this.setState({ componentToLoad: LOGINFORM });
-                
+                const wasIntroShown = await this.didShowIntro();
+
+                if (wasIntroShown) {
+                    this.setState({ componentToLoad: LOGINFORM });
+                } else {
+                    this.setState({ componentToLoad: INTRO })
+                }
             }
         } catch (error) {
             this.setState({ componentToLoad: LOGINFORM });
         }
     }
 
+    renderItem = ({ item }) => {
+        return (
+            <View style={{ backgroundColor: '#F8FAFD', paddingBottom: 40 }}>
+                {item.content()}
+            </View>
+        );
+    }
+    onIntroDone = () => {
+        AsyncStorage.setItem(INTRO, 'true');
+        this.setState({ componentToLoad: LOGINFORM });
+    }
+
     renderSplashLoader() {
         return (
             <SplashComponent>
                 <StatusBar
-                backgroundColor="rgba(0, 0, 0, 0.20)"
-                translucent
-                barStyle="light-content"
+                    backgroundColor="rgba(0, 0, 0, 0.20)"
+                    translucent
+                    barStyle="light-content"
                 />
                 <ActivityIndicator color={'white'} />
             </SplashComponent>
@@ -53,25 +124,56 @@ class Splash extends Component {
         return (
             <View>
                 <StatusBar
-                backgroundColor="rgba(0, 0, 0, 0.20)"
-                translucent
-                barStyle="light-content"
+                    backgroundColor="rgba(0, 0, 0, 0.20)"
+                    translucent
+                    barStyle="light-content"
                 />
                 <LoginForm navigation={this.props.navigation} />
             </View>
         );
     }
 
+    renderIntro() {
+        return <View style={{ flex: 1 }}>
+            <AppIntroSlider
+                renderItem={this.renderItem}
+                slides={introSlides}
+                onDone={this.onIntroDone}
+                showSkipButton={true}
+                dotStyle={{ backgroundColor: 'rgba(0, 0, 0, .1)' }}
+                activeDotStyle={{ backgroundColor: 'rgba(0, 0, 0, .2)' }}
+                buttonTextStyle={{
+                    color: '#1583EC',
+                    fontFamily: 'Poppins-Regular'
+                }}
+            />
+            <ScrollView style={{ height: 0, width: 0, position: 'absolute' }} />
+        </View>
+    }
+
     render() {
         switch (this.state.componentToLoad) {
             case LOADER:
                 return this.renderSplashLoader();
+            case INTRO:
+                return this.renderIntro();
             case LOGINFORM:
                 return this.renderSplashLoginForm();
             default:
                 return this.renderSplashLoader();
         }
-   }
+    }
 }
+
+const styles = StyleSheet.create({
+    slide: {
+    },
+    title: {
+
+    },
+    text: {
+
+    }
+})
 
 export default connect(undefined, { loginUser })(Splash);

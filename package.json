@@ -21,6 +21,7 @@
 		"react": "16.0.0",
 		"react-native": "0.50.3",
 		"react-native-action-button": "^2.8.1",
+		"react-native-app-intro-slider": "^3.0.0",
 		"react-native-datepicker": "^1.6.0",
 		"react-native-datepicker-dialog": "^0.0.7",
 		"react-native-elements": "^0.17.0",
