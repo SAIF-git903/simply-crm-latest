@@ -12,39 +12,46 @@ const scale = size => width / guidelineBaseWidth * size;
 const verticalScale = size => height / guidelineBaseHeight * size;
 const moderateScale = (size, factor = 0.5) => size + (scale(size) - size) * factor;
 
-const renderBullets = (data) => data.map((item) => {
+const renderBullets = (data) => data.map((item, index) => {
     return <View style={{
         flexDirection: 'row',
         alignItems: 'flex-start',
-        paddingTop: 12,
+        paddingTop: index === 0 ? 0 : 12,
+        flexWrap: 'wrap'
     }}>
-        <Icon
-            name='check-circle'
-            solid
-            size={14}
-            color='#48CB53'
-            style={{
-                top: 5,
-                paddingRight: 5
-            }}
-        />
-        <Text style={styles.bullet}>
-            {item}
-        </Text>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+
+            <Text style={styles.bullet}>
+                <Icon
+                    name='check-circle'
+                    solid
+                    size={moderateScale(18)}
+                    color='#48CB53'
+                    style={{
+                        paddingRight: 5
+                    }}
+                /> {item}
+            </Text>
+        </View>
     </View>
 })
 
 export default function IntroSlide({ image, subtitle, title, bullets }) {
     const imageSize = Image.resolveAssetSource(image);
 
-    const imagePreferredWidth = verticalScale(280);
+    const imagePreferredWidth = verticalScale(270);
     const scaledHeight = (imagePreferredWidth) * imageSize.height / imageSize.width;
 
     return (
         <View style={styles.wrapper}>
             {/* image container */}
-            <View style={{ flex: 1, justifyContent: 'flex-end', marginTop: (Platform.OS === 'ios') ? (isIphoneX() ? 42 : 30) : 20, marginBottom: 20 }}>
+            <View style={{
+                flex: 1,
+                justifyContent: 'center',
+                marginTop: (Platform.OS === 'ios') ? (isIphoneX() ? 42 : 30) : 20,
+            }}>
                 <Image
+                    resizeMode={'contain'}
                     source={image}
                     style={{
                         width: imagePreferredWidth,
@@ -54,12 +61,10 @@ export default function IntroSlide({ image, subtitle, title, bullets }) {
             </View>
 
             {/* content container */}
-            <View style={{ flex: 1, justifyContent: 'center', marginBottom: 30, paddingHorizontal: 20 }}>
+            <View style={{ flex: 1, justifyContent: 'center' }}>
                 <Text style={styles.subtitle}>{subtitle}</Text>
                 <Text style={styles.title}>{title}</Text>
-                <View style={{
-                    paddingHorizontal: 10
-                }}>
+                <View>
                     {renderBullets(bullets)}
                 </View>
             </View>
@@ -70,26 +75,28 @@ export default function IntroSlide({ image, subtitle, title, bullets }) {
 const styles = StyleSheet.create({
     wrapper: {
         height: '100%',
+        padding: 20,
+        paddingBottom: 36,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'transparent',
     },
     subtitle: {
         fontFamily: 'Poppins-Light',
-        fontSize: moderateScale(14),
+        fontSize: verticalScale(14),
         color: '#2688f2',
         textAlign: 'center'
     },
     title: {
         fontFamily: 'Poppins-Bold',
-        fontSize: moderateScale(20),
+        fontSize: verticalScale(19),
         color: '#1c1c1c',
         textAlign: 'center',
+        paddingVertical: 10
     },
     bullet: {
         fontFamily: 'Poppins-Regular',
-        fontSize: moderateScale(13),
+        fontSize: verticalScale(15),
         color: '#59636f',
-        lineHeight: moderateScale(22)
     }
 });
