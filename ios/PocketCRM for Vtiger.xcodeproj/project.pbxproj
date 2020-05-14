@@ -20,6 +20,7 @@
 		4812EB1DDDBF45F0B4DE5726 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2D5FBD665DA34924A755B38D /* EvilIcons.ttf */; };
 		54231C936EC24B879DB4861E /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DFD24A04F78847618FF89C1F /* Octicons.ttf */; };
 		5A404ECFFB304978A8CACE32 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F9505C60A07A4CEFB64E191C /* FontAwesome5_Regular.ttf */; };
+		5BEBAB93246D824E003E8A5E /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 5BEBAB91246D824D003E8A5E /* assets */; };
 		64839B65D3A74E089F56EE97 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 232AFF2DDDD34729BE4CF8D5 /* MaterialCommunityIcons.ttf */; };
 		64E1A8E0AF764862AD8001EB /* FontAwesome5_Pro_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B514AEECBD91495982F1A221 /* FontAwesome5_Pro_Regular.ttf */; };
 		680CA41BC21E417FAD9A4343 /* Poppins-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 22C0B3305FF2423788A96229 /* Poppins-ThinItalic.ttf */; };
@@ -85,6 +86,7 @@
 		50935CA54FB54F18AB35A98F /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		55CDE3111F304DE79B0EA0D3 /* Poppins-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-MediumItalic.ttf"; path = "../assets/fonts/Poppins-MediumItalic.ttf"; sourceTree = "<group>"; };
 		583C39B17EF448798B9E110B /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
+		5BEBAB91246D824D003E8A5E /* assets */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = assets; sourceTree = SOURCE_ROOT; };
 		750776F28A514CEAAB46B0E8 /* Poppins-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Black.ttf"; path = "../assets/fonts/Poppins-Black.ttf"; sourceTree = "<group>"; };
 		75122CB25C8F722506118012 /* Pods-PocketCRM for Vtiger.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PocketCRM for Vtiger.release.xcconfig"; path = "Pods/Target Support Files/Pods-PocketCRM for Vtiger/Pods-PocketCRM for Vtiger.release.xcconfig"; sourceTree = "<group>"; };
 		80FBBC4F8F3C479FB9FAF0CF /* Poppins-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraLightItalic.ttf"; path = "../assets/fonts/Poppins-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
@@ -248,6 +250,7 @@
 			isa = PBXGroup;
 			children = (
 				A3AFFC4D1FCC2AAF00126F84 /* main.jsbundle */,
+				5BEBAB91246D824D003E8A5E /* assets */,
 				A343FBEC1FB1A9B7009A9ADB /* AppDelegate.swift */,
 				A343FBEE1FB1A9B7009A9ADB /* ViewController.swift */,
 				A343FBF01FB1A9B7009A9ADB /* Main.storyboard */,
@@ -360,6 +363,7 @@
 				98ADE062CA474821A0A67A1D /* FontAwesome5_Solid.ttf in Resources */,
 				B858EB35FC42460C93BDF0D1 /* Fontisto.ttf in Resources */,
 				1499C761F1C84668AC102098 /* Poppins-Black.ttf in Resources */,
+				5BEBAB93246D824E003E8A5E /* assets in Resources */,
 				9AF02B576F1D45EEAD98C14D /* Poppins-BlackItalic.ttf in Resources */,
 				DE484388A64D4A4E895C713A /* Poppins-Bold.ttf in Resources */,
 				9D2CDDFA0E814566B3BD2143 /* Poppins-BoldItalic.ttf in Resources */,
@@ -587,7 +591,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 19;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = 6JWQQD5699;
 				INFOPLIST_FILE = "PocketCRM for Vtiger/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11;
@@ -610,7 +614,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 19;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = 6JWQQD5699;
 				INFOPLIST_FILE = "PocketCRM for Vtiger/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11;
