@@ -165,7 +165,7 @@ class LoginForm extends Component {
                                         (Platform.OS === 'android') ?
 
                                             <Picker
-                                                style={fontStyles.loginInputFieldLabel}
+                                                style={[fontStyles.loginInputFieldLabel, { flex: 1, backgroundColor: 'transparent' }]}
 
                                                 mode={'dropdown'}
                                                 selectedValue={this.state.url}
