@@ -17,20 +17,24 @@ const renderBullets = (data) => data.map((item, index) => {
         flexDirection: 'row',
         alignItems: 'flex-start',
         paddingTop: index === 0 ? 0 : 12,
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
     }}>
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-
+        <View style={{
+            flexDirection: 'row',
+            flexWrap: 'wrap'
+        }}>
+            <Icon
+                name='check-circle'
+                solid
+                size={moderateScale(18)}
+                color='#48CB53'
+                style={{
+                    paddingRight: 5,
+                    top: 4
+                }}
+            />
             <Text style={styles.bullet}>
-                <Icon
-                    name='check-circle'
-                    solid
-                    size={moderateScale(18)}
-                    color='#48CB53'
-                    style={{
-                        paddingRight: 5
-                    }}
-                /> {item}
+                {item}
             </Text>
         </View>
     </View>
@@ -98,5 +102,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins-Regular',
         fontSize: verticalScale(15),
         color: '#59636f',
+        flex: 1
     }
 });
