@@ -234,6 +234,8 @@ export const saveRecordHelper = (addInstance, headerInstance, dispatch) => {
     const formInstance = addInstance.state.inputInstance;
     const jsonObj = {};
     const lineitemsObj = [];
+    let productObj = null;
+
     for (let i = 0; i < formInstance.length; i++) {
         const fieldName = formInstance[i].state.fieldName;
         const value = formInstance[i].state.saveValue;
@@ -244,14 +246,16 @@ export const saveRecordHelper = (addInstance, headerInstance, dispatch) => {
                 jsonObj[fieldName] = value;
             }
             if (fieldName === 'productid' || fieldName === 'quantity' || fieldName === 'listprice') {
-                const productObj = {};
+                if (!productObj) productObj = {};
                 productObj[fieldName] = value;
-                lineitemsObj.push(productObj);
             }
         } else {
             jsonObj[fieldName] = value;
         }
     }
+
+    if (productObj) lineitemsObj.push(productObj);
+
     if (addInstance.props.moduleName === 'Invoice') {
         jsonObj['LineItems'] = lineitemsObj;
     }

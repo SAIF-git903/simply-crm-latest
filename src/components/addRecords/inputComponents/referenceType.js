@@ -89,6 +89,7 @@ class ReferenceType extends Component {
     }
 
     render() {
+        console.log(this.state);
         const mandatory = this.props.obj.mandatory;
         const type = this.props.obj.type;
         const { navigate } = this.props.navigate;
