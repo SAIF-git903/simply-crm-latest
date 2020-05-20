@@ -4,6 +4,11 @@ export const LOGIN_USER_SUCCESS = 'login_user_success';
 
 export const UPDATE_MGR = 'update_mgr';
 
+// User action types
+export const FETCH_USER_DATA = 'fetch_user_data';
+export const FETCH_USER_DATA_REJECTED = 'fetch_user_data_rejected';
+export const FETCH_USER_DATA_FULFILLED = 'fetch_user_data_fulfilled';
+
 //Drawer action types
 export const DRAWER_BUTTON_SELECTED = 'drawer_button';
 

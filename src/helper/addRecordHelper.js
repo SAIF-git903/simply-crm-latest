@@ -171,6 +171,11 @@ export const describeRecordHelper = async (addInstance) => {
                             formArray.push(
                                 <View>
                                     <ReferenceForm
+                                        defaultValue={
+                                            fieldObj.name === 'currency_id'
+                                                ? store.getState().UserReducer.userData.currency_id
+                                                : null
+                                        }
                                         obj={fieldObj}
                                         navigate={addInstance.props.navigation}
                                         moduleName={addInstance.props.moduleName}

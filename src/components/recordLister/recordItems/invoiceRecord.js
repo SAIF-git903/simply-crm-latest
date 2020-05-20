@@ -100,6 +100,7 @@ class InvoiceRecord extends Component {
         }];
 
         if (!this.state.loading) {
+            console.log(this.props.item)
             return (
                 <View
                     onLayout={({ nativeEvent: { layout: { x, y, width, height } } }) => this.setState({ swipeButtonWidth: height })}

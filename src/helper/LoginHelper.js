@@ -4,6 +4,8 @@ import Toast from 'react-native-simple-toast';
 import { LOGINDETAILSKEY, LOGINFORM, URLDETAILSKEY } from '../variables/strings';
 import { LOGIN_USER_SUCCESS } from '../actions/types';
 import { addDatabaseKey } from '.';
+import { fetchUserData } from '../actions/userActions';
+import store from '../store';
 
 export const userUrlHelper = async (email, password, url, navigation, loginInstance, dispatch) => {
 
@@ -66,6 +68,7 @@ export const assignUrl = async (crmUrl, crmUsername, crmPassword, navigation, lo
 };
 
 export const loginHelper = async (username, password, url, navigation, loginInstance, dispatch) => {
+
     let param = new FormData();
     param.append('_operation', 'loginAndFetchModules');
     param.append('username', username);
@@ -116,9 +119,23 @@ export const loginHelper = async (username, password, url, navigation, loginInst
                 modules: responseJson.result.modules,
                 userId: responseJson.result.login.userid
             };
-            AsyncStorage.setItem(LOGINDETAILSKEY, JSON.stringify(loginDetails));
-            await addDatabaseKey(LOGINDETAILSKEY);
-            loginUserSuccess(dispatch, loginDetails, navigation);
+
+            store.dispatch(fetchUserData(loginDetails))
+                .then(async () => {
+                    AsyncStorage.setItem(LOGINDETAILSKEY, JSON.stringify(loginDetails));
+                    await addDatabaseKey(LOGINDETAILSKEY);
+                    loginUserSuccess(dispatch, loginDetails, navigation);
+                })
+                .catch(() => {
+                    loginInstance.setState({ loading: false, showUrlList: false, componentToLoad: LOGINFORM });
+                    Alert.alert('Authentication failed', 'Something went wrong, please try again later',
+                        [
+                            { text: 'Ok', onPress: () => { } },
+                        ],
+                        { cancelable: true }
+                    );
+
+                })
         } else {
             loginInstance.setState({ loading: false, showUrlList: false });
             Alert.alert('Authentication failed', 'Check your username and password',

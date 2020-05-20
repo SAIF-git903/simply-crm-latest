@@ -5,6 +5,7 @@ import DrawerReducer from './drawerReducer';
 import RecordViewer from './recordViewerReducer';
 import Mgr from './mgrReducer';
 import dashboardReducer from './dashboardReducer';
+import UserReducer from './userReducer';
 
 export default combineReducers({
   auth: AuthReducer,
@@ -13,5 +14,6 @@ export default combineReducers({
   recordViewer: RecordViewer,
   mgr: Mgr,
   dashboardUpdate: dashboardReducer,
+  UserReducer
 });
 

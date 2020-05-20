@@ -14,12 +14,13 @@ const mapStateToProps = ({ recordViewer }) => {
 class ReferenceType extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
             dialogueVisible: false,
             dialogueSelectedValue: undefined,
-            referenceValue: '',
+            referenceValue: this.props.defaultValue ? this.props.defaultValue.label : '',
             formId: 0,
-            saveValue: this.props.obj.default,
+            saveValue: this.props.defaultValue ? this.props.defaultValue.value : this.props.obj.default,
             fieldName: this.props.obj.name,
             selectedRefModule: ''
         };
@@ -28,7 +29,7 @@ class ReferenceType extends Component {
     componentWillMount() {
         this.setState({
             formId: this.props.formId,
-            referenceValue: this.props.label
+            referenceValue: this.props.defaultValue ? this.props.defaultValue.label : this.props.label
             //referenceValue: label
         });
         this.assignUserId();
@@ -89,7 +90,6 @@ class ReferenceType extends Component {
     }
 
     render() {
-        console.log(this.state);
         const mandatory = this.props.obj.mandatory;
         const type = this.props.obj.type;
         const { navigate } = this.props.navigate;
