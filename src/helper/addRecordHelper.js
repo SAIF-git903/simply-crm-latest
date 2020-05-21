@@ -36,6 +36,7 @@ export const describeRecordHelper = async (addInstance) => {
         });
         const responseJson = await response.json();
 
+        console.log(param)
         console.log(responseJson);
         if (responseJson.success) {
             const fields = responseJson.result.describe.fields;
@@ -45,6 +46,11 @@ export const describeRecordHelper = async (addInstance) => {
             const currencyArr = [];
             for (const fArr of fields) {
                 i++;
+
+                if (addInstance.props.moduleName === 'Calendar' && fArr.name === 'contact_id') {
+                    continue;
+                }
+
                 const fieldObj = {
                     name: fArr.name,
                     lable: fArr.label,

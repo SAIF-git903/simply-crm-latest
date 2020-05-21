@@ -44,6 +44,11 @@ export const describeEditRecordHelper = async (editInstance) => {
             let i = 0;
             for (const fArr of fields) {
                 i++;
+
+                if (editInstance.props.moduleName === 'Calendar' && fArr.name === 'contact_id') {
+                    continue;
+                }
+
                 const fieldObj = {
                     name: fArr.name,
                     lable: fArr.label,

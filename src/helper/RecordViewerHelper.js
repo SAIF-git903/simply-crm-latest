@@ -222,6 +222,11 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
             }
 
             for (const field of fields) {
+
+                if (viewerInstance.props.moduleName === 'Calendar' && field.name === 'contact_id') {
+                    continue;
+                }
+
                 let value;
                 if (typeof field.value === 'string') {
                     if (typeof field.uitype === 'string') {
@@ -272,7 +277,6 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
                 } else {
                     value = field.value.label;
                 }
-                console.log(field)
 
                 fieldViews.push(<Field label={field.label} value={value} />);
             }
