@@ -11,7 +11,6 @@ import {
 } from '../variables/themeColors';
 import { addDatabaseKey } from '.';
 
-
 const moment = require('moment-timezone');
 
 export const viewRecordRenderer = async (viewerInstance, dispatch) => {
@@ -162,6 +161,33 @@ const getDataFromInternet = async (viewerInstance, offlineAvailable, offlineData
     }
 };
 
+const formatNumber = (numberString) => {
+    try {
+        const {
+            no_of_currency_decimals,
+            currency_grouping_separator,
+            currency_decimal_separator,
+        } = store.getState().UserReducer.userData;
+
+        let result = parseFloat(numberString);
+
+        const decimalCount = parseInt(no_of_currency_decimals);
+
+        result = result.toLocaleString('en-US', {
+            minimumFractionDigits: decimalCount,
+            maximumFractionDigits: decimalCount
+        });
+
+        result = result.replace(/\./, currency_decimal_separator);
+        result = result.replace(/,/g, currency_grouping_separator);
+
+        return result;
+    } catch (e) {
+        console.log(e)
+        return numberString;
+    }
+}
+
 const getAndSaveData = async (responseJson, viewerInstance, offline, message) => {
     const { auth } = store.getState();
     const loginDetails = auth.loginDetails;
@@ -213,6 +239,12 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
                                 value = field.value;
                             }
 
+                            if (uiType === 7
+                                || uiType === 72
+                                || uiType === 71) {
+                                value = formatNumber(field.value)
+                            }
+
                         } catch (error) {
                             //console.log(error);
                             value = field.value;
@@ -240,6 +272,7 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
                 } else {
                     value = field.value.label;
                 }
+                console.log(field)
 
                 fieldViews.push(<Field label={field.label} value={value} />);
             }
