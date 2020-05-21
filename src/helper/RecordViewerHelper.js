@@ -11,6 +11,7 @@ import {
 } from '../variables/themeColors';
 import { addDatabaseKey } from '.';
 
+var numbro = require('numbro');
 const moment = require('moment-timezone');
 
 export const viewRecordRenderer = async (viewerInstance, dispatch) => {
@@ -173,9 +174,9 @@ const formatNumber = (numberString) => {
 
         const decimalCount = parseInt(no_of_currency_decimals);
 
-        result = result.toLocaleString('en-US', {
-            minimumFractionDigits: decimalCount,
-            maximumFractionDigits: decimalCount
+        result = numbro(result).format({
+            thousandSeparated: true,
+            mantissa: decimalCount
         });
 
         result = result.replace(/\./, currency_decimal_separator);
