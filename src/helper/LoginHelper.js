@@ -15,7 +15,8 @@ export const userUrlHelper = async (email, password, url, navigation, loginInsta
             console.log(URLDetails)
             loginHelper(URLDetails.userName, URLDetails.password, URLDetails.url, navigation, loginInstance, dispatch);
         } else {
-            const response = await fetch(`https://sai.simplyhq.com/index.php?action=LocateInstance&email=${email}&password=${password}&api_key=jNuaPq7MRfLDvnLs5gZ9XgU1H7n3URma`, {
+            const url = `https://sai.simplyhq.com/index.php?action=LocateInstance&email=${email}&password=${password}&api_key=jNuaPq7MRfLDvnLs5gZ9XgU1H7n3URma`;
+            const response = await fetch(url, {
                 method: 'GET',
                 headers: {
                     'cache-control': 'no-cache'
@@ -23,6 +24,7 @@ export const userUrlHelper = async (email, password, url, navigation, loginInsta
             });
             const responseJson = await response.json();
 
+            console.log(url);
             console.log(responseJson)
 
             if (responseJson.output.success !== 0) {

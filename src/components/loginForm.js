@@ -119,7 +119,12 @@ class LoginForm extends Component {
     }
 
     async openSignUpUrl() {
-        const url = `https://auth.simply-crm.com/?email=${this.state.email}`
+        const tracking = Platform.OS === 'ios'
+            ? '&utm_source=apps.apple.com&utm_medium=app_store&utm_campaign=app_v1'
+            : '&utm_source=play.google.com&utm_medium=app_store&utm_campaign=app_v1'
+            ;
+
+        const url = `https://auth.simply-crm.com/?email=${this.state.email}${tracking}`
         const supported = await Linking.canOpenURL(url);
 
         if (supported) {
