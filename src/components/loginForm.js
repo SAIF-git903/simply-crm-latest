@@ -336,12 +336,12 @@ class LoginForm extends Component {
                     </View>
 
                     <View style={styles.signupSection}>
-                        <Text
+                        {/* <Text
                             style={fontStyles.signUpLabel}
                             onPress={() => this.openSignUpUrl()}
                         >
                             Don't have an account? Sign up for free here
-                        </Text>
+                        </Text> */}
 
                     </View>
                 </SafeAreaView>

@@ -291,9 +291,7 @@
 		5A7CA8C89AA016EA5046C40F7503FC6F /* RCTImageLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 0B68F62067656C12297241D8C51D02B2 /* RCTImageLoader.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5BA7F28E098845D5F0DEBD513AB50316 /* RCTMaskedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9732CA45AA033CDE1418298926C91439 /* RCTMaskedView.m */; };
 		5BDFB3BF247E583E005AB44A /* glog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E3CF3B6E684B126667F6131A0E6FBBE /* glog.framework */; };
-		5BDFB3C0247E583E005AB44A /* glog.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3E3CF3B6E684B126667F6131A0E6FBBE /* glog.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5BDFB3C4247E5842005AB44A /* DoubleConversion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FFB7B2992BB53405E6B771A5BA1E97D /* DoubleConversion.framework */; };
-		5BDFB3C5247E5842005AB44A /* DoubleConversion.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6FFB7B2992BB53405E6B771A5BA1E97D /* DoubleConversion.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5C3ACF29564CF2A44FE12A65718DD79E /* RCTUITextField.h in Headers */ = {isa = PBXBuildFile; fileRef = 70597D644D2EBD5C905CF491EAFAB60D /* RCTUITextField.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5D1E01FC5A441A5CD0BF86F8AA3C51B1 /* RCTDevLoadingView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A2507E70E387A0A9687A5DEA54799B2 /* RCTDevLoadingView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5D20D85303DC3E8A01D41FEF01003A02 /* Value.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CF7D388E2C87A5C6ABBBD2F96450049A /* Value.cpp */; settings = {COMPILER_FLAGS = "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1"; }; };
@@ -852,21 +850,6 @@
 			remoteInfo = boost;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		5BDFB3C3247E583E005AB44A /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				5BDFB3C0247E583E005AB44A /* glog.framework in Embed Frameworks */,
-				5BDFB3C5247E5842005AB44A /* DoubleConversion.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		005F21FB5E3180B25690B6CEA95BC76C /* GLog-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "GLog-prefix.pch"; sourceTree = "<group>"; };
@@ -3390,7 +3373,6 @@
 				9A849E1B8108E9043C88934EEAB0881E /* Sources */,
 				A21F2A8E72B115AB283597674975AEE8 /* Frameworks */,
 				E3E87CEE2789D920F7F91E44F15499BE /* Resources */,
-				5BDFB3C3247E583E005AB44A /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
