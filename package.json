@@ -26,6 +26,7 @@
 		"react-native-datepicker": "^1.6.0",
 		"react-native-datepicker-dialog": "^0.0.7",
 		"react-native-elements": "^0.17.0",
+		"react-native-inappbrowser-reborn": "^2.0.4",
 		"react-native-iphone-x-helper": "^1.0.1",
 		"react-native-keyboard-aware-scroll-view": "^0.4.1",
 		"react-native-keyboard-spacer": "^0.4.1",

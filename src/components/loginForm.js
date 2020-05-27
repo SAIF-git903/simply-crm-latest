@@ -8,6 +8,7 @@ import ModalDropdown from 'react-native-modal-dropdown';
 import IconButton from '../components/IconButton';
 
 import Icon from 'react-native-vector-icons/FontAwesome5Pro';
+import InAppBrowser from 'react-native-inappbrowser-reborn';
 
 import { URLDETAILSKEY, LOGINDETAILSKEY } from '../variables/strings';
 import { loginUser } from '../actions/';
@@ -125,12 +126,20 @@ class LoginForm extends Component {
             ;
 
         const url = `https://auth.simply-crm.com/?email=${this.state.email}${tracking}`
-        const supported = await Linking.canOpenURL(url);
-
-        if (supported) {
-            await Linking.openURL(url);
+        if (await InAppBrowser.isAvailable()) {
+            await InAppBrowser.open(url, {
+                dismissButtonStyle: 'Done',
+                preferredBarTintColor: '#0085DE',
+                preferredControlTintColor: 'white',
+                readerMode: false,
+            });
         } else {
-            Alert.alert(`Cannot open URL on this device, please visit: ${url}`);
+            const supported = await Linking.canOpenURL(url);
+            if (supported) {
+                await Linking.openURL(url);
+            } else {
+                Alert.alert(`Cannot open URL on this device, please visit: ${url}`);
+            }
         }
     }
 
