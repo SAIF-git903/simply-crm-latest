@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { AsyncStorage, ActivityIndicator, StatusBar, View, Text, StyleSheet, ScrollView } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import AppIntroSlider from 'react-native-app-intro-slider';
+import SafeAreaView from 'react-native-safe-area-view';
+
+
 import SplashComponent from '../components/splashComponent';
 import LoginForm from '../components/loginForm';
 import { loginUser } from '../actions/';
@@ -97,7 +101,7 @@ class Splash extends Component {
 
     renderItem = ({ item }) => {
         return (
-            <View style={{ backgroundColor: '#F8FAFD', paddingBottom: 40 }}>
+            <View style={{ paddingBottom: 40 }}>
                 {item.content()}
             </View>
         );
@@ -110,11 +114,6 @@ class Splash extends Component {
     renderSplashLoader() {
         return (
             <SplashComponent>
-                <StatusBar
-                    backgroundColor="rgba(0, 0, 0, 0.20)"
-                    translucent
-                    barStyle="light-content"
-                />
                 <ActivityIndicator color={'white'} />
             </SplashComponent>
         );
@@ -122,38 +121,34 @@ class Splash extends Component {
 
     renderSplashLoginForm() {
         return (
-            <View>
-                <StatusBar
-                    backgroundColor="rgba(0, 0, 0, 0.20)"
-                    translucent
-                    barStyle="light-content"
-                />
+            <View style={{ flex: 1 }}>
                 <LoginForm navigation={this.props.navigation} />
             </View>
         );
     }
 
     renderIntro() {
-        return <View style={{ flex: 1 }}>
-            <AppIntroSlider
-                renderItem={this.renderItem}
-                slides={introSlides}
-                onDone={this.onIntroDone}
-                dotStyle={{ backgroundColor: 'rgba(0, 0, 0, .1)' }}
-                activeDotStyle={{ backgroundColor: 'rgba(0, 0, 0, .2)' }}
-                buttonTextStyle={{
-                    color: '#1583EC',
-                    fontFamily: 'Poppins-Regular'
-                }}
-            />
-
-            {/* this scrollview is only here to register native events on android for flatlist (used in AppIntroSlider) */}
-            {/* ¯\_(ツ)_/¯ */}
-            <ScrollView style={{ height: 0, width: 0, position: 'absolute' }} />
+        return <View style={{ flex: 1, backgroundColor: '#F8FAFD', }}>
+            <SafeAreaView
+                forceInset={{ top: 'always' }}
+                style={{ flex: 1 }}
+            >
+                <AppIntroSlider
+                    renderItem={this.renderItem}
+                    slides={introSlides}
+                    onDone={this.onIntroDone}
+                    dotStyle={{ backgroundColor: 'rgba(0, 0, 0, .1)' }}
+                    activeDotStyle={{ backgroundColor: 'rgba(0, 0, 0, .2)' }}
+                    buttonTextStyle={{
+                        color: '#1583EC',
+                        fontFamily: 'Poppins-Regular'
+                    }}
+                />
+            </SafeAreaView>
         </View>
     }
 
-    render() {
+    renderView() {
         switch (this.state.componentToLoad) {
             case LOADER:
                 return this.renderSplashLoader();
@@ -162,8 +157,14 @@ class Splash extends Component {
             case LOGINFORM:
                 return this.renderSplashLoginForm();
             default:
-                return <View style={{ flex: 1, backgroundColor: '#F8FAFD' }} />;
+                return <View style={{ flex: 1 }} />;
         }
+    }
+
+    render() {
+        return <View style={{ flex: 1, backgroundColor: '#F8FAFD' }}>
+            {this.renderView()}
+        </View>
     }
 }
 

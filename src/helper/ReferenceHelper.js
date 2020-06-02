@@ -1,6 +1,7 @@
 import React from 'react';
 import Toast from 'react-native-simple-toast';
-import { AsyncStorage, FlatList, StyleSheet, View, Text } from 'react-native';
+import { FlatList, StyleSheet, View, Text } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { getDatafromNet } from './networkHelper';
 import store from '../store';
 import CampaignsRecord from
@@ -43,8 +44,6 @@ import AssetRecord from
     '../components/addRecords/referenceRecordLister/recordItems/assetRecord';
 import SMSnotifierRecord from
     '../components/addRecords/referenceRecordLister/recordItems/smsnotifierRecord';
-import ProjectMilestoneRecord from
-    '../components/recordLister/recordItems/projectMilestoneRecord';
 import ProjectTaskRecord from
     '../components/addRecords/referenceRecordLister/recordItems/projectTaskRecord';
 import ModuleProjectRecord from
@@ -56,6 +55,8 @@ import CurrencyRecord from
     '../components/addRecords/referenceRecordLister/recordItems/currencyRecord';
 import DocumentFoldersRecord from
     '../components/addRecords/referenceRecordLister/recordItems/documentFoldersRecord';
+
+import RecordItem from '../components/recordLister/recordItem'
 
 import { UPDATE_RECORD_VIEWER, COPY_CONTACT_ADDRESS, COPY_ORGANISATION_ADDRESS } from '../actions/types';
 import {
@@ -252,7 +253,7 @@ export const viewRefRecord = async (recordId, listerInstance, dispatch) => {
         const navigation = listerInstance.props.navigation;
         //console.log(listerInstance);
         //console.log(navigation);
-        navigation.navigate('DetailsScreen');
+        navigation.navigate('Record Details');
     } else {
         if (width > 600) {
             //It is a tablet
@@ -284,7 +285,7 @@ export const viewRefRecord = async (recordId, listerInstance, dispatch) => {
                 }
             });
             const navigation = listerInstance.props.navigation;
-            navigation.navigate('DetailsScreen');
+            navigation.navigate('Record Details');
         }
     }
 };
@@ -1480,11 +1481,12 @@ export const recordRefListRendererHelper = (listerInstance) => {
                     onEndReached={listerInstance.onEndReached.bind(listerInstance)}
                     onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
                     renderItem={({ item, index }) =>
-                        <ProjectMilestoneRecord
+                        <RecordItem
                             index={index}
                             selectedIndex={listerInstance.state.selectedIndex}
                             listerInstance={listerInstance}
                             item={item}
+                            recordName={item.pmLable}
                             onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
                         />}
                 />

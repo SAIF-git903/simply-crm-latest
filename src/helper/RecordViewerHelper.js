@@ -1,5 +1,5 @@
 import React from 'react';
-import { AsyncStorage, View } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import store from '../store';
 import { getDatafromNet } from './networkHelper';
 import Section from '../components/common/section';
@@ -282,9 +282,9 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
                 fieldViews.push(<Field label={field.label} value={value} />);
             }
 
-            console.log(block.label);
             blockViews.push(
                 <Section
+                    key={block.label}
                     headerStyle={{ paddingLeft: 15 }}
                     style={{ paddingTop: 5 }}
                     open={(i === 0)}

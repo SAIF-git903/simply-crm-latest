@@ -18,16 +18,23 @@ class ImageButton extends Component {
         // this.state = { iconName: faTachometerAlt };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.assignIcons();
     }
 
     onButtonPress() {
+        console.log(this.props.type)
         if (this.props.type === HOME) {
             this.props.dispatch(drawerButtonPress(this.props.type));
+            this.props.navigation.jumpTo('Dashboard');
         } else {
             this.props.dispatch(drawerButtonPress(this.props.module.name,
                 this.props.module.label, this.props.module.id));
+            this.props.navigation.jumpTo('Records', {
+                moduleName: this.props.module.name,
+                moduleLable: this.props.module.label,
+                moduleId: this.props.module.id
+            });
         }
     }
 

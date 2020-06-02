@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { commonStyles } from '../../../styles/common';
+import { View, Text, TouchableOpacity } from 'react-native';
+import SafeAreaView from 'react-native-safe-area-view';
+
+
+import { commonStyles, fontStyles } from '../../../styles/common';
 import { viewSearchAction, updateSearchModule } from '../../../actions';
-import {
-    HEADER_TEXT_COLOR, HEADER_IMAGE_COLOR,
-    HEADER_IMAGE_SELECTED_COLOR
-} from '../../../variables/themeColors';
 import Icon from 'react-native-vector-icons/FontAwesome5Pro';
 
 class Header extends Component {
@@ -63,16 +62,19 @@ class Header extends Component {
     render() {
         return (
             <View style={commonStyles.headerBackground}>
-                <View style={commonStyles.headerContentStyle}>
-                    <View style={{ width: 40 }}>
-                        {
-                            this.renderBackButton()
-                        }
-                    </View>
-                    <View style={{ flex: 1, marginRight: 40 }}>
-                        <Text style={styles.headerTextStyle}>{this.props.moduleLable}</Text>
-                    </View>
-                    {/* <TouchableOpacity onPress={this.onSearchButtonPress.bind(this)}>
+                <SafeAreaView
+                    forceInset={{ top: 'always' }}
+                >
+                    <View style={commonStyles.headerContentStyle}>
+                        <View style={{ width: 40 }}>
+                            {
+                                this.renderBackButton()
+                            }
+                        </View>
+                        <View style={{ flex: 1, marginRight: 40 }}>
+                            <Text style={fontStyles.navbarTitle}>{this.props.moduleLable}</Text>
+                        </View>
+                        {/* <TouchableOpacity onPress={this.onSearchButtonPress.bind(this)}>
                         <Image
                             source={{ uri: 'search' }}
                             style={{
@@ -83,20 +85,12 @@ class Header extends Component {
                             }}
                         />
                     </TouchableOpacity> */}
-                </View>
+                    </View>
+                </SafeAreaView>
             </View>
         );
     }
 }
-
-const styles = StyleSheet.create({
-    headerTextStyle: {
-        color: HEADER_TEXT_COLOR,
-        flex: 1,
-        fontSize: 15,
-        textAlign: 'center'
-    }
-});
 
 const mapStateToProp = ({ event, mgr }) => {
     const { isPortrait, width, height } = event;

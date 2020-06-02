@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, ActivityIndicator, Text } from 'react-native';
-import ActionButton from 'react-native-action-button';
-import { NavigationActions } from 'react-navigation';
 import SearchBox from '../common/searchBox';
 import { commonStyles, fontStyles } from '../../styles/common';
 import { fetchRecord, viewRecordAction, refreshRecord, getNextPageRecord } from '../../actions';
@@ -15,7 +13,7 @@ class Lister extends Component {
         this.state = {
             searching: false,
             searchText: null,
-            loading: false,
+            loading: true,
             isFlatListRefreshing: false,
             data: [],
             selectedIndex: -1,
@@ -27,12 +25,12 @@ class Lister extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.getRecords();
     }
 
-    componentWillReceiveProps(newprops) {
-        this.setState({ searching: false, searchText: null, searchLabel: null })
+    UNSAFE_componentWillReceiveProps(newprops) {
+        this.setState({ loading: true, searching: false, searchText: null, searchLabel: null })
         this.props = newprops;
         if (this.props.saved !== 'not_saved') {
             this.getRecords();
@@ -61,7 +59,7 @@ class Lister extends Component {
 
     getRecords() {
         this.setState({ loading: true, data: [], selectedIndex: -1, statusText: 'Fetching Record', statusTextColor: '#000000' });
-        this.props.dispatch(fetchRecord(this));
+        this.props.dispatch(fetchRecord(this, this.props.moduleName));
         if (this.props.saved === 'saved') {
             this.refreshData();
         }
@@ -182,12 +180,6 @@ class Lister extends Component {
                         this.renderLoading() :
                         this.renderRecordList()
                 }
-                {/* {
-                    (this.props.moduleName !== 'Emails') ?
-                        <ActionButton buttonColor="rgba(231,76,60,1)" onPress={() => { this.onAddButtonPress(); }} />
-                        : undefined
-                } */}
-
             </View>
         );
     }
@@ -200,5 +192,5 @@ const mapStateToProps = ({ event, recordViewer, drawer }) => {
     return { isPortrait, width, height, saved, moduleId };
 };
 
-export default connect(mapStateToProps)(Lister);
+export default connect(mapStateToProps, null, null, { forwardRef: true })(Lister);
 

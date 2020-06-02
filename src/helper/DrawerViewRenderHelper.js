@@ -28,6 +28,7 @@ export const renderDrawerView = async (loginDetails, drawerInstance) => {
     //.................................................................................
 
     let homeButton = <ImageButton
+        navigation={drawerInstance.props.navigation}
         type={HOME}
         label={HOME}
         key='home_menu'
@@ -44,6 +45,7 @@ export const renderDrawerView = async (loginDetails, drawerInstance) => {
     for (const module of loginDetails.modules) {
         if (module.name === CONTACTS) {
             homeButton = <ImageButton
+                navigation={drawerInstance.props.navigation}
                 type={CONTACTS}
                 label={module.label}
                 module={module}
@@ -60,6 +62,7 @@ export const renderDrawerView = async (loginDetails, drawerInstance) => {
 
         if (module.name === ACCOUNTS) {
             homeButton = <ImageButton
+                navigation={drawerInstance.props.navigation}
                 type={ACCOUNTS}
                 label={module.label}
                 module={module}
@@ -100,6 +103,7 @@ export const renderDrawerView = async (loginDetails, drawerInstance) => {
         headerName={MARKETING} imageName={MARKETING_IMAGE}
         headerImage content={marketSectionContent}
         contentHeight={marketSectionContent[0].length * DRAWER_COLUMN_TOTAL_HEIGHT}
+        key='marketing_section'
     />);
 
     const salesSection = (<Section
@@ -125,6 +129,7 @@ export const renderDrawerView = async (loginDetails, drawerInstance) => {
         headerName={INVENTORY} imageName={INVENTORY_IMAGE}
         headerImage content={inventorySectionContent}
         contentHeight={inventorySectionContent[0].length * DRAWER_COLUMN_TOTAL_HEIGHT}
+        key='inventory_section'
     />);
 
     const supportSection = (<Section
@@ -137,6 +142,7 @@ export const renderDrawerView = async (loginDetails, drawerInstance) => {
         headerName={SUPPORT} imageName={SUPPORT_IMAGE}
         headerImage content={supportSectionContent}
         contentHeight={supportSectionContent[0].length * DRAWER_COLUMN_TOTAL_HEIGHT}
+        key='support_section'
     />);
 
     const projectSection = (<Section
@@ -149,6 +155,7 @@ export const renderDrawerView = async (loginDetails, drawerInstance) => {
         headerName={PROJECT} imageName={PROJECT_IMAGE}
         headerImage content={projectSectionContent}
         contentHeight={projectSectionContent.length * DRAWER_COLUMN_TOTAL_HEIGHT}
+        key='project_section'
     />);
 
     const toolsSection = (<Section
@@ -174,6 +181,7 @@ export const renderDrawerView = async (loginDetails, drawerInstance) => {
         headerName={CUSTOM} imageName={CUSTOM_IMAGE}
         headerImage content={customSectionContent}
         contentHeight={customSectionContent[0].length * DRAWER_COLUMN_TOTAL_HEIGHT}
+        key='custom_section'
     />);
 
     // console.log('len', marketSectionContent.length);
@@ -269,7 +277,7 @@ const fillSection = (moduleButtons, module, custom) => {
     moduleButtons.push(getMenuHolder(module, custom));
 };
 
-const getMenuHolder = (module, custom) => <MenuHolder module={module} custom={custom} />;
+const getMenuHolder = (module, custom) => <MenuHolder key={module.name} module={module} custom={custom} />;
 const drawerButtonArrangeHelper = (name) => {
     switch (name) {
         // case ACCOUNTS:

@@ -15,12 +15,7 @@ export default class Section extends Component {
         this.sectionHeight = this.props.contentHeight;
     }
 
-    componentWillMount() {
-        this.init();
-    }
-
-    componentWillReceiveProps(newProps) {
-        this.props = newProps;
+    UNSAFE_componentWillMount() {
         this.init();
     }
 
@@ -52,11 +47,13 @@ export default class Section extends Component {
         const scaleAnimation = Animated.timing(this.animatedScale, {
             toValue: scaleToValue,
             duration: (open) ? 10 : 1000,
+            useNativeDriver: true
         });
 
         const heightAnimation = Animated.timing(this.animatedHeight, {
             toValue: heightToValue,
             duration: 225,
+            useNativeDriver: false
         });
 
         // let sequenceAnimation;
@@ -70,6 +67,7 @@ export default class Section extends Component {
             Animated.timing(this.arrowDegree, {
                 toValue: degreeToValue,
                 duration: 1000,
+                useNativeDriver: true
             }),
             heightAnimation
         ]).start();

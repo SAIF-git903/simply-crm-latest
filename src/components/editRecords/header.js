@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { SafeAreaView, View, Image, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { commonStyles } from '../../styles/common';
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import SafeAreaView from 'react-native-safe-area-view';
+
+
+import { commonStyles, fontStyles } from '../../styles/common';
 import {
-    HEADER_TEXT_COLOR, HEADER_IMAGE_COLOR,
-    HEADER_IMAGE_SELECTED_COLOR
+    HEADER_TEXT_COLOR
 } from '../../variables/themeColors';
 import { saveSuccess } from '../../actions';
 
@@ -79,28 +81,31 @@ class Header extends Component {
     render() {
         return (
             <View style={commonStyles.headerBackground}>
-                <View style={commonStyles.headerContentStyle}>
-                    <View style={{ width: 40 }}>
-                        {
-                            this.renderBackButton()
-                        }
-                    </View>
-                    <View style={{ flex: 1 }}>
-                        <Text style={styles.headerTextStyle}>{this.props.moduleLable}</Text>
-                    </View>
-                    <TouchableOpacity onPress={this.onAddButtonPress.bind(this)}>
-                        <View
-                            style={{
-                                width: 50,
-                                height: 30,
-                                alignItems: 'center',
-                                justifyContent: 'center'
-                            }}
-                        >
-                            {(this.state.loading) ? this.renderLoading() : this.renderSaveButton()}
+                <SafeAreaView
+                    forceInset={{ top: 'always' }}
+                >
+                    <View style={commonStyles.headerContentStyle}>
+                        <View style={{ width: 40 }}>
+                            {
+                                this.renderBackButton()
+                            }
                         </View>
-                    </TouchableOpacity>
-                </View>
+                        <View style={{ flex: 1 }}>
+                            <Text style={fontStyles.navbarTitle}>{this.props.moduleLable}</Text>
+                        </View>
+                        <TouchableOpacity onPress={this.onAddButtonPress.bind(this)}>
+                            <View
+                                style={{
+                                    width: 50,
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                }}
+                            >
+                                {(this.state.loading) ? this.renderLoading() : this.renderSaveButton()}
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                </SafeAreaView>
             </View>
         );
     }

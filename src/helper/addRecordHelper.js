@@ -1,7 +1,7 @@
 import React from 'react';
 import { Alert, View } from 'react-native';
 import Toast from 'react-native-simple-toast';
-import { NavigationActions } from 'react-navigation';
+// import { NavigationActions } from 'react-navigation';
 import store from '../store';
 import StringForm from '../components/addRecords/inputComponents/stringType';
 import BooleanForm from '../components/addRecords/inputComponents/booleanType';
@@ -186,7 +186,7 @@ export const describeRecordHelper = async (addInstance) => {
                                         navigate={addInstance.props.navigation}
                                         moduleName={addInstance.props.moduleName}
                                         formId={i}
-                                        ref={(ref) => { (ref !== null) ? formInstance.push(ref.getWrappedInstance()) : undefined; }}
+                                        ref={(ref) => { (ref !== null) ? formInstance.push(ref) : undefined; }}
                                         userId={loginDetails.userId}
                                         onCopyPriceDetails={addInstance.onCopyPriceDetails.bind(addInstance)}
                                         key={i}
@@ -241,7 +241,7 @@ export const describeRecordHelper = async (addInstance) => {
     }
 };
 
-export const saveRecordHelper = (addInstance, headerInstance, dispatch) => {
+export const saveRecordHelper = (addInstance, headerInstance, dispatch, listerInstance) => {
     const formInstance = addInstance.state.inputInstance;
     const jsonObj = {};
     const lineitemsObj = [];
@@ -271,10 +271,10 @@ export const saveRecordHelper = (addInstance, headerInstance, dispatch) => {
         jsonObj['LineItems'] = lineitemsObj;
     }
 
-    addRecordHelper(addInstance, headerInstance, jsonObj, dispatch);
+    addRecordHelper(addInstance, headerInstance, jsonObj, dispatch, listerInstance);
 };
 
-const addRecordHelper = async (addInstance, headerInstance, jsonObj, dispatch) => {
+const addRecordHelper = async (addInstance, headerInstance, jsonObj, dispatch, listerInstance) => {
 
     const { auth } = store.getState();
     const loginDetails = auth.loginDetails;
@@ -305,13 +305,15 @@ const addRecordHelper = async (addInstance, headerInstance, jsonObj, dispatch) =
             headerInstance.setState({ loading: false });
             Toast.show('Successfully Added');
             dispatch(saveSuccess('saved'));
-            const resetAction = NavigationActions.reset({
-                index: 0,
-                actions: [
-                    NavigationActions.navigate({ routeName: 'HomeScreen' })
-                ]
-            });
-            addInstance.props.navigation.dispatch(resetAction);
+            // const resetAction = NavigationActions.reset({
+            //     index: 0,
+            //     actions: [
+            //         NavigationActions.navigate({ routeName: 'HomeScreen' })
+            //     ]
+            // });
+
+            addInstance.props.navigation.pop();
+            listerInstance.refreshData();
             //addInstance.props.navigation.goBack(null);
         } else {
             console.log(responseJson);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Alert, View } from 'react-native';
 import Toast from 'react-native-simple-toast';
-import { NavigationActions } from 'react-navigation';
+// import { NavigationActions } from 'react-navigation';
 import moment from 'moment';
 import store from '../store';
 import StringForm from '../components/editRecords/inputComponents/stringType';
@@ -66,7 +66,9 @@ export const describeEditRecordHelper = async (editInstance) => {
                         case 'url':
                         case 'email':
                             formArray.push(
-                                <View>
+                                <View
+                                    key={fieldObj.name}
+                                >
                                     <StringForm
                                         obj={fieldObj}
                                         navigate={editInstance.props.navigation}
@@ -80,7 +82,9 @@ export const describeEditRecordHelper = async (editInstance) => {
                             break;
                         case 'boolean':
                             formArray.push(
-                                <View>
+                                <View
+                                    key={fieldObj.name}
+                                >
                                     <BooleanForm
                                         obj={fieldObj}
                                         navigate={editInstance.props.navigation}
@@ -94,7 +98,9 @@ export const describeEditRecordHelper = async (editInstance) => {
                             break;
                         case 'picklist':
                             formArray.push(
-                                <View>
+                                <View
+                                    key={fieldObj.name}
+                                >
                                     <PickerForm
                                         obj={fieldObj}
                                         navigate={editInstance.props.navigation}
@@ -112,7 +118,9 @@ export const describeEditRecordHelper = async (editInstance) => {
                         case 'integer':
                         case 'double':
                             formArray.push(
-                                <View>
+                                <View
+                                    key={fieldObj.name}
+                                >
                                     <NumericForm
                                         obj={fieldObj}
                                         navigate={editInstance.props.navigation}
@@ -126,7 +134,9 @@ export const describeEditRecordHelper = async (editInstance) => {
                             break;
                         case 'date':
                             formArray.push(
-                                <View>
+                                <View
+                                    key={fieldObj.name}
+                                >
                                     <DateForm
                                         obj={fieldObj}
                                         navigate={editInstance.props.navigation}
@@ -140,7 +150,9 @@ export const describeEditRecordHelper = async (editInstance) => {
                             break;
                         case 'multipicklist':
                             formArray.push(
-                                <View>
+                                <View
+                                    key={fieldObj.name}
+                                >
                                     <MultiPickerForm
                                         obj={fieldObj}
                                         navigate={editInstance.props.navigation}
@@ -155,13 +167,18 @@ export const describeEditRecordHelper = async (editInstance) => {
                         case 'reference':
                         case 'owner':
                             formArray.push(
-                                <View>
+                                <View
+                                    key={fieldObj.name}
+                                >
                                     <ReferenceForm
                                         obj={fieldObj}
                                         navigate={editInstance.props.navigation}
                                         moduleName={editInstance.props.moduleName}
                                         formId={i}
-                                        ref={(ref) => { (ref !== null) ? formInstance.push(ref.getWrappedInstance()) : undefined; }}
+                                        ref={(ref) => {
+                                            return (ref !== null) ? formInstance.push(ref) : undefined;
+                                        }
+                                        }
                                     />
                                     <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
                                 </View>
@@ -169,7 +186,9 @@ export const describeEditRecordHelper = async (editInstance) => {
                             break;
                         case 'time':
                             formArray.push(
-                                <View>
+                                <View
+                                    key={fieldObj.name}
+                                >
                                     <TimeForm
                                         obj={fieldObj}
                                         navigate={editInstance.props.navigation}
@@ -183,7 +202,9 @@ export const describeEditRecordHelper = async (editInstance) => {
                             break;
                         default:
                             formArray.push(
-                                <View>
+                                <View
+                                    key={fieldObj.name}
+                                >
                                     <StringForm
                                         obj={fieldObj}
                                         navigate={editInstance.props.navigation}
@@ -199,8 +220,9 @@ export const describeEditRecordHelper = async (editInstance) => {
 
                 }
             }
+
             editInstance.setState(
-                { ...editInstance.state, inputForm: formArray, inputInstance: formInstance, loading: false },
+                { inputForm: formArray, inputInstance: formInstance, loading: false },
                 () => { getDataHelper(editInstance); }
             );
         } else {
@@ -224,12 +246,12 @@ export const getDataHelper = async (editInstance) => {
         if (loginDetails.vtigerVersion < 7) {
             param.append('_session', loginDetails.session);
             param.append('_operation', 'fetchRecord');
-            param.append('record', editInstance.state.id);
+            param.append('record', editInstance.props.recordId);
         } else {
             param.append('_session', loginDetails.session);
             param.append('_operation', 'fetchRecord');
-            param.append('record', editInstance.state.id);
-            // param.append('record', editInstance.state.id);
+            param.append('record', editInstance.props.recordId);
+            // param.append('record', editInstance.props.recordId);
             param.append('module', editInstance.props.moduleName);
         }
 
@@ -317,7 +339,7 @@ export const getDataHelper = async (editInstance) => {
     }
 };
 
-export const saveEditRecordHelper = (editInstance, headerInstance, dispatch) => {
+export const saveEditRecordHelper = (editInstance, headerInstance, dispatch, listerInstance) => {
     const formInstance = editInstance.state.inputInstance;
     const jsonObj = {};
     const lineitemsObj = [];
@@ -346,10 +368,10 @@ export const saveEditRecordHelper = (editInstance, headerInstance, dispatch) => 
     if (editInstance.props.moduleName === 'Invoice') {
         jsonObj['LineItems'] = lineitemsObj;
     }
-    editRecordHelper(editInstance, headerInstance, jsonObj, dispatch);
+    editRecordHelper(editInstance, headerInstance, jsonObj, dispatch, listerInstance);
 };
 
-const editRecordHelper = async (editInstance, headerInstance, jsonObj, dispatch) => {
+const editRecordHelper = async (editInstance, headerInstance, jsonObj, dispatch, listerInstance) => {
     const { auth } = store.getState();
     const loginDetails = auth.loginDetails;
     const obj = JSON.stringify(jsonObj);
@@ -358,7 +380,7 @@ const editRecordHelper = async (editInstance, headerInstance, jsonObj, dispatch)
     param.append('_session', loginDetails.session);
     param.append('_operation', 'saveRecord');
     param.append('module', editInstance.props.moduleName);
-    param.append('record', editInstance.state.id);
+    param.append('record', editInstance.props.recordId);
     param.append('values', obj);
 
     console.log(param);
@@ -382,13 +404,14 @@ const editRecordHelper = async (editInstance, headerInstance, jsonObj, dispatch)
             Toast.show('Successfully Edited');
             dispatch(saveSuccess('saved'));
             headerInstance.setState({ loading: false });
-            const resetAction = NavigationActions.reset({
-                index: 0,
-                actions: [
-                    NavigationActions.navigate({ routeName: 'HomeScreen' })
-                ]
-            });
-            editInstance.props.navigation.dispatch(resetAction);
+            // const resetAction = NavigationActions.reset({
+            //     index: 0,
+            //     actions: [
+            //         NavigationActions.navigate({ routeName: 'HomeScreen' })
+            //     ]
+            // });
+            editInstance.props.navigation.pop();
+            listerInstance.refreshData();
             //editInstance.props.navigation.goBack(null);
         } else {
             // console.log(responseJson);

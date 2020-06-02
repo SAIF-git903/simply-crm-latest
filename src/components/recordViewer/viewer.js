@@ -19,12 +19,7 @@ class Viewer extends Component {
         };
     }
 
-    componentWillMount() {
-        this.getRecords();
-    }
-
-    componentWillReceiveProps(newprops) {
-        this.props = newprops;
+    UNSAFE_componentWillMount() {
         this.getRecords();
     }
 
@@ -57,7 +52,7 @@ class Viewer extends Component {
                 }
                 onRefresh={this.refreshData.bind(this)}
                 refreshing={this.state.isFlatListRefreshing}
-                style={{ height: '100%' }}
+                style={{ height: '100%', width: '100%' }}
             >
                 {this.state.data}
                 <View style={{ width: '100%' }} />

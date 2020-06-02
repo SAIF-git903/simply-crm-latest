@@ -1,4 +1,4 @@
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { LOGINDETAILSKEY } from '../variables/strings';
 import { LOGIN_USER_SUCCESS } from '../actions/types';
 import store from '../store';

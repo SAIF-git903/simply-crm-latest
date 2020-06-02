@@ -1,15 +1,14 @@
 import { StyleSheet, Platform } from 'react-native';
 import { HEADER_COLOR } from '../variables/themeColors';
-import { isIphoneX } from 'react-native-iphone-x-helper';
 
 export const commonStyles = StyleSheet.create({
     headerBackground: {
         width: '100%',
         padding: 10,
         paddingVertical: 15,
+        paddingTop: Platform.OS === 'ios' ? 10 : 15,
         alignItems: 'center',
-        backgroundColor: HEADER_COLOR,
-        paddingTop: (Platform.OS === 'ios') ? (isIphoneX() ? 42 : 30) : 20
+        backgroundColor: HEADER_COLOR
     },
     headerContentStyle: {
         flexDirection: 'row',
@@ -66,7 +65,8 @@ export const fontStyles = StyleSheet.create({
         color: 'white',
         fontSize: 16,
         textAlign: 'center',
-        flex: 1
+        flex: 1,
+        marginTop: 3
     },
     sectionTitle: {
         fontFamily: 'Poppins-Medium',

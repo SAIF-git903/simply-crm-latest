@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, Text, TouchableWithoutFeedback, } from 'react-native';
+import { View, StyleSheet, Text, TouchableWithoutFeedback, } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome5Pro';
+
 import { fontStyles } from '../../../styles/common';
 
 class BooleanType extends Component {
@@ -54,14 +56,10 @@ class BooleanType extends Component {
                         >
                             {
                                 (this.state.checked || this.state.saveValue === '1') ?
-                                    <Image
-                                        source={{ uri: 'tick' }}
-                                        style={{
-                                            width: 35,
-                                            resizeMode: 'contain',
-                                            height: 25,
-                                            tintColor: 'green'
-                                        }}
+                                    <Icon
+                                        name={'check'}
+                                        size={22}
+                                        color={'green'}
                                     />
                                     :
                                     null

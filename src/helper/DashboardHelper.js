@@ -291,14 +291,16 @@ export const dashboardHelper = (viewerInstance) => {
                     onEndReached={viewerInstance.onEndReached.bind(viewerInstance)}
                     onMomentumScrollBegin={() => { viewerInstance.onEndReachedCalledDuringMomentum = false; }}
                     ListEmptyComponent={renderEmpty()}
-                    renderItem={({ item, index }) =>
-                        <Contacts
+                    renderItem={({ item, index }) => {
+                        console.log(item)
+                        return <Contacts
                             index={index}
                             selectedIndex={viewerInstance.state.selectedIndex}
                             viewerInstance={viewerInstance}
                             item={item}
                             onRecordSelect={viewerInstance.onRecordSelect.bind(viewerInstance)}
-                        />}
+                        />
+                    }}
                 />
             );
         }

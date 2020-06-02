@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Image, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
-
+import { View, Image, Text, TouchableOpacity } from 'react-native';
+import SafeAreaView from 'react-native-safe-area-view';
 import Icon from 'react-native-vector-icons/FontAwesome5Pro';
 
 import { commonStyles, fontStyles } from '../../styles/common';
 import {
-    HEADER_TEXT_COLOR, HEADER_IMAGE_COLOR,
-    HEADER_IMAGE_SELECTED_COLOR
+    HEADER_IMAGE_COLOR,
 } from '../../variables/themeColors';
 
 class Header extends Component {
@@ -59,21 +58,25 @@ class Header extends Component {
     render() {
         return (
             <View style={commonStyles.headerBackground}>
-                <View style={commonStyles.headerContentStyle}>
-                    <View style={{ width: 40 }}>
-                        {
-                            this.renderBackButton()
-                        }
-                    </View>
-                    <View style={{ flex: 1, marginRight: 40 }} >
-                        <Text
-                            style={fontStyles.navbarTitle}
-                            pointerEvents={'none'}
-                        >
-                            Record Details
+                <SafeAreaView
+                    forceInset={{ top: 'always' }}
+                >
+                    <View style={commonStyles.headerContentStyle}>
+                        <View style={{ width: 40 }}>
+                            {
+                                this.renderBackButton()
+                            }
+                        </View>
+                        <View style={{ flex: 1, marginRight: 40 }} >
+                            <Text
+                                style={fontStyles.navbarTitle}
+                                pointerEvents={'none'}
+                            >
+                                Record Details
                     </Text>
+                        </View>
                     </View>
-                </View>
+                </SafeAreaView>
             </View>
         );
     }

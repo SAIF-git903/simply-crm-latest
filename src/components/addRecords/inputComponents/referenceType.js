@@ -26,7 +26,7 @@ class ReferenceType extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.setState({
             formId: this.props.formId,
             referenceValue: this.props.defaultValue ? this.props.defaultValue.label : this.props.label
@@ -35,7 +35,7 @@ class ReferenceType extends Component {
         this.assignUserId();
     }
 
-    componentWillReceiveProps(newProps) {
+    UNSAFE_componentWillReceiveProps(newProps) {
         this.props = newProps;
 
         if (this.state.formId === this.props.uniqueId) {
@@ -59,7 +59,7 @@ class ReferenceType extends Component {
     onReferencePress(type) {
         if (type.name === 'owner') {
             const { navigate } = this.props.navigate;
-            navigate('ReferenceScreen', { selectedModule: 'Users', uniqueId: this.state.formId });
+            navigate('Reference Screen', { selectedModule: 'Users', uniqueId: this.state.formId });
         } else {
             if (type.refersTo.length < 1) {
                 Alert.alert('Empty', 'No references');
@@ -69,7 +69,7 @@ class ReferenceType extends Component {
                 } else {
                     const { navigate } = this.props.navigate;
                     this.setState({ selectedRefModule: type.refersTo[0] });
-                    navigate('ReferenceScreen', { selectedModule: type.refersTo[0], uniqueId: this.state.formId });
+                    navigate('Reference Screen', { selectedModule: type.refersTo[0], uniqueId: this.state.formId });
                 }
             }
         }
@@ -142,7 +142,7 @@ class ReferenceType extends Component {
                             //console.log('undefined');
                             this.setState({ dialogueVisible: false });
                         } else {
-                            navigate('ReferenceScreen', { selectedModule: result.selectedItem.label, uniqueId: this.state.formId });
+                            navigate('Reference Screen', { selectedModule: result.selectedItem.label, uniqueId: this.state.formId });
                             this.setState({ dialogueSelectedValue: result.selectedItem, selectedRefModule: result.selectedItem.label });
                             this.setState({ dialogueVisible: false });
                         }
@@ -200,6 +200,4 @@ const styles = StyleSheet.create(
 );
 
 
-export default connect(mapStateToProps, null, null, { withRef: true })(ReferenceType);
-// export default connect(mapStateToProps, null, null, { withRef: true })(ReferenceType);
-//export default ReferenceType;
+export default connect(mapStateToProps, null, null, { forwardRef: true })(ReferenceType);

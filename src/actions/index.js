@@ -60,8 +60,8 @@ export const getDrawerViews = (loginDetails, drawerInstance) => {
   renderDrawerView(loginDetails, drawerInstance);
 };
 
-export const fetchRecord = (recordListerInstance) => (dispatch) => {
-  fetchRecordHelper(recordListerInstance, dispatch);
+export const fetchRecord = (recordListerInstance, moduleName) => (dispatch) => {
+  fetchRecordHelper(recordListerInstance, dispatch, moduleName);
 };
 
 export const fetchRefRecord = (recordListerInstance) => (dispatch) => {

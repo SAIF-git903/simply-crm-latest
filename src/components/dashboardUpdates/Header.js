@@ -80,7 +80,7 @@ class Header extends Component {
                         </View>
                     </ModalDropdown>
                 </View>
-            </View>
+            </View >
         );
     }
 }

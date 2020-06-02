@@ -14,10 +14,11 @@ class AddRecords extends Component {
     callViewer(headerInstance) {
         //console.log('call viewer');
         headerInstance.setState({ loading: true });
-        saveEditRecordHelper(this.viewer, headerInstance, this.props.dispatch);
+        saveEditRecordHelper(this.viewer, headerInstance, this.props.dispatch, this.props.route.params.lister);
     }
 
     render() {
+        console.log(this.props)
         return (
             <View style={styles.backgroundStyle}>
                 <Header
@@ -28,6 +29,7 @@ class AddRecords extends Component {
                     callViewer={this.callViewer.bind(this)}
                 />
                 <Viewer
+                    recordId={this.props.route.params.id}
                     navigation={this.props.navigation}
                     moduleName={this.props.selectedButton}
                     moduleId={this.props.moduleId}

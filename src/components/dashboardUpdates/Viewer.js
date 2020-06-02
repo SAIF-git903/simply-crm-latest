@@ -26,11 +26,11 @@ class Viewer extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.fetchRecord();
     }
 
-    componentWillReceiveProps(newProps) {
+    UNSAFE_componentWillReceiveProps(newProps) {
         //console.log('ReceiveProps');
         this.props = newProps;
         //console.log(this.props.moduleName);
@@ -95,8 +95,6 @@ class Viewer extends Component {
     }
 
     render() {
-        console.log('dashboardUpdates/Viewer')
-        console.log(this.props);
         return (
             <View style={styles.subContainer}>
                 {

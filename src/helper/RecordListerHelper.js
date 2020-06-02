@@ -1,35 +1,10 @@
 import React from 'react';
 import Toast from 'react-native-simple-toast';
-import { AsyncStorage, FlatList, StyleSheet, View, Text } from 'react-native';
+import { FlatList, StyleSheet, View, Text } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { getDatafromNet } from './networkHelper';
-import { attachModuleIdToRecords } from './recordHelper';
 import store from '../store';
-import CampaignsRecord from '../components/recordLister/recordItems/campaignsRecord';
-import ContactsRecord from '../components/recordLister/recordItems/contactsRecord';
-import VendorRecord from '../components/recordLister/recordItems/vendorRecord';
-import FaqRecord from '../components/recordLister/recordItems/faqRecord';
-import QuotesRecord from '../components/recordLister/recordItems/quotesRecord';
-import PurchaseOrderRecord from '../components/recordLister/recordItems/purchaseOrderRecord';
-import SalesOrderRecord from '../components/recordLister/recordItems/salesOrderRecord';
-import InvoiceRecord from '../components/recordLister/recordItems/invoiceRecord';
-import PriceBooksRecord from '../components/recordLister/recordItems/priceBooksRecord';
-import CalendarRecord from '../components/recordLister/recordItems/calendarRecord';
-import AccountsRecord from '../components/recordLister/recordItems/accountsRecord';
-import OpportunitiesRecord from '../components/recordLister/recordItems/opportunitiesRecord';
-import ProductsRecord from '../components/recordLister/recordItems/productsRecord';
-import DocumentsRecord from '../components/recordLister/recordItems/documentsRecord';
-import TicketsRecord from '../components/recordLister/recordItems/ticketsRecord';
-import PbxRecord from '../components/recordLister/recordItems/pbxRecord';
-import ServiceContractRecord from '../components/recordLister/recordItems/serviceContractsRecord';
-import ServiceRecord from '../components/recordLister/recordItems/serviceRecord';
-import AssetRecord from '../components/recordLister/recordItems/assetRecord';
-import SMSnotifierRecord from '../components/recordLister/recordItems/smsnotifierRecord';
-import ProjectMilestoneRecord from '../components/recordLister/recordItems/projectMilestoneRecord';
-import ProjectTaskRecord from '../components/recordLister/recordItems/projectTaskRecord';
-import ModuleProjectRecord from '../components/recordLister/recordItems/moduleProjectRecord';
-import CommentsRecord from '../components/recordLister/recordItems/commentRecord';
-import CustomRecord from '../components/recordLister/recordItems/customRecord';
-import CurrencyRecord from '../components/recordLister/recordItems/currencyRecord';
+import RecordItem from '../components/recordLister/recordItem';
 
 import { UPDATE_RECORD_VIEWER } from '../actions/types';
 import {
@@ -78,7 +53,7 @@ const renderEmpty = () => {
     </View>
 }
 
-export const fetchRecordHelper = async (listerInstance, dispatch) => {
+export const fetchRecordHelper = async (listerInstance, dispatch, moduleName) => {
     //First checking if any data in offline.
     try {
         // const offlineData = JSON.parse(await AsyncStorage.getItem(listerInstance.props.moduleName));
@@ -105,7 +80,7 @@ export const fetchRecordHelper = async (listerInstance, dispatch) => {
         // } else {
 
         //Offline data is not available
-        await getDataFromInternet(listerInstance, false, {}, dispatch);
+        await getDataFromInternet(listerInstance, false, {}, dispatch, moduleName);
         // }
     } catch (error) {
         //Offline data is not available
@@ -229,7 +204,7 @@ export const viewRecord = async (recordId, listerInstance, dispatch) => {
             }
         });
         const navigation = listerInstance.props.navigation;
-        navigation.navigate('DetailsScreen');
+        navigation.navigate('Record Details');
     } else {
         if (width > 600) {
             //It is a tablet
@@ -264,12 +239,12 @@ export const viewRecord = async (recordId, listerInstance, dispatch) => {
                 }
             });
             const navigation = listerInstance.props.navigation;
-            navigation.navigate('DetailsScreen');
+            navigation.navigate('Record Details');
         }
     }
 };
 
-const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData, dispatch) => {
+const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData, dispatch, moduleName) => {
     //Getting data from internet
     try {
         const { auth } = store.getState();
@@ -316,7 +291,7 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
             const responseJson = await getDatafromNet(param, dispatch);
             console.log(responseJson);
             if (responseJson.success) {
-                await getAndSaveDataVtiger(responseJson, listerInstance, true, false, false);
+                await getAndSaveDataVtiger(responseJson, listerInstance, true, false, false, moduleName);
             } else {
                 if (!offlineAvailable) {
                     //Show error to user that something went wrong.
@@ -362,7 +337,7 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
 };
 
 const getAndSaveDataVtiger = async (responseJson, listerInstance,
-    vtigerSeven, refresh, addExisting) => {
+    vtigerSeven, refresh, addExisting, moduleName) => {
     let data;
     const previousDataLength = listerInstance.state.data.length;
     if (addExisting) {
@@ -445,7 +420,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
             break;
         }
         case INVOICE: {
-            saveInvoiceDetails(records, data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh);
+            saveInvoiceDetails(records, data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh, moduleName);
             break;
         }
         case PRICEBOOKS: {
@@ -663,11 +638,11 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
         }
     }
     if (listerInstance.props.moduleName !== 'Invoice') {
-        saveData(data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh);
+        saveData(data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh, moduleName);
     }
 };
 
-const saveInvoiceDetails = async (records, data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh) => {
+const saveInvoiceDetails = async (records, data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh, moduleName) => {
     try {
         const { auth } = store.getState();
         const loginDetails = auth.loginDetails;
@@ -720,13 +695,13 @@ const saveInvoiceDetails = async (records, data, vtigerSeven, responseJson, addE
             };
             data.push(modifiedRecord);
         }
-        saveData(data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh);
+        saveData(data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh, moduleName);
     } catch (error) {
         console.log(error);
     }
 };
 
-const saveData = async (data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh) => {
+const saveData = async (data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh, moduleName) => {
     try {
         // console.log(responseJson)
         let offlineData = {};
@@ -774,6 +749,12 @@ const saveData = async (data, vtigerSeven, responseJson, addExisting, previousDa
                 pageToTake: offlineData.pageToTake
             });
         } else {
+            if (moduleName !== listerInstance.props.moduleName) {
+                console.log('Module name was: ' + moduleName)
+                console.log('but correct is: ' + listerInstance.props.moduleName)
+                return;
+            }
+
             listerInstance.setState({
                 loading: false,
                 statusText,
@@ -939,11 +920,9 @@ export const appendParamFor = (moduleName, param) => {
 };
 
 export const deleteRecordHelper = async (listerInstance, recordId,
-    index, recordInstance, dispatch) => {
+    index, callback, dispatch) => {
     const { auth } = store.getState();
     const loginDetails = auth.loginDetails;
-
-    console.log(recordId)
 
     const recordIdClean = recordId.toString().replace(/.*(?=x)+x/, '');
 
@@ -964,20 +943,14 @@ export const deleteRecordHelper = async (listerInstance, recordId,
             if (result) {
                 //Successfully deleted.
                 await removeThisIndex(listerInstance, index);
-                recordInstance.setState({
-                    loading: false
-                });
+                callback?.callback();
                 Toast.show('Successfully Deleted.');
             } else {
-                recordInstance.setState({
-                    loading: false
-                });
+                callback?.callback();
                 Toast.show('Delete Failed.');
             }
         } else {
-            recordInstance.setState({
-                loading: false
-            });
+            callback?.callback();
             Toast.show('Delete Failed.');
         }
     } catch (error) {
@@ -1013,7 +986,6 @@ const removeThisIndex = async (listerInstance, index) => {
 };
 
 export const recordListRendererHelper = (listerInstance) => {
-    console.log(listerInstance.props.moduleName)
     switch (listerInstance.props.moduleName) {
         case CAMPAIGNS: {
             return (
@@ -1025,14 +997,13 @@ export const recordListRendererHelper = (listerInstance) => {
                     onEndReached={listerInstance.onEndReached.bind(listerInstance)}
                     onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
                     renderItem={({ item, index }) =>
-                        <CampaignsRecord
+                        <RecordItem
                             index={index}
                             selectedIndex={listerInstance.state.selectedIndex}
                             listerInstance={listerInstance}
-                            id={item.id}
-                            lable={item.lable}
+                            item={item}
+                            recordName={item.lable}
                             onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
                         />}
                 />
             );
@@ -1050,13 +1021,16 @@ export const recordListRendererHelper = (listerInstance) => {
                     onEndReached={listerInstance.onEndReached.bind(listerInstance)}
                     onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
                     renderItem={({ item, index }) =>
-                        <ContactsRecord
+                        <RecordItem
                             index={index}
                             selectedIndex={listerInstance.state.selectedIndex}
                             listerInstance={listerInstance}
                             item={item}
+                            recordName={item.contactsLable}
+                            labels={[
+                                item.email
+                            ]}
                             onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
                         />}
                 />
             );
@@ -1071,13 +1045,18 @@ export const recordListRendererHelper = (listerInstance) => {
                     onEndReached={listerInstance.onEndReached.bind(listerInstance)}
                     onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
                     renderItem={({ item, index }) =>
-                        <VendorRecord
+                        <RecordItem
                             index={index}
                             selectedIndex={listerInstance.state.selectedIndex}
                             listerInstance={listerInstance}
                             item={item}
+                            recordName={item.vendorName}
+                            labels={[
+                                item.vendorEmail,
+                                item.vendorPhone,
+                                item.vendorWebsite
+                            ]}
                             onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
                         />}
                 />
             );
@@ -1092,13 +1071,13 @@ export const recordListRendererHelper = (listerInstance) => {
                     onEndReached={listerInstance.onEndReached.bind(listerInstance)}
                     onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
                     renderItem={({ item, index }) =>
-                        <FaqRecord
+                        <RecordItem
                             index={index}
                             selectedIndex={listerInstance.state.selectedIndex}
                             listerInstance={listerInstance}
                             item={item}
+                            recordName={item.question}
                             onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
                         />}
                 />
             );
@@ -1113,13 +1092,17 @@ export const recordListRendererHelper = (listerInstance) => {
                     onEndReached={listerInstance.onEndReached.bind(listerInstance)}
                     onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
                     renderItem={({ item, index }) =>
-                        <QuotesRecord
+                        <RecordItem
                             index={index}
                             selectedIndex={listerInstance.state.selectedIndex}
                             listerInstance={listerInstance}
                             item={item}
+                            recordName={item.quoteLable}
+                            labels={[
+                                item.total,
+                                item.quoteStage
+                            ]}
                             onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
                         />}
                 />
             );
@@ -1134,13 +1117,16 @@ export const recordListRendererHelper = (listerInstance) => {
                     onEndReached={listerInstance.onEndReached.bind(listerInstance)}
                     onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
                     renderItem={({ item, index }) =>
-                        <PurchaseOrderRecord
+                        <RecordItem
                             index={index}
                             selectedIndex={listerInstance.state.selectedIndex}
                             listerInstance={listerInstance}
                             item={item}
+                            recordName={item.polable}
+                            labels={[
+                                item.status
+                            ]}
                             onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
                         />}
                 />
             );
@@ -1155,13 +1141,16 @@ export const recordListRendererHelper = (listerInstance) => {
                     onEndReached={listerInstance.onEndReached.bind(listerInstance)}
                     onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
                     renderItem={({ item, index }) =>
-                        <SalesOrderRecord
+                        <RecordItem
                             index={index}
                             selectedIndex={listerInstance.state.selectedIndex}
                             listerInstance={listerInstance}
                             item={item}
+                            recordName={item.soLable}
+                            labels={[
+                                item.status
+                            ]}
                             onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
                         />}
                 />
             );
@@ -1180,13 +1169,20 @@ export const recordListRendererHelper = (listerInstance) => {
                     onEndReached={listerInstance.onEndReached.bind(listerInstance)}
                     onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
                     renderItem={({ item, index }) =>
-                        <InvoiceRecord
+                        <RecordItem
                             index={index}
                             selectedIndex={listerInstance.state.selectedIndex}
                             listerInstance={listerInstance}
                             item={item}
+                            recordName={item.invoiceLable}
+                            labels={[
+                                item.invoiceNo,
+                                item.invoiceStatus,
+                                item.invoiceAmount,
+                                item.invoiceAccountId,
+                                item.invoiceItemName,
+                            ]}
                             onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
                         />}
                 />
             );
@@ -1201,13 +1197,13 @@ export const recordListRendererHelper = (listerInstance) => {
                     onEndReached={listerInstance.onEndReached.bind(listerInstance)}
                     onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
                     renderItem={({ item, index }) =>
-                        <PriceBooksRecord
+                        <RecordItem
                             index={index}
                             selectedIndex={listerInstance.state.selectedIndex}
                             listerInstance={listerInstance}
                             item={item}
+                            recordName={item.bookLable}
                             onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
                         />}
                 />
             );
@@ -1226,14 +1222,15 @@ export const recordListRendererHelper = (listerInstance) => {
                     onEndReached={listerInstance.onEndReached.bind(listerInstance)}
                     onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
                     renderItem={({ item, index }) =>
-                        <CalendarRecord
+                        <RecordItem
                             index={index}
                             selectedIndex={listerInstance.state.selectedIndex}
                             listerInstance={listerInstance}
                             item={item}
+                            recordName={item.eventLable}
                             onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
-                        />}
+                        />
+                    }
                 />
             );
         }
@@ -1251,13 +1248,16 @@ export const recordListRendererHelper = (listerInstance) => {
                     onEndReached={listerInstance.onEndReached.bind(listerInstance)}
                     onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
                     renderItem={({ item, index }) =>
-                        <ContactsRecord
+                        <RecordItem
                             index={index}
                             selectedIndex={listerInstance.state.selectedIndex}
                             listerInstance={listerInstance}
                             item={item}
+                            recordName={item.contactsLable}
+                            labels={[
+                                item.email
+                            ]}
                             onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
                         />}
                 />
             );
@@ -1275,13 +1275,18 @@ export const recordListRendererHelper = (listerInstance) => {
                     onEndReached={listerInstance.onEndReached.bind(listerInstance)}
                     onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
                     renderItem={({ item, index }) =>
-                        <AccountsRecord
+                        <RecordItem
                             index={index}
                             selectedIndex={listerInstance.state.selectedIndex}
                             listerInstance={listerInstance}
                             item={item}
+                            recordName={item.accountsLable}
+                            labels={[
+                                item.website,
+                                item.phone,
+                                item.email,
+                            ]}
                             onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
                         />}
                 />
             );
@@ -1300,13 +1305,17 @@ export const recordListRendererHelper = (listerInstance) => {
                     onEndReached={listerInstance.onEndReached.bind(listerInstance)}
                     onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
                     renderItem={({ item, index }) =>
-                        <OpportunitiesRecord
+                        <RecordItem
                             index={index}
                             selectedIndex={listerInstance.state.selectedIndex}
                             listerInstance={listerInstance}
                             item={item}
+                            recordName={item.potentialLable}
+                            labels={[
+                                item.amount,
+                                item.stage
+                            ]}
                             onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
                         />}
                 />
             );
@@ -1325,13 +1334,18 @@ export const recordListRendererHelper = (listerInstance) => {
                     onEndReached={listerInstance.onEndReached.bind(listerInstance)}
                     onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
                     renderItem={({ item, index }) =>
-                        <ProductsRecord
+                        <RecordItem
                             index={index}
                             selectedIndex={listerInstance.state.selectedIndex}
                             listerInstance={listerInstance}
                             item={item}
+                            recordName={item.productLable}
+                            labels={[
+                                item.no,
+                                item.productcategory,
+                                item.quantity
+                            ]}
                             onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
                         />}
                 />
             );
@@ -1349,13 +1363,13 @@ export const recordListRendererHelper = (listerInstance) => {
                     onEndReached={listerInstance.onEndReached.bind(listerInstance)}
                     onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
                     renderItem={({ item, index }) =>
-                        <DocumentsRecord
+                        <RecordItem
                             index={index}
                             selectedIndex={listerInstance.state.selectedIndex}
                             listerInstance={listerInstance}
                             item={item}
+                            recordName={item.documentLable}
                             onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
                         />}
                 />
             );
@@ -1370,13 +1384,16 @@ export const recordListRendererHelper = (listerInstance) => {
                     onEndReached={listerInstance.onEndReached.bind(listerInstance)}
                     onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
                     renderItem={({ item, index }) =>
-                        <TicketsRecord
+                        <RecordItem
                             index={index}
                             selectedIndex={listerInstance.state.selectedIndex}
                             listerInstance={listerInstance}
                             item={item}
+                            recordName={item.ticketLable}
+                            labels={[
+                                item.priority
+                            ]}
                             onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
                         />}
                 />
             );
@@ -1391,13 +1408,13 @@ export const recordListRendererHelper = (listerInstance) => {
                     onEndReached={listerInstance.onEndReached.bind(listerInstance)}
                     onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
                     renderItem={({ item, index }) =>
-                        <PbxRecord
+                        <RecordItem
                             index={index}
                             selectedIndex={listerInstance.state.selectedIndex}
                             listerInstance={listerInstance}
                             item={item}
+                            recordName={item.number}
                             onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
                         />}
                 />
             );
@@ -1412,13 +1429,13 @@ export const recordListRendererHelper = (listerInstance) => {
                     onEndReached={listerInstance.onEndReached.bind(listerInstance)}
                     onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
                     renderItem={({ item, index }) =>
-                        <ServiceContractRecord
+                        <RecordItem
                             index={index}
                             selectedIndex={listerInstance.state.selectedIndex}
                             listerInstance={listerInstance}
                             item={item}
+                            recordName={item.scLable}
                             onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
                         />}
                 />
             );
@@ -1433,13 +1450,13 @@ export const recordListRendererHelper = (listerInstance) => {
                     onEndReached={listerInstance.onEndReached.bind(listerInstance)}
                     onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
                     renderItem={({ item, index }) =>
-                        <ServiceRecord
+                        <RecordItem
                             index={index}
                             selectedIndex={listerInstance.state.selectedIndex}
                             listerInstance={listerInstance}
                             item={item}
+                            recordName={item.serviceLable}
                             onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
                         />}
                 />
             );
@@ -1454,13 +1471,13 @@ export const recordListRendererHelper = (listerInstance) => {
                     onEndReached={listerInstance.onEndReached.bind(listerInstance)}
                     onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
                     renderItem={({ item, index }) =>
-                        <AssetRecord
+                        <RecordItem
                             index={index}
                             selectedIndex={listerInstance.state.selectedIndex}
                             listerInstance={listerInstance}
                             item={item}
+                            recordName={item.assetLable}
                             onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
                         />}
                 />
             );
@@ -1475,13 +1492,13 @@ export const recordListRendererHelper = (listerInstance) => {
                     onEndReached={listerInstance.onEndReached.bind(listerInstance)}
                     onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
                     renderItem={({ item, index }) =>
-                        <SMSnotifierRecord
+                        <RecordItem
                             index={index}
                             selectedIndex={listerInstance.state.selectedIndex}
                             listerInstance={listerInstance}
                             item={item}
+                            recordName={item.message}
                             onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
                         />}
                 />
             );
@@ -1496,13 +1513,13 @@ export const recordListRendererHelper = (listerInstance) => {
                     onEndReached={listerInstance.onEndReached.bind(listerInstance)}
                     onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
                     renderItem={({ item, index }) =>
-                        <ProjectMilestoneRecord
+                        <RecordItem
                             index={index}
                             selectedIndex={listerInstance.state.selectedIndex}
                             listerInstance={listerInstance}
                             item={item}
+                            recordName={item.pmLable}
                             onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
                         />}
                 />
             );
@@ -1517,13 +1534,13 @@ export const recordListRendererHelper = (listerInstance) => {
                     onEndReached={listerInstance.onEndReached.bind(listerInstance)}
                     onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
                     renderItem={({ item, index }) =>
-                        <ProjectTaskRecord
+                        <RecordItem
                             index={index}
                             selectedIndex={listerInstance.state.selectedIndex}
                             listerInstance={listerInstance}
                             item={item}
+                            recordName={item.ptLable}
                             onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
                         />}
                 />
             );
@@ -1538,13 +1555,13 @@ export const recordListRendererHelper = (listerInstance) => {
                     onEndReached={listerInstance.onEndReached.bind(listerInstance)}
                     onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
                     renderItem={({ item, index }) =>
-                        <ModuleProjectRecord
+                        <RecordItem
                             index={index}
                             selectedIndex={listerInstance.state.selectedIndex}
                             listerInstance={listerInstance}
                             item={item}
+                            recordName={item.projectLable}
                             onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
                         />}
                 />
             );
@@ -1559,13 +1576,13 @@ export const recordListRendererHelper = (listerInstance) => {
                     onEndReached={listerInstance.onEndReached.bind(listerInstance)}
                     onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
                     renderItem={({ item, index }) =>
-                        <CommentsRecord
+                        <RecordItem
                             index={index}
                             selectedIndex={listerInstance.state.selectedIndex}
                             listerInstance={listerInstance}
                             item={item}
+                            recordName={item.comment}
                             onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
                         />}
                 />
             );
@@ -1580,13 +1597,13 @@ export const recordListRendererHelper = (listerInstance) => {
                     onEndReached={listerInstance.onEndReached.bind(listerInstance)}
                     onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
                     renderItem={({ item, index }) =>
-                        <CurrencyRecord
+                        <RecordItem
                             index={index}
                             selectedIndex={listerInstance.state.selectedIndex}
                             listerInstance={listerInstance}
                             item={item}
+                            recordName={item.currency_name}
                             onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
                         />}
                 />
             );
@@ -1601,435 +1618,13 @@ export const recordListRendererHelper = (listerInstance) => {
                     onEndReached={listerInstance.onEndReached.bind(listerInstance)}
                     onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
                     renderItem={({ item, index }) =>
-                        <CustomRecord
+                        <RecordItem
                             index={index}
                             selectedIndex={listerInstance.state.selectedIndex}
                             listerInstance={listerInstance}
                             item={item}
+                            recordName={item.lable}
                             onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
-                        />}
-                />
-            );
-    }
-};
-
-export const searchRecordListRendererHelper = (listerInstance) => {
-    switch (listerInstance.props.moduleName) {
-        case CAMPAIGNS: {
-            return (
-                <FlatList
-                    data={listerInstance.state.data}
-                    renderItem={({ item, index }) =>
-                        <CampaignsRecord
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            id={item.id}
-                            lable={item.lable}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
-                        />}
-                />
-            );
-        }
-        case CONTACTS: {
-            return (
-                <FlatList
-                    data={listerInstance.state.data}
-                    renderItem={({ item, index }) =>
-                        <ContactsRecord
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
-                        />}
-                />
-            );
-        }
-        case VENDORS: {
-            return (
-                <FlatList
-                    data={listerInstance.state.data}
-                    renderItem={({ item, index }) =>
-                        <VendorRecord
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
-                        />}
-                />
-            );
-        }
-        case FAQ: {
-            return (
-                <FlatList
-                    data={listerInstance.state.data}
-                    renderItem={({ item, index }) =>
-                        <FaqRecord
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
-                        />}
-                />
-            );
-        }
-        case QUOTES: {
-            return (
-                <FlatList
-                    data={listerInstance.state.data}
-                    renderItem={({ item, index }) =>
-                        <QuotesRecord
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
-                        />}
-                />
-            );
-        }
-        case PURCHASEORDER: {
-            return (
-                <FlatList
-                    data={listerInstance.state.data}
-                    renderItem={({ item, index }) =>
-                        <PurchaseOrderRecord
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
-                        />}
-                />
-            );
-        }
-        case SALESORDER: {
-            return (
-                <FlatList
-                    data={listerInstance.state.data}
-                    renderItem={({ item, index }) =>
-                        <SalesOrderRecord
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
-                        />}
-                />
-            );
-        }
-        case INVOICE: {
-            return (
-                <FlatList
-                    onRefresh={listerInstance.refreshData.bind(listerInstance)}
-                    data={listerInstance.state.data}
-                    renderItem={({ item, index }) =>
-                        <InvoiceRecord
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
-                        />}
-                />
-            );
-        }
-        case PRICEBOOKS: {
-            return (
-                <FlatList
-                    data={listerInstance.state.data}
-                    renderItem={({ item, index }) =>
-                        <PriceBooksRecord
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
-                        />}
-                />
-            );
-        }
-        case CALENDAR: {
-            return (
-                <FlatList
-                    data={listerInstance.state.data}
-                    renderItem={({ item, index }) =>
-                        <CalendarRecord
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
-                        />}
-                />
-            );
-        }
-        case LEADS: {
-            return (
-                <FlatList
-                    data={listerInstance.state.data}
-                    renderItem={({ item, index }) =>
-                        <ContactsRecord
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
-                        />}
-                />
-            );
-        }
-        case ACCOUNTS: {
-            return (
-                <FlatList
-                    data={listerInstance.state.data}
-                    renderItem={({ item, index }) =>
-                        <AccountsRecord
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
-                        />}
-                />
-            );
-        }
-        case OPPORTUNITIES: {
-            return (
-                <FlatList
-                    data={listerInstance.state.data}
-                    renderItem={({ item, index }) =>
-                        <OpportunitiesRecord
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
-                        />}
-                />
-            );
-        }
-        case PRODUCTS: {
-            return (
-                <FlatList
-                    data={listerInstance.state.data}
-                    renderItem={({ item, index }) =>
-                        <ProductsRecord
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
-                        />}
-                />
-            );
-        }
-        case DOCUMENTS: {
-            return (
-                <FlatList
-                    data={listerInstance.state.data}
-                    renderItem={({ item, index }) =>
-                        <DocumentsRecord
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
-                        />}
-                />
-            );
-        }
-        case TICKETS: {
-            return (
-                <FlatList
-                    data={listerInstance.state.data}
-                    renderItem={({ item, index }) =>
-                        <TicketsRecord
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
-                        />}
-                />
-            );
-        }
-        case PBXMANAGER: {
-            return (
-                <FlatList
-                    data={listerInstance.state.data}
-                    renderItem={({ item, index }) =>
-                        <PbxRecord
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
-                        />}
-                />
-            );
-        }
-        case SERVICECONTRACTS: {
-            return (
-                <FlatList
-                    data={listerInstance.state.data}
-                    renderItem={({ item, index }) =>
-                        <ServiceContractRecord
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
-                        />}
-                />
-            );
-        }
-        case SERVICES: {
-            return (
-                <FlatList
-                    data={listerInstance.state.data}
-                    renderItem={({ item, index }) =>
-                        <ServiceRecord
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
-                        />}
-                />
-            );
-        }
-        case ASSETS: {
-            return (
-                <FlatList
-                    data={listerInstance.state.data}
-                    renderItem={({ item, index }) =>
-                        <AssetRecord
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
-                        />}
-                />
-            );
-        }
-        case SMS_NOTIFIER: {
-            return (
-                <FlatList
-                    data={listerInstance.state.data}
-                    renderItem={({ item, index }) =>
-                        <SMSnotifierRecord
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
-                        />}
-                />
-            );
-        }
-        case PROJECT_MILESTONE: {
-            return (
-                <FlatList
-                    data={listerInstance.state.data}
-                    renderItem={({ item, index }) =>
-                        <ProjectMilestoneRecord
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
-                        />}
-                />
-            );
-        }
-        case PROJECT_TASK: {
-            return (
-                <FlatList
-                    data={listerInstance.state.data}
-                    renderItem={({ item, index }) =>
-                        <ProjectTaskRecord
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
-                        />}
-                />
-            );
-        }
-        case MODULE_PROJECT: {
-            return (
-                <FlatList
-                    data={listerInstance.state.data}
-                    renderItem={({ item, index }) =>
-                        <ModuleProjectRecord
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
-                        />}
-                />
-            );
-        }
-        case COMMENTS: {
-            return (
-                <FlatList
-                    data={listerInstance.state.data}
-                    renderItem={({ item, index }) =>
-                        <CommentsRecord
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
-                        />}
-                />
-            );
-        }
-        default:
-            return (
-                <FlatList
-                    data={listerInstance.state.data}
-                    renderItem={({ item, index }) =>
-                        <CustomRecord
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                            navigation={listerInstance.state.navigation}
                         />}
                 />
             );

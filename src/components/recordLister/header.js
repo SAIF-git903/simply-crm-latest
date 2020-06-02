@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { NavigationActions } from 'react-navigation';
-import { View, Image, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
-import { commonStyles } from '../../styles/common';
+import SafeAreaView from 'react-native-safe-area-view';
+
+
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
+import { commonStyles, fontStyles } from '../../styles/common';
 import { viewSearchAction, updateSearchModule } from '../../actions';
 import {
-    HEADER_TEXT_COLOR, HEADER_IMAGE_COLOR,
-    HEADER_IMAGE_SELECTED_COLOR
+    HEADER_TEXT_COLOR
 } from '../../variables/themeColors';
 
 import Icon from 'react-native-vector-icons/FontAwesome5Pro';
@@ -50,32 +51,36 @@ class Header extends Component {
     render() {
         return (
             <View style={commonStyles.headerBackground}>
-                <View style={commonStyles.headerContentStyle}>
-                    {
-                        this.renderMenuButton()
-                    }
-                    <View style={{ flex: 1 }}>
-                        <Text style={styles.headerTextStyle}>{this.props.moduleLable}</Text>
-                    </View>
-                    <TouchableOpacity onPress={this.onSearchButtonPress.bind(this)}>
-                        <View
-                            style={{
-                                backgroundColor: 'rgba(255,255,255,.2)',
-                                width: 27,
-                                height: 27,
-                                borderRadius: 3,
-                                justifyContent: 'center',
-                                alignItems: 'center'
-                            }}
-                        >
-                            <Icon
-                                name='plus'
-                                size={18}
-                                color='white'
-                            />
+                <SafeAreaView
+                    forceInset={{ top: 'always' }}
+                >
+                    <View style={commonStyles.headerContentStyle}>
+                        {
+                            this.renderMenuButton()
+                        }
+                        <View style={{ flex: 1 }}>
+                            <Text style={fontStyles.navbarTitle}>{this.props.moduleLable}</Text>
                         </View>
-                    </TouchableOpacity>
-                </View>
+                        <TouchableOpacity onPress={this.onSearchButtonPress.bind(this)}>
+                            <View
+                                style={{
+                                    backgroundColor: 'rgba(255,255,255,.2)',
+                                    width: 27,
+                                    height: 27,
+                                    borderRadius: 3,
+                                    justifyContent: 'center',
+                                    alignItems: 'center'
+                                }}
+                            >
+                                <Icon
+                                    name='plus'
+                                    size={18}
+                                    color='white'
+                                />
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                </SafeAreaView>
             </View>
         );
     }

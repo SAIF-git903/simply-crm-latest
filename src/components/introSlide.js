@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, Dimensions, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5Pro';
-import { isIphoneX } from 'react-native-iphone-x-helper';
 
 let { width, height } = Dimensions.get('window');
 
@@ -51,8 +50,7 @@ export default function IntroSlide({ image, subtitle, title, bullets }) {
             {/* image container */}
             <View style={{
                 flex: 1,
-                justifyContent: 'center',
-                marginTop: (Platform.OS === 'ios') ? (isIphoneX() ? 42 : 30) : 20,
+                justifyContent: 'center'
             }}>
                 <Image
                     resizeMode={'contain'}

@@ -27,16 +27,8 @@ class InputForm extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.setState({ formId: this.props.formId, referenceValue: this.props.label });
-    }
-
-    componentWillReceiveProps(newProps) {
-        this.props = newProps;
-        if (this.state.formId === this.props.uniqueId) {
-            this.setState({ referenceValue: this.props.label });
-            //console.log(this.state.referenceValue);
-        }
     }
 
     onTextInputChange(text) {
@@ -82,7 +74,7 @@ class InputForm extends Component {
             this.setState({ dialogueVisible: true });
         } else {
             const { navigate } = this.props.navigate;
-            navigate('ReferenceScreen', { selectedModule: refersTo[0], uniqueId: this.state.formId });
+            navigate('Reference Screen', { selectedModule: refersTo[0], uniqueId: this.state.formId });
         }
     }
 
@@ -367,7 +359,7 @@ class InputForm extends Component {
                             //console.log('undefined');
                             this.setState({ dialogueVisible: false });
                         } else {
-                            navigate('ReferenceScreen', { selectedModule: result.selectedItem.label, uniqueId: this.state.formId });
+                            navigate('Reference Screen', { selectedModule: result.selectedItem.label, uniqueId: this.state.formId });
                             this.setState({ dialogueSelectedValue: result.selectedItem });
                             this.setState({ dialogueVisible: false });
                         }
@@ -380,6 +372,7 @@ class InputForm extends Component {
     }
 
     render() {
+        console.log('inputForm re-render')
         const type = this.props.obj.type.name;
 
         switch (type) {

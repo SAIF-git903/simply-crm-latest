@@ -14,7 +14,7 @@ class AddRecords extends Component {
     callViewer(headerInstance) {
         //console.log('call viewer');
         headerInstance.setState({ loading: true });
-        saveRecordHelper(this.viewer, headerInstance, this.props.dispatch);
+        saveRecordHelper(this.viewer, headerInstance, this.props.dispatch, this.props.route.params.lister);
     }
 
     showCopyOptions(headerInstance) {
@@ -22,6 +22,7 @@ class AddRecords extends Component {
     }
 
     render() {
+        console.log(this.props)
         return (
             <View style={styles.backgroundStyle}>
                 <Header

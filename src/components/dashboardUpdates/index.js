@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import Header from './Header';
 import Viewer from './Viewer';
 import { drawerButtonPress } from '../../actions/index';
-import { faTasks } from '@fortawesome/free-solid-svg-icons';
 
 import Icon from 'react-native-vector-icons/FontAwesome5Pro';
 
@@ -34,9 +33,9 @@ const IconButton = ({ icon, title, style, onPress }) => {
 }
 
 class UpdateWidget extends Component {
-
     render() {
-        console.log(this.props)
+        const { navigation } = this.props;
+
         return (
             <View style={styles.container} >
                 <View
@@ -55,11 +54,19 @@ class UpdateWidget extends Component {
                         <IconButton
                             icon={'building'}
                             title={'Organizations'}
-                            onPress={() => this.props.dispatch(drawerButtonPress(
-                                'Accounts',
-                                'Organizations',
-                                11
-                            ))}
+                            onPress={() => {
+                                this.props.dispatch(drawerButtonPress(
+                                    'Accounts',
+                                    'Organizations',
+                                    11
+                                ))
+
+                                navigation.navigate('Records', {
+                                    moduleName: 'Accounts',
+                                    moduleLable: 'Organizations',
+                                    moduleId: 11
+                                })
+                            }}
                         />
                     </View>
 
@@ -69,11 +76,19 @@ class UpdateWidget extends Component {
                         <IconButton
                             icon={'user'}
                             title={'Contacts'}
-                            onPress={() => this.props.dispatch(drawerButtonPress(
-                                'Contacts',
-                                'Contacts',
-                                12
-                            ))}
+                            onPress={() => {
+                                this.props.dispatch(drawerButtonPress(
+                                    'Contacts',
+                                    'Contacts',
+                                    12
+                                ))
+
+                                navigation.navigate('Records', {
+                                    moduleName: 'Contacts',
+                                    moduleLable: 'Contacts',
+                                    moduleId: 12
+                                })
+                            }}
                         />
                     </View>
 
@@ -83,11 +98,19 @@ class UpdateWidget extends Component {
                         <IconButton
                             icon={'calendar-alt'}
                             title={'Calendar'}
-                            onPress={() => this.props.dispatch(drawerButtonPress(
-                                'Calendar',
-                                'Calendar',
-                                9
-                            ))}
+                            onPress={() => {
+                                this.props.dispatch(drawerButtonPress(
+                                    'Calendar',
+                                    'Calendar',
+                                    9
+                                ))
+
+                                navigation.navigate('Records', {
+                                    moduleName: 'Calendar',
+                                    moduleLable: 'Calendar',
+                                    moduleId: 9
+                                })
+                            }}
                         />
                     </View>
                     {/* 

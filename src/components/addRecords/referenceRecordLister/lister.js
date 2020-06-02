@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, ActivityIndicator, Text } from 'react-native';
-import StatusView from './statusView';
 import { commonStyles } from '../../../styles/common';
 import { fetchRefRecord, refreshRefRecord, getNextRefPageRecord, markReferenceLabel } from '../../../actions';
 import { recordRefListRendererHelper } from '../../../helper';
@@ -22,24 +21,19 @@ class Lister extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.getRecords();
         // this.getModuleId();
     }
 
-    componentWillReceiveProps(newprops) {
-        this.props = newprops;
-        this.getRecords();
-    }
-
     onRecordSelect(id, lable, index) {
-        console.log(id);
+        console.log('onRecordSelectCalled')
         let recordId = id;
         if (this.props.moduleName === 'Users') {
             recordId = `19x${id}`;
         }
         this.setState({ selectedIndex: index });
-        this.props.navigation.goBack(null);
+        this.props.navigation.goBack();
         this.props.dispatch(markReferenceLabel(recordId, lable, this.props.uniqueId));
     }
 
@@ -95,6 +89,7 @@ class Lister extends Component {
     }
 
     render() {
+        console.log(this.state.selectedIndex)
         return (
             <View style={commonStyles.recordListerBackground} >
                 {

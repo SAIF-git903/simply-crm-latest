@@ -1,5 +1,6 @@
-import { AsyncStorage, Alert } from 'react-native';
-import { NavigationActions } from 'react-navigation';
+import { Alert } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+// import { NavigationActions } from 'react-navigation';
 import Toast from 'react-native-simple-toast';
 import { LOGINDETAILSKEY, LOGINFORM, URLDETAILSKEY } from '../variables/strings';
 import { LOGIN_USER_SUCCESS } from '../actions/types';
@@ -128,7 +129,8 @@ export const loginHelper = async (username, password, url, navigation, loginInst
                     await addDatabaseKey(LOGINDETAILSKEY);
                     loginUserSuccess(dispatch, loginDetails, navigation);
                 })
-                .catch(() => {
+                .catch((e) => {
+                    console.log(e)
                     loginInstance.setState({ loading: false, showUrlList: false, componentToLoad: LOGINFORM });
                     Alert.alert('Authentication failed', 'Something went wrong, please try again later',
                         [
@@ -175,13 +177,14 @@ const showNetworkError = (loginInstance) => {
 
 const loginUserSuccess = (dispatch, loginDetails, navigation) => {
     dispatch({ type: LOGIN_USER_SUCCESS, payload: loginDetails });
-    const resetAction = NavigationActions.reset({
-        index: 0,
-        actions: [
-            NavigationActions.navigate({ routeName: 'HomeScreen' })
-        ]
-    });
-    navigation.dispatch(resetAction);
+    // const resetAction = NavigationActions.reset({
+    //     index: 0,
+    //     actions: [
+    //         NavigationActions.navigate({ routeName: 'HomeScreen' })
+    //     ]
+    // });
+
+    navigation.replace('Drawer');
 };
 
 export const resetPassword = async (email, forgotPasswordInstance) => {

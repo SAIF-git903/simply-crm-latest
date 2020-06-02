@@ -24,7 +24,7 @@ class ReferenceType extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.setState({
             formId: this.props.formId,
             referenceValue: this.props.label
@@ -32,7 +32,7 @@ class ReferenceType extends Component {
         });
     }
 
-    componentWillReceiveProps(newProps) {
+    UNSAFE_componentWillReceiveProps(newProps) {
         this.props = newProps;
 
         if (this.state.formId === this.props.uniqueId) {
@@ -47,12 +47,12 @@ class ReferenceType extends Component {
     onReferencePress(type) {
         if (type.name === 'owner') {
             const { navigate } = this.props.navigate;
-            navigate('ReferenceScreen', { selectedModule: 'Users', uniqueId: this.state.formId });
+            navigate('Reference Screen', { selectedModule: 'Users', uniqueId: this.state.formId });
         } else if (type.refersTo.length > 1) {
             this.setState({ dialogueVisible: true });
         } else {
             const { navigate } = this.props.navigate;
-            navigate('ReferenceScreen', { selectedModule: type.refersTo[0], uniqueId: this.state.formId });
+            navigate('Reference Screen', { selectedModule: type.refersTo[0], uniqueId: this.state.formId });
         }
     }
 
@@ -107,7 +107,7 @@ class ReferenceType extends Component {
                             //console.log('undefined');
                             this.setState({ dialogueVisible: false });
                         } else {
-                            navigate('ReferenceScreen', { selectedModule: result.selectedItem.label, uniqueId: this.state.formId });
+                            navigate('Reference Screen', { selectedModule: result.selectedItem.label, uniqueId: this.state.formId });
                             this.setState({ dialogueSelectedValue: result.selectedItem });
                             this.setState({ dialogueVisible: false });
                         }
@@ -165,5 +165,5 @@ const styles = StyleSheet.create(
 );
 
 
-export default connect(mapStateToProps, null, null, { withRef: true })(ReferenceType);
+export default connect(mapStateToProps, null, null, { forwardRef: true })(ReferenceType);
 //export default ReferenceType;

@@ -1,24 +1,21 @@
-/**
- * Vtiger
- * Copyright - Smackcoders technologies private ltd.
- * Developer - Prince J <princej@smackcoders.com> 
- */
-
-
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { AppRegistry } from 'react-native';
-import App from './src/app';
+import { name as appName } from './app.json';
+import Router from './src/router';
 import store from './src/store';
 
-class AppReduxConnected extends Component {
-  render() {
-    return (
-      <Provider store={store}>
-        <App />
-      </Provider>
-    );
-  }
+console.disableYellowBox = true;
+
+class App extends Component {
+
+    render() {
+        return (
+            <Provider store={store}>
+                <Router />
+            </Provider>
+        );
+    }
 }
 
-AppRegistry.registerComponent('vtiger', () => AppReduxConnected);
+AppRegistry.registerComponent(appName, () => App);

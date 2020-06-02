@@ -2,17 +2,19 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
     View, TextInput, Image, ActivityIndicator, Text, Animated, TouchableWithoutFeedback,
-    StyleSheet, Alert, Picker, TouchableOpacity, Platform, Linking, SafeAreaView, KeyboardAvoidingView, KeyboardAvoidingViewBase, AsyncStorage
+    StyleSheet, Picker, TouchableOpacity, Platform, Keyboard
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import ModalDropdown from 'react-native-modal-dropdown';
-import IconButton from '../components/IconButton';
+import SafeAreaView from 'react-native-safe-area-view';
 
+
+import IconButton from '../components/IconButton';
 import Icon from 'react-native-vector-icons/FontAwesome5Pro';
-import InAppBrowser from 'react-native-inappbrowser-reborn';
 
 import { URLDETAILSKEY, LOGINDETAILSKEY } from '../variables/strings';
 import { loginUser } from '../actions/';
-import { userUrlHelper, assignUrl } from '../helper';
+import { assignUrl } from '../helper';
 import { fontStyles } from '../styles/common';
 
 class LoginForm extends Component {
@@ -35,7 +37,7 @@ class LoginForm extends Component {
         this.handlePressOut = this.handlePressOut.bind(this);
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.animatedValue = new Animated.Value(0);
         this.buttonAnimatedValue = new Animated.Value(1);
         // userUrlHelper('albert.xhani@outlook.com', '987654321');
@@ -45,6 +47,7 @@ class LoginForm extends Component {
         Animated.timing(this.animatedValue, {
             toValue: 1,
             duration: 1000,
+            useNativeDriver: true
         }).start();
     }
 
@@ -79,18 +82,20 @@ class LoginForm extends Component {
     onForgotPasswordPress() {
         console.log('forgot password clicked');
         const { navigate } = this.props.navigation;
-        navigate('ForgotPasswordScreen', { email: this.state.email });
+        navigate('Forgot Password', { email: this.state.email });
     }
 
     handlePressIn() {
         Animated.spring(this.buttonAnimatedValue, {
-            toValue: 0.7
+            toValue: 0.7,
+            useNativeDriver: true
         }).start();
     }
 
     handlePressOut() {
         Animated.spring(this.buttonAnimatedValue, {
-            toValue: 1
+            toValue: 1,
+            useNativeDriver: true
         }).start();
         this.onButtonPress();
     }
@@ -119,30 +124,6 @@ class LoginForm extends Component {
 
     }
 
-    async openSignUpUrl() {
-        const tracking = Platform.OS === 'ios'
-            ? '&utm_source=apps.apple.com&utm_medium=app_store&utm_campaign=app_v1'
-            : '&utm_source=play.google.com&utm_medium=app_store&utm_campaign=app_v1'
-            ;
-
-        const url = `https://auth.simply-crm.com/?email=${this.state.email}${tracking}`
-        if (await InAppBrowser.isAvailable()) {
-            await InAppBrowser.open(url, {
-                dismissButtonStyle: 'Done',
-                preferredBarTintColor: '#0085DE',
-                preferredControlTintColor: 'white',
-                readerMode: false,
-            });
-        } else {
-            const supported = await Linking.canOpenURL(url);
-            if (supported) {
-                await Linking.openURL(url);
-            } else {
-                Alert.alert(`Cannot open URL on this device, please visit: ${url}`);
-            }
-        }
-    }
-
     render() {
         const { password, showPassword } = this.state;
 
@@ -156,10 +137,13 @@ class LoginForm extends Component {
 
         return (
             <View style={styles.wrapper}>
-                <SafeAreaView style={{ flex: 1 }}>
+                <SafeAreaView
+                    forceInset={{ top: 'always' }}
+                    style={{ flex: 1 }}
+                >
 
                     <View style={styles.logoSection}>
-                        <Image source={{ uri: 'vtigerlogo' }} style={styles.logo} />
+                        <Image source={require('../../assets/images/logo_new_white.png')} style={styles.logo} />
                     </View>
 
                     <View style={styles.formSection}>
@@ -197,6 +181,7 @@ class LoginForm extends Component {
 
 
                                             <ModalDropdown
+                                                onDropdownWillShow={() => Keyboard.dismiss()}
                                                 options={optionsForiOS}
                                                 onSelect={(index, value) => {
                                                     this.onUrlSelected(value);
@@ -345,7 +330,6 @@ class LoginForm extends Component {
 
                     </View>
                 </SafeAreaView>
-
             </View >
         );
     }
@@ -353,8 +337,7 @@ class LoginForm extends Component {
 
 const styles = StyleSheet.create({
     wrapper: {
-        width: '100%',
-        height: '100%',
+        flex: 1,
         backgroundColor: '#0085DE',
     },
     logoSection: {

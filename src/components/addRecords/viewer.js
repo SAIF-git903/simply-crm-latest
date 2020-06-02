@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { View, ActivityIndicator } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { View, ActivityIndicator, ScrollView, Platform, Keyboard } from 'react-native';
 import { describeRecordHelper, copyPriceDetails } from '../../helper';
 import SectionBox from '../common/section/sectionBox';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 class Viewer extends Component {
     constructor(props) {
@@ -34,7 +34,15 @@ class Viewer extends Component {
     renderRecordView() {
         return (
             <KeyboardAwareScrollView
-                keyboardShouldPersistTaps='handled'
+                enableResetScrollToCoords={false}
+                onScrollBeginDrag={() => {
+                    if (Platform.OS === 'ios') {
+                        return;
+                    }
+
+                    Keyboard.dismiss();
+                }}
+                keyboardShouldPersistTaps="handled"
                 contentContainerStyle={{ paddingTop: 10 }}
             >
                 <SectionBox style={{ paddingRight: 10 }}>
@@ -47,7 +55,7 @@ class Viewer extends Component {
     render() {
         // console.log(this.state.inputForm.length);
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, backgroundColor: '#f2f3f8' }}>
                 {
                     (this.state.loading) ?
                         this.renderLoading() :

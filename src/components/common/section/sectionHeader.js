@@ -20,10 +20,6 @@ export default class SectionHeader extends Component {
         this.setState({ selected: true });
     }
 
-    componentWillReceiveProps(newProps) {
-        this.props = newProps;
-    }
-
     onToggleSection() {
         this.setState({ selected: !this.state.selected }, () => {
             if (this.state.selected) {

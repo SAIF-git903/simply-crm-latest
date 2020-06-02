@@ -9,20 +9,19 @@ class RecordLister extends Component {
         header: null
     }
     render() {
-        const { state } = this.props.navigation;
         return (
             <View style={styles.backgroundStyle}>
                 <Header
-                    moduleName={state.params.selectedModule}
+                    moduleName={this.props.route.params.selectedModule}
                     moduleLable={this.props.moduleLable}
                     navigation={this.props.navigation}
                 />
                 <Lister
                     navigation={this.props.navigation}
-                    moduleName={state.params.selectedModule}
+                    moduleName={this.props.route.params.selectedModule}
                     moduleLable={this.props.moduleLable}
                     moduleId={this.props.moduleId}
-                    uniqueId={state.params.uniqueId}
+                    uniqueId={this.props.route.params.uniqueId}
                 />
             </View>
         );

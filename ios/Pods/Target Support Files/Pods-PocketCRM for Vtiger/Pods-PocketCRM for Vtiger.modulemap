@@ -1,6 +1,0 @@
-framework module Pods_PocketCRM_for_Vtiger {
-  umbrella header "Pods-PocketCRM for Vtiger-umbrella.h"
-
-  export *
-  module * { export * }
-}
