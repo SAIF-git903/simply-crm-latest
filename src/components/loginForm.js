@@ -67,6 +67,8 @@ class LoginForm extends Component {
         AsyncStorage.removeItem(URLDETAILSKEY);
         AsyncStorage.removeItem(LOGINDETAILSKEY);
 
+        Keyboard.dismiss();
+
         const { email, password, url, username } = this.state;
 
         console.log(url, this.state.showUrlList);

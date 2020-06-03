@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.11.0",
+    "@react-native-community/datetimepicker": "^2.4.0",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/drawer": "^5.8.0",
     "@react-navigation/native": "^5.4.3",
@@ -21,7 +22,7 @@
     "react": "16.11.0",
     "react-native": "0.62.2",
     "react-native-app-intro-slider": "3.0.0",
-    "react-native-datepicker": "git+https://github.com/asibrahim1985/react-native-datepicker.git#Fix-CompWillReceProps",
+    "react-native-datepicker": "git+https://github.com/krakz999/react-native-datepicker.git",
     "react-native-datepicker-dialog": "0.0.9",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-keyboard-aware-scroll-view": "^0.9.1",
