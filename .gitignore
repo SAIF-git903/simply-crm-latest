@@ -226,7 +226,6 @@ gradle-app.setting
 
 # Generated files
 bin/
-gen/
 out/
 release/
 
