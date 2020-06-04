@@ -144,7 +144,7 @@ export const getNextPageHelper = async (listerInstance, dispatch) => {
             param.append('page', listerInstance.state.pageToTake);
             const responseJson = await getDatafromNet(param, dispatch);
             if (responseJson.success) {
-                await getAndSaveDataVtiger(responseJson, listerInstance, false, false, true);
+                await getAndSaveDataVtiger(responseJson, listerInstance, false, false, true, listerInstance.props.moduleName);
             } else {
                 //Show error to user that something went wrong.
                 listerInstance.setState({
@@ -162,7 +162,7 @@ export const getNextPageHelper = async (listerInstance, dispatch) => {
             const responseJson = await getDatafromNet(param, dispatch);
             // console.log(responseJson);
             if (responseJson.success) {
-                await getAndSaveDataVtiger(responseJson, listerInstance, true, false, true);
+                await getAndSaveDataVtiger(responseJson, listerInstance, true, false, true, listerInstance.props.moduleName);
             } else {
                 //Show error to user that something went wrong.
                 listerInstance.setState({
@@ -258,7 +258,7 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
             const responseJson = await getDatafromNet(param, dispatch);
             // console.log(responseJson);
             if (responseJson.success) {
-                await getAndSaveDataVtiger(responseJson, listerInstance, false, false, false);
+                await getAndSaveDataVtiger(responseJson, listerInstance, false, false, false, moduleName);
             } else {
                 if (!offlineAvailable) {
                     //Show error to user that something went wrong.
@@ -703,7 +703,7 @@ const saveInvoiceDetails = async (records, data, vtigerSeven, responseJson, addE
 
 const saveData = async (data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh, moduleName) => {
     try {
-        // console.log(responseJson)
+        console.log(responseJson)
         let offlineData = {};
 
         let statusText;
