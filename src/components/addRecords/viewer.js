@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View, ActivityIndicator, ScrollView, Platform, Keyboard } from 'react-native';
 import { describeRecordHelper, copyPriceDetails } from '../../helper';
-import SectionBox from '../common/section/sectionBox';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 class Viewer extends Component {
@@ -45,9 +44,7 @@ class Viewer extends Component {
                 keyboardShouldPersistTaps="handled"
                 contentContainerStyle={{ paddingTop: 10 }}
             >
-                <SectionBox style={{ paddingRight: 10 }}>
-                    {this.state.inputForm}
-                </SectionBox>
+                {this.state.inputForm}
             </KeyboardAwareScrollView>
         );
     }

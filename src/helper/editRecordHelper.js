@@ -4,6 +4,7 @@ import Toast from 'react-native-simple-toast';
 // import { NavigationActions } from 'react-navigation';
 import moment from 'moment';
 import store from '../store';
+import FormSection from '../components/common/FormSection';
 import StringForm from '../components/editRecords/inputComponents/stringType';
 import BooleanForm from '../components/editRecords/inputComponents/booleanType';
 import PickerForm from '../components/editRecords/inputComponents/picklistType';
@@ -20,7 +21,7 @@ export const describeEditRecordHelper = async (editInstance) => {
 
     const param = new FormData();
     param.append('_session', loginDetails.session);
-    param.append('_operation', 'describe');
+    param.append('_operation', 'structure');
     param.append('module', editInstance.props.moduleName);
     console.log(param);
 
@@ -38,191 +39,228 @@ export const describeEditRecordHelper = async (editInstance) => {
 
         if (responseJson.success) {
             //console.log(responseJson);
-            const fields = responseJson.result.describe.fields;
-            const formArray = [];
+
+            const structures = responseJson.result.structure;
+
             const formInstance = [];
-            let i = 0;
-            for (const fArr of fields) {
-                i++;
+            const content = [];
 
-                if (editInstance.props.moduleName === 'Calendar' && fArr.name === 'contact_id') {
-                    continue;
-                }
+            for (const structure of structures) {
+                const {
+                    fields,
+                    label,
+                    visible,
+                    sequence
+                } = structure;
+                const formArray = [];
 
-                const fieldObj = {
-                    name: fArr.name,
-                    lable: fArr.label,
-                    mandatory: fArr.mandatory,
-                    type: fArr.type,
-                    nullable: fArr.nullable,
-                    editable: fArr.editable,
-                    default: fArr.default
-                };
-                if (fieldObj.editable) {
-                    const type = fieldObj.type.name;
-                    switch (type) {
-                        case 'string':
-                        case 'text':
-                        case 'url':
-                        case 'email':
-                            formArray.push(
-                                <View
-                                    key={fieldObj.name}
-                                >
-                                    <StringForm
-                                        obj={fieldObj}
-                                        navigate={editInstance.props.navigation}
-                                        moduleName={editInstance.props.moduleName}
-                                        formId={i}
-                                        ref={(ref) => formInstance.push(ref)}
-                                    />
-                                    <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
-                                </View>
-                            );
-                            break;
-                        case 'boolean':
-                            formArray.push(
-                                <View
-                                    key={fieldObj.name}
-                                >
-                                    <BooleanForm
-                                        obj={fieldObj}
-                                        navigate={editInstance.props.navigation}
-                                        moduleName={editInstance.props.moduleName}
-                                        formId={i}
-                                        ref={(ref) => formInstance.push(ref)}
-                                    />
-                                    <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
-                                </View>
-                            );
-                            break;
-                        case 'picklist':
-                            formArray.push(
-                                <View
-                                    key={fieldObj.name}
-                                >
-                                    <PickerForm
-                                        obj={fieldObj}
-                                        navigate={editInstance.props.navigation}
-                                        moduleName={editInstance.props.moduleName}
-                                        formId={i}
-                                        ref={(ref) => formInstance.push(ref)}
-                                    />
-                                    <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
-                                </View>
-                            );
-                            break;
+                let i = 0;
+                for (const fArr of fields) {
+                    i++;
 
-                        case 'phone':
-                        case 'currency':
-                        case 'integer':
-                        case 'double':
-                            formArray.push(
-                                <View
-                                    key={fieldObj.name}
-                                >
-                                    <NumericForm
-                                        obj={fieldObj}
-                                        navigate={editInstance.props.navigation}
-                                        moduleName={editInstance.props.moduleName}
-                                        formId={i}
-                                        ref={(ref) => formInstance.push(ref)}
-                                    />
-                                    <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
-                                </View>
-                            );
-                            break;
-                        case 'date':
-                            formArray.push(
-                                <View
-                                    key={fieldObj.name}
-                                >
-                                    <DateForm
-                                        obj={fieldObj}
-                                        navigate={editInstance.props.navigation}
-                                        moduleName={editInstance.props.moduleName}
-                                        formId={i}
-                                        ref={(ref) => formInstance.push(ref)}
-                                    />
-                                    <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
-                                </View>
-                            );
-                            break;
-                        case 'multipicklist':
-                            formArray.push(
-                                <View
-                                    key={fieldObj.name}
-                                >
-                                    <MultiPickerForm
-                                        obj={fieldObj}
-                                        navigate={editInstance.props.navigation}
-                                        moduleName={editInstance.props.moduleName}
-                                        formId={i}
-                                        ref={(ref) => formInstance.push(ref)}
-                                    />
-                                    <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
-                                </View>
-                            );
-                            break;
-                        case 'reference':
-                        case 'owner':
-                            formArray.push(
-                                <View
-                                    key={fieldObj.name}
-                                >
-                                    <ReferenceForm
-                                        obj={fieldObj}
-                                        navigate={editInstance.props.navigation}
-                                        moduleName={editInstance.props.moduleName}
-                                        formId={i}
-                                        ref={(ref) => {
-                                            return (ref !== null) ? formInstance.push(ref) : undefined;
-                                        }
-                                        }
-                                    />
-                                    <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
-                                </View>
-                            );
-                            break;
-                        case 'time':
-                            formArray.push(
-                                <View
-                                    key={fieldObj.name}
-                                >
-                                    <TimeForm
-                                        obj={fieldObj}
-                                        navigate={editInstance.props.navigation}
-                                        moduleName={editInstance.props.moduleName}
-                                        formId={i}
-                                        ref={(ref) => formInstance.push(ref)}
-                                    />
-                                    <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
-                                </View>
-                            );
-                            break;
-                        default:
-                            formArray.push(
-                                <View
-                                    key={fieldObj.name}
-                                >
-                                    <StringForm
-                                        obj={fieldObj}
-                                        navigate={editInstance.props.navigation}
-                                        moduleName={editInstance.props.moduleName}
-                                        formId={i}
-                                        ref={(ref) => formInstance.push(ref)}
-                                    />
-                                    <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
-                                </View>
-                            );
-                            break;
+                    if (editInstance.props.moduleName === 'Calendar' && fArr.name === 'contact_id') {
+                        continue;
                     }
 
+                    const fieldObj = {
+                        name: fArr.name,
+                        lable: fArr.label,
+                        mandatory: fArr.mandatory,
+                        type: fArr.type,
+                        nullable: fArr.nullable,
+                        editable: fArr.masseditable,
+                        default: fArr.default
+                    };
+                    if (fieldObj.editable) {
+                        const type = fieldObj.type.name;
+                        switch (type) {
+                            case 'string':
+                            case 'text':
+                            case 'url':
+                            case 'email':
+                                formArray.push(
+                                    <View
+                                        sequence={fArr.sequence}
+                                        key={fieldObj.name}
+                                    >
+                                        <StringForm
+                                            obj={fieldObj}
+                                            navigate={editInstance.props.navigation}
+                                            moduleName={editInstance.props.moduleName}
+                                            formId={i}
+                                            ref={(ref) => formInstance.push(ref)}
+                                        />
+                                        <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
+                                    </View>
+                                );
+                                break;
+                            case 'boolean':
+                                formArray.push(
+                                    <View
+                                        sequence={fArr.sequence}
+                                        key={fieldObj.name}
+                                    >
+                                        <BooleanForm
+                                            obj={fieldObj}
+                                            navigate={editInstance.props.navigation}
+                                            moduleName={editInstance.props.moduleName}
+                                            formId={i}
+                                            ref={(ref) => formInstance.push(ref)}
+                                        />
+                                        <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
+                                    </View>
+                                );
+                                break;
+                            case 'picklist':
+                                formArray.push(
+                                    <View
+                                        sequence={fArr.sequence}
+                                        key={fieldObj.name}
+                                    >
+                                        <PickerForm
+                                            obj={fieldObj}
+                                            navigate={editInstance.props.navigation}
+                                            moduleName={editInstance.props.moduleName}
+                                            formId={i}
+                                            ref={(ref) => formInstance.push(ref)}
+                                        />
+                                        <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
+                                    </View>
+                                );
+                                break;
+
+                            case 'phone':
+                            case 'currency':
+                            case 'integer':
+                            case 'double':
+                                formArray.push(
+                                    <View
+                                        sequence={fArr.sequence}
+                                        key={fieldObj.name}
+                                    >
+                                        <NumericForm
+                                            obj={fieldObj}
+                                            navigate={editInstance.props.navigation}
+                                            moduleName={editInstance.props.moduleName}
+                                            formId={i}
+                                            ref={(ref) => formInstance.push(ref)}
+                                        />
+                                        <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
+                                    </View>
+                                );
+                                break;
+                            case 'date':
+                                formArray.push(
+                                    <View
+                                        sequence={fArr.sequence}
+                                        key={fieldObj.name}
+                                    >
+                                        <DateForm
+                                            obj={fieldObj}
+                                            navigate={editInstance.props.navigation}
+                                            moduleName={editInstance.props.moduleName}
+                                            formId={i}
+                                            ref={(ref) => formInstance.push(ref)}
+                                        />
+                                        <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
+                                    </View>
+                                );
+                                break;
+                            case 'multipicklist':
+                                formArray.push(
+                                    <View
+                                        sequence={fArr.sequence}
+                                        key={fieldObj.name}
+                                    >
+                                        <MultiPickerForm
+                                            obj={fieldObj}
+                                            navigate={editInstance.props.navigation}
+                                            moduleName={editInstance.props.moduleName}
+                                            formId={i}
+                                            ref={(ref) => formInstance.push(ref)}
+                                        />
+                                        <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
+                                    </View>
+                                );
+                                break;
+                            case 'reference':
+                            case 'owner':
+                                formArray.push(
+                                    <View
+                                        sequence={fArr.sequence}
+                                        key={fieldObj.name}
+                                    >
+                                        <ReferenceForm
+                                            obj={fieldObj}
+                                            navigate={editInstance.props.navigation}
+                                            moduleName={editInstance.props.moduleName}
+                                            formId={i}
+                                            ref={(ref) => {
+                                                return (ref !== null) ? formInstance.push(ref) : undefined;
+                                            }
+                                            }
+                                        />
+                                        <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
+                                    </View>
+                                );
+                                break;
+                            case 'time':
+                                formArray.push(
+                                    <View
+                                        sequence={fArr.sequence}
+                                        key={fieldObj.name}
+                                    >
+                                        <TimeForm
+                                            obj={fieldObj}
+                                            navigate={editInstance.props.navigation}
+                                            moduleName={editInstance.props.moduleName}
+                                            formId={i}
+                                            ref={(ref) => formInstance.push(ref)}
+                                        />
+                                        <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
+                                    </View>
+                                );
+                                break;
+                            default:
+                                formArray.push(
+                                    <View
+                                        sequence={fArr.sequence}
+                                        key={fieldObj.name}
+                                    >
+                                        <StringForm
+                                            obj={fieldObj}
+                                            navigate={editInstance.props.navigation}
+                                            moduleName={editInstance.props.moduleName}
+                                            formId={i}
+                                            ref={(ref) => formInstance.push(ref)}
+                                        />
+                                        <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
+                                    </View>
+                                );
+                                break;
+                        }
+
+                    }
                 }
+
+                if (formArray.length === 0) continue;
+
+                // Sort fields
+                formArray.sort((a, b) => a.props.sequence - b.props.sequence);
+
+                content.push(<FormSection
+                    sequence={parseInt(sequence)}
+                    title={label}
+                >
+                    {formArray}
+                </FormSection>)
             }
 
+            // Sort sections
+            content.sort((a, b) => a.props.sequence - b.props.sequence);
+
             editInstance.setState(
-                { inputForm: formArray, inputInstance: formInstance, loading: false },
+                { inputForm: content, inputInstance: formInstance, loading: false },
                 () => { getDataHelper(editInstance); }
             );
         } else {

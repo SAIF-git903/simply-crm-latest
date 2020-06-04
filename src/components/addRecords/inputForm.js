@@ -372,7 +372,6 @@ class InputForm extends Component {
     }
 
     render() {
-        console.log('inputForm re-render')
         const type = this.props.obj.type.name;
 
         switch (type) {

@@ -52,7 +52,7 @@ export default function Header(props) {
     return (
         <View style={styles.wrapper}>
             <SafeAreaView
-                forceInset={{ top: 'always' }}
+                forceInset={{ top: 'always', bottom: 'never' }}
             >
                 <View style={styles.contentContainer}>
                     <View style={{ minWidth: 28 }}>
