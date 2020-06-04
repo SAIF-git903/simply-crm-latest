@@ -437,7 +437,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
             for (const record of records) {
                 const modifiedRecord = {
                     eventLable: record.subject,
-                    id: `18x${record.id}`
+                    id: `${record.type === 'Task' ? '9' : '18'}x${record.id}`
                 };
                 data.push(modifiedRecord);
             }

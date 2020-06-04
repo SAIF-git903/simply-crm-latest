@@ -20,6 +20,8 @@ export const viewRecordRenderer = async (viewerInstance, dispatch) => {
     const loginDetails = auth.loginDetails;
     let recordOfflineData;
 
+    console.log(viewerInstance.props)
+
     try {
         if (loginDetails.vtigerVersion < 7) {
             recordOfflineData = JSON.parse(await AsyncStorage.getItem(viewerInstance.props.recordId));
