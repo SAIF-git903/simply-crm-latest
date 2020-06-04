@@ -3,6 +3,7 @@ import { Alert, View } from 'react-native';
 import Toast from 'react-native-simple-toast';
 // import { NavigationActions } from 'react-navigation';
 import store from '../store';
+import FormSection from '../components/common/FormSection';
 import StringForm from '../components/addRecords/inputComponents/stringType';
 import BooleanForm from '../components/addRecords/inputComponents/booleanType';
 import PickerForm from '../components/addRecords/inputComponents/picklistType';
@@ -19,7 +20,7 @@ export const describeRecordHelper = async (addInstance) => {
 
     const param = new FormData();
     param.append('_session', loginDetails.session);
-    param.append('_operation', 'describe');
+    param.append('_operation', 'structure');
     param.append('module', addInstance.props.moduleName);
     //console.log(param);
 
@@ -39,97 +40,77 @@ export const describeRecordHelper = async (addInstance) => {
         console.log(param)
         console.log(responseJson);
         if (responseJson.success) {
-            const fields = responseJson.result.describe.fields;
-            const formArray = [];
+            const structures = responseJson.result.structure;
+
             const formInstance = [];
-            let i = 0;
-            const currencyArr = [];
-            for (const fArr of fields) {
-                i++;
+            const content = [];
 
-                if (addInstance.props.moduleName === 'Calendar' && fArr.name === 'contact_id') {
-                    continue;
-                }
+            for (const structure of structures) {
+                const {
+                    fields,
+                    label,
+                    visible,
+                    sequence
+                } = structure;
+                const formArray = [];
 
-                const fieldObj = {
-                    name: fArr.name,
-                    lable: fArr.label,
-                    mandatory: fArr.mandatory,
-                    type: fArr.type,
-                    nullable: fArr.nullable,
-                    editable: fArr.editable,
-                    default: fArr.default
-                };
-                // if (fieldObj.name.includes('currency') && fieldObj.name.match(/\d+$/) && addInstance.props.moduleName === 'Products') {
-                //     currencyArr.push({ label: fieldObj.lable, value: fieldObj.lable });
-                // }
+                let i = 0;
+                for (const fArr of fields) {
+                    i++;
 
-                if (fieldObj.editable && !(fieldObj.name.includes('currency') && fieldObj.type.name === 'double')) {
-                    let type = fieldObj.type.name;
+                    if (addInstance.props.moduleName === 'Calendar' && fArr.name === 'contact_id') {
+                        continue;
+                    }
 
-                    // if (type === 'currency' && fieldObj.name === 'unit_price' && addInstance.props.moduleName === 'Products') {
-                    //     type = 'picklist';
-                    //     fieldObj.type.picklistValues = currencyArr;
+                    const fieldObj = {
+                        name: fArr.name,
+                        lable: fArr.label,
+                        mandatory: fArr.mandatory,
+                        type: fArr.type,
+                        nullable: fArr.nullable,
+                        editable: fArr.masseditable,
+                        default: fArr.default
+                    };
+                    // if (fieldObj.name.includes('currency') && fieldObj.name.match(/\d+$/) && addInstance.props.moduleName === 'Products') {
+                    //     currencyArr.push({ label: fieldObj.lable, value: fieldObj.lable });
                     // }
-                    switch (type) {
-                        case 'string':
-                        case 'text':
-                        case 'url':
-                        case 'email':
-                            formArray.push(
-                                <View>
-                                    <StringForm
-                                        obj={fieldObj}
-                                        navigate={addInstance.props.navigation}
-                                        moduleName={addInstance.props.moduleName}
-                                        formId={i}
-                                        ref={(ref) => formInstance.push(ref)}
-                                        key={i}
+                    if (fieldObj.editable && !(fieldObj.name.includes('currency') && fieldObj.type.name === 'double')) {
+                        let type = fieldObj.type.name;
 
-                                    />
-                                    <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
-                                </View>
-                            );
-                            break;
-                        case 'boolean':
-                            formArray.push(
-                                <View>
-                                    <BooleanForm
-                                        obj={fieldObj}
-                                        navigate={addInstance.props.navigation}
-                                        moduleName={addInstance.props.moduleName}
-                                        formId={i}
-                                        ref={(ref) => formInstance.push(ref)}
-                                        key={i}
-                                    />
-                                    <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
-                                </View>
-                            );
-                            break;
-                        case 'picklist':
-                            formArray.push(
-                                <View>
-                                    <PickerForm
-                                        obj={fieldObj}
-                                        navigate={addInstance.props.navigation}
-                                        moduleName={addInstance.props.moduleName}
-                                        formId={i}
-                                        ref={(ref) => formInstance.push(ref)}
-                                        key={i}
-                                    />
-                                    <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
-                                </View>
-                            );
-                            break;
+                        // if (type === 'currency' && fieldObj.name === 'unit_price' && addInstance.props.moduleName === 'Products') {
+                        //     type = 'picklist';
+                        //     fieldObj.type.picklistValues = currencyArr;
+                        // }
 
-                        case 'phone':
-                        case 'currency':
-                        case 'integer':
-                        case 'double':
-                            if (fieldObj.name !== 'shipping_&_handling_') {
+                        switch (type) {
+                            case 'string':
+                            case 'text':
+                            case 'url':
+                            case 'email':
                                 formArray.push(
-                                    <View>
-                                        <NumericForm
+                                    <View
+                                        sequence={fArr.sequence}
+                                    >
+                                        <StringForm
+                                            obj={fieldObj}
+                                            navigate={addInstance.props.navigation}
+                                            moduleName={addInstance.props.moduleName}
+                                            formId={i}
+                                            ref={(ref) => formInstance.push(ref)}
+                                            key={i}
+
+                                        />
+                                        <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
+                                    </View>
+                                );
+
+                                break;
+                            case 'boolean':
+                                formArray.push(
+                                    <View
+                                        sequence={fArr.sequence}
+                                    >
+                                        <BooleanForm
                                             obj={fieldObj}
                                             navigate={addInstance.props.navigation}
                                             moduleName={addInstance.props.moduleName}
@@ -140,102 +121,169 @@ export const describeRecordHelper = async (addInstance) => {
                                         <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
                                     </View>
                                 );
-                            }
-                            break;
-                        case 'date':
-                            formArray.push(
-                                <View>
-                                    <DateForm
-                                        obj={fieldObj}
-                                        navigate={addInstance.props.navigation}
-                                        moduleName={addInstance.props.moduleName}
-                                        formId={i}
-                                        ref={(ref) => formInstance.push(ref)}
-                                        key={i}
-                                    />
-                                    <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
-                                </View>
-                            );
-                            break;
-                        case 'multipicklist':
-                            formArray.push(
-                                <View>
-                                    <MultiPickerForm
-                                        obj={fieldObj}
-                                        navigate={addInstance.props.navigation}
-                                        moduleName={addInstance.props.moduleName}
-                                        formId={i}
-                                        ref={(ref) => formInstance.push(ref)}
-                                        key={i}
-                                    />
-                                    <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
-                                </View>
-                            );
-                            break;
-                        case 'reference':
-                        case 'owner':
-                            formArray.push(
-                                <View>
-                                    <ReferenceForm
-                                        defaultValue={
-                                            fieldObj.name === 'currency_id'
-                                                ? store.getState().UserReducer.userData.currency_id
-                                                : null
-                                        }
-                                        obj={fieldObj}
-                                        navigate={addInstance.props.navigation}
-                                        moduleName={addInstance.props.moduleName}
-                                        formId={i}
-                                        ref={(ref) => { (ref !== null) ? formInstance.push(ref) : undefined; }}
-                                        userId={loginDetails.userId}
-                                        onCopyPriceDetails={addInstance.onCopyPriceDetails.bind(addInstance)}
-                                        key={i}
-                                    />
-                                    <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
-                                </View>
-                            );
-                            break;
-                        case 'time':
-                            formArray.push(
-                                <View>
-                                    <TimeForm
-                                        obj={fieldObj}
-                                        navigate={addInstance.props.navigation}
-                                        moduleName={addInstance.props.moduleName}
-                                        formId={i}
-                                        ref={(ref) => formInstance.push(ref)}
-                                        key={i}
-                                    />
-                                    <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
-                                </View>
-                            );
-                            break;
-                        default:
-                            formArray.push(
-                                <View>
-                                    <StringForm
-                                        obj={fieldObj}
-                                        navigate={addInstance.props.navigation}
-                                        moduleName={addInstance.props.moduleName}
-                                        formId={i}
-                                        ref={(ref) => formInstance.push(ref)}
-                                        key={i}
-                                    />
-                                    <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
-                                </View>
-                            );
-                            break;
+                                break;
+                            case 'picklist':
+                                formArray.push(
+                                    <View
+                                        sequence={fArr.sequence}
+                                    >
+                                        <PickerForm
+                                            obj={fieldObj}
+                                            navigate={addInstance.props.navigation}
+                                            moduleName={addInstance.props.moduleName}
+                                            formId={i}
+                                            ref={(ref) => formInstance.push(ref)}
+                                            key={i}
+                                        />
+                                        <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
+                                    </View>
+                                );
+                                break;
+
+                            case 'phone':
+                            case 'currency':
+                            case 'integer':
+                            case 'double':
+                                if (fieldObj.name !== 'shipping_&_handling_') {
+                                    formArray.push(
+                                        <View
+                                            sequence={fArr.sequence}
+                                        >
+                                            <NumericForm
+                                                obj={fieldObj}
+                                                navigate={addInstance.props.navigation}
+                                                moduleName={addInstance.props.moduleName}
+                                                formId={i}
+                                                ref={(ref) => formInstance.push(ref)}
+                                                key={i}
+                                            />
+                                            <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
+                                        </View>
+                                    );
+                                }
+                                break;
+                            case 'date':
+                                formArray.push(
+                                    <View
+                                        sequence={fArr.sequence}
+                                    >
+                                        <DateForm
+                                            obj={fieldObj}
+                                            navigate={addInstance.props.navigation}
+                                            moduleName={addInstance.props.moduleName}
+                                            formId={i}
+                                            ref={(ref) => formInstance.push(ref)}
+                                            key={i}
+                                        />
+                                        <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
+                                    </View>
+                                );
+                                break;
+                            case 'multipicklist':
+                                formArray.push(
+                                    <View
+                                        sequence={fArr.sequence}
+                                    >
+                                        <MultiPickerForm
+                                            obj={fieldObj}
+                                            navigate={addInstance.props.navigation}
+                                            moduleName={addInstance.props.moduleName}
+                                            formId={i}
+                                            ref={(ref) => formInstance.push(ref)}
+                                            key={i}
+                                        />
+                                        <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
+                                    </View>
+                                );
+                                break;
+                            case 'reference':
+                            case 'owner':
+                                formArray.push(
+                                    <View
+                                        sequence={fArr.sequence}
+                                    >
+                                        <ReferenceForm
+                                            defaultValue={
+                                                fieldObj.name === 'currency_id'
+                                                    ? store.getState().UserReducer.userData.currency_id
+                                                    : null
+                                            }
+                                            obj={fieldObj}
+                                            navigate={addInstance.props.navigation}
+                                            moduleName={addInstance.props.moduleName}
+                                            formId={i}
+                                            ref={(ref) => { (ref !== null) ? formInstance.push(ref) : undefined; }}
+                                            userId={loginDetails.userId}
+                                            onCopyPriceDetails={addInstance.onCopyPriceDetails.bind(addInstance)}
+                                            key={i}
+                                        />
+                                        <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
+                                    </View>
+                                );
+                                break;
+                            case 'time':
+                                formArray.push(
+                                    <View
+                                        sequence={fArr.sequence}
+                                    >
+                                        <TimeForm
+                                            obj={fieldObj}
+                                            navigate={addInstance.props.navigation}
+                                            moduleName={addInstance.props.moduleName}
+                                            formId={i}
+                                            ref={(ref) => formInstance.push(ref)}
+                                            key={i}
+                                        />
+                                        <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
+                                    </View>
+                                );
+                                break;
+                            default:
+                                formArray.push(
+                                    <View
+                                        sequence={fArr.sequence}
+                                    >
+                                        <StringForm
+                                            obj={fieldObj}
+                                            navigate={addInstance.props.navigation}
+                                            moduleName={addInstance.props.moduleName}
+                                            formId={i}
+                                            ref={(ref) => formInstance.push(ref)}
+                                            key={i}
+                                        />
+                                        <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
+                                    </View>
+                                );
+                                break;
+                        }
                     }
                 }
+
+                if (formArray.length === 0) continue;
+
+                // Sort fields
+                formArray.sort((a, b) => a.props.sequence - b.props.sequence);
+
+                content.push(<FormSection
+                    sequence={parseInt(sequence)}
+                    title={label}
+                >
+                    {formArray}
+                </FormSection>)
             }
-            addInstance.setState({ ...addInstance.state, inputForm: formArray, inputInstance: formInstance, loading: false });
+
+            // Sort sections
+            content.sort((a, b) => a.props.sequence - b.props.sequence);
+
+            addInstance.setState({ ...addInstance.state, inputForm: content, inputInstance: formInstance, loading: false });
+
         } else {
             //console.log('Failed');
             addInstance.setState({ loading: false });
             Alert.alert('Api error', 'Api response error.Vtiger is modified');
         }
     } catch (error) {
-        //console.log(error);
+        console.log(error);
         addInstance.setState({ loading: false });
         Alert.alert('No network connection', 'Please check your internet connection and tryagin');
     }
