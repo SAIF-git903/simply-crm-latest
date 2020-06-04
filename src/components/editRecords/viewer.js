@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { View, ActivityIndicator, ScrollView, KeyboardAvoidingView, Keyboard } from 'react-native';
 import { describeEditRecordHelper } from '../../helper';
 import SectionBox from '../common/section/sectionBox';
-
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 class Viewer extends Component {
     constructor(props) {

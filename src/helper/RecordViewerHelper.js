@@ -279,7 +279,7 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
                     value = field.value.label;
                 }
 
-                fieldViews.push(<Field label={field.label} value={value} />);
+                fieldViews.push(<Field label={field.label} value={value} uiType={field.uitype} />);
             }
 
             blockViews.push(
