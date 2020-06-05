@@ -186,31 +186,33 @@ export const renderDrawerView = async (loginDetails, drawerInstance) => {
 
     // console.log('len', marketSectionContent.length);
     const section = [];
-    if (marketSectionContent.length > 0) {
+
+    console.log(marketSectionContent)
+    if (marketSectionContent[0].length > 0) {
         section.push(marketingSection);
     }
 
-    if (salesSectionContent.length > 0) {
+    if (salesSectionContent[0].length > 0) {
         section.push(salesSection);
     }
 
-    if (inventorySectionContent.length > 0) {
+    if (inventorySectionContent[0].length > 0) {
         section.push(inventorySection);
     }
 
-    if (supportSectionContent.length > 0) {
+    if (supportSectionContent[0].length > 0) {
         section.push(supportSection);
     }
 
-    if (projectSectionContent.length > 0) {
+    if (projectSectionContent[0].length > 0) {
         //section.push(projectSection);
     }
 
-    if (toolsSectionContent.length > 0) {
+    if (toolsSectionContent[0].length > 0) {
         section.push(toolsSection);
     }
 
-    if (customSectionContent.length > 0) {
+    if (customSectionContent[0].length > 0) {
         //section.push(customSection);
     }
 

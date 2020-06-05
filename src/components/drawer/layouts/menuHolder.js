@@ -31,7 +31,6 @@ export default function MenuHolder(props) {
     });
 
     function assignIcons() {
-        console.log(module.name)
         switch (module.name) {
             case 'Accounts':
                 setIconName('building');
