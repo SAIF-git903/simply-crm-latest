@@ -1,4 +1,4 @@
-package com.simplycrm;
+package com.simplycrm.mobileapp;
 
 import android.app.Application;
 import android.content.Context;
@@ -8,6 +8,8 @@ import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
+import com.simplycrm.mobileapp.BuildConfig;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 

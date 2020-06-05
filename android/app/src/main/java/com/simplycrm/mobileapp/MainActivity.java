@@ -1,4 +1,4 @@
-package com.simplycrm;
+package com.simplycrm.mobileapp;
 
 import com.facebook.react.ReactActivity;
 
