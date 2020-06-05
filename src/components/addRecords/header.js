@@ -80,7 +80,7 @@ class Header extends Component {
         return (
             <View style={commonStyles.headerBackground}>
                 <SafeAreaView
-                    forceInset={{ top: 'always' }}
+                    forceInset={{ top: 'always', bottom: 'never' }}
                 >
                     <View
                         style={commonStyles.headerContentStyle}

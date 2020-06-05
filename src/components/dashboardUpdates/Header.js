@@ -11,6 +11,12 @@ class Header extends Component {
         this.props.moduleSelected(value);
     }
 
+    isModuleActive(moduleName) {
+        for (const module of this.props.modules) {
+            if (moduleName === module.name) return true;
+        }
+    }
+
     render() {
         const { moduleName } = this.props;
         let dropdownText = moduleName;
@@ -18,6 +24,10 @@ class Header extends Component {
         if (moduleName === 'Accounts') {
             dropdownText = 'Organizations'
         }
+
+        const options = ['Organizations', 'Contacts', 'Calendar']
+
+        if (this.isModuleActive('Leads')) options.push('Leads')
 
         return (
             <View style={styles.subContainer}>
@@ -30,7 +40,7 @@ class Header extends Component {
                         Show Recent
                     </Text>
                     <ModalDropdown
-                        options={['Organizations', 'Contacts', 'Calendar', 'Leads']}
+                        options={options}
                         onSelect={(index, value) => this.handleDisplayModule.bind(this)(value)}
                         defaultValue={moduleName}
                         dropdownStyle={{

@@ -34,6 +34,7 @@ const IconButton = ({ icon, title, style, onPress }) => {
 
 class UpdateWidget extends Component {
     render() {
+        console.log(this.props)
         const { navigation } = this.props;
 
         return (
@@ -120,7 +121,9 @@ class UpdateWidget extends Component {
                     /> */}
                 </View>
                 <View style={{ padding: 10, paddingBottom: 0 }}>
-                    <Header />
+                    <Header
+                        modules={this.props.loginDetails.modules}
+                    />
                 </View>
 
                 <View style={{ flex: 1, padding: 10 }}>
@@ -142,5 +145,10 @@ const styles = {
     }
 };
 
-export default connect(null)(UpdateWidget);
+const mapStateToProps = ({ auth }) => {
+    const { loginDetails } = auth;
+    return { loginDetails };
+};
+
+export default connect(mapStateToProps)(UpdateWidget);
 

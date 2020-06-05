@@ -990,6 +990,9 @@ export const recordListRendererHelper = (listerInstance) => {
         case CAMPAIGNS: {
             return (
                 <FlatList
+                    ListEmptyComponent={renderEmpty()}
+                    style={styles.listWrapper}
+                    contentContainerStyle={styles.list}
                     onRefresh={listerInstance.refreshData.bind(listerInstance)}
                     data={listerInstance.state.data}
                     refreshing={listerInstance.state.isFlatListRefreshing}
@@ -1064,6 +1067,9 @@ export const recordListRendererHelper = (listerInstance) => {
         case FAQ: {
             return (
                 <FlatList
+                    ListEmptyComponent={renderEmpty()}
+                    style={styles.listWrapper}
+                    contentContainerStyle={styles.list}
                     onRefresh={listerInstance.refreshData.bind(listerInstance)}
                     data={listerInstance.state.data}
                     refreshing={listerInstance.state.isFlatListRefreshing}
@@ -1085,6 +1091,9 @@ export const recordListRendererHelper = (listerInstance) => {
         case QUOTES: {
             return (
                 <FlatList
+                    ListEmptyComponent={renderEmpty()}
+                    style={styles.listWrapper}
+                    contentContainerStyle={styles.list}
                     onRefresh={listerInstance.refreshData.bind(listerInstance)}
                     data={listerInstance.state.data}
                     refreshing={listerInstance.state.isFlatListRefreshing}
@@ -1110,6 +1119,9 @@ export const recordListRendererHelper = (listerInstance) => {
         case PURCHASEORDER: {
             return (
                 <FlatList
+                    ListEmptyComponent={renderEmpty()}
+                    style={styles.listWrapper}
+                    contentContainerStyle={styles.list}
                     onRefresh={listerInstance.refreshData.bind(listerInstance)}
                     data={listerInstance.state.data}
                     refreshing={listerInstance.state.isFlatListRefreshing}
@@ -1134,6 +1146,9 @@ export const recordListRendererHelper = (listerInstance) => {
         case SALESORDER: {
             return (
                 <FlatList
+                    ListEmptyComponent={renderEmpty()}
+                    style={styles.listWrapper}
+                    contentContainerStyle={styles.list}
                     onRefresh={listerInstance.refreshData.bind(listerInstance)}
                     data={listerInstance.state.data}
                     refreshing={listerInstance.state.isFlatListRefreshing}
@@ -1190,6 +1205,9 @@ export const recordListRendererHelper = (listerInstance) => {
         case PRICEBOOKS: {
             return (
                 <FlatList
+                    ListEmptyComponent={renderEmpty()}
+                    style={styles.listWrapper}
+                    contentContainerStyle={styles.list}
                     onRefresh={listerInstance.refreshData.bind(listerInstance)}
                     data={listerInstance.state.data}
                     refreshing={listerInstance.state.isFlatListRefreshing}
@@ -1378,6 +1396,9 @@ export const recordListRendererHelper = (listerInstance) => {
             return (
                 <FlatList
                     onRefresh={listerInstance.refreshData.bind(listerInstance)}
+                    ListEmptyComponent={renderEmpty()}
+                    style={styles.listWrapper}
+                    contentContainerStyle={styles.list}
                     data={listerInstance.state.data}
                     refreshing={listerInstance.state.isFlatListRefreshing}
                     ListFooterComponent={(listerInstance.state.nextPage) ? listerInstance.renderFooter.bind(listerInstance) : undefined}
@@ -1422,6 +1443,9 @@ export const recordListRendererHelper = (listerInstance) => {
         case SERVICECONTRACTS: {
             return (
                 <FlatList
+                    ListEmptyComponent={renderEmpty()}
+                    style={styles.listWrapper}
+                    contentContainerStyle={styles.list}
                     onRefresh={listerInstance.refreshData.bind(listerInstance)}
                     data={listerInstance.state.data}
                     refreshing={listerInstance.state.isFlatListRefreshing}

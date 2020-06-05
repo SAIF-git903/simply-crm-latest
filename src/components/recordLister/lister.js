@@ -115,9 +115,7 @@ class Lister extends Component {
                     <SearchBox
                         disabled={this.state.searching}
                         moduleName={this.props.moduleName}
-                        resetSearch={() => {
-                            console.log('RESETRESETRESET')
-                        }}
+                        resetSearch={() => { }}
                         onDataReceived={({ data, searchText }) => {
                             if (data.length !== 0) {
                                 let searchLabel = searchText.length !== 0 ? `Displaying ${data.length} result(s) for "${searchText}"` : null

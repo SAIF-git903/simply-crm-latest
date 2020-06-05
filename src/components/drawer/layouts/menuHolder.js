@@ -18,7 +18,7 @@ export default function MenuHolder(props) {
     const { module } = props;
 
     // Ephemeral state
-    const [iconName, setIconName] = useState('luggage-cart')
+    const [iconName, setIconName] = useState('file-invoice-dollar')
 
     // Redux state
     const dispatch = useDispatch();
@@ -31,6 +31,7 @@ export default function MenuHolder(props) {
     });
 
     function assignIcons() {
+        console.log(module.name)
         switch (module.name) {
             case 'Accounts':
                 setIconName('building');
@@ -70,6 +71,24 @@ export default function MenuHolder(props) {
                 break;
             case 'Services':
                 setIconName('box-open');
+                break;
+            case 'Quotes':
+                setIconName('quote-right');
+                break;
+            case 'SalesOrder':
+                setIconName('file-invoice');
+                break;
+            case 'Leads':
+                setIconName('user-check');
+                break;
+            case 'Faq':
+                setIconName('hands-helping');
+                break;
+            case 'HelpDesk':
+                setIconName('ticket-alt');
+                break;
+            case 'ServiceContracts':
+                setIconName('file-signature');
                 break;
             default:
         }

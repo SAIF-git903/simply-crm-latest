@@ -187,7 +187,7 @@ export const renderDrawerView = async (loginDetails, drawerInstance) => {
     // console.log('len', marketSectionContent.length);
     const section = [];
     if (marketSectionContent.length > 0) {
-        //section.push(marketingSection);
+        section.push(marketingSection);
     }
 
     if (salesSectionContent.length > 0) {
@@ -195,11 +195,11 @@ export const renderDrawerView = async (loginDetails, drawerInstance) => {
     }
 
     if (inventorySectionContent.length > 0) {
-        // section.push(inventorySection);
+        section.push(inventorySection);
     }
 
     if (supportSectionContent.length > 0) {
-        //section.push(supportSection);
+        section.push(supportSection);
     }
 
     if (projectSectionContent.length > 0) {
@@ -237,16 +237,16 @@ const getSectionContent = (marketingSectionContent, salesSectionContent, invento
 
             switch (moduleSectionType) {
                 case MARKETING:
-                    //fillSection(marketModulesButtons, module, false);
+                    fillSection(marketModulesButtons, module, false);
                     break;
                 case SALES:
                     fillSection(salesModulesButtons, module, false);
                     break;
                 case INVENTORY:
-                    //fillSection(inventoryModulesButtons, module, false);
+                    fillSection(inventoryModulesButtons, module, false);
                     break;
                 case SUPPORT:
-                    //fillSection(supportModulesButtons, module, false);
+                    fillSection(supportModulesButtons, module, false);
                     break;
                 case PROJECT:
                     //fillSection(projectModulesButtons, module, false);
@@ -281,26 +281,48 @@ const getMenuHolder = (module, custom) => <MenuHolder key={module.name} module={
 const drawerButtonArrangeHelper = (name) => {
     switch (name) {
         // case ACCOUNTS:
-        // case LEADS:
-        // case CAMPAIGNS:
+        case LEADS:
+            return INVENTORY;
+        case CAMPAIGNS:
+            {
+                return MARKETING;
+            }
         // case CONTACTS:
         case CALENDAR:
         //     return MARKETING;
-        //case QUOTES:
+        case QUOTES:
+            {
+                return INVENTORY;
+            }
         case PRODUCTS:
         case INVOICE:
         case OPPORTUNITIES:
             //case SERVICES:
             //case SMS_NOTIFIER:
-            return SALES;
-        // case SALESORDER:
+            {
+                return SALES;
+            }
+        case SALESORDER:
+            {
+                return INVENTORY;
+            }
         // case VENDORS:
-        // case PRICEBOOKS:
-        // case PURCHASEORDER:
+        case PRICEBOOKS:
+            {
+                return INVENTORY;
+            }
+        case PURCHASEORDER:
+            {
+                return INVENTORY;
+            }
         //     return INVENTORY;
-        // case TICKETS:
-        // case FAQ:
-        // case SERVICECONTRACTS:
+        case TICKETS:
+            { return SUPPORT; }
+        case FAQ:
+            { return SUPPORT; }
+        case SERVICECONTRACTS:
+            { return SUPPORT; }
+
         // case ASSETS:
         //     return SUPPORT;
         // case MODULE_PROJECT:
@@ -311,7 +333,7 @@ const drawerButtonArrangeHelper = (name) => {
         case DOCUMENTS:
         // case EMAILS:
         case REPORTS:
-            return TOOLS;
+            { return TOOLS; }
         default:
         //return CUSTOM;
     }
