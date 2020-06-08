@@ -58,6 +58,18 @@ export const describeEditRecordHelper = async (editInstance) => {
                 for (const fArr of fields) {
                     i++;
 
+                    const hiddenFields = [
+                        'createdtime',
+                        'modifiedtime',
+                        'pricebook_no',
+                        'source',
+                        'starred',
+                        'tags',
+                        'modifiedby'
+                    ];
+
+                    if (hiddenFields.includes(fArr.name)) continue;
+
                     if (editInstance.props.moduleName === 'Calendar' && fArr.name === 'contact_id') {
                         continue;
                     }

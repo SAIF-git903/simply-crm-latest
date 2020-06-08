@@ -62,6 +62,18 @@ export const describeRecordHelper = async (addInstance) => {
                         continue;
                     }
 
+                    const hiddenFields = [
+                        'createdtime',
+                        'modifiedtime',
+                        'pricebook_no',
+                        'source',
+                        'starred',
+                        'tags',
+                        'modifiedby'
+                    ];
+
+                    if (hiddenFields.includes(fArr.name)) continue;
+
                     const fieldObj = {
                         name: fArr.name,
                         lable: fArr.label,
