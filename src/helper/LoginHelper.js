@@ -79,7 +79,6 @@ export const loginHelper = async (username, password, url, navigation, loginInst
     // param.append('username', 'mobileapp-dev');
     // param.append('password', '45gargle62attain');
 
-
     try {
         // console.log('URL', url);
 

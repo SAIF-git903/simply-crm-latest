@@ -28,14 +28,16 @@ class AddRecords extends Component {
                     moduleLable={this.props.moduleLable}
                     callViewer={this.callViewer.bind(this)}
                 />
-                <Viewer
-                    recordId={this.props.route.params.id}
-                    navigation={this.props.navigation}
-                    moduleName={this.props.selectedButton}
-                    moduleId={this.props.moduleId}
-                    moduleLable={this.props.moduleLable}
-                    onRef={ref => (this.viewer = ref)}
-                />
+                <View style={{ width: '100%', height: '100%', paddingBottom: 100 }}>
+                    <Viewer
+                        recordId={this.props.route.params.id}
+                        navigation={this.props.navigation}
+                        moduleName={this.props.selectedButton}
+                        moduleId={this.props.moduleId}
+                        moduleLable={this.props.moduleLable}
+                        onRef={ref => (this.viewer = ref)}
+                    />
+                </View>
             </View>
         );
     }

@@ -1,5 +1,6 @@
 import React from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
+import { View } from 'react-native';
 import store from '../store';
 import { getDatafromNet } from './networkHelper';
 import Section from '../components/common/section';

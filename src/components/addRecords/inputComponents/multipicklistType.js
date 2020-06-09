@@ -12,7 +12,9 @@ class MultiPickListType extends Component {
             saveValue: this.props.obj.default
         };
     }
+
     render() {
+        console.log('type')
         console.log(this.props)
         const mandatory = this.props.obj.mandatory;
         const items = [];
