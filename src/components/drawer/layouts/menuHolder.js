@@ -100,7 +100,7 @@ export default function MenuHolder(props) {
             module.id)
         );
 
-        navigation.navigate('Records', {
+        navigation.navigate(module.name === 'Calendar' ? 'Calendar' : 'Records', {
             moduleName: module.name,
             moduleLable: module.label,
             moduleId: module.id

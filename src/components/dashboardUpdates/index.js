@@ -106,7 +106,7 @@ class UpdateWidget extends Component {
                                     9
                                 ))
 
-                                navigation.navigate('Records', {
+                                navigation.navigate('Calendar', {
                                     moduleName: 'Calendar',
                                     moduleLable: 'Calendar',
                                     moduleId: 9

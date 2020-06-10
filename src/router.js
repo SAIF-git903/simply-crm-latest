@@ -13,6 +13,7 @@ import Dashboard from './screens/Dashboard';
 import Records from './screens/Records';
 import RecordDetails from './screens/RecordDetails';
 import ForgotPassword from './screens/ForgotPassword';
+import Calendar from './screens/Calendar';
 import AddRecord from './components/addRecords';
 import EditRecord from './components/editRecords';
 import ReferenceScreen from './components/addRecords/referenceRecordLister';
@@ -64,6 +65,7 @@ export default class Router extends Component {
     >
         <Drawer.Screen name="Dashboard" component={Dashboard} />
         <Drawer.Screen name="Records" component={Records} />
+        <Drawer.Screen name="Calendar" component={Calendar} />
     </Drawer.Navigator>
 
     render() {
