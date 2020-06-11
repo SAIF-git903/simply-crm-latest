@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, Linking } from 'react-native';
 import { fontStyles } from '../../styles/common';
-import trackCall from '../../helper/api/trackCall';
+import { trackCall } from '../../helper/api';
 
 export default class Field extends Component {
     onPressAction() {
