@@ -13,7 +13,6 @@ class MultiPickListType extends Component {
         };
     }
     render() {
-        console.log(this.props)
         const mandatory = this.props.obj.mandatory;
         const items = [];
         const options = this.props.obj.type.picklistValues;
@@ -39,6 +38,9 @@ class MultiPickListType extends Component {
                 </View>
                 <View style={{ flex: 1 }}>
                     <MultiSelect
+                        fontFamily={'Poppins-Regular'}
+                        altFontFamily={'Poppins-Regular'}
+                        itemFontFamily={'Poppins-Regular'}
                         items={items}
                         uniqueKey="id"
                         onSelectedItemsChange={

@@ -38,13 +38,16 @@ class MultiPickListType extends Component {
                 </View>
                 <View style={{ flex: 1 }}>
                     <MultiSelect
+                        fontFamily={'Poppins-Regular'}
+                        altFontFamily={'Poppins-Regular'}
+                        itemFontFamily={'Poppins-Regular'}
                         items={items}
                         uniqueKey="id"
                         onSelectedItemsChange={
                             (selectedItems) => {
                                 this.setState({
                                     selectedValues: selectedItems,
-                                    saveValue: selectedItems.join('|##|')
+                                    saveValue: selectedItems.join(' |##| ')
                                 });
                             }}
                         selectedItems={this.state.selectedValues}

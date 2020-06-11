@@ -41,6 +41,7 @@
 	<string></string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>MaterialCommunityIcons.ttf</string>
 		<string>Feather.ttf</string>
 		<string>MaterialIcons.ttf</string>
 		<string>FontAwesome5_Pro_Brands.ttf</string>
