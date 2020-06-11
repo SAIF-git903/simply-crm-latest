@@ -7,6 +7,9 @@ import Mgr from './mgrReducer';
 import dashboardReducer from './dashboardReducer';
 import UserReducer from './userReducer';
 
+// Ducks
+import calendar from '../ducks/calendar';
+
 export default combineReducers({
   auth: AuthReducer,
   event: EventReducer,
@@ -14,6 +17,7 @@ export default combineReducers({
   recordViewer: RecordViewer,
   mgr: Mgr,
   dashboardUpdate: dashboardReducer,
-  UserReducer
+  UserReducer,
+  calendar
 });
 

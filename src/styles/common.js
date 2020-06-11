@@ -127,5 +127,20 @@ export const fontStyles = StyleSheet.create({
         fontFamily: 'Poppins-Regular',
         color: '#AAB1B6',
         fontSize: 16
+    },
+    calendarTitle: {
+        fontFamily: 'Poppins-Medium',
+        color: 'black',
+        fontSize: 18
+    },
+    calendarText: {
+        fontFamily: 'Poppins-Regular',
+        color: '#707070',
+        fontSize: 14
+    },
+    calendarTextMedium: {
+        fontFamily: 'Poppins-Medium',
+        color: '#707070',
+        fontSize: 14
     }
 });

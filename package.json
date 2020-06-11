@@ -22,7 +22,7 @@
     "react": "16.11.0",
     "react-native": "0.62.2",
     "react-native-app-intro-slider": "3.0.0",
-    "react-native-calendars": "^1.289.0",
+    "react-native-calendars": "git+https://github.com/krakz999/react-native-calendars.git",
     "react-native-datepicker": "git+https://github.com/krakz999/react-native-datepicker.git",
     "react-native-datepicker-dialog": "0.0.9",
     "react-native-gesture-handler": "^1.6.1",

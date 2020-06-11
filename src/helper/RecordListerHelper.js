@@ -954,10 +954,7 @@ export const deleteRecordHelper = async (listerInstance, recordId,
             Toast.show('Delete Failed.');
         }
     } catch (error) {
-        //console.log(error);
-        recordInstance.setState({
-            loading: false
-        });
+        console.log(error);
         Toast.show('Delete Failed.');
     }
 };
