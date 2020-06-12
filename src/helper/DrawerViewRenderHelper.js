@@ -154,7 +154,7 @@ export const renderDrawerView = async (loginDetails, drawerInstance) => {
         sectionHeaderImageSelectedColor={DRAWER_SECTION_HEADER_IMAGE_SELECTED_COLOR}
         headerName={PROJECT} imageName={PROJECT_IMAGE}
         headerImage content={projectSectionContent}
-        contentHeight={projectSectionContent.length * DRAWER_COLUMN_TOTAL_HEIGHT}
+        contentHeight={projectSectionContent[0].length * DRAWER_COLUMN_TOTAL_HEIGHT}
         key='project_section'
     />);
 
@@ -205,7 +205,7 @@ export const renderDrawerView = async (loginDetails, drawerInstance) => {
     }
 
     if (projectSectionContent[0].length > 0) {
-        //section.push(projectSection);
+        section.push(projectSection);
     }
 
     if (toolsSectionContent[0].length > 0) {
@@ -251,7 +251,7 @@ const getSectionContent = (marketingSectionContent, salesSectionContent, invento
                     fillSection(supportModulesButtons, module, false);
                     break;
                 case PROJECT:
-                    //fillSection(projectModulesButtons, module, false);
+                    fillSection(projectModulesButtons, module, false);
                     break;
                 case TOOLS:
                     fillSection(toolsModulesButtons, module, false);
@@ -281,6 +281,7 @@ const fillSection = (moduleButtons, module, custom) => {
 
 const getMenuHolder = (module, custom) => <MenuHolder key={module.name} module={module} custom={custom} />;
 const drawerButtonArrangeHelper = (name) => {
+    console.log(name)
     switch (name) {
         // case ACCOUNTS:
         case LEADS:
@@ -291,15 +292,17 @@ const drawerButtonArrangeHelper = (name) => {
             }
         // case CONTACTS:
         case CALENDAR:
-        //     return MARKETING;
+            {
+                return SALES;
+            }
         case QUOTES:
             {
                 return INVENTORY;
             }
         case PRODUCTS:
+        case SERVICES:
         case INVOICE:
         case OPPORTUNITIES:
-            //case SERVICES:
             //case SMS_NOTIFIER:
             {
                 return SALES;
@@ -308,7 +311,7 @@ const drawerButtonArrangeHelper = (name) => {
             {
                 return INVENTORY;
             }
-        // case VENDORS:
+        case VENDORS:
         case PRICEBOOKS:
             {
                 return INVENTORY;
@@ -325,17 +328,27 @@ const drawerButtonArrangeHelper = (name) => {
         case SERVICECONTRACTS:
             { return SUPPORT; }
 
-        // case ASSETS:
+        case ASSETS:
+            { return SUPPORT; }
         //     return SUPPORT;
-        // case MODULE_PROJECT:
-        // case PROJECT_TASK:
-        // case PROJECT_MILESTONE:
+        case MODULE_PROJECT:
+            {
+                return PROJECT;
+            }
+        case PROJECT_TASK:
+            {
+                return PROJECT;
+            }
+        case PROJECT_MILESTONE:
+            {
+                return PROJECT;
+            }
         // case PBXMANAGER:
         //     return PROJECT;
         case DOCUMENTS:
-        // case EMAILS:
+        case EMAILS:
         case REPORTS:
-            { return TOOLS; }
+            return TOOLS;
         default:
         //return CUSTOM;
     }

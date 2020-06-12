@@ -32,7 +32,31 @@ export default class SectionHeader extends Component {
     }
 
     getIcon() {
-        return 'folder';
+        console.log(this.props.imageName)
+
+        switch (this.props.imageName) {
+            case 'marketing':
+                return 'bullhorn';
+
+            case 'sales':
+                return 'dot-circle';
+
+            case 'inventory':
+                return 'dolly-flatbed';
+
+            case 'support':
+                return 'life-ring';
+
+            case 'project':
+                return 'project-diagram';
+
+            case 'tools':
+                return 'wrench';
+
+            default:
+                return 'folder';
+        }
+
     }
 
     render() {

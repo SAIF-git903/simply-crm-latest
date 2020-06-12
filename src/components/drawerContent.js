@@ -130,9 +130,9 @@ class DrawerContent extends Component {
 
 const styles = StyleSheet.create({
     singOutWrapper: {
-        height: 40,
+        height: 50,
         width: '100%',
-        backgroundColor: DRAWER_INNER_BACKGROUND
+        backgroundColor: DRAWER_INNER_BACKGROUND,
     },
     signOut: {
         flexDirection: 'row',

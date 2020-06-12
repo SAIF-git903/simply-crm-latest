@@ -1038,6 +1038,9 @@ export const recordListRendererHelper = (listerInstance) => {
         case VENDORS: {
             return (
                 <FlatList
+                    ListEmptyComponent={renderEmpty()}
+                    style={styles.listWrapper}
+                    contentContainerStyle={styles.list}
                     onRefresh={listerInstance.refreshData.bind(listerInstance)}
                     data={listerInstance.state.data}
                     refreshing={listerInstance.state.isFlatListRefreshing}
@@ -1464,6 +1467,9 @@ export const recordListRendererHelper = (listerInstance) => {
         case SERVICES: {
             return (
                 <FlatList
+                    ListEmptyComponent={renderEmpty()}
+                    style={styles.listWrapper}
+                    contentContainerStyle={styles.list}
                     onRefresh={listerInstance.refreshData.bind(listerInstance)}
                     data={listerInstance.state.data}
                     refreshing={listerInstance.state.isFlatListRefreshing}
@@ -1485,6 +1491,9 @@ export const recordListRendererHelper = (listerInstance) => {
         case ASSETS: {
             return (
                 <FlatList
+                    ListEmptyComponent={renderEmpty()}
+                    style={styles.listWrapper}
+                    contentContainerStyle={styles.list}
                     onRefresh={listerInstance.refreshData.bind(listerInstance)}
                     data={listerInstance.state.data}
                     refreshing={listerInstance.state.isFlatListRefreshing}
@@ -1527,6 +1536,9 @@ export const recordListRendererHelper = (listerInstance) => {
         case PROJECT_MILESTONE: {
             return (
                 <FlatList
+                    ListEmptyComponent={renderEmpty()}
+                    style={styles.listWrapper}
+                    contentContainerStyle={styles.list}
                     onRefresh={listerInstance.refreshData.bind(listerInstance)}
                     data={listerInstance.state.data}
                     refreshing={listerInstance.state.isFlatListRefreshing}
@@ -1548,6 +1560,9 @@ export const recordListRendererHelper = (listerInstance) => {
         case PROJECT_TASK: {
             return (
                 <FlatList
+                    ListEmptyComponent={renderEmpty()}
+                    style={styles.listWrapper}
+                    contentContainerStyle={styles.list}
                     onRefresh={listerInstance.refreshData.bind(listerInstance)}
                     data={listerInstance.state.data}
                     refreshing={listerInstance.state.isFlatListRefreshing}
@@ -1569,6 +1584,9 @@ export const recordListRendererHelper = (listerInstance) => {
         case MODULE_PROJECT: {
             return (
                 <FlatList
+                    ListEmptyComponent={renderEmpty()}
+                    style={styles.listWrapper}
+                    contentContainerStyle={styles.list}
                     onRefresh={listerInstance.refreshData.bind(listerInstance)}
                     data={listerInstance.state.data}
                     refreshing={listerInstance.state.isFlatListRefreshing}
@@ -1632,6 +1650,9 @@ export const recordListRendererHelper = (listerInstance) => {
         default:
             return (
                 <FlatList
+                    ListEmptyComponent={renderEmpty()}
+                    style={styles.listWrapper}
+                    contentContainerStyle={styles.list}
                     onRefresh={listerInstance.refreshData.bind(listerInstance)}
                     data={listerInstance.state.data}
                     refreshing={listerInstance.state.isFlatListRefreshing}

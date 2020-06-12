@@ -33,13 +33,15 @@ class AddRecords extends Component {
                     callViewer={this.callViewer.bind(this)}
                     showCopyOptions={this.showCopyOptions.bind(this)}
                 />
-                <Viewer
-                    navigation={this.props.navigation}
-                    moduleName={this.props.selectedButton}
-                    moduleId={this.props.moduleId}
-                    moduleLable={this.props.moduleLable}
-                    onRef={ref => (this.viewer = ref)}
-                />
+                <View style={{ width: '100%', height: '100%', paddingBottom: 100 }}>
+                    <Viewer
+                        navigation={this.props.navigation}
+                        moduleName={this.props.selectedButton}
+                        moduleId={this.props.moduleId}
+                        moduleLable={this.props.moduleLable}
+                        onRef={ref => (this.viewer = ref)}
+                    />
+                </View>
             </View>
         );
     }

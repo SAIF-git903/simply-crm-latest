@@ -89,6 +89,18 @@ export default function MenuHolder(props) {
             case 'ServiceContracts':
                 setIconName('file-signature');
                 break;
+            case 'Assets':
+                setIconName('briefcase');
+                break;
+            case 'ProjectMilestone':
+                setIconName('clipboard-check');
+                break;
+            case 'ProjectTask':
+                setIconName('tasks');
+                break;
+            case 'Project':
+                setIconName('project-diagram');
+                break;
             default:
         }
     }

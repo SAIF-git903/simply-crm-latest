@@ -16,11 +16,13 @@ export default function RecordDetails() {
                 title={'Record Details'}
                 showBackButton
             />
-            <Viewer
-                navigation={navigation}
-                moduleName={moduleName}
-                recordId={recordId}
-            />
+            <View style={{ width: '100%', height: '100%', paddingBottom: 100 }}>
+                <Viewer
+                    navigation={navigation}
+                    moduleName={moduleName}
+                    recordId={recordId}
+                />
+            </View>
         </View>
     );
 }
