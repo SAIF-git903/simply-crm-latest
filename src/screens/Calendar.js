@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     View,
     StyleSheet,
@@ -11,7 +11,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome5Pro';
-import { ExpandableCalendar, CalendarProvider, AgendaList } from 'react-native-calendars';
+import { WeekCalendar, CalendarProvider, AgendaList, CalendarList } from 'react-native-calendars';
 const moment = require('moment-timezone');
 import SwipeOut from 'react-native-swipeout';
 
@@ -26,6 +26,10 @@ import Header from '../components/common/Header';
 import { fontStyles } from '../styles/common';
 
 export default function Calendar() {
+
+    const [currentDate, setCurrentDate] = useState(new moment())
+    const [showCalendar, setShowCalendar] = useState(false);
+
     const dispatch = useDispatch();
     const {
         records,
@@ -254,6 +258,10 @@ export default function Calendar() {
                 marked[item.title] = { marked: true };
             }
         });
+
+        // set current date selected
+        const dateObj = marked[new moment(currentDate).format('YYYY-MM-DD')];
+        marked[new moment(currentDate).format('YYYY-MM-DD')] = { ...dateObj, selected: true }
         return marked;
     }
 
@@ -273,7 +281,49 @@ export default function Calendar() {
         </View>
     }
 
+    function renderHeader() {
+        return <View
+            style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                paddingHorizontal: 40,
+                paddingTop: 20,
+                paddingBottom: 10,
+                backgroundColor: 'white'
+            }}
+        >
+            <View
+                style={{ width: 30 }}
+            />
+            <Text style={{
+                fontSize: 17,
+                fontFamily: 'Poppins-Medium',
+                color: '#62717C'
+            }}>
+                {new moment(currentDate).format('Y MMMM D')}
+            </Text>
 
+
+            <TouchableOpacity
+                onPress={() => setShowCalendar(true)}
+                style={{
+                    width: 30,
+                    height: 30,
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
+                <Icon
+                    style={{ marginLeft: 7, marginTop: -3 }}
+                    name='calendar-alt'
+                    size={20}
+                    color='#00BBF2'
+                />
+            </TouchableOpacity>
+        </View >
+    }
+
+    console.log(currentDate.format('YYYY-MM-DD'))
     return (
         <View style={styles.backgroundStyle}>
             <Header
@@ -283,15 +333,31 @@ export default function Calendar() {
             <View style={styles.wrapper}>
 
                 <CalendarProvider
-                    date={new moment().format('YYYY-MM-DD')}
+                    date={currentDate.format('YYYY-MM-DD')}
                     disabledOpacity={0.6}
                     showTodayButton
+                    onDateChanged={(date) => setCurrentDate(new moment(date))}
                 >
-
-                    <ExpandableCalendar
-                        firstDay={1}
-                        markedDates={getMarkedDates()}
-                    />
+                    {
+                        showCalendar
+                            ? <CalendarList
+                                current={currentDate.format('YYYY-MM-DD')}
+                                firstDay={1}
+                                markedDates={getMarkedDates()}
+                                onDayPress={(date) => {
+                                    console.log(date)
+                                    setCurrentDate(new moment(date.dateString))
+                                    setShowCalendar(false)
+                                }}
+                            />
+                            : <View>
+                                {renderHeader()}
+                                <WeekCalendar
+                                    firstDay={1}
+                                    markedDates={getMarkedDates()}
+                                />
+                            </View>
+                    }
                     <AgendaList
                         sections={dates}
                         renderItem={renderItem}
