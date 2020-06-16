@@ -119,7 +119,8 @@ export const loginHelper = async (username, password, url, navigation, loginInst
                 vtigerVersion: parseInt(responseJson.result.login.vtiger_version.charAt(0), 10),
                 dateFormat: responseJson.result.login.date_format,
                 modules: responseJson.result.modules,
-                userId: responseJson.result.login.userid
+                menu: responseJson.result.menu,
+                userId: responseJson.result.login.userid,
             };
 
             store.dispatch(fetchUserData(loginDetails))
