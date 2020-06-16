@@ -323,7 +323,6 @@ export default function Calendar() {
         </View >
     }
 
-    console.log(currentDate.format('YYYY-MM-DD'))
     return (
         <View style={styles.backgroundStyle}>
             <Header

@@ -18,7 +18,7 @@ class MultiPickListType extends Component {
         const items = [];
         const options = this.props.obj.type.picklistValues;
         options.map((item) => {
-            items.push({ id: item.label, name: item.value });
+            items.push({ id: item.label, name: item.label });
         });
         const amp = '&amp;';
 
