@@ -7,6 +7,7 @@ import { fontStyles } from '../../../styles/common';
 class DateType extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
             pickDate: null,
             saveValue: this.props.obj.default,
@@ -46,7 +47,6 @@ class DateType extends Component {
         this.setState({
             pickDate: date,
             saveValue: moment(date).format(formatDate)
-
         });
     }
     render() {
@@ -73,7 +73,11 @@ class DateType extends Component {
                     </TouchableOpacity>
 
                 </View>
-                <DatePickerDialog ref="dateDialog" okLabel="ok" cancelLabel="cancel" onDatePicked={this.onDatePicked.bind(this)} />
+                <DatePickerDialog
+                    ref="dateDialog"
+                    okLabel="ok"
+                    cancelLabel="cancel"
+                    onDatePicked={this.onDatePicked.bind(this)} />
             </View>
         );
     }

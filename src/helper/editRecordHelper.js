@@ -363,10 +363,6 @@ export const getDataHelper = async (editInstance) => {
 
                             let formattedDate;
 
-                            if (formInstance[i].props.obj.type && formInstance[i].props.obj.type.format) {
-                                const formatDate = formInstance[i].props.obj.type.format.toUpperCase();
-                                formattedDate = moment(tmpArray[j].feildValue).format(formatDate)
-                            }
 
                             if (formInstance[i].state.reference) {
                                 formInstance[i].setState({ referenceValue: tmpArray[j].feildValue.label });
