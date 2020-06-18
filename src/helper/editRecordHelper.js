@@ -436,6 +436,13 @@ const editRecordHelper = async (editInstance, headerInstance, jsonObj, dispatch,
     console.log(param);
 
     try {
+        for (const field of editInstance.state.inputInstance) {
+            if (field.state.error) {
+                field.setState({ showError: true })
+                throw Error(`${field.state.error} at ${field.props.obj.lable}`);
+            }
+        }
+
         const response = await fetch((`${loginDetails.url}/modules/Mobile/api.php`), {
             method: 'POST',
             headers: {
@@ -474,9 +481,9 @@ const editRecordHelper = async (editInstance, headerInstance, jsonObj, dispatch,
             }
             Toast.show('Edited Failed');
         }
-    } catch (Error) {
-        console.log(Error);
+    } catch (e) {
+        console.log(e);
         headerInstance.setState({ loading: false });
-        Alert.alert('', 'Api response error');
+        Alert.alert('', e.message);
     }
 };

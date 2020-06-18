@@ -335,7 +335,6 @@ export const saveRecordHelper = (addInstance, headerInstance, dispatch, listerIn
 };
 
 const addRecordHelper = async (addInstance, headerInstance, jsonObj, dispatch, listerInstance) => {
-
     const { auth } = store.getState();
     const loginDetails = auth.loginDetails;
     const obj = JSON.stringify(jsonObj);
@@ -347,6 +346,13 @@ const addRecordHelper = async (addInstance, headerInstance, jsonObj, dispatch, l
     param.append('values', obj);
 
     try {
+        for (const field of addInstance.state.inputInstance) {
+            if (field.state.error) {
+                field.setState({ showError: true })
+                throw Error(`${field.state.error} at ${field.props.obj.lable}`);
+            }
+        }
+
         const response = await fetch((`${loginDetails.url}/modules/Mobile/api.php`), {
             method: 'POST',
             headers: {
@@ -385,10 +391,10 @@ const addRecordHelper = async (addInstance, headerInstance, jsonObj, dispatch, l
                 Alert.alert('', responseJson.error.message);
             }
         }
-    } catch (Error) {
-        console.log(Error);
+    } catch (e) {
+        console.log(e);
         headerInstance.setState({ loading: false });
-        Alert.alert('', 'Api response error');
+        Alert.alert('', e.message);
     }
 };
 
