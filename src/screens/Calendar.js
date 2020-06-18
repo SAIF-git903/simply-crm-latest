@@ -284,6 +284,7 @@ export default function Calendar() {
     function renderHeader() {
         return <View
             style={{
+                zIndex: 6000,
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 alignItems: 'center',
