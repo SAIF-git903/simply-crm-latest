@@ -312,7 +312,7 @@ export const saveRecordHelper = (addInstance, headerInstance, dispatch, listerIn
         const value = formInstance[i].state.saveValue;
 
         jsonObj[fieldName] = value;
-        if (addInstance.props.moduleName === 'Invoice') {
+        if (addInstance.props.moduleName === 'Invoice' || addInstance.props.moduleName === 'Quotes') {
             if (fieldName !== 'quantity' || fieldName !== 'listprice') {
                 jsonObj[fieldName] = value;
             }
@@ -327,7 +327,7 @@ export const saveRecordHelper = (addInstance, headerInstance, dispatch, listerIn
 
     if (productObj) lineitemsObj.push(productObj);
 
-    if (addInstance.props.moduleName === 'Invoice') {
+    if (addInstance.props.moduleName === 'Invoice' || addInstance.props.moduleName === 'Quotes') {
         jsonObj['LineItems'] = lineitemsObj;
     }
 
