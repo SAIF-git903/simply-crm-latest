@@ -1,14 +1,16 @@
 import store from '../../store';
 
-async function makeCall(_operation, module, record, ids) {
+async function makeCall({ operation, module, recordId, ids, query, values }) {
     const { auth: { loginDetails: { session, url } } } = store.getState();
 
     const body = {
         _session: session,
-        _operation,
+        _operation: operation,
         module,
-        record,
-        ids: JSON.stringify(ids)
+        record: recordId,
+        ids: JSON.stringify(ids),
+        query,
+        values
     };
 
     const endpoint = `${url}/modules/Mobile/api.php`;
@@ -32,21 +34,84 @@ async function makeCall(_operation, module, record, ids) {
     return responseJson;
 }
 
+export function fetchComments(recordId) {
+    const query = `select * from ModComments WHERE related_to = ${recordId} ORDER BY modifiedtime ASC`;
+    return makeCall({
+        operation: 'query',
+        query
+    });
+}
+
+export function saveComment(relatedTo, content, parentComment, recordId) {
+    const { auth: { loginDetails: { userId } } } = store.getState();
+
+    return saveRecord(
+        'ModComments',
+        recordId,
+        {
+            "related_to": relatedTo,
+            "commentcontent": content,
+            "is_private": 0,
+            "assigned_user_id": userId,
+            "parent_comments": parentComment ? parentComment : undefined
+        }
+    )
+
+}
+
+export function saveRecord(module, recordId, values) {
+    return makeCall({
+        operation: 'saveRecord',
+        module,
+        recordId,
+        values
+    });
+}
+
 export function listModuleRecords(module) {
-    return makeCall('listModuleRecords', module);
+    return makeCall({
+        operation: 'listModuleRecords',
+        module
+    })
+}
+
+export function describeModule(module) {
+    return makeCall({
+        operation: 'describe',
+        module
+    });
+}
+
+export function fetchRecordHistory(module, recordId) {
+    return makeCall({
+        operation: 'history',
+        module,
+        recordId
+    });
 }
 
 export function fetchRecordsWithGrouping(module, ids) {
-    return makeCall('fetchRecordsWithGrouping', module, null, ids);
+    return makeCall({
+        operation: 'fetchRecordsWithGrouping',
+        module,
+        ids
+    });
 }
 
 export function deleteRecord(module, recordId) {
-    return makeCall('deleteRecords', module, recordId);
+    return makeCall({
+        operation: 'deleteRecords',
+        module,
+        recordId
+    });
 }
 
 export async function trackCall(recordId) {
     try {
-        const response = await makeCall('trackcall', null, recordId);
+        const response = await makeCall({
+            operation: 'trackcall',
+            recordId
+        });
 
         if (response) {
             console.log('Call tracked successfully.')

@@ -3,7 +3,8 @@ import {
     HOME,
     DRAWER_COLUMN_TOTAL_HEIGHT,
     ACCOUNTS,
-    CONTACTS
+    CONTACTS,
+    CALENDAR
 } from '../variables/constants';
 import {
     DRAWER_SECTION_BACKGROUND_COLOR, DRAWER_SECTION_HEADER_BACKGROUND_COLOR,
@@ -70,10 +71,27 @@ const createFixedMenu = () => {
         'menu3'
     );
 
+    // Create Calendar button
+    let calendarButtonView = wrapButtonInMenuComponent(
+        <ImageButton
+            type={CALENDAR}
+            label={'Calendar'}
+            module={{
+                name: 'Calendar',
+                label: 'Calendar',
+                id: 9,
+            }}
+            key='calendar'
+            icon={'calendar-alt'}
+        />,
+        'menu3'
+    );
+
     return [
         homeButtonView,
         contactsButtonView,
-        accountsButtonView
+        accountsButtonView,
+        calendarButtonView
     ];
 }
 
@@ -103,8 +121,12 @@ const createDynamicMenu = (menu) => {
 
 const createModuleButtonViews = (section) => {
     const moduleButtonViews = [];
-    for (const module of section.modules) {
+    for (let module of section.modules) {
         if (hiddenModules.includes(module.name)) continue;
+
+        // TEMP
+        if (module.name === 'Potentials' && module.id === '2') module.id = '13'
+
         moduleButtonViews.push(<MenuHolder key={module.name} module={module} />)
     }
 

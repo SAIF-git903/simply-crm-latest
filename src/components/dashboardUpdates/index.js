@@ -34,7 +34,6 @@ const IconButton = ({ icon, title, style, onPress }) => {
 
 class UpdateWidget extends Component {
     render() {
-        console.log(this.props)
         const { navigation } = this.props;
 
         return (

@@ -943,7 +943,7 @@ export const deleteRecordHelper = async (listerInstance, recordId,
             if (result) {
                 //Successfully deleted.
                 await removeThisIndex(listerInstance, index);
-                callback?.callback();
+                if (callback && typeof (callback) === 'function') callback();
                 Toast.show('Successfully Deleted.');
             } else {
                 callback?.callback();

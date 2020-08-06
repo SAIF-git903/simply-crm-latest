@@ -9,6 +9,8 @@ import UserReducer from './userReducer';
 
 // Ducks
 import calendar from '../ducks/calendar';
+import updates from '../ducks/updates';
+import comments from '../ducks/comments';
 
 export default combineReducers({
   auth: AuthReducer,
@@ -18,6 +20,8 @@ export default combineReducers({
   mgr: Mgr,
   dashboardUpdate: dashboardReducer,
   UserReducer,
-  calendar
+  calendar,
+  updates,
+  comments
 });
 

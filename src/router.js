@@ -11,7 +11,7 @@ import DrawerContent from './components/drawerContent';
 import Login from './screens/Login';
 import Dashboard from './screens/Dashboard';
 import Records from './screens/Records';
-import RecordDetails from './screens/RecordDetails';
+import RecordDetails from './screens/Record/';
 import ForgotPassword from './screens/ForgotPassword';
 import Calendar from './screens/Calendar';
 import AddRecord from './components/addRecords';

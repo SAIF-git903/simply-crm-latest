@@ -108,6 +108,7 @@ export const loginHelper = async (username, password, url, navigation, loginInst
         const responseJson = await response.json();
         console.log(responseJson);
         if (responseJson.success) {
+
             // loginInstance.setState({ loading: false, showUrlList: false });            
             const loginDetails = {
                 username,

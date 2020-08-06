@@ -7,7 +7,7 @@ import {
     DRAWER_MODULE_BUTTON_TEXT_SELECTED_COLOR, DRAWER_SECTION_HEADER_TEXT_COLOR,
     DRAWER_SECTION_HEADER_IMAGE_COLOR
 } from '../../../variables/themeColors';
-import { HOME } from '../../../variables/constants';
+import { HOME, CALENDAR } from '../../../variables/constants';
 import { fontStyles } from '../../../styles/common';
 
 import Icon from 'react-native-vector-icons/FontAwesome5Pro';
@@ -84,17 +84,27 @@ export default function ImageButton({
     const navigation = useNavigation();
 
     function onButtonPress() {
-        if (type === HOME) {
-            dispatch(drawerButtonPress(type));
-            navigation.navigate('Dashboard');
-        } else {
-            dispatch(drawerButtonPress(module.name,
-                module.label, module.id));
-            navigation.navigate('Records', {
-                moduleName: module.name,
-                moduleLable: module.label,
-                moduleId: module.id
-            });
+
+        switch (type) {
+            case HOME:
+                dispatch(drawerButtonPress(type));
+                navigation.navigate('Dashboard');
+                break;
+
+            case CALENDAR:
+                dispatch(drawerButtonPress(type));
+                navigation.navigate('Calendar');
+                break;
+
+            default:
+                dispatch(drawerButtonPress(module.name,
+                    module.label, module.id));
+                navigation.navigate('Records', {
+                    moduleName: module.name,
+                    moduleLable: module.label,
+                    moduleId: module.id
+                });
+                break;
         }
     }
 
