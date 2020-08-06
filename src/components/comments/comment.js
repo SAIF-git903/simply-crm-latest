@@ -5,7 +5,8 @@ import {
     StyleSheet,
     TouchableOpacity,
     ActivityIndicator,
-    LayoutAnimation
+    LayoutAnimation,
+    Alert
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5Pro';
 const moment = require('moment-timezone');
@@ -71,8 +72,24 @@ export default function Comment(props) {
                         : null
                 }
                 <Button text={'Delete'} onPress={() => {
-                    const commentIdClean = getCleanId(item.id);
-                    dispatch(deleteComment(commentIdClean))
+                    Alert.alert(
+                        "Delete Comment",
+                        "Are you sure you want to delete this comment?",
+                        [
+                            {
+                                text: "Cancel",
+                                onPress: () => console.log("Cancel Pressed"),
+                                style: "cancel"
+                            },
+                            {
+                                text: "Delete", onPress: () => {
+                                    const commentIdClean = getCleanId(item.id);
+                                    dispatch(deleteComment(commentIdClean))
+                                }
+                            }
+                        ],
+                        { cancelable: false }
+                    );
                 }} />
             </View>
         </View>
