@@ -122,7 +122,7 @@ const getDataFromInternet = async (viewerInstance, offlineAvailable, offlineData
             console.log('here')
             console.log(param)
         }
-
+//TODO something wrong with fetching Document details data. Need to look into it. Maybe backend have problem
         console.log(responseJson);
         if (responseJson.success) {
             await getAndSaveData(responseJson, viewerInstance, false, '');

@@ -187,13 +187,13 @@ export const getComments = (recordId, keepState) => async (dispatch) => {
             type: FETCH_COMMENTS_FULFILLED,
             payload
         })
-    }
+    };
 
     const fetchCommentsRejected = () => {
         return ({
             type: FETCH_COMMENTS_REJECTED
         })
-    }
+    };
 
     dispatch({
         type: FETCH_COMMENTS,
@@ -204,12 +204,31 @@ export const getComments = (recordId, keepState) => async (dispatch) => {
         const commentsResponse = await fetchComments(recordId);
         if (!commentsResponse.success) throw Error(`Failed to fetch comments for ${recordId}`);
 
-        dispatch(fetchCommentsFulfilled(commentsResponse.result.records));
+        const new_comments = changeCommentStructure(commentsResponse.result.records);
+        dispatch(fetchCommentsFulfilled(new_comments));
     } catch (e) {
         console.log(e);
         dispatch(fetchCommentsRejected());
     }
-}
+};
+
+const changeCommentStructure = (comments) => {
+    let new_comments = [];
+    for (const comment of comments) {
+        //create new record with new structure
+        let new_comment = {};
+        for (const block of comment.blocks) {
+            for (const field of block.fields) {
+                new_comment[field.name] = field.value;
+            }
+        }
+        new_comment['id'] = comment.id;
+        new_comment['downloadData'] = comment.downloadData;
+        //push to array
+        new_comments.push(new_comment);
+    }
+    return new_comments;
+};
 
 export const deleteComment = (commentId) => async (dispatch) => {
     const deleteCommentFulfilled = () => {

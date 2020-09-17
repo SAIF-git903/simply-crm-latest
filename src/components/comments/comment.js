@@ -18,9 +18,10 @@ import {
     setEdit
 } from '../../ducks/comments';
 import ChildrenList from './childrenList';
+import CommentImage from './commentImage';
 import { CustomLayoutLinear, CustomLayoutSpring } from '../../helper/layoutAnimations';
 
-const Button = ({ text, onPress, style }) => <TouchableOpacity
+export const Button = ({ text, onPress, style }) => <TouchableOpacity
     style={[{
         paddingTop: 5,
         paddingLeft: 15
@@ -63,6 +64,7 @@ export default function Comment(props) {
                     />
                     : <View />
             }
+            {processFile(item)}
 
             <View style={{ flexDirection: 'row', }}>
                 <Button text={'Reply'} onPress={() => onReply()} />
@@ -93,6 +95,24 @@ export default function Comment(props) {
                 }} />
             </View>
         </View>
+    }
+
+    function processFile(item) {
+        const imageTypeArray = ['image/bmp', 'image/gif', 'image/jpeg', 'image/png'];
+        let fileButton = null;
+        if (item.downloadData) {
+            if (imageTypeArray.includes(item.downloadData.type)) {
+                fileButton = (
+                    <CommentImage
+                        downloadData={item.downloadData}
+                    >
+                    </CommentImage>
+                );
+            } else {
+                //download file or something else
+            }
+        }
+        return fileButton;
     }
 
     function toggleChildren() {

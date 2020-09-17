@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import React, { Component } from 'react';
 import { Text, TextInput, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';

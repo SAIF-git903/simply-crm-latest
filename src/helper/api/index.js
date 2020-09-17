@@ -1,12 +1,13 @@
 import store from '../../store';
 
-async function makeCall({ operation, module, recordId, ids, query, values }) {
+async function makeCall({ operation, module, recordId, ids, query, values, relatedmodule }) {
     const { auth: { loginDetails: { session, url } } } = store.getState();
 
     const body = {
         _session: session,
         _operation: operation,
         module,
+        relatedmodule,
         record: recordId,
         ids: JSON.stringify(ids),
         query,
@@ -35,11 +36,7 @@ async function makeCall({ operation, module, recordId, ids, query, values }) {
 }
 
 export function fetchComments(recordId) {
-    const query = `select * from ModComments WHERE related_to = ${recordId} ORDER BY modifiedtime ASC`;
-    return makeCall({
-        operation: 'query',
-        query
-    });
+    return fetchRelatedRecordsWithGrouping('ModComments', recordId);
 }
 
 export function saveComment(relatedTo, content, parentComment, recordId) {
@@ -52,7 +49,7 @@ export function saveComment(relatedTo, content, parentComment, recordId) {
             "related_to": relatedTo,
             "commentcontent": content,
             "is_private": 0,
-            "assigned_user_id": userId,
+            "assigned_user_id": '19x'+userId,
             "parent_comments": parentComment ? parentComment : undefined
         }
     )
@@ -95,6 +92,14 @@ export function fetchRecordsWithGrouping(module, ids) {
         operation: 'fetchRecordsWithGrouping',
         module,
         ids
+    });
+}
+
+export function fetchRelatedRecordsWithGrouping(relatedmodule, recordId) {
+    return makeCall({
+        operation: 'relatedRecordsWithGrouping',
+        recordId,
+        relatedmodule: relatedmodule,
     });
 }
 
