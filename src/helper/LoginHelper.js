@@ -81,16 +81,13 @@ export const loginHelper = async (username, password, url, navigation, loginInst
 
     try {
         // console.log('URL', url);
-
-        let trimUrl = url.replace(/ /g, '');
-
+        let trimUrl = url.replace(/ /g, '').replace(/\/$/, '');
         trimUrl = (trimUrl.indexOf('://') === -1) ? 'https://' + trimUrl : trimUrl;
-        if (url.includes('www')) {
-            trimUrl = url.replace('www.', '');
+        if (url.includes('www.')) {
+            trimUrl = trimUrl.replace('www.', '');
         }
-
         if (url.includes('http://')) {
-            trimUrl = url.replace('http://', 'https://')
+            trimUrl = trimUrl.replace('http://', 'https://');
         }
 
         //hardcoded for testing

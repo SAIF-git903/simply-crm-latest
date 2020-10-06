@@ -4,6 +4,7 @@ import RNFetchBlob from "react-native-fetch-blob";
 import { Button } from './comment.js';
 import { View, Modal } from 'react-native';
 import Gallery from 'react-native-image-gallery';
+import store from '../../store';
 
 class CommentImage extends Component {
     constructor(props) {
@@ -16,43 +17,49 @@ class CommentImage extends Component {
     }
 
     componentDidMount() {
-        //TODO process for external files with different 'this.state.downloadData.url'
-        const fs = RNFetchBlob.fs;
-        let imagePath = null;
-        RNFetchBlob.config({
-            fileCache: true
-        }).fetch(
-            "POST",
-            this.state.downloadData.url,
-            {
-                'cache-control': 'no-cache',
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            JSON.stringify({
-                _operation: this.state.downloadData._operation,
-                module: this.state.downloadData.module,
-                record: this.state.downloadData.record,
-                fileid: this.state.downloadData.fileid,
-                display: 1,
-            })
-        )
-        // when response status code is 200
-        .then(resp => {
-            // the image path you can use it directly with Image component
-            imagePath = resp.path();
-            return resp.readFile("base64");
-        }).then(base64Data => {
-            // here's base64 encoded image
-            this.setState({
-                base64Data: 'data:' + this.state.downloadData.type + ';base64,' + base64Data,
-            });
-            // remove the file from storage
-            return fs.unlink(imagePath)
-                .catch((errorMessage, statusCode) => {
-                    console.log('RNFetchBlob.fs have error with "statusCode"="' + statusCode + '" and "message"="' + errorMessage + '"');
+        if (this.state.downloadData.location !== 'external') {
+            const fs = RNFetchBlob.fs;
+            let imagePath = null;
+            const {auth: {loginDetails: {session, url}}} = store.getState();
+            RNFetchBlob.config({
+                fileCache: true
+            }).fetch(
+                "POST",
+                `${url}/modules/Mobile/api.php`,
+                {
+                    'cache-control': 'no-cache',
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                JSON.stringify({
+                    _session: session,
+                    _operation: this.state.downloadData._operation,
+                    module: this.state.downloadData.module,
+                    record: this.state.downloadData.record,
+                    fileid: this.state.downloadData.fileid,
+                    display: 1,
+                })
+            ).then(resp => {
+                // on success
+                // the image path you can use it directly with Image component
+                imagePath = resp.path();
+                return resp.readFile("base64");
+            }, resp => {
+                // on error
+                console.log('Error getting base64 with RNFetchBlob');
+                console.log(resp);
+            }).then(base64Data => {
+                // here's base64 encoded image
+                this.setState({
+                    base64Data: 'data:' + this.state.downloadData.type + ';base64,' + base64Data,
                 });
-        });
+                // remove the file from storage
+                return fs.unlink(imagePath)
+                    .catch((errorMessage, statusCode) => {
+                        console.log('RNFetchBlob.fs have error with "statusCode"="' + statusCode + '" and "message"="' + errorMessage + '"');
+                    });
+            });
+        }
     }
 
     enableModal(state) {
@@ -64,7 +71,15 @@ class CommentImage extends Component {
     }
 
     render() {
-        const source = (this.state.base64Data) ? { uri: this.state.base64Data } : require('../../../assets/images/loading.gif');
+        let source;
+        if (this.state.downloadData.location === 'external') {
+            source = {
+                uri: this.state.downloadData.url
+            };
+            //TODO test me
+        } else {
+            source = (this.state.base64Data) ? { uri: this.state.base64Data } : require('../../../assets/images/loading.gif');
+        }
 
         return (
             <View>

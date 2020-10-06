@@ -26,11 +26,11 @@ async function makeCall({ operation, module, recordId, ids, query, values, relat
         body: JSON.stringify(body)
     });
 
-    console.log(`### API CALL ###: ${endpoint}`)
-    console.log(body)
+    console.log(`### API CALL ###: ${endpoint}`);
+    console.log(body);
     const responseJson = await response.json();
 
-    console.log(responseJson)
+    console.log(responseJson);
 
     return responseJson;
 }
