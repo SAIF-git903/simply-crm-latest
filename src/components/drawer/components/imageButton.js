@@ -97,8 +97,11 @@ export default function ImageButton({
                 break;
 
             default:
-                dispatch(drawerButtonPress(module.name,
-                    module.label, module.id));
+                dispatch(drawerButtonPress(
+                    module.name,
+                    module.label,
+                    module.id
+                ));
                 navigation.navigate('Records', {
                     moduleName: module.name,
                     moduleLable: module.label,

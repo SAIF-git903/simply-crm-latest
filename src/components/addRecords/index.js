@@ -9,10 +9,9 @@ import { saveRecordHelper, copyAddress } from '../../helper';
 class AddRecords extends Component {
     static navigationOptions = {
         header: null
-    }
+    };
 
     callViewer(headerInstance) {
-        //console.log('call viewer');
         headerInstance.setState({ loading: true });
         saveRecordHelper(this.viewer, headerInstance, this.props.dispatch, this.props.route.params.lister);
     }
@@ -22,7 +21,6 @@ class AddRecords extends Component {
     }
 
     render() {
-        console.log(this.props)
         return (
             <View style={styles.backgroundStyle}>
                 <Header

@@ -44,9 +44,6 @@ const getDataFromInternet = async (searchInstance, pageToTake, data, recordsSear
     const { auth } = store.getState();
     const loginDetails = auth.loginDetails;
 
-    // console.log(pageToTake);
-
-
     if (loginDetails.vtigerVersion < 7) {
         const param = new FormData();
         appendParamFor(searchInstance.state.moduleName, param);
@@ -63,9 +60,7 @@ const getDataFromInternet = async (searchInstance, pageToTake, data, recordsSear
         const param = new FormData();
         param.append('_operation', 'listModuleRecords');
         param.append('module', searchInstance.state.moduleName);
-        //console.log('modulename');
         const responseJson = await getDatafromNet(param, dispatch);
-        console.log(responseJson);
         try {
             if (responseJson.success) {
                 return await getAndSaveDataVtiger(responseJson, searchInstance, data, recordsSearched, recordsAdded, mySearchNo, dispatch, true);
@@ -75,14 +70,12 @@ const getDataFromInternet = async (searchInstance, pageToTake, data, recordsSear
         }
         //Say unknown error occured
         //Send this error to smackcoders
-        console.log('ERROR')
+        console.log('ERROR');
         throw new Error(JSON.stringify(responseJson));
-
     }
 };
 
-const getAndSaveDataVtiger = async (responseJson, searchInstance, data, recordsSearched, recordsAdded, mySearchNo, dispatch,
-    vtigerSeven) => {
+const getAndSaveDataVtiger = async (responseJson, searchInstance, data, recordsSearched, recordsAdded, mySearchNo, dispatch, vtigerSeven) => {
     let totalRecordsSearched = recordsSearched;
     let totalRecordsAdded = recordsAdded;
     let records = responseJson.result.records;

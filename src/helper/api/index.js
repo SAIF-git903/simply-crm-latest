@@ -29,7 +29,6 @@ async function makeCall({ operation, module, recordId, ids, query, values, relat
     console.log(`### API CALL ###: ${endpoint}`);
     console.log(body);
     const responseJson = await response.json();
-
     console.log(responseJson);
 
     return responseJson;
@@ -119,11 +118,11 @@ export async function trackCall(recordId) {
         });
 
         if (response) {
-            console.log('Call tracked successfully.')
+            console.log('Call tracked successfully.');
         } else {
-            throw Error('Failed to track call.')
+            throw Error('Failed to track call.');
         }
     } catch (e) {
-        console.log(e)
+        console.log(e);
     }
 }

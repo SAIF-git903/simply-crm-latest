@@ -26,11 +26,9 @@ export default function Updates({ moduleName, recordId }) {
 
     const data = mapHistoryToData();
 
-    console.log(data)
-
     function mapHistoryToData() {
         return history.map(x => {
-            const values = []
+            const values = [];
 
             if (x.status !== '2') {
                 const valueKeys = Object.keys(x.values);
@@ -53,7 +51,7 @@ export default function Updates({ moduleName, recordId }) {
 
                     switch (x.values.record.module) {
                         case 'ModComments':
-                            comment = x.values.record.label
+                            comment = x.values.record.label;
                             break;
 
                         default:

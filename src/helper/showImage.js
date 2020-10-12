@@ -1,12 +1,49 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import RNFetchBlob from "react-native-fetch-blob";
-import { Button } from './comment.js';
-import { View, Modal } from 'react-native';
+import {View, Modal, TouchableOpacity, Text, StyleSheet} from 'react-native';
 import Gallery from 'react-native-image-gallery';
-import store from '../../store';
+import store from '../store';
 
-class CommentImage extends Component {
+const Button = ({ text, onPress, style }) => <TouchableOpacity
+    style={[{
+        paddingTop: 5,
+        paddingLeft: 15
+    }, style]}
+    onPress={onPress}
+>
+    <Text style={styles.actionText}>{text}</Text>
+</TouchableOpacity>;
+
+export function processFile(item) {
+    const imageTypeArray = ['image/bmp', 'image/gif', 'image/jpeg', 'image/png'];
+    const urlSuffix = ['bmp', 'gif', 'jpg', 'jpeg', 'png'];
+    let fileButton = null;
+    if (item.downloadData) {
+        let suffix_exist = false;
+        urlSuffix.forEach(function(suffix) {
+            if (item.downloadData.url && item.downloadData.url.endsWith(suffix)) {
+                suffix_exist = true;
+            }
+        });
+        if (
+            item.downloadData.type && imageTypeArray.includes(item.downloadData.type)
+            || suffix_exist
+        ) {
+            fileButton = (
+                <ShowImage
+                    downloadData={item.downloadData}
+                >
+                </ShowImage>
+            );
+        } else {
+            //download file or something else
+        }
+    }
+    return fileButton;
+}
+
+class ShowImage extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -78,7 +115,7 @@ class CommentImage extends Component {
             };
             //TODO test me
         } else {
-            source = (this.state.base64Data) ? { uri: this.state.base64Data } : require('../../../assets/images/loading.gif');
+            source = (this.state.base64Data) ? { uri: this.state.base64Data } : require('../../assets/images/loading.gif');
         }
 
         return (
@@ -106,4 +143,11 @@ class CommentImage extends Component {
     }
 }
 
-export default connect(null)(CommentImage);
+const styles = StyleSheet.create({
+    actionText: {
+        fontFamily: 'Poppins-Medium',
+        color: '#00BBF2'
+    }
+});
+
+export default connect(null, { processFile })(ShowImage);

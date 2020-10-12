@@ -160,7 +160,6 @@ export const getNextPageHelper = async (listerInstance, dispatch) => {
             param.append('module', listerInstance.props.moduleName);
             param.append('page', listerInstance.state.pageToTake);
             const responseJson = await getDatafromNet(param, dispatch);
-            // console.log(responseJson);
             if (responseJson.success) {
                 await getAndSaveDataVtiger(responseJson, listerInstance, true, false, true, listerInstance.props.moduleName);
             } else {
@@ -188,11 +187,6 @@ export const viewRecord = async (recordId, listerInstance, dispatch) => {
     const isPortrait = event.isPortrait;
     if (isPortrait) {
         listerInstance.setState({ selectedIndex: -1 });
-        //console.log("Record viewer instance");
-        //console.log(listerInstance.props.navigation);
-        //console.log(listerInstance.props.moduleName);
-        //console.log(listerInstance.props.moduleLable);
-        //console.log(recordId);
         dispatch({
             type: UPDATE_RECORD_VIEWER,
             payload: {
@@ -208,7 +202,6 @@ export const viewRecord = async (recordId, listerInstance, dispatch) => {
     } else {
         if (width > 600) {
             //It is a tablet
-            //console.log("Record viewer It is a tablet");
             if (isPortrait) {
                 listerInstance.setState({ selectedIndex: -1 });
             }
@@ -289,7 +282,6 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
             // }
 
             const responseJson = await getDatafromNet(param, dispatch);
-            console.log(responseJson);
             if (responseJson.success) {
                 await getAndSaveDataVtiger(responseJson, listerInstance, true, false, false, moduleName);
             } else {
@@ -332,12 +324,10 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
                 pageToTake: offlineData.pageToTake
             });
         }
-        //console.log(error);
     }
 };
 
-const getAndSaveDataVtiger = async (responseJson, listerInstance,
-    vtigerSeven, refresh, addExisting, moduleName) => {
+const getAndSaveDataVtiger = async (responseJson, listerInstance, vtigerSeven, refresh, addExisting, moduleName) => {
     let data;
     const previousDataLength = listerInstance.state.data.length;
     if (addExisting) {
@@ -667,7 +657,6 @@ const saveInvoiceDetails = async (records, data, vtigerSeven, responseJson, addE
                 body: param
             });
             const detailResponseJson = await response.json();
-            console.log(detailResponseJson);
 
             const blocks = detailResponseJson.result.record.blocks;
             const detailsFeilds = blocks.filter((item) => item.label === 'Invoice Details').map(({ fields }) => (fields));
@@ -703,7 +692,6 @@ const saveInvoiceDetails = async (records, data, vtigerSeven, responseJson, addE
 
 const saveData = async (data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh, moduleName) => {
     try {
-        console.log(responseJson)
         let offlineData = {};
 
         let statusText;

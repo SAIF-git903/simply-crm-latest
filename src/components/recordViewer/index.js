@@ -7,11 +7,9 @@ import Viewer from './viewer';
 class RecordViewer extends Component {
     static navigationOptions = {
         header: null
-    }
+    };
 
     render() {
-
-        console.log(this.props.recordId)
         return (
             <View style={styles.backgroundStyle}>
                 <Header

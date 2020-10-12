@@ -16,8 +16,6 @@ class CustomRecord extends Component {
         };
     }
     render() {
-        console.log('customRecord')
-        console.log(this.props.item);
         if (!this.state.loading) {
             return (
                 <TouchableOpacity

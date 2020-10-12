@@ -187,7 +187,6 @@ export const renderDrawerView = async (loginDetails, drawerInstance) => {
     // console.log('len', marketSectionContent.length);
     const section = [];
 
-    console.log(marketSectionContent)
     if (marketSectionContent[0].length > 0) {
         section.push(marketingSection);
     }
@@ -281,7 +280,6 @@ const fillSection = (moduleButtons, module, custom) => {
 
 const getMenuHolder = (module, custom) => <MenuHolder key={module.name} module={module} custom={custom} />;
 const drawerButtonArrangeHelper = (name) => {
-    console.log(name)
     switch (name) {
         // case ACCOUNTS:
         case LEADS:

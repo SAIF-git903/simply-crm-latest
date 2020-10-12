@@ -12,7 +12,7 @@ export default function Dashboard() {
     const navigation = useNavigation();
     const dispatch = useDispatch();
 
-    dispatch(getEnabledModules())
+    dispatch(getEnabledModules());
 
     return (
         <View style={styles.backgroundStyle}>

@@ -13,7 +13,6 @@ const INITIAL_STATE =
   organisationAddress: [] };
 
 export default (state = INITIAL_STATE, action) => {
-    // console.log(action);
     switch (action.type) {
         case UPDATE_RECORD_VIEWER:
             return { 

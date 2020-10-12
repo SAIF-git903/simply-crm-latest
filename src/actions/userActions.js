@@ -13,9 +13,6 @@ export const fetchUserData = (loginDetails) => async (dispatch) => {
         param.append('record', '19x' + loginDetails.userId);
         param.append('_session', loginDetails.session);
 
-        console.log('url', `${loginDetails.url}/modules/Mobile/api.php`);
-        console.log('params', param);
-
         const response = await fetch((`${loginDetails.url}/modules/Mobile/api.php`), {
             method: 'POST',
             headers: {

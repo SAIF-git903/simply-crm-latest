@@ -84,7 +84,7 @@ const createFixedMenu = () => {
             key='calendar'
             icon={'calendar-alt'}
         />,
-        'menu3'
+        'menu4'
     );
 
     return [
@@ -93,7 +93,7 @@ const createFixedMenu = () => {
         accountsButtonView,
         calendarButtonView
     ];
-}
+};
 
 const createDynamicMenu = (menu) => {
     const sectionViews = [];
@@ -111,13 +111,13 @@ const createDynamicMenu = (menu) => {
             headerImage
             content={createModuleButtonViews(section)}
             contentHeight={moduleButtonViews.length * DRAWER_COLUMN_TOTAL_HEIGHT}
-            key={section.name + '_section'} />
+            key={section.name + '_section'} />;
 
         sectionViews.push(<SectionHolder key={section.name + 'section_holder'}>{newSection}</SectionHolder>);
     }
 
     return sectionViews;
-}
+};
 
 const createModuleButtonViews = (section) => {
     const moduleButtonViews = [];
@@ -125,14 +125,14 @@ const createModuleButtonViews = (section) => {
         if (hiddenModules.includes(module.name)) continue;
 
         // TEMP
-        if (module.name === 'Potentials' && module.id === '2') module.id = '13'
+        if (module.name === 'Potentials' && module.id === '2') module.id = '13';
 
         moduleButtonViews.push(<MenuHolder key={module.name} module={module} />)
     }
 
     return moduleButtonViews;
-}
+};
 
 const wrapButtonInMenuComponent = (button, key) => {
     return <Menu key={key}>{button}</Menu>
-}
+};

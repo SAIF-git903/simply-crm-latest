@@ -25,8 +25,6 @@ class Header extends Component {
     }
 
     onBackButtonPress() {
-        //console.log(this.props.navigation);
-        //console.log(this.props.navigation.goBack);
         this.props.dispatch(saveSuccess('not saved'));
         this.props.navigation.goBack(null);
     }
@@ -113,7 +111,6 @@ class Header extends Component {
                             selectedItem={this.state.dialogueSelectedValue}
                             onCancel={() => this.setState({ dialogueVisible: false })}
                             onOk={(result) => {
-                                // console.log(result.selectedItem);
                                 this.setState({ dialogueSelectedValue: result.selectedItem, dialogueVisible: false, copyFrom: result.selectedItem.label }, () => { this.onShowCopyOption(); });
                             }}
                             scrolled={false}

@@ -26,8 +26,6 @@ export default function IconTabBar(props) {
         tabIcons
     } = props;
 
-    console.log(props)
-
     function renderTab(name, page, isTabActive, onPressHandler) {
         const textColor = isTabActive ? activeTextColor : inactiveTextColor;
         const fontFamily = isTabActive ? 'Poppins-Medium' : 'Poppins-Regular';

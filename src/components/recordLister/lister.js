@@ -43,8 +43,6 @@ class Lister extends Component {
     }
 
     onEndReached() {
-        // console.log(this.onEndReachedCalledDuringMomentum);
-        // console.log(this.state.nextPage);
         //if (!this.onEndReachedCalledDuringMomentum) {
         if (this.state.nextPage) {
             this.setState({ pageToTake: this.state.pageToTake + 1 }, () => this.props.dispatch(getNextPageRecord(this)));

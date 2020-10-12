@@ -18,7 +18,6 @@ class Accounts extends Component {
     }
 
     render() {
-        console.log(this.props.item)
         return (
             <TouchableOpacity
                 onPress={() => { this.props.onRecordSelect(this.props.item.id, this.props.index); }}

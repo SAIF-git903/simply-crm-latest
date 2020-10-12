@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     }
-})
+});
 
 const renderEmpty = () => {
     return <View
@@ -33,7 +33,7 @@ const renderEmpty = () => {
     >
         <Text style={fontStyles.fieldLabel}>No records found.</Text>
     </View>
-}
+};
 
 export const fetchWidgetRecordHelper = async (viewerInstance, dispatch) => {
     try {
@@ -45,7 +45,6 @@ export const fetchWidgetRecordHelper = async (viewerInstance, dispatch) => {
             param.append('query', `select * from ${viewerInstance.props.moduleName} orderby modifiedtime desc`);
             const responseJson = await getDatafromNet(param, dispatch);
             if (responseJson.success) {
-                // console.log('get6');
                 await getAndSaveDataVtiger(responseJson, viewerInstance);
             } else {
                 //Show offline data and notify user
@@ -59,10 +58,8 @@ export const fetchWidgetRecordHelper = async (viewerInstance, dispatch) => {
             let param = new FormData();
             param.append('_operation', 'listModuleRecords');
             param.append('module', viewerInstance.props.moduleName);
-            console.log(param);
             const responseJson = await getDatafromNet(param, dispatch);
             if (responseJson.success) {
-                console.log(responseJson);
                 await getAndSaveDataVtiger(responseJson, viewerInstance);
             } else {
                 //Show offline data and notify user
@@ -80,11 +77,9 @@ export const fetchWidgetRecordHelper = async (viewerInstance, dispatch) => {
             statusText: 'Looks like no network connection',
             statusTextColor: 'red'
         });
-        //console.log(error);
     }
 };
 export const refreshRecordWidgetHelper = async (viewerInstance, dispatch) => {
-    console.log('widget refresh');
     try {
         const { auth } = store.getState();
         const loginDetails = auth.loginDetails;
@@ -184,7 +179,6 @@ const getAndSaveDataVtiger = async (responseJson, viewerInstance, vtigerSeven, r
         case 'Calendar':
             for (const rec of records) {
                 if (i < 5) {
-                    console.log(rec)
                     const tmp = {
                         id: `${rec.type === 'Task' ? '9' : '18'}x${rec.id}`,
                         subject: rec.subject
@@ -218,7 +212,6 @@ const getAndSaveDataVtiger = async (responseJson, viewerInstance, vtigerSeven, r
             });
             break;
         case 'Accounts':
-
             for (const rec of records) {
                 const {
                     id,
@@ -247,6 +240,7 @@ const getAndSaveDataVtiger = async (responseJson, viewerInstance, vtigerSeven, r
             });
             break;
         default:
+            break;
     }
     i++;
 
@@ -293,7 +287,6 @@ export const dashboardHelper = (viewerInstance) => {
                     onMomentumScrollBegin={() => { viewerInstance.onEndReachedCalledDuringMomentum = false; }}
                     ListEmptyComponent={renderEmpty()}
                     renderItem={({ item, index }) => {
-                        console.log(item)
                         return <Contacts
                             index={index}
                             selectedIndex={viewerInstance.state.selectedIndex}

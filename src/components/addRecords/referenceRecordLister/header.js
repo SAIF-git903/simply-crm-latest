@@ -10,12 +10,10 @@ import Icon from 'react-native-vector-icons/FontAwesome5Pro';
 
 class Header extends Component {
     componentDidMount() {
-        //console.log('Mounting header');
+
     }
 
     onBackButtonPress() {
-        //console.log(this.props.navigation);
-        //console.log(this.props.navigation.goBack);
         this.props.navigation.goBack(null);
     }
     onSearchButtonPress() {

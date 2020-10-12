@@ -14,7 +14,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5Pro';
 
 class Header extends Component {
     componentDidMount() {
-        //console.log('Mounting header');
+
     }
 
     onMenuButtonPress() {

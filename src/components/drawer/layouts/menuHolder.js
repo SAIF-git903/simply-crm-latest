@@ -109,8 +109,8 @@ export default function MenuHolder(props) {
         dispatch(drawerButtonPress(
             module.name,
             module.label,
-            module.id)
-        );
+            module.id
+        ));
 
         navigation.navigate(module.name === 'Calendar' ? 'Calendar' : 'Records', {
             moduleName: module.name,

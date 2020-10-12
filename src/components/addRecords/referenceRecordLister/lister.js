@@ -23,11 +23,9 @@ class Lister extends Component {
 
     UNSAFE_componentWillMount() {
         this.getRecords();
-        // this.getModuleId();
     }
 
     onRecordSelect(id, lable, index) {
-        console.log('onRecordSelectCalled')
         let recordId = id;
         if (this.props.moduleName === 'Users') {
             recordId = `19x${id}`;
@@ -44,10 +42,6 @@ class Lister extends Component {
         }
         // }
     }
-
-    // getModuleId() {
-
-    // }
 
     getRecords() {
         this.setState({ loading: true, data: [], selectedIndex: -1, statusText: 'Fetching Record', statusTextColor: '#000000' });
@@ -89,7 +83,6 @@ class Lister extends Component {
     }
 
     render() {
-        console.log(this.state.selectedIndex)
         return (
             <View style={commonStyles.recordListerBackground} >
                 {

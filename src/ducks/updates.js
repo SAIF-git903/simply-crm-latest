@@ -11,7 +11,7 @@ const initialState = {
     fields: [],
     history: [],
     isLoading: false
-}
+};
 
 export default function reducer(state = initialState, action = {}) {
     switch (action.type) {
@@ -19,7 +19,7 @@ export default function reducer(state = initialState, action = {}) {
             return {
                 ...(action.payload ? state : initialState),
                 isLoading: true
-            }
+            };
 
         case FETCH_HISTORY_FULFILLED:
             const { fields, history } = action.payload;
@@ -29,12 +29,12 @@ export default function reducer(state = initialState, action = {}) {
                 history,
                 fields,
                 isLoading: false
-            }
+            };
 
         case FETCH_HISTORY_REJECTED:
             return {
                 ...initialState
-            }
+            };
 
         default:
             return state;
@@ -47,13 +47,13 @@ export const fetchHistory = (moduleName, recordId, keepState) => async (dispatch
             type: FETCH_HISTORY_FULFILLED,
             payload
         })
-    }
+    };
 
     const fetchHistoryRejected = () => {
         return ({
             type: FETCH_HISTORY_REJECTED
         })
-    }
+    };
 
     dispatch({
         type: FETCH_HISTORY,
@@ -62,10 +62,14 @@ export const fetchHistory = (moduleName, recordId, keepState) => async (dispatch
 
     try {
         const describeResponse = await describeModule(moduleName);
-        if (!describeResponse.success) throw Error(`Failed to call describe method on ${moduleName}`);
+        if (!describeResponse.success) {
+            throw Error(`Failed to call describe method on ${moduleName}`);
+        }
 
         const historyResponse = await fetchRecordHistory(moduleName, recordId);
-        if (!historyResponse.success) throw Error(`Failed to fetch history of ${moduleName}`);
+        if (!historyResponse.success) {
+            throw Error(`Failed to fetch history of ${moduleName}`);
+        }
 
         dispatch(fetchHistoryFulfilled({
             fields: describeResponse.result.describe.fields,
@@ -75,4 +79,4 @@ export const fetchHistory = (moduleName, recordId, keepState) => async (dispatch
         console.log(e);
         dispatch(fetchHistoryRejected());
     }
-}
+};

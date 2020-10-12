@@ -18,10 +18,10 @@ import {
     setEdit
 } from '../../ducks/comments';
 import ChildrenList from './childrenList';
-import CommentImage from './commentImage';
+import { processFile } from '../../helper/showImage';
 import { CustomLayoutLinear, CustomLayoutSpring } from '../../helper/layoutAnimations';
 
-export const Button = ({ text, onPress, style }) => <TouchableOpacity
+const Button = ({ text, onPress, style }) => <TouchableOpacity
     style={[{
         paddingTop: 5,
         paddingLeft: 15
@@ -29,7 +29,7 @@ export const Button = ({ text, onPress, style }) => <TouchableOpacity
     onPress={onPress}
 >
     <Text style={styles.actionText}>{text}</Text>
-</TouchableOpacity>
+</TouchableOpacity>;
 
 export default function Comment(props) {
     const {
@@ -50,7 +50,7 @@ export default function Comment(props) {
         }
     );
 
-    const { userId } = useSelector(state => state.auth.loginDetails)
+    const { userId } = useSelector(state => state.auth.loginDetails);
 
     function renderCommentButtons() {
         const getRepliesText = (length) => length === 1 ? 'reply' : 'replies';
@@ -97,31 +97,13 @@ export default function Comment(props) {
         </View>
     }
 
-    function processFile(item) {
-        const imageTypeArray = ['image/bmp', 'image/gif', 'image/jpeg', 'image/png'];
-        let fileButton = null;
-        if (item.downloadData) {
-            if (imageTypeArray.includes(item.downloadData.type)) {
-                fileButton = (
-                    <CommentImage
-                        downloadData={item.downloadData}
-                    >
-                    </CommentImage>
-                );
-            } else {
-                //download file or something else
-            }
-        }
-        return fileButton;
-    }
-
     function toggleChildren() {
         showChildren(!isChildRendered);
     }
 
     function showChildren(visible) {
         LayoutAnimation.configureNext(CustomLayoutLinear);
-        setChildrenVisible(visible)
+        setChildrenVisible(visible);
         setTimeout(() => {
             scrollToIndex(index)
         }, 350);
@@ -189,7 +171,7 @@ export default function Comment(props) {
         </View>
     }
 
-    const isBeingDeleted = commentsLoading.includes(getCleanId(item.id))
+    const isBeingDeleted = commentsLoading.includes(getCleanId(item.id));
 
     function renderCommentContent() {
         return <View style={{ ...styles.commentBox, opacity: isBeingDeleted ? 0.45 : 1 }}>

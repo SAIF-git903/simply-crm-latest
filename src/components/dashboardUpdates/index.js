@@ -30,7 +30,7 @@ const IconButton = ({ icon, title, style, onPress }) => {
             {title}
         </Text>
     </TouchableOpacity >
-}
+};
 
 class UpdateWidget extends Component {
     render() {
@@ -59,13 +59,13 @@ class UpdateWidget extends Component {
                                     'Accounts',
                                     'Organizations',
                                     11
-                                ))
+                                ));
 
                                 navigation.navigate('Records', {
                                     moduleName: 'Accounts',
                                     moduleLable: 'Organizations',
                                     moduleId: 11
-                                })
+                                });
                             }}
                         />
                     </View>
@@ -81,13 +81,13 @@ class UpdateWidget extends Component {
                                     'Contacts',
                                     'Contacts',
                                     12
-                                ))
+                                ));
 
                                 navigation.navigate('Records', {
                                     moduleName: 'Contacts',
                                     moduleLable: 'Contacts',
                                     moduleId: 12
-                                })
+                                });
                             }}
                         />
                     </View>
@@ -103,13 +103,13 @@ class UpdateWidget extends Component {
                                     'Calendar',
                                     'Calendar',
                                     9
-                                ))
+                                ));
 
                                 navigation.navigate('Calendar', {
                                     moduleName: 'Calendar',
                                     moduleLable: 'Calendar',
                                     moduleId: 9
-                                })
+                                });
                             }}
                         />
                     </View>

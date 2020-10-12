@@ -37,8 +37,6 @@ export const describeRecordHelper = async (addInstance) => {
         });
         const responseJson = await response.json();
 
-        console.log(param)
-        console.log(responseJson);
         if (responseJson.success) {
             const structures = responseJson.result.structure;
 
@@ -338,7 +336,7 @@ const addRecordHelper = async (addInstance, headerInstance, jsonObj, dispatch, l
     const { auth } = store.getState();
     const loginDetails = auth.loginDetails;
     const obj = JSON.stringify(jsonObj);
-    console.log(obj);
+
     const param = new FormData();
     param.append('_session', loginDetails.session);
     param.append('_operation', 'saveRecord');
@@ -363,9 +361,7 @@ const addRecordHelper = async (addInstance, headerInstance, jsonObj, dispatch, l
             body: param
         });
 
-        console.log(param);
         const responseJson = await response.json();
-        console.log(response);
         if (responseJson.success) {
             console.log(responseJson);
             headerInstance.setState({ loading: false });
@@ -382,8 +378,6 @@ const addRecordHelper = async (addInstance, headerInstance, jsonObj, dispatch, l
             listerInstance.refreshData();
             //addInstance.props.navigation.goBack(null);
         } else {
-            console.log(responseJson);
-            console.log('Failed');
             headerInstance.setState({ loading: false });
             if (responseJson.error.message === '') {
                 Alert.alert('', 'Vtiger API error');

@@ -36,19 +36,17 @@ class DateType extends Component {
                 date: pickedDate,
             });
         }
-    }
+    };
 
     onDatePicked = (date) => {
         //Here you will get the selected date
         const formatDate = this.props.obj.type.format.toUpperCase();
-        console.log('formatDate')
-        console.log(formatDate)
 
         this.setState({
             pickDate: date,
             saveValue: moment(date).format(formatDate)
         });
-    }
+    };
     render() {
         const mandatory = this.props.obj.mandatory;
         return (

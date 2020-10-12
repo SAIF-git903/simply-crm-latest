@@ -15,7 +15,6 @@ export default function RecordDetails() {
     const { enabledModules } = useSelector(state => state.comments, (p, n) => p.enabledModules === n.enabledModules);
 
     const { navigation, moduleName, recordId } = recordViewerState;
-
     function createTabs() {
         const tabs = [];
 
@@ -27,7 +26,7 @@ export default function RecordDetails() {
                 moduleName={moduleName}
                 recordId={recordId}
             />
-        }
+        };
 
         const updates = {
             tabIcon: 'history',
@@ -36,7 +35,7 @@ export default function RecordDetails() {
                 recordId={recordId}
                 tabLabel="Updates"
             />
-        }
+        };
 
 
         const comments = {
@@ -45,7 +44,7 @@ export default function RecordDetails() {
                 recordId={recordId}
                 tabLabel="Comments"
             />
-        }
+        };
 
         tabs.push(viewer, updates);
 
@@ -55,7 +54,7 @@ export default function RecordDetails() {
     }
 
     const tabs = createTabs();
-    const tabIcons = tabs.map(x => x.tabIcon)
+    const tabIcons = tabs.map(x => x.tabIcon);
     const tabComponents = tabs.map(x => x.component);
 
     return (
@@ -88,7 +87,7 @@ export default function RecordDetails() {
                 </ScrollableTabView>
 
             </View>
-        </View >
+        </View>
     );
 }
 
