@@ -10,6 +10,7 @@ import {
     DRAWER_SECTION_HEADER_IMAGE_SELECTED_COLOR,
     DRAWER_SECTION_HEADER_IMAGE_COLOR
 } from '../variables/themeColors';
+import { processFile } from './showImage';
 import { addDatabaseKey } from '.';
 
 var numbro = require('numbro');
@@ -21,14 +22,11 @@ export const viewRecordRenderer = async (viewerInstance, dispatch) => {
     const loginDetails = auth.loginDetails;
     let recordOfflineData;
 
-    console.log(viewerInstance.props)
-
     try {
         if (loginDetails.vtigerVersion < 7) {
             recordOfflineData = JSON.parse(await AsyncStorage.getItem(viewerInstance.props.recordId));
         } else {
-            recordOfflineData = JSON.parse(await AsyncStorage.getItem(`${viewerInstance.props.moduleName}
-                x${viewerInstance.props.recordId}`));
+            recordOfflineData = JSON.parse(await AsyncStorage.getItem(`${viewerInstance.props.moduleName}x${viewerInstance.props.recordId}`));
         }
 
         if (recordOfflineData !== null) {
@@ -48,7 +46,6 @@ export const viewRecordRenderer = async (viewerInstance, dispatch) => {
             await getDataFromInternet(viewerInstance, false, {}, dispatch);
         }
     } catch (error) {
-        // console.log(error);
         //Offline data is not available
         await getDataFromInternet(viewerInstance, false, {}, dispatch);
     }
@@ -107,7 +104,6 @@ const getDataFromInternet = async (viewerInstance, offlineAvailable, offlineData
         const loginDetails = auth.loginDetails;
 
         let responseJson;
-
         if (loginDetails.vtigerVersion < 7) {
             const param = new FormData();
             param.append('_operation', 'fetchRecordWithGrouping');
@@ -119,11 +115,8 @@ const getDataFromInternet = async (viewerInstance, offlineAvailable, offlineData
             param.append('module', viewerInstance.props.moduleName);
             param.append('record', viewerInstance.state.recordId);
             responseJson = await getDatafromNet(param, dispatch);
-            console.log('here')
-            console.log(param)
         }
 
-        console.log(responseJson);
         if (responseJson.success) {
             await getAndSaveData(responseJson, viewerInstance, false, '');
         } else {
@@ -136,7 +129,7 @@ const getDataFromInternet = async (viewerInstance, offlineAvailable, offlineData
                     async () => { await getDataFromInternet(viewerInstance, false, {}, dispatch); });
             } else {
                 if (offlineAvailable) {
-                    console.log('offline')
+                    console.log('offline');
                     await getAndSaveData(offlineData.record, viewerInstance, true, 'Showing Offline data - No internet Pull to refresh');
                 } else {
                     //Show error to user that something went wrong.
@@ -149,10 +142,10 @@ const getDataFromInternet = async (viewerInstance, offlineAvailable, offlineData
             }
         }
     } catch (error) {
-        console.log(error)
+        console.log(error);
 
         if (offlineAvailable) {
-            console.log('offline')
+            console.log('offline');
             await getAndSaveData(offlineData.record, viewerInstance, true, 'Showing Offline data - No internet Pull to refresh');
         } else {
             //Show error to user that something went wrong.
@@ -187,10 +180,10 @@ const formatNumber = (numberString) => {
 
         return result;
     } catch (e) {
-        console.log(e)
+        console.log(e);
         return numberString;
     }
-}
+};
 
 const getAndSaveData = async (responseJson, viewerInstance, offline, message) => {
     const { auth } = store.getState();
@@ -255,7 +248,7 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
                             }
 
                         } catch (error) {
-                            //console.log(error);
+                            console.log(error);
                             value = field.value;
                         }
                     } else {
@@ -288,6 +281,17 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
                     recordId={viewerInstance.props.recordId}
                 />);
             }
+            //add "Show Image" line
+            if (viewerInstance.props.moduleName === 'Documents' && block.label === 'File Details') {
+                fieldViews.push(
+                    <Field
+                        label={'Click to show image'}
+                        value={processFile(records)}
+                        uiType={1}
+                        recordId={viewerInstance.props.recordId}
+                    />
+                );
+            }
 
             blockViews.push(
                 <Section
@@ -319,10 +323,8 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
                 await AsyncStorage.setItem(viewerInstance.props.recordId, JSON.stringify(offlineData));
                 await addDatabaseKey(viewerInstance.props.recordId);
             } else {
-                await AsyncStorage.setItem(`${viewerInstance.props.moduleName}
-                x${viewerInstance.props.recordId}`, JSON.stringify(offlineData));
-                await addDatabaseKey(`${viewerInstance.props.moduleName}
-                x${viewerInstance.props.recordId}`);
+                await AsyncStorage.setItem(`${viewerInstance.props.moduleName}x${viewerInstance.props.recordId}`, JSON.stringify(offlineData));
+                await addDatabaseKey(`${viewerInstance.props.moduleName}x${viewerInstance.props.recordId}`);
             }
 
             viewerInstance.setState({

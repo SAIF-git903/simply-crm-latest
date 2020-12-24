@@ -7,7 +7,7 @@ import {
 import SafeAreaView from 'react-native-safe-area-view';
 
 
-import { renderDrawerView, removeAllDatabase } from '../helper';
+import { renderDrawerView, removeAllDatabase, renderDrawerContent } from '../helper';
 import {
     DRAWER_BACKGROUND, HEADER_COLOR, DRAWER_INNER_BACKGROUND,
     DRAWER_SECTION_HEADER_TEXT_COLOR, DRAWER_SECTION_HEADER_IMAGE_COLOR
@@ -72,7 +72,7 @@ class DrawerContent extends Component {
         });
     }
 
-    renderDrawerContent() {
+    renderContent() {
         return (
             <View style={{ flex: 1 }}>
                 <View style={styles.header}>
@@ -86,7 +86,7 @@ class DrawerContent extends Component {
                     (this.state.loading) ?
                         <ActivityIndicator /> :
                         <ScrollView style={{ backgroundColor: DRAWER_BACKGROUND }}>
-                            {this.state.drawerViews}
+                            {renderDrawerContent(this.props.loginDetails.menu)}
                             <View style={{ width: '100%', minHeight: '100%', backgroundColor: DRAWER_BACKGROUND }} />
 
                         </ScrollView>
@@ -103,7 +103,7 @@ class DrawerContent extends Component {
             forceInset={{ top: 'always' }}
             style={{ flex: 1 }}
         >
-            {this.renderDrawerContent()}
+            {this.renderContent()}
         </SafeAreaView>
     }
 
@@ -120,7 +120,7 @@ class DrawerContent extends Component {
             {
                 Platform.OS === 'ios'
                     ? this.renderSafeContent()
-                    : this.renderDrawerContent()
+                    : this.renderContent()
             }
 
         </View>

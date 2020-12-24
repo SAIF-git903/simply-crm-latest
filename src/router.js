@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import React, { Component } from 'react';
 import { Text, TextInput, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -11,7 +12,7 @@ import DrawerContent from './components/drawerContent';
 import Login from './screens/Login';
 import Dashboard from './screens/Dashboard';
 import Records from './screens/Records';
-import RecordDetails from './screens/RecordDetails';
+import RecordDetails from './screens/Record/';
 import ForgotPassword from './screens/ForgotPassword';
 import Calendar from './screens/Calendar';
 import AddRecord from './components/addRecords';
@@ -29,7 +30,7 @@ Text.render = function (...args) {
     return React.cloneElement(origin, {
         style: [{ color: 'black', fontFamily: 'Poppins-Regular' }, origin.props.style]
     })
-}
+};
 
 let defaultTextInputRender = TextInput.render;
 TextInput.render = function (...args) {
@@ -38,11 +39,11 @@ TextInput.render = function (...args) {
     return React.cloneElement(origin, {
         style: [{ height: 50 }, origin.props.style]
     })
-}
+};
 
-StatusBar.setBackgroundColor('rgba(0, 0, 0, 0.20)')
-StatusBar.setTranslucent(true)
-StatusBar.setBarStyle('light-content', true)
+StatusBar.setBackgroundColor('rgba(0, 0, 0, 0.20)');
+StatusBar.setTranslucent(true);
+StatusBar.setBarStyle('light-content', true);
 
 export default class Router extends Component {
     createLoginStack = () => <Stack.Navigator
@@ -57,7 +58,7 @@ export default class Router extends Component {
         <Stack.Screen name="Edit Record" component={EditRecord} />
         <Stack.Screen name="Reference Screen" component={ReferenceScreen} />
         <Stack.Screen name="Forgot Password" component={ForgotPassword} />
-    </Stack.Navigator>
+    </Stack.Navigator>;
 
     createDrawer = () => <Drawer.Navigator
         drawerType={'front'}
@@ -66,7 +67,7 @@ export default class Router extends Component {
         <Drawer.Screen name="Dashboard" component={Dashboard} />
         <Drawer.Screen name="Records" component={Records} />
         <Drawer.Screen name="Calendar" component={Calendar} />
-    </Drawer.Navigator>
+    </Drawer.Navigator>;
 
     render() {
         return (

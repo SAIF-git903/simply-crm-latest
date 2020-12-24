@@ -109,12 +109,12 @@ export const fetchRefRecordHelper = async (listerInstance, dispatch) => {
     try {
         const offlineData = JSON.parse(await AsyncStorage.getItem(listerInstance.props.moduleName));
 
-        console.log('Stored data available')
-        console.log(offlineData)
+        console.log('Stored data available');
+        console.log(offlineData);
 
         if (offlineData !== null) {
             //Offline data is avialable
-            console.log(offlineData)
+            console.log(offlineData);
             const offlineFinishedTime = JSON.parse(offlineData.finishedTime);
             const currentTime = moment();
             const duration = moment.duration(currentTime.diff(offlineFinishedTime));

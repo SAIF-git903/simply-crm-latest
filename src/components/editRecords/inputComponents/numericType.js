@@ -11,7 +11,6 @@ class NumericType extends Component {
         };
     }
     onTextInputChange(text) {
-        //console.log(text);
         this.setState({ ...this.state, saveValue: text });
     }
     render() {

@@ -32,9 +32,7 @@ export default class SectionHeader extends Component {
     }
 
     getIcon() {
-        console.log(this.props.imageName)
-
-        switch (this.props.imageName) {
+        switch (this.props.imageName.toLowerCase()) {
             case 'marketing':
                 return 'bullhorn';
 

@@ -100,11 +100,7 @@ class ReferenceType extends Component {
                     selectedItem={this.state.dialogueSelectedValue}
                     onCancel={() => this.setState({ dialogueVisible: false })}
                     onOk={(result) => {
-                        //console.log(result);
-
-
                         if (result.selectedItem === undefined) {
-                            //console.log('undefined');
                             this.setState({ dialogueVisible: false });
                         } else {
                             navigate('Reference Screen', { selectedModule: result.selectedItem.label, uniqueId: this.state.formId });

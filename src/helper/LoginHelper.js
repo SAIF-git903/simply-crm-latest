@@ -13,7 +13,6 @@ export const userUrlHelper = async (email, password, url, navigation, loginInsta
     try {
         const URLDetails = JSON.parse(await AsyncStorage.getItem(URLDETAILSKEY));
         if (URLDetails !== null) {
-            console.log(URLDetails)
             loginHelper(URLDetails.userName, URLDetails.password, URLDetails.url, navigation, loginInstance, dispatch);
         } else {
             const url = `https://sai.simplyhq.com/index.php?action=LocateInstance&email=${email}&password=${password}&api_key=jNuaPq7MRfLDvnLs5gZ9XgU1H7n3URma`;
@@ -24,9 +23,6 @@ export const userUrlHelper = async (email, password, url, navigation, loginInsta
                 },
             });
             const responseJson = await response.json();
-
-            console.log(url);
-            console.log(responseJson)
 
             if (responseJson.output.success !== 0) {
                 const output = responseJson.output;
@@ -81,16 +77,13 @@ export const loginHelper = async (username, password, url, navigation, loginInst
 
     try {
         // console.log('URL', url);
-
-        let trimUrl = url.replace(/ /g, '');
-
+        let trimUrl = url.replace(/ /g, '').replace(/\/$/, '');
         trimUrl = (trimUrl.indexOf('://') === -1) ? 'https://' + trimUrl : trimUrl;
-        if (url.includes('www')) {
-            trimUrl = url.replace('www.', '');
+        if (url.includes('www.')) {
+            trimUrl = trimUrl.replace('www.', '');
         }
-
         if (url.includes('http://')) {
-            trimUrl = url.replace('http://', 'https://')
+            trimUrl = trimUrl.replace('http://', 'https://');
         }
 
         //hardcoded for testing
@@ -104,10 +97,9 @@ export const loginHelper = async (username, password, url, navigation, loginInst
             },
             body: param
         });
-        // console.log(response);
         const responseJson = await response.json();
-        console.log(responseJson);
         if (responseJson.success) {
+
             // loginInstance.setState({ loading: false, showUrlList: false });            
             const loginDetails = {
                 username,
@@ -119,7 +111,8 @@ export const loginHelper = async (username, password, url, navigation, loginInst
                 vtigerVersion: parseInt(responseJson.result.login.vtiger_version.charAt(0), 10),
                 dateFormat: responseJson.result.login.date_format,
                 modules: responseJson.result.modules,
-                userId: responseJson.result.login.userid
+                menu: responseJson.result.menu,
+                userId: responseJson.result.login.userid,
             };
 
             store.dispatch(fetchUserData(loginDetails))
@@ -195,14 +188,13 @@ export const resetPassword = async (email, forgotPasswordInstance) => {
             },
         });
         const responseJson = await response.json();
-        console.log(responseJson);
         if (responseJson.output.success !== 0) {
             forgotPasswordInstance.setState({ buttonText: 'BACK', loading: false });
             Toast.show('Thank you - we\'ve now sent password reset instructions to the email you entered.');
         } else {
             //Failed
             forgotPasswordInstance.setState({ buttonText: 'RESET PASSWORD', loading: false });
-            const information = responseJson.output.information
+            const information = responseJson.output.information;
             Toast.show(information);
         }
     } catch (error) {

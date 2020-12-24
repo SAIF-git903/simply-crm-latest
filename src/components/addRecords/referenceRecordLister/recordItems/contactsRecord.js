@@ -28,7 +28,6 @@ class ContactsRecord extends Component {
     }
 
     render() {
-        console.log(this.props.item)
         if (!this.state.loading) {
             return (
                 <TouchableOpacity

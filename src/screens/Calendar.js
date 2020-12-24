@@ -345,7 +345,6 @@ export default function Calendar() {
                                 firstDay={1}
                                 markedDates={getMarkedDates()}
                                 onDayPress={(date) => {
-                                    console.log(date)
                                     setCurrentDate(new moment(date.dateString))
                                     setShowCalendar(false)
                                 }}
@@ -405,7 +404,6 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.05,
         shadowRadius: 5,
-        borderRadius: 3,
     },
     item: {
         flex: 1,

@@ -18,7 +18,6 @@ class AddRecords extends Component {
     }
 
     render() {
-        console.log(this.props)
         return (
             <View style={styles.backgroundStyle}>
                 <Header

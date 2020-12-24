@@ -7,7 +7,8 @@ import Lister from './lister';
 class RecordLister extends Component {
     static navigationOptions = {
         header: null
-    }
+    };
+
     render() {
         return (
             <View style={styles.backgroundStyle}>

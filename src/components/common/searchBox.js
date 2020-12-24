@@ -46,7 +46,6 @@ class SearchBox extends Component {
     }
 
     render() {
-        console.log(this.props.moduleName)
         const { style } = this.props;
         const { searchText } = this.state;
 
@@ -99,7 +98,7 @@ const styles = StyleSheet.create({
         flex: 1,
         marginRight: 5
     }
-})
+});
 
 const mapStateToProps = ({ event, mgr, drawer }) => {
     const { searchModuleName } = mgr;

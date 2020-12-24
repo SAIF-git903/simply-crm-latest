@@ -34,9 +34,6 @@ export const tabletSearchBackPress = () => ({
 export const drawerButtonPress = (buttonType, moduleLable, moduleId) => (dispatch) => {
   dispatch({ type: DRAWER_BUTTON_SELECTED, payload: { buttonType, moduleLable, moduleId } });
   dispatch({ type: UPDATE_MGR, payload: HOME_MAIN });
-  console.log(buttonType)
-  console.log(moduleLable)
-  console.log(moduleId)
 };
 
 // export const openMenu = ()
@@ -113,7 +110,7 @@ export const deleteRecord = (listerInstance, recordId, index, recordInstance) =>
 
 export const searchRecord = (searchInstance) => (dispatch) => {
   searchRecordHelper(searchInstance, dispatch);
-}
+};
 
 export const moduleSelected = (text) => ({
   type: MODULE_SELECT,

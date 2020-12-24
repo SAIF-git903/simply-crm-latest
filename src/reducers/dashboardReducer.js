@@ -6,7 +6,6 @@ const INITIAL_STATE = {
 };
 
 export default (state = INITIAL_STATE, action) => {
-    //console.log(action);
     switch (action.type) {
         case MODULE_SELECT:
             return { ...state, moduleName: action.payload };

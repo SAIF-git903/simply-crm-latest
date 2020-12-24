@@ -37,8 +37,6 @@ export const describeRecordHelper = async (addInstance) => {
         });
         const responseJson = await response.json();
 
-        console.log(param)
-        console.log(responseJson);
         if (responseJson.success) {
             const structures = responseJson.result.structure;
 
@@ -335,11 +333,10 @@ export const saveRecordHelper = (addInstance, headerInstance, dispatch, listerIn
 };
 
 const addRecordHelper = async (addInstance, headerInstance, jsonObj, dispatch, listerInstance) => {
-
     const { auth } = store.getState();
     const loginDetails = auth.loginDetails;
     const obj = JSON.stringify(jsonObj);
-    console.log(obj);
+
     const param = new FormData();
     param.append('_session', loginDetails.session);
     param.append('_operation', 'saveRecord');
@@ -347,6 +344,13 @@ const addRecordHelper = async (addInstance, headerInstance, jsonObj, dispatch, l
     param.append('values', obj);
 
     try {
+        for (const field of addInstance.state.inputInstance) {
+            if (field.state.error) {
+                field.setState({ showError: true })
+                throw Error(`${field.state.error} at ${field.props.obj.lable}`);
+            }
+        }
+
         const response = await fetch((`${loginDetails.url}/modules/Mobile/api.php`), {
             method: 'POST',
             headers: {
@@ -357,9 +361,7 @@ const addRecordHelper = async (addInstance, headerInstance, jsonObj, dispatch, l
             body: param
         });
 
-        console.log(param);
         const responseJson = await response.json();
-        console.log(response);
         if (responseJson.success) {
             console.log(responseJson);
             headerInstance.setState({ loading: false });
@@ -376,8 +378,6 @@ const addRecordHelper = async (addInstance, headerInstance, jsonObj, dispatch, l
             listerInstance.refreshData();
             //addInstance.props.navigation.goBack(null);
         } else {
-            console.log(responseJson);
-            console.log('Failed');
             headerInstance.setState({ loading: false });
             if (responseJson.error.message === '') {
                 Alert.alert('', 'Vtiger API error');
@@ -385,10 +385,10 @@ const addRecordHelper = async (addInstance, headerInstance, jsonObj, dispatch, l
                 Alert.alert('', responseJson.error.message);
             }
         }
-    } catch (Error) {
-        console.log(Error);
+    } catch (e) {
+        console.log(e);
         headerInstance.setState({ loading: false });
-        Alert.alert('', 'Api response error');
+        Alert.alert('', e.message);
     }
 };
 

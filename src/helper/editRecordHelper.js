@@ -23,7 +23,6 @@ export const describeEditRecordHelper = async (editInstance) => {
     param.append('_session', loginDetails.session);
     param.append('_operation', 'structure');
     param.append('module', editInstance.props.moduleName);
-    console.log(param);
 
     try {
         const response = await fetch((`${loginDetails.url}/modules/Mobile/api.php`), {
@@ -305,8 +304,6 @@ export const getDataHelper = async (editInstance) => {
             param.append('module', editInstance.props.moduleName);
         }
 
-        console.log(param);
-
         const response = await fetch((`${loginDetails.url}/modules/Mobile/api.php`), {
             method: 'POST',
             headers: {
@@ -429,9 +426,14 @@ const editRecordHelper = async (editInstance, headerInstance, jsonObj, dispatch,
     param.append('record', editInstance.props.recordId);
     param.append('values', obj);
 
-    console.log(param);
-
     try {
+        for (const field of editInstance.state.inputInstance) {
+            if (field.state.error) {
+                field.setState({ showError: true });
+                throw Error(`${field.state.error} at ${field.props.obj.lable}`);
+            }
+        }
+
         const response = await fetch((`${loginDetails.url}/modules/Mobile/api.php`), {
             method: 'POST',
             headers: {
@@ -444,7 +446,6 @@ const editRecordHelper = async (editInstance, headerInstance, jsonObj, dispatch,
 
         const responseJson = await response.json();
 
-        console.log(responseJson);
         if (responseJson.success) {
             //console.log(responseJson);
             Toast.show('Successfully Edited');
@@ -470,9 +471,9 @@ const editRecordHelper = async (editInstance, headerInstance, jsonObj, dispatch,
             }
             Toast.show('Edited Failed');
         }
-    } catch (Error) {
-        console.log(Error);
+    } catch (e) {
+        console.log(e);
         headerInstance.setState({ loading: false });
-        Alert.alert('', 'Api response error');
+        Alert.alert('', e.message);
     }
 };
