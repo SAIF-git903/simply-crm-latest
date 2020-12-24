@@ -15,7 +15,9 @@ export const userUrlHelper = async (email, password, url, navigation, loginInsta
         if (URLDetails !== null) {
             loginHelper(URLDetails.userName, URLDetails.password, URLDetails.url, navigation, loginInstance, dispatch);
         } else {
-            const url = `https://sai.simplyhq.com/index.php?action=LocateInstance&email=${email}&password=${password}&api_key=jNuaPq7MRfLDvnLs5gZ9XgU1H7n3URma`;
+            const en_email = encodeURIComponent(email);
+            const en_password = encodeURIComponent(password);
+            const url = `https://sai.simplyhq.com/index.php?action=LocateInstance&email=${en_email}&password=${en_password}&api_key=jNuaPq7MRfLDvnLs5gZ9XgU1H7n3URma`;
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
