@@ -50,7 +50,11 @@ export default function Comment(props) {
         }
     );
 
-    const { userId } = useSelector(state => state.auth.loginDetails);
+    const { userId, isAdmin } = useSelector(state => state.auth.loginDetails);
+
+    function checkUserAbility(commentCreator_userid, userId, isAdmin) {
+        return (getCleanId(commentCreator_userid) === userId) || isAdmin;
+    }
 
     function renderCommentButtons() {
         const getRepliesText = (length) => length === 1 ? 'reply' : 'replies';
@@ -69,30 +73,34 @@ export default function Comment(props) {
             <View style={{ flexDirection: 'row', }}>
                 <Button text={'Reply'} onPress={() => onReply()} />
                 {
-                    getCleanId(item.creator.value) === userId
+                    checkUserAbility(item.creator.value, userId, isAdmin)
                         ? <Button text={'Edit'} onPress={() => onEdit()} />
                         : null
                 }
-                <Button text={'Delete'} onPress={() => {
-                    Alert.alert(
-                        "Delete Comment",
-                        "Are you sure you want to delete this comment?",
-                        [
-                            {
-                                text: "Cancel",
-                                onPress: () => console.log("Cancel Pressed"),
-                                style: "cancel"
-                            },
-                            {
-                                text: "Delete", onPress: () => {
-                                    const commentIdClean = getCleanId(item.id);
-                                    dispatch(deleteComment(commentIdClean))
-                                }
-                            }
-                        ],
-                        { cancelable: false }
-                    );
-                }} />
+                {
+                    checkUserAbility(item.creator.value, userId, isAdmin)
+                        ? <Button text={'Delete'} onPress={() => {
+                            Alert.alert(
+                                "Delete Comment",
+                                "Are you sure you want to delete this comment?",
+                                [
+                                    {
+                                        text: "Cancel",
+                                        onPress: () => console.log("Cancel Pressed"),
+                                        style: "cancel"
+                                    },
+                                    {
+                                        text: "Delete", onPress: () => {
+                                            const commentIdClean = getCleanId(item.id);
+                                            dispatch(deleteComment(commentIdClean))
+                                        }
+                                    }
+                                ],
+                                { cancelable: false }
+                            );
+                        }} />
+                        : null
+                }
             </View>
         </View>
     }
