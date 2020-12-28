@@ -44,7 +44,8 @@ export const describeEditRecordHelper = async (editInstance) => {
             const formInstance = [];
             const content = [];
 
-            for (const structure of structures) {
+            for (let k = 1; k < structures.length; k++) {
+                const structure = structures[k];
                 const {
                     fields,
                     label,
@@ -53,9 +54,8 @@ export const describeEditRecordHelper = async (editInstance) => {
                 } = structure;
                 const formArray = [];
 
-                let i = 0;
-                for (const fArr of fields) {
-                    i++;
+                for (let i = 1; i < fields.length; i++) {
+                    const fArr = fields[i];
 
                     const hiddenFields = [
                         'createdtime',
@@ -259,12 +259,15 @@ export const describeEditRecordHelper = async (editInstance) => {
                 // Sort fields
                 formArray.sort((a, b) => a.props.sequence - b.props.sequence);
 
-                content.push(<FormSection
-                    sequence={parseInt(sequence)}
-                    title={label}
-                >
-                    {formArray}
-                </FormSection>)
+                content.push(
+                    <FormSection
+                        key={k}
+                        sequence={parseInt(sequence)}
+                        title={label}
+                    >
+                        {formArray}
+                    </FormSection>
+                )
             }
 
             // Sort sections

@@ -194,7 +194,6 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
         const blocks = records.blocks;
 
         const blockViews = [];
-        let i = 0;
         if (blocks.length === 0) {
             viewerInstance.setState({
                 loading: false,
@@ -204,7 +203,8 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
             });
             return;
         }
-        for (const block of blocks) {
+        for (let i = 0; i < blocks.length; i++) {
+            const block = blocks[i];
             const fieldViews = [];
             const fields = block.fields;
 
@@ -218,7 +218,9 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
                 }
             }
 
-            for (const field of fields) {
+            let k = 0;
+            for (; k < fields.length; k++) {
+                const field = fields[k];
 
                 if (viewerInstance.props.moduleName === 'Calendar' && field.name === 'contact_id') {
                     continue;
@@ -274,17 +276,21 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
                 } else {
                     value = field.value.label;
                 }
-                fieldViews.push(<Field
-                    label={field.label}
-                    value={value}
-                    uiType={field.uitype}
-                    recordId={viewerInstance.props.recordId}
-                />);
+                fieldViews.push(
+                    <Field
+                        key={k}
+                        label={field.label}
+                        value={value}
+                        uiType={field.uitype}
+                        recordId={viewerInstance.props.recordId}
+                    />
+                );
             }
             //add "Show Image" line
             if (viewerInstance.props.moduleName === 'Documents' && block.label === 'File Details') {
                 fieldViews.push(
                     <Field
+                        key={k+1}
                         label={'Click to show image'}
                         value={processFile(records)}
                         uiType={1}
@@ -295,7 +301,7 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
 
             blockViews.push(
                 <Section
-                    key={block.label}
+                    key={i}
                     headerStyle={{ paddingLeft: 15 }}
                     style={{ paddingTop: 5 }}
                     open={(i === 0)}

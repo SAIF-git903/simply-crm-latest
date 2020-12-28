@@ -21,6 +21,7 @@ export default function RecordDetails() {
         const viewer = {
             tabIcon: 'file-alt',
             component: <Viewer
+                key={1}
                 tabLabel="Details"
                 navigation={navigation}
                 moduleName={moduleName}
@@ -31,9 +32,10 @@ export default function RecordDetails() {
         const updates = {
             tabIcon: 'history',
             component: <Updates
+                key={2}
+                tabLabel="Updates"
                 moduleName={moduleName}
                 recordId={recordId}
-                tabLabel="Updates"
             />
         };
 
@@ -41,8 +43,9 @@ export default function RecordDetails() {
         const comments = {
             tabIcon: 'comment',
             component: <Comments
-                recordId={recordId}
+                key={3}
                 tabLabel="Comments"
+                recordId={recordId}
             />
         };
 
