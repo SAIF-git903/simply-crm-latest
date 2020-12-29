@@ -115,6 +115,7 @@ export const loginHelper = async (username, password, url, navigation, loginInst
                 modules: responseJson.result.modules,
                 menu: responseJson.result.menu,
                 userId: responseJson.result.login.userid,
+                isAdmin: responseJson.result.login.isAdmin,
             };
 
             store.dispatch(fetchUserData(loginDetails))

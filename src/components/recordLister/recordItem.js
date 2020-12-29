@@ -54,19 +54,22 @@ export default function RecordItem(props) {
         );
     }
 
-    function renderLabel(label) {
+    function renderLabel(label, index) {
         if (!label || label.length === 0) return null;
 
-        return <Text
-            numberOfLines={1}
-            style={fontStyles.dashboardRecordLabel}
-        >
-            {label}
-        </Text>
+        return (
+            <Text
+                key={index+2}
+                numberOfLines={1}
+                style={fontStyles.dashboardRecordLabel}
+            >
+                {label}
+            </Text>
+        );
     }
 
     function renderLabels(labels) {
-        return labels.map(l => renderLabel(l));
+        return labels.map(renderLabel);
     }
 
     const swipeOutButtons = [{
@@ -135,6 +138,7 @@ export default function RecordItem(props) {
                             }]}
                         >
                             <Text
+                                key={1}
                                 numberOfLines={1}
                                 style={fontStyles.dashboardRecordLabelBig}
                             >

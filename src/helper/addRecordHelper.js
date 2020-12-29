@@ -43,7 +43,8 @@ export const describeRecordHelper = async (addInstance) => {
             const formInstance = [];
             const content = [];
 
-            for (const structure of structures) {
+            for (let k = 1; k < structures.length; k++) {
+                const structure = structures[k];
                 const {
                     fields,
                     label,
@@ -52,9 +53,8 @@ export const describeRecordHelper = async (addInstance) => {
                 } = structure;
                 const formArray = [];
 
-                let i = 0;
-                for (const fArr of fields) {
-                    i++;
+                for (let i = 1; i < fields.length; i++) {
+                    const fArr = fields[i];
 
                     if (addInstance.props.moduleName === 'Calendar' && fArr.name === 'contact_id') {
                         continue;
@@ -100,6 +100,7 @@ export const describeRecordHelper = async (addInstance) => {
                                 formArray.push(
                                     <View
                                         sequence={fArr.sequence}
+                                        key={fieldObj.name}
                                     >
                                         <StringForm
                                             obj={fieldObj}
@@ -119,6 +120,7 @@ export const describeRecordHelper = async (addInstance) => {
                                 formArray.push(
                                     <View
                                         sequence={fArr.sequence}
+                                        key={fieldObj.name}
                                     >
                                         <BooleanForm
                                             obj={fieldObj}
@@ -136,6 +138,7 @@ export const describeRecordHelper = async (addInstance) => {
                                 formArray.push(
                                     <View
                                         sequence={fArr.sequence}
+                                        key={fieldObj.name}
                                     >
                                         <PickerForm
                                             obj={fieldObj}
@@ -176,6 +179,7 @@ export const describeRecordHelper = async (addInstance) => {
                                 formArray.push(
                                     <View
                                         sequence={fArr.sequence}
+                                        key={fieldObj.name}
                                     >
                                         <DateForm
                                             obj={fieldObj}
@@ -193,6 +197,7 @@ export const describeRecordHelper = async (addInstance) => {
                                 formArray.push(
                                     <View
                                         sequence={fArr.sequence}
+                                        key={fieldObj.name}
                                     >
                                         <MultiPickerForm
                                             obj={fieldObj}
@@ -211,6 +216,7 @@ export const describeRecordHelper = async (addInstance) => {
                                 formArray.push(
                                     <View
                                         sequence={fArr.sequence}
+                                        key={fieldObj.name}
                                     >
                                         <ReferenceForm
                                             defaultValue={
@@ -235,6 +241,7 @@ export const describeRecordHelper = async (addInstance) => {
                                 formArray.push(
                                     <View
                                         sequence={fArr.sequence}
+                                        key={fieldObj.name}
                                     >
                                         <TimeForm
                                             obj={fieldObj}
@@ -252,6 +259,7 @@ export const describeRecordHelper = async (addInstance) => {
                                 formArray.push(
                                     <View
                                         sequence={fArr.sequence}
+                                        key={fieldObj.name}
                                     >
                                         <StringForm
                                             obj={fieldObj}
@@ -274,12 +282,15 @@ export const describeRecordHelper = async (addInstance) => {
                 // Sort fields
                 formArray.sort((a, b) => a.props.sequence - b.props.sequence);
 
-                content.push(<FormSection
-                    sequence={parseInt(sequence)}
-                    title={label}
-                >
-                    {formArray}
-                </FormSection>)
+                content.push(
+                    <FormSection
+                        key={k}
+                        sequence={parseInt(sequence)}
+                        title={label}
+                    >
+                        {formArray}
+                    </FormSection>
+                )
             }
 
             // Sort sections
