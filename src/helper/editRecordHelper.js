@@ -37,8 +37,6 @@ export const describeEditRecordHelper = async (editInstance) => {
         const responseJson = await response.json();
 
         if (responseJson.success) {
-            //console.log(responseJson);
-
             const structures = responseJson.result.structure;
 
             const formInstance = [];

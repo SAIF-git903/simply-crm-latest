@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, ActivityIndicator, ScrollView, KeyboardAvoidingView, Keyboard } from 'react-native';
+import {View, ActivityIndicator, ScrollView, KeyboardAvoidingView, Keyboard, Platform} from 'react-native';
 import { describeEditRecordHelper } from '../../helper';
-import SectionBox from '../common/section/sectionBox';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 class Viewer extends Component {
     constructor(props) {
@@ -36,21 +34,24 @@ class Viewer extends Component {
     }
     renderRecordView() {
         return (
-            <KeyboardAwareScrollView
-                enableResetScrollToCoords={false}
-                onScrollBeginDrag={() => {
-                    if (Platform.OS === 'ios') {
-                        return;
-                    }
-
-                    Keyboard.dismiss();
-                }}
-                keyboardShouldPersistTaps="handled"
-                contentContainerStyle={{ paddingTop: 10 }}
+            <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
             >
-                {this.state.inputForm}
-            </KeyboardAwareScrollView>
+                <ScrollView
+                    enableResetScrollToCoords={false}
+                    onScrollBeginDrag={() => {
+                        if (Platform.OS === 'ios') {
+                            return;
+                        }
 
+                        Keyboard.dismiss();
+                    }}
+                    keyboardShouldPersistTaps="handled"
+                    contentContainerStyle={{ paddingTop: 10 }}
+                >
+                    {this.state.inputForm}
+                </ScrollView>
+            </KeyboardAvoidingView>
         );
     }
 
