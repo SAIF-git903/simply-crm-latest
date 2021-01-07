@@ -83,6 +83,11 @@ export const fontStyles = StyleSheet.create({
         color: 'black',
         fontSize: 18
     },
+    fieldValueLocation: {
+        fontFamily: 'Poppins-Regular',
+        color: '#00BBF2',
+        fontSize: 18
+    },
     dashboardRecordLabel: {
         fontFamily: 'Poppins-Regular',
         color: '#707070',

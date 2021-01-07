@@ -1,6 +1,5 @@
 import React from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
-import { View } from 'react-native';
 import store from '../store';
 import { getDatafromNet } from './networkHelper';
 import Section from '../components/common/section';
@@ -283,6 +282,15 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
                         value={value}
                         uiType={field.uitype}
                         recordId={viewerInstance.props.recordId}
+                        isLocation={
+                            (
+                                field.label === 'Location'
+                                && (
+                                    viewerInstance.props.moduleName === 'Calendar'
+                                    || viewerInstance.props.moduleName === 'Events'
+                                )
+                            )
+                        }
                     />
                 );
             }
