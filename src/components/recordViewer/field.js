@@ -1,34 +1,37 @@
 import React, { Component } from 'react';
-import { View, Text, Linking } from 'react-native';
+import {View, Text, Linking} from 'react-native';
 import { fontStyles } from '../../styles/common';
 import { trackCall } from '../../helper/api';
 
 export default class Field extends Component {
     onPressAction() {
         const { uiType, value } = this.props;
-
         switch (uiType) {
             case '11':
                 Linking.openURL(`tel:${value}`).then(() => {
-                    trackCall(this.props.recordId)
+                    trackCall(this.props.recordId);
                 });
                 break;
 
             case '13':
-                Linking.openURL(`mailto:${value}`)
+                Linking.openURL(`mailto:${value}`);
                 break;
 
             case '17':
                 let website = value;
-
-                const isHttp = website.includes('http://')
+                const isHttp = website.includes('http://');
                 if (isHttp) website = website.replace('http://', 'https://');
                 const isHttps = website.includes('https://');
-                Linking.openURL(`${isHttps ? '' : 'https://'}${website}`)
+                Linking.openURL(`${isHttps ? '' : 'https://'}${website}`);
                 break;
 
             default:
                 break;
+        }
+        //process location field for Calendar/Event module
+        if (this.props.isLocation) {
+            const query = value.replace(/ /g,"+");
+            Linking.openURL(`geo:0,0?q=${query}`);
         }
     }
 
@@ -55,7 +58,7 @@ export default class Field extends Component {
                 <View style={{ flex: 1.4, paddingLeft: 10, alignItems: 'flex-start' }}>
                     <Text
                         onPress={() => this.onPressAction()}
-                        style={fontStyles.fieldValue}
+                        style={this.props.isLocation ? fontStyles.fieldValueLocation : fontStyles.fieldValue}
                         numberOfLines={2}
                         selectable={true}
                     >
