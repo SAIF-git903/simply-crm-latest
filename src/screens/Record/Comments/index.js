@@ -103,7 +103,7 @@ export default function Comments({ recordId }) {
     return (
         <KeyboardAvoidingView
             style={{ flex: 1 }}
-            behavior={Platform.OS == "ios" ? "padding" : null}
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
             keyboardVerticalOffset={122}
         >
             <View style={styles.wrapper}>

@@ -35,7 +35,9 @@ class Viewer extends Component {
     renderRecordView() {
         return (
             <KeyboardAvoidingView
+                style={{ flex: 1 }}
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
+                keyboardVerticalOffset={122}
             >
                 <ScrollView
                     enableResetScrollToCoords={false}
