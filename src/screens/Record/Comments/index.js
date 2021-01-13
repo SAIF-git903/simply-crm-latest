@@ -22,9 +22,10 @@ export default function Comments({ recordId }) {
     const { isLoading, comments, isAddingComment, editedComment } = useSelector(
         state => state.comments,
         (p, n) => p.comments === n.comments
-            && p.isLoading === p.isLoading
+            && p.isLoading === n.isLoading
             && p.isAddingComment === n.isAddingComment
-            && p.editedComment === n.editedComment);
+            && p.editedComment === n.editedComment
+    );
 
     useEffect(() => {
         dispatch(getComments(recordId));

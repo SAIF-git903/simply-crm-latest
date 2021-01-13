@@ -46,7 +46,6 @@ export default function reducer(state = initialState, action = {}) {
             }
 
         case FETCH_COMMENTS_FULFILLED:
-
             return {
                 ...state,
                 comments: action.payload,
@@ -56,7 +55,7 @@ export default function reducer(state = initialState, action = {}) {
         case FETCH_COMMENTS_REJECTED:
             return {
                 ...state,
-                loading: false
+                isLoading: false
             }
 
         case DELETE_COMMENT:
@@ -114,7 +113,6 @@ export default function reducer(state = initialState, action = {}) {
         }
 
         case ADD_COMMENT: {
-
             const commentsLoadingClone = JSON.parse(JSON.stringify(state.commentsLoading))
             if (action.payload) commentsLoadingClone.push(action.payload.toString().replace(/.*(?=x)+x/, ''))
 
