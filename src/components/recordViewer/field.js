@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {View, Text, Linking} from 'react-native';
+import {View, Text, Linking, Platform} from 'react-native';
 import { fontStyles } from '../../styles/common';
 import { trackCall } from '../../helper/api';
 
@@ -31,7 +31,12 @@ export default class Field extends Component {
         //process location field for Calendar/Event module
         if (this.props.isLocation) {
             const query = value.replace(/ /g,"+");
-            Linking.openURL(`geo:0,0?q=${query}`);
+            if (Platform.OS === 'ios') {
+                //let encodedName = "address" + stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet()) ?? "";
+                Linking.openURL(`http://maps.apple.com/?q=${query}`);
+            } else {
+                Linking.openURL(`geo:0,0?q=${query}`);
+            }
         }
     }
 
