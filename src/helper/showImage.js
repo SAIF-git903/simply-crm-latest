@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import RNFetchBlob from "react-native-fetch-blob";
 import {View, Modal, TouchableOpacity, Text, StyleSheet} from 'react-native';
 import Gallery from 'react-native-image-gallery';
+import Icon from 'react-native-vector-icons/FontAwesome5Pro';
 import store from '../store';
 
 const Button = ({ text, onPress, style }) => <TouchableOpacity
@@ -49,14 +50,12 @@ class ShowImage extends Component {
         this.state = {
             modalEnabled: false,
             downloadData: this.props.downloadData,
-            base64Data: null,
+            imagePath: null,
         };
     }
 
     componentDidMount() {
         if (this.state.downloadData.location !== 'external') {
-            const fs = RNFetchBlob.fs;
-            let imagePath = null;
             const {auth: {loginDetails: {session, url}}} = store.getState();
             RNFetchBlob.config({
                 fileCache: true
@@ -79,22 +78,15 @@ class ShowImage extends Component {
             ).then(resp => {
                 // on success
                 // the image path you can use it directly with Image component
-                imagePath = resp.path();
-                return resp.readFile("base64");
+                let imagePath = resp.path();
+                this.setState({
+                    imagePath: imagePath,
+                });
+                return imagePath;
             }, resp => {
                 // on error
-                console.log('Error getting base64 with RNFetchBlob');
+                console.log('Error getting image path with RNFetchBlob');
                 console.log(resp);
-            }).then(base64Data => {
-                // here's base64 encoded image
-                this.setState({
-                    base64Data: 'data:' + this.state.downloadData.type + ';base64,' + base64Data,
-                });
-                // remove the file from storage
-                return fs.unlink(imagePath)
-                    .catch((errorMessage, statusCode) => {
-                        console.log('RNFetchBlob.fs have error with "statusCode"="' + statusCode + '" and "message"="' + errorMessage + '"');
-                    });
             });
         }
     }
@@ -115,7 +107,7 @@ class ShowImage extends Component {
             };
             //TODO test me
         } else {
-            source = (this.state.base64Data) ? { uri: this.state.base64Data } : require('../../assets/images/loading.gif');
+            source = (this.state.imagePath) ? { uri: `file://${this.state.imagePath}` } : require('../../assets/images/loading.gif');
         }
 
         return (
@@ -132,11 +124,28 @@ class ShowImage extends Component {
                     onRequestClose={() => this.setState({ modalEnabled: false })}
                 >
                     <Gallery
+                        resizeMode='contain'
                         style={{ flex: 1, backgroundColor: 'white' }}
                         images={[
                             { source: source },
                         ]}
                     />
+                    <View
+                        style={{
+                            position: 'absolute',
+                            top: 30, right: 30,
+                        }}
+                    >
+                        <TouchableOpacity
+                            onPress={() => this.setState({ modalEnabled: false })}
+                        >
+                            <Icon
+                                name='times'
+                                size={30}
+                                color='#C5C5C5'
+                            />
+                        </TouchableOpacity>
+                    </View>
                 </Modal>
             </View>
         );
