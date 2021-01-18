@@ -295,16 +295,22 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
                 );
             }
             //add "Show Image" line
-            if (viewerInstance.props.moduleName === 'Documents' && block.label === 'File Details') {
-                fieldViews.push(
-                    <Field
-                        key={k+1}
-                        label={'Click to show image'}
-                        value={processFile(records)}
-                        uiType={1}
-                        recordId={viewerInstance.props.recordId}
-                    />
-                );
+            if (
+                viewerInstance.props.moduleName === 'Documents'
+                && block.label === 'File Details'
+            ) {
+                const div = processFile(records);
+                if (div) {
+                    fieldViews.push(
+                        <Field
+                            key={k+1}
+                            label={'Click to show image'}
+                            value={div}
+                            uiType={1}
+                            recordId={viewerInstance.props.recordId}
+                        />
+                    );
+                }
             }
 
             blockViews.push(

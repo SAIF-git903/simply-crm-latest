@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import RNFetchBlob from "react-native-fetch-blob";
-import {View, Modal, TouchableOpacity, Text, StyleSheet} from 'react-native';
-import Gallery from 'react-native-image-gallery';
+import {View, Modal, TouchableOpacity, Text, StyleSheet, Image} from 'react-native';
+import ImageViewer from 'react-native-image-zoom-viewer';
 import Icon from 'react-native-vector-icons/FontAwesome5Pro';
 import store from '../store';
 
@@ -47,18 +47,25 @@ export function processFile(item) {
 class ShowImage extends Component {
     constructor(props) {
         super(props);
+        const {load_width, load_height} = Image.resolveAssetSource(require('../../assets/images/loading.gif'));
         this.state = {
             modalEnabled: false,
+            loadWidth: load_width,
+            loadHeight: load_height,
             downloadData: this.props.downloadData,
             imagePath: null,
+            imageWidth: 200,
+            imageHeight: 200,
         };
     }
 
     componentDidMount() {
         if (this.state.downloadData.location !== 'external') {
             const {auth: {loginDetails: {session, url}}} = store.getState();
+            const ext = this.state.downloadData.type.split('/');
             RNFetchBlob.config({
-                fileCache: true
+                fileCache: true,
+                appendExt: ext[1],
             }).fetch(
                 "POST",
                 `${url}/modules/Mobile/api.php`,
@@ -77,12 +84,18 @@ class ShowImage extends Component {
                 })
             ).then(resp => {
                 // on success
-                // the image path you can use it directly with Image component
                 let imagePath = resp.path();
-                this.setState({
-                    imagePath: imagePath,
+                Image.getSize(`file://${imagePath}`, (width, height) => {
+                    //on success
+                    this.setState({
+                        imagePath: imagePath,
+                        imageWidth: width,
+                        imageHeight: height,
+                    });
+                }, err => {
+                    //on error
+                    console.log('Error getting image width and height: ' + err);
                 });
-                return imagePath;
             }, resp => {
                 // on error
                 console.log('Error getting image path with RNFetchBlob');
@@ -107,7 +120,27 @@ class ShowImage extends Component {
             };
             //TODO test me
         } else {
-            source = (this.state.imagePath) ? { uri: `file://${this.state.imagePath}` } : require('../../assets/images/loading.gif');
+            if (this.state.imagePath) {
+                source = {
+                    url: '',
+                    width: this.state.imageWidth,
+                    height: this.state.imageHeight,
+                    props: {
+                        source: {
+                            uri: `file://${this.state.imagePath}`
+                        }
+                    }
+                };
+            } else {
+                source = {
+                    url: '',
+                    width: this.state.loadWidth,
+                    height: this.state.loadHeight,
+                    props: {
+                        source: require('../../assets/images/loading.gif')
+                    }
+                };
+            }
         }
 
         return (
@@ -123,11 +156,9 @@ class ShowImage extends Component {
                     transparent={true}
                     onRequestClose={() => this.setState({ modalEnabled: false })}
                 >
-                    <Gallery
-                        resizeMode='contain'
-                        style={{ flex: 1, backgroundColor: 'white' }}
-                        images={[
-                            { source: source },
+                    <ImageViewer
+                        imageUrls={[
+                            source,
                         ]}
                     />
                     <View
@@ -160,3 +191,4 @@ const styles = StyleSheet.create({
 });
 
 export default connect(null, { processFile })(ShowImage);
+
