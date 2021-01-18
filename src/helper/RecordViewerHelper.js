@@ -305,7 +305,7 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
                         <Field
                             key={k+1}
                             label={'Click to show image'}
-                            value={div}
+                            modal={div}
                             uiType={1}
                             recordId={viewerInstance.props.recordId}
                         />

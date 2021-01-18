@@ -47,11 +47,11 @@ export function processFile(item) {
 class ShowImage extends Component {
     constructor(props) {
         super(props);
-        const {load_width, load_height} = Image.resolveAssetSource(require('../../assets/images/loading.gif'));
+        const { width, height } = Image.resolveAssetSource(require('../../assets/images/loading.gif'));
         this.state = {
             modalEnabled: false,
-            loadWidth: load_width,
-            loadHeight: load_height,
+            loadWidth: width,
+            loadHeight: height,
             downloadData: this.props.downloadData,
             imagePath: null,
             imageWidth: 200,

@@ -61,14 +61,18 @@ export default class Field extends Component {
                     </Text>
                 </View>
                 <View style={{ flex: 1.4, paddingLeft: 10, alignItems: 'flex-start' }}>
-                    <Text
-                        onPress={() => this.onPressAction()}
-                        style={this.props.isLocation ? fontStyles.fieldValueLocation : fontStyles.fieldValue}
-                        numberOfLines={2}
-                        selectable={true}
-                    >
-                        {this.props.value}
-                    </Text>
+                    {
+                        (this.props.modal)
+                            ? this.props.modal
+                            : <Text
+                                onPress={() => this.onPressAction()}
+                                style={this.props.isLocation ? fontStyles.fieldValueLocation : fontStyles.fieldValue}
+                                numberOfLines={2}
+                                selectable={true}
+                            >
+                                {this.props.value}
+                            </Text>
+                    }
                 </View>
             </View>
         );
