@@ -43,11 +43,11 @@ class Lister extends Component {
     }
 
     onEndReached() {
-        //if (!this.onEndReachedCalledDuringMomentum) {
-        if (this.state.nextPage) {
-            this.setState({ pageToTake: this.state.pageToTake + 1 }, () => this.props.dispatch(getNextPageRecord(this)));
+        if (!this.onEndReachedCalledDuringMomentum) {
+            if (this.state.nextPage) {
+                this.setState({ pageToTake: this.state.pageToTake + 1 }, () => this.props.dispatch(getNextPageRecord(this)));
+            }
         }
-        //}
     }
 
     // onAddButtonPress() {

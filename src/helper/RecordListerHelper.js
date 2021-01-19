@@ -1019,7 +1019,8 @@ export const recordListRendererHelper = (listerInstance) => {
                                 item.email
                             ]}
                             onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                        />}
+                        />
+                    }
                 />
             );
         }

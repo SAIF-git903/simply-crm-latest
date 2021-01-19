@@ -17,7 +17,11 @@ export const getDatafromNet = async (param, dispatch) => {
         },
         body: param
     });
+    console.log('getDatafromNet');
+    console.log(`${loginDetails.url}/modules/Mobile/api.php`);
+    console.log(param);
     const responseJson = await response.json();
+    console.log(responseJson);
     if (!responseJson.success) {
         if (responseJson.error.code === 1501 || responseJson.error.code === '1501') {
             //session expired

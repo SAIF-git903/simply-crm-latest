@@ -12,7 +12,7 @@ import {
 export const searchRecordHelper = async (searchInstance, dispatch) => {
     try {
         const data = [];
-        let pageToTake = 0;
+        let pageToTake = 1;
         const mySearchNo = searchInstance.state.searchNo;
         let nextPage = true;
         let recordsSearched = 0;
@@ -60,6 +60,7 @@ const getDataFromInternet = async (searchInstance, pageToTake, data, recordsSear
         const param = new FormData();
         param.append('_operation', 'listModuleRecords');
         param.append('module', searchInstance.state.moduleName);
+        param.append('page', pageToTake);
         const responseJson = await getDatafromNet(param, dispatch);
         try {
             if (responseJson.success) {
@@ -852,7 +853,8 @@ const getRecordDataFromInternet = async (moduleName, recordId, searchText, dispa
 
                 //debugger;
                 if (leftValue.includes(rightValue)) {
-
+                    //return true if record field contain search string
+                    //else return undefined
                     return true;
                 }
             }
