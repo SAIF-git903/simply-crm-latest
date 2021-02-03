@@ -692,8 +692,7 @@ const saveInvoiceDetails = async (records, data, vtigerSeven, responseJson, addE
 
 const saveData = async (data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh, moduleName) => {
     try {
-        let offlineData = {};
-
+        let offlineData;
         let statusText;
 
         if (data.length > 0) {

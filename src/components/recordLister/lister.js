@@ -12,7 +12,6 @@ class Lister extends Component {
         this.onEndReachedCalledDuringMomentum = true;
         this.state = {
             searching: false,
-            searchText: null,
             loading: true,
             isFlatListRefreshing: false,
             data: [],
@@ -25,12 +24,12 @@ class Lister extends Component {
         };
     }
 
-    UNSAFE_componentWillMount() {
+    componentDidMount() {
         this.getRecords();
     }
 
     UNSAFE_componentWillReceiveProps(newprops) {
-        this.setState({ loading: true, searching: false, searchText: null, searchLabel: null })
+        this.setState({ loading: true, searching: false, searchLabel: null });
         this.props = newprops;
         if (this.props.saved !== 'not_saved') {
             this.getRecords();
@@ -56,16 +55,33 @@ class Lister extends Component {
     // }
 
     getRecords() {
-        this.setState({ loading: true, data: [], selectedIndex: -1, statusText: 'Fetching Record', statusTextColor: '#000000' });
-        this.props.dispatch(fetchRecord(this, this.props.moduleName));
-        if (this.props.saved === 'saved') {
-            this.refreshData();
-        }
+        this.setState({
+            searchLabel: null,
+            searching: false,
+            loading: true,
+            data: [],
+            selectedIndex: -1,
+            statusText: 'Fetching Record',
+            statusTextColor: '#000000'
+        }, () => {
+            this.props.dispatch(fetchRecord(this, this.props.moduleName));
+            if (this.props.saved === 'saved') {
+                this.refreshData();
+            }
+        });
     }
 
     refreshData() {
-        this.setState({ isFlatListRefreshing: true, selectedIndex: -1, statusText: 'Refreshing', statusTextColor: '#000000' });
-        this.props.dispatch(refreshRecord(this));
+        this.setState({
+            searchLabel: null,
+            searching: false,
+            isFlatListRefreshing: true,
+            selectedIndex: -1,
+            statusText: 'Refreshing',
+            Color: '#000000'
+        }, () => {
+            this.props.dispatch(refreshRecord(this));
+        });
     }
 
     renderFooter() {
@@ -111,16 +127,16 @@ class Lister extends Component {
                     paddingHorizontal: 40
                 }}>
                     <SearchBox
+                        resetSearch={this.state.isFlatListRefreshing}
                         disabled={this.state.searching}
                         moduleName={this.props.moduleName}
-                        resetSearch={() => { }}
                         onDataReceived={({ data, searchText }) => {
                             if (data.length !== 0) {
-                                let searchLabel = searchText.length !== 0 ? `Displaying ${data.length} result(s) for "${searchText}"` : null
-                                this.setState({ data, searchText, searching: true, searchLabel })
+                                let searchLabel = searchText.length !== 0 ? `Displaying ${data.length} result(s) for "${searchText}"` : null;
+                                this.setState({ data, searching: true, searchLabel });
                             } else {
-                                let searchLabel = `No results found for "${searchText}"`
-                                this.setState({ searching: true, searchText: null, data: [], searchLabel })
+                                let searchLabel = `No results found for "${searchText}"`;
+                                this.setState({ searching: true, data: [], searchLabel });
                             }
                         }}
                         didFinishSearch={() => this.setState({ searching: false })}
@@ -135,37 +151,31 @@ class Lister extends Component {
                             this.renderSearching()
                             :
                             <View style={{ flex: 1 }}>
-                                {this.state.searchLabel ?
-                                    <View style={{ paddingTop: 10, alignItems: 'center' }}>
-                                        <Text style={fontStyles.fieldLabel}>{this.state.searchLabel}</Text>
-                                        <Text
-                                            onPress={() => {
-                                                this.setState({ searchLabel: null, searching: false, loading: true, searchText: null }, () => {
-                                                    setTimeout(() => {
-                                                        this.getRecords()
-                                                    }, 500);
-                                                })
-                                            }}
-                                            style={[fontStyles.fieldLabel, { fontSize: 14, paddingTop: 5, color: '#007aff' }]}
-                                        >
-                                            Go Back
+                                {
+                                    this.state.searchLabel
+                                        ?
+                                        <View style={{ paddingTop: 10, alignItems: 'center' }}>
+                                            <Text style={fontStyles.fieldLabel}>
+                                                {this.state.searchLabel}
                                             </Text>
-
-                                    </View>
-                                    :
-                                    null
+                                            <Text
+                                                onPress={() => {
+                                                    this.getRecords();
+                                                }}
+                                                style={[fontStyles.fieldLabel, { fontSize: 14, paddingTop: 5, color: '#007aff' }]}
+                                            >
+                                                Go Back
+                                            </Text>
+                                        </View>
+                                        :
+                                        null
                                 }
-
                                 {recordListRendererHelper(this)}
                             </View>
                     }
                 </View>
             </View>
         );
-    }
-
-    renderSearch() {
-        return <Text>Search</Text>
     }
 
     render() {

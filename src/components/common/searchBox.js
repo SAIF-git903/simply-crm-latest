@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TextInput, Platform } from 'react-native';
+import { View, StyleSheet, TextInput, Platform } from 'react-native';
 import { fontStyles } from '../../styles/common';
 import IconButton from '../../components/IconButton';
 import { searchRecord } from '../../actions';
@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 class SearchBox extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
             searchText: '',
             data: [],
@@ -17,14 +16,29 @@ class SearchBox extends Component {
         }
     }
 
-    componentWillUpdate(nextProps, nextState) {
-        if (this.state.data !== nextState.data) {
-            this.props.onDataReceived({ data: nextState.data, searchText: nextState.searchText, moduleName: this.state.moduleName });
+    componentDidUpdate(prevProps, prevState) {
+        //to reset search text on refresh lister page
+        if (
+            prevProps.resetSearch === false
+            && this.props.resetSearch === true
+        ) {
+            this.setState({
+                searchText: ''
+            });
+        }
+        //to update search label on lister
+        if (
+            this.state.data !== prevState.data
+        ) {
+            this.props.onDataReceived({
+                data: this.state.data,
+                searchText: this.state.searchText
+            });
         }
     }
 
     onChangeText(text) {
-        this.setState({ searchText: text })
+        this.setState({ searchText: text });
     }
 
     onSubmit() {
