@@ -53,7 +53,7 @@ const renderEmpty = () => {
     </View>
 }
 
-export const fetchRecordHelper = async (listerInstance, dispatch, moduleName) => {
+export const fetchRecordHelper = async (listerInstance, dispatch, refresh, moduleName) => {
     //First checking if any data in offline.
     try {
         // const offlineData = JSON.parse(await AsyncStorage.getItem(listerInstance.props.moduleName));
@@ -80,56 +80,11 @@ export const fetchRecordHelper = async (listerInstance, dispatch, moduleName) =>
         // } else {
 
         //Offline data is not available
-        await getDataFromInternet(listerInstance, false, {}, dispatch, moduleName);
+        await getDataFromInternet(listerInstance, false, {}, dispatch, refresh, moduleName);
         // }
     } catch (error) {
         //Offline data is not available
-        await getDataFromInternet(listerInstance, false, {}, dispatch);
-    }
-};
-
-export const refreshRecordHelper = async (listerInstance, dispatch) => {
-    try {
-        const { auth } = store.getState();
-        const loginDetails = auth.loginDetails;
-
-        if (loginDetails.vtigerVersion < 7) {
-            let param = new FormData();
-            appendParamFor(listerInstance.props.moduleName, param);
-            const responseJson = await getDatafromNet(param, dispatch);
-            if (responseJson.success) {
-                await getAndSaveDataVtiger(responseJson, listerInstance, false, true, false);
-            } else {
-                //Show error to user that something went wrong.
-                listerInstance.setState({
-                    isFlatListRefreshing: false,
-                    statusText: 'Something went wrong',
-                    statusTextColor: 'red'
-                });
-            }
-        } else {
-            let param = new FormData();
-            param.append('_operation', 'listModuleRecords');
-            param.append('module', listerInstance.props.moduleName);
-            const responseJson = await getDatafromNet(param, dispatch);
-            if (responseJson.success) {
-                await getAndSaveDataVtiger(responseJson, listerInstance, true, true, false);
-            } else {
-                //Show error to user that something went wrong.
-                listerInstance.setState({
-                    isFlatListRefreshing: false,
-                    statusText: 'Something went wrong',
-                    statusTextColor: 'red'
-                });
-            }
-        }
-    } catch (error) {
-        //Show error to user that something went wrong.
-        listerInstance.setState({
-            isFlatListRefreshing: false,
-            statusText: 'Looks like no network connection',
-            statusTextColor: 'red'
-        });
+        await getDataFromInternet(listerInstance, false, {}, dispatch, refresh);
     }
 };
 
@@ -137,39 +92,26 @@ export const getNextPageHelper = async (listerInstance, dispatch) => {
     try {
         const { auth } = store.getState();
         const loginDetails = auth.loginDetails;
-
-        if (loginDetails.vtigerVersion < 7) {
-            let param = new FormData();
+//TODO getNextPage unclear when it works
+        const vtigerSeven = loginDetails.vtigerVersion > 6;
+        let param = new FormData();
+        if (!vtigerSeven) {
             appendParamFor(listerInstance.props.moduleName, param);
-            param.append('page', listerInstance.state.pageToTake);
-            const responseJson = await getDatafromNet(param, dispatch);
-            if (responseJson.success) {
-                await getAndSaveDataVtiger(responseJson, listerInstance, false, false, true, listerInstance.props.moduleName);
-            } else {
-                //Show error to user that something went wrong.
-                listerInstance.setState({
-                    isFlatListRefreshing: false,
-                    statusText: 'Something went wrong',
-                    statusTextColor: 'red'
-                });
-            }
         } else {
-            let param = new FormData();
-            // appendParamFor(listerInstance.props.moduleName, param);
             param.append('_operation', 'listModuleRecords');
             param.append('module', listerInstance.props.moduleName);
-            param.append('page', listerInstance.state.pageToTake);
-            const responseJson = await getDatafromNet(param, dispatch);
-            if (responseJson.success) {
-                await getAndSaveDataVtiger(responseJson, listerInstance, true, false, true, listerInstance.props.moduleName);
-            } else {
-                //Show error to user that something went wrong.
-                listerInstance.setState({
-                    isFlatListRefreshing: false,
-                    statusText: 'Something went wrong',
-                    statusTextColor: 'red'
-                });
-            }
+        }
+        param.append('page', listerInstance.state.pageToTake);
+        const responseJson = await getDatafromNet(param, dispatch);
+        if (responseJson.success) {
+            await getAndSaveDataVtiger(responseJson, listerInstance, vtigerSeven, false, true, listerInstance.props.moduleName);
+        } else {
+            //Show error to user that something went wrong.
+            listerInstance.setState({
+                isFlatListRefreshing: false,
+                statusText: 'Something went wrong',
+                statusTextColor: 'red'
+            });
         }
     } catch (error) {
         //Show error to user that something went wrong.
@@ -237,93 +179,59 @@ export const viewRecord = async (recordId, listerInstance, dispatch) => {
     }
 };
 
-const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData, dispatch, moduleName) => {
+const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData, dispatch, refresh, moduleName) => {
     //Getting data from internet
     try {
         const { auth } = store.getState();
         const loginDetails = auth.loginDetails;
 
-        if (loginDetails.vtigerVersion < 7) {
-            let param = new FormData();
+        const vtigerSeven = loginDetails.vtigerVersion > 6;
+        let param = new FormData();
+        if (!vtigerSeven) {
             appendParamFor(listerInstance.props.moduleName, param);
-            //console.log(listerInstance.state.pageToTake);
-            param.append('page', listerInstance.state.pageToTake);
-            const responseJson = await getDatafromNet(param, dispatch);
-            // console.log(responseJson);
-            if (responseJson.success) {
-                await getAndSaveDataVtiger(responseJson, listerInstance, false, false, false, moduleName);
-            } else {
-                if (!offlineAvailable) {
-                    //Show error to user that something went wrong.
-                    listerInstance.setState({
-                        loading: false,
-                        statusText: 'Something went wrong',
-                        statusTextColor: 'red'
-                    });
-                } else {
-                    //Show offline data and notify user
-                    listerInstance.setState({
-                        loading: false,
-                        statusText: 'Showing Offline data - No internet Pull to refresh',
-                        statusTextColor: '#000000',
-                        data: offlineData.records,
-                        nextPage: offlineData.nextPage,
-                        pageToTake: offlineData.pageToTake
-                    });
-                }
-            }
         } else {
-            let param = new FormData();
-            // if (listerInstance.props.moduleName === 'Invoice') {
-            //     appendParamFor(listerInstance.props.moduleName, param);
-            // } else {
             param.append('_operation', 'listModuleRecords');
             param.append('module', listerInstance.props.moduleName);
-            // }
-
-            const responseJson = await getDatafromNet(param, dispatch);
-            if (responseJson.success) {
-                await getAndSaveDataVtiger(responseJson, listerInstance, true, false, false, moduleName);
+        }
+        param.append('page', listerInstance.state.pageToTake);
+        const responseJson = await getDatafromNet(param, dispatch);
+        if (responseJson.success) {
+            await getAndSaveDataVtiger(responseJson, listerInstance, vtigerSeven, refresh, false, moduleName);
+        } else {
+            let updState = {
+                loading: false,
+            };
+            if (!offlineAvailable) {
+                //Show error to user that something went wrong.
+                updState.statusText = 'Something went wrong';
+                updState.statusTextColor = 'red';
             } else {
-                if (!offlineAvailable) {
-                    //Show error to user that something went wrong.
-                    listerInstance.setState({
-                        loading: false,
-                        statusText: 'Something went wrong',
-                        statusTextColor: 'red'
-                    });
-                } else {
-                    //Show offline data and notify user
-                    listerInstance.setState({
-                        loading: false,
-                        statusText: 'Showing Offline data - No internet Pull to refresh',
-                        statusTextColor: '#000000',
-                        data: offlineData.records,
-                        nextPage: offlineData.nextPage,
-                        pageToTake: offlineData.pageToTake
-                    });
-                }
+                //Show offline data and notify user
+                updState.statusText = 'Showing Offline data - No internet Pull to refresh';
+                updState.statusTextColor = '#000000';
+                updState.data = offlineData.records;
+                updState.nextPage = offlineData.nextPage;
+                updState.pageToTake = offlineData.pageToTake;
             }
+            listerInstance.setState(updState);
         }
     } catch (error) {
+        let updState = {
+            loading: false,
+        };
         if (!offlineAvailable) {
             //Show error to user that something went wrong.
-            listerInstance.setState({
-                loading: false,
-                statusText: 'Looks like no network connection',
-                statusTextColor: 'red'
-            });
+            updState.statusText = 'Looks like no network connection';
+            updState.statusTextColor = 'red';
         } else {
             //Show offline data and notify user
-            listerInstance.setState({
-                loading: false,
-                statusText: 'Showing Offline data - No internet Pull to refresh',
-                statusTextColor: '#000000',
-                data: offlineData.records,
-                nextPage: offlineData.nextPage,
-                pageToTake: offlineData.pageToTake
-            });
+            updState.statusText = 'Showing Offline data - No internet Pull to refresh';
+            updState.statusTextColor = '#000000';
+            updState.data = offlineData.records;
+            updState.nextPage = offlineData.nextPage;
+            updState.pageToTake = offlineData.pageToTake;
         }
+        listerInstance.setState(updState);
     }
 };
 
@@ -341,296 +249,206 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance, vtigerSeven, r
         records = [];
     }
 
-    switch (listerInstance.props.moduleName) {
-        case CAMPAIGNS: {
-            for (const record of records) {
-                const modifiedRecord = {
-                    lable: record.campaignname,
-                    id: `${listerInstance.props.moduleId}x${record.id}`
-                };
-                data.push(modifiedRecord);
-            }
-            break;
+    if (listerInstance.props.moduleName === INVOICE) {
+        //TODO add await ??
+        saveInvoiceDetails(records, data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh, moduleName);
+    } else {
+        for (const record of records) {
+            data.push(getListerModifiedRecord(listerInstance, responseJson, record));
         }
-        case VENDORS: {
-            for (const record of records) {
-                const modifiedRecord = {
-                    vendorName: record.vendorname,
-                    vendorEmail: record.email,
-                    vendorPhone: record.phone,
-                    vendorWebsite: record.website,
-                    id: `${listerInstance.props.moduleId}x${record.id}`
-                };
-                data.push(modifiedRecord);
-            }
-            break;
-        }
-        case FAQ: {
-            for (const record of records) {
-                const modifiedRecord = {
-                    question: record.question,
-                    id: `${listerInstance.props.moduleId}x${record.id}`
-                };
-                data.push(modifiedRecord);
-            }
-            break;
-        }
-        case QUOTES: {
-            for (const record of records) {
-                const modifiedRecord = {
-                    quoteLable: record.subject,
-                    total: record.hdnGrandTotal,
-                    quoteStage: record.quotestage,
-                    id: `${listerInstance.props.moduleId}x${record.id}`
-                };
-                data.push(modifiedRecord);
-            }
-            break;
-        }
-        case PURCHASEORDER: {
-            for (const record of records) {
-                const modifiedRecord = {
-                    poLable: record.subject,
-                    status: record.postatus,
-                    id: `${listerInstance.props.moduleId}x${record.id}`
-                };
-                data.push(modifiedRecord);
-            }
-            break;
-        }
-        case SALESORDER: {
-            for (const record of records) {
-                const modifiedRecord = {
-                    soLable: record.subject,
-                    status: record.sostatus,
-                    id: `${listerInstance.props.moduleId}x${record.id}`
-                };
-                data.push(modifiedRecord);
-            }
-            break;
-        }
-        case INVOICE: {
-            saveInvoiceDetails(records, data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh, moduleName);
-            break;
-        }
-        case PRICEBOOKS: {
-            for (const record of records) {
-                const modifiedRecord = {
-                    bookLable: record.bookname,
-                    id: `${listerInstance.props.moduleId}x${record.id}`
-                };
-                data.push(modifiedRecord);
-            }
-            break;
-        }
-        case CALENDAR: {
-            for (const record of records) {
-                const modifiedRecord = {
-                    eventLable: record.subject,
-                    id: `${record.type === 'Task' ? '9' : '18'}x${record.id}`
-                };
-                data.push(modifiedRecord);
-            }
-            break;
-        }
-        case LEADS: {
-            for (const record of records) {
-                const modifiedRecord = {
-                    contactsLable: record.firstname ? `${record.firstname} ${record.lastname}` : record.lastname,
-                    phone: record.phone,
-                    email: record.email,
-                    id: `${listerInstance.props.moduleId}x${record.id}`
-                };
-                data.push(modifiedRecord);
-            }
-            break;
-        }
-        case ACCOUNTS: {
-            for (const record of records) {
-                const modifiedRecord = {
-                    accountsLable: record.accountname,
-                    website: record.website,
-                    phone: record.phone,
-                    email: record.email1,
-                    id: `${listerInstance.props.moduleId}x${record.id}`
-                };
-                data.push(modifiedRecord);
-            }
-            break;
-        }
-        case CONTACTS: {
-            for (const record of records) {
-                const modifiedRecord = {
-                    contactsLable: record.firstname ? `${record.firstname} ${record.lastname}` : record.lastname,
-                    phone: record.phone,
-                    email: record.email,
-                    id: `${listerInstance.props.moduleId}x${record.id}`
-                };
-                data.push(modifiedRecord);
-            }
-            break;
-        }
-        case OPPORTUNITIES: {
-            for (const record of records) {
-                const modifiedRecord = {
-                    potentialLable: record.potentialname,
-                    amount: Number(record.amount).toFixed(2),
-                    stage: record.sales_stage,
-                    id: `${listerInstance.props.moduleId}x${record.id}`
-                };
-                data.push(modifiedRecord);
-            }
-            break;
-        }
-        case PRODUCTS: {
-            for (const record of records) {
-                const modifiedRecord = {
-                    productLable: record.productname,
-                    no: record.product_no,
-                    productcategory: record.productcategory,
-                    quantity: Number(record.qtyinstock).toFixed(2),
-                    id: `${listerInstance.props.moduleId}x${record.id}`
-                };
-                data.push(modifiedRecord);
-            }
-            break;
-        }
-        case DOCUMENTS: {
-            for (const record of records) {
-                const modifiedRecord = {
-                    documentLable: record.notes_title,
-                    id: `${listerInstance.props.moduleId}x${record.id}`
-                };
-                data.push(modifiedRecord);
-            }
-            break;
-        }
-        case TICKETS: {
-            for (const record of records) {
-                const modifiedRecord = {
-                    ticketLable: record.ticket_title,
-                    priority: record.ticketpriorities,
-                    id: `${listerInstance.props.moduleId}x${record.id}`
-                };
-                data.push(modifiedRecord);
-            }
-            break;
-        }
-        case PBXMANAGER: {
-            for (const record of records) {
-                const modifiedRecord = {
-                    number: record.customernumber,
-                    id: `${listerInstance.props.moduleId}x${record.id}`
-                };
-                data.push(modifiedRecord);
-            }
-            break;
-        }
-        case SERVICECONTRACTS: {
-            for (const record of records) {
-                const modifiedRecord = {
-                    scLable: record.subject,
-                    id: `${listerInstance.props.moduleId}x${record.id}`
-                };
-                data.push(modifiedRecord);
-            }
-            break;
-        }
-        case SERVICES: {
-            for (const record of records) {
-                const modifiedRecord = {
-                    serviceLable: record.servicename,
-                    id: `${listerInstance.props.moduleId}x${record.id}`
-                };
-                data.push(modifiedRecord);
-            }
-            break;
-        }
-        case ASSETS: {
-            for (const record of records) {
-                const modifiedRecord = {
-                    assetLable: record.assetname,
-                    id: `${listerInstance.props.moduleId}x${record.id}`
-                };
-                data.push(modifiedRecord);
-            }
-            break;
-        }
-        case SMS_NOTIFIER: {
-            for (const record of records) {
-                const modifiedRecord = {
-                    message: record.message,
-                    id: `${listerInstance.props.moduleId}x${record.id}`
-                };
-                data.push(modifiedRecord);
-            }
-            break;
-        }
-        case PROJECT_MILESTONE: {
-            for (const record of records) {
-                const modifiedRecord = {
-                    pmLable: record.projectmilestonename,
-                    id: `${listerInstance.props.moduleId}x${record.id}`
-                };
-                data.push(modifiedRecord);
-            }
-            break;
-        }
-        case PROJECT_TASK: {
-            for (const record of records) {
-                const modifiedRecord = {
-                    ptLable: record.projecttaskname,
-                    id: `${listerInstance.props.moduleId}x${record.id}`
-                };
-                data.push(modifiedRecord);
-            }
-            break;
-        }
-        case MODULE_PROJECT: {
-            for (const record of records) {
-                const modifiedRecord = {
-                    projectLable: record.projectname,
-                    id: `${listerInstance.props.moduleId}x${record.id}`
-                };
-                data.push(modifiedRecord);
-            }
-            break;
-        }
-        case COMMENTS: {
-            for (const record of records) {
-                const modifiedRecord = {
-                    comment: record.commentcontent,
-                    id: `${listerInstance.props.moduleId}x${record.id}`
-                };
-                data.push(modifiedRecord);
-            }
-            break;
-        }
-        case CURRENCY: {
-            for (const record of records) {
-                const modifiedRecord = {
-                    currency_name: record.currency_name,
-                    id: `${listerInstance.props.moduleId}x${record.id}`
-                };
-                data.push(modifiedRecord);
-            }
-            break;
-        }
-        default: {
-            for (const record of records) {
-                const modifiedRecord = {
-                    lable: (vtigerSeven) ?
-                        record[responseJson.result.headers[0].name] : record.label,
-                    id: `${listerInstance.props.moduleId}x${record.id}`
-                };
-                data.push(modifiedRecord);
-            }
-        }
-    }
-    if (listerInstance.props.moduleName !== 'Invoice') {
+        //TODO add await ??
         saveData(data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh, moduleName);
     }
 };
+
+function getListerModifiedRecord(listerInstance, responseJson, record) {
+    let modifiedRecord;
+    switch (listerInstance.props.moduleName) {
+        case CAMPAIGNS: {
+            modifiedRecord = {
+                lable: record.campaignname,
+            };
+            break;
+        }
+        case VENDORS: {
+            modifiedRecord = {
+                vendorName: record.vendorname,
+                vendorEmail: record.email,
+                vendorPhone: record.phone,
+                vendorWebsite: record.website,
+            };
+            break;
+        }
+        case FAQ: {
+            modifiedRecord = {
+                question: record.question,
+            };
+            break;
+        }
+        case QUOTES: {
+            modifiedRecord = {
+                quoteLable: record.subject,
+                total: record.hdnGrandTotal,
+                quoteStage: record.quotestage,
+            };
+            break;
+        }
+        case PURCHASEORDER: {
+            modifiedRecord = {
+                poLable: record.subject,
+                status: record.postatus,
+            };
+            break;
+        }
+        case SALESORDER: {
+            modifiedRecord = {
+                soLable: record.subject,
+                status: record.sostatus,
+            };
+            break;
+        }
+        case PRICEBOOKS: {
+            modifiedRecord = {
+                bookLable: record.bookname,
+            };
+            break;
+        }
+        case CALENDAR: {
+            modifiedRecord = {
+                eventLable: record.subject,
+                id: `${record.type === 'Task' ? '9' : '18'}x${record.id}`
+            };
+            break;
+        }
+        case LEADS: {
+            modifiedRecord = {
+                contactsLable: record.firstname ? `${record.firstname} ${record.lastname}` : record.lastname,
+                phone: record.phone,
+                email: record.email,
+            };
+            break;
+        }
+        case ACCOUNTS: {
+            modifiedRecord = {
+                accountsLable: record.accountname,
+                website: record.website,
+                phone: record.phone,
+                email: record.email1,
+            };
+            break;
+        }
+        case CONTACTS: {
+            modifiedRecord = {
+                contactsLable: record.firstname ? `${record.firstname} ${record.lastname}` : record.lastname,
+                phone: record.phone,
+                email: record.email,
+            };
+            break;
+        }
+        case OPPORTUNITIES: {
+            modifiedRecord = {
+                potentialLable: record.potentialname,
+                amount: Number(record.amount).toFixed(2),
+                stage: record.sales_stage,
+            };
+            break;
+        }
+        case PRODUCTS: {
+            modifiedRecord = {
+                productLable: record.productname,
+                no: record.product_no,
+                productcategory: record.productcategory,
+                quantity: Number(record.qtyinstock).toFixed(2),
+            };
+            break;
+        }
+        case DOCUMENTS: {
+            modifiedRecord = {
+                documentLable: record.notes_title,
+            };
+            break;
+        }
+        case TICKETS: {
+            modifiedRecord = {
+                ticketLable: record.ticket_title,
+                priority: record.ticketpriorities,
+            };
+            break;
+        }
+        case PBXMANAGER: {
+            modifiedRecord = {
+                number: record.customernumber,
+            };
+            break;
+        }
+        case SERVICECONTRACTS: {
+            modifiedRecord = {
+                scLable: record.subject,
+            };
+            break;
+        }
+        case SERVICES: {
+            modifiedRecord = {
+                serviceLable: record.servicename,
+            };
+            break;
+        }
+        case ASSETS: {
+            modifiedRecord = {
+                assetLable: record.assetname,
+            };
+            break;
+        }
+        case SMS_NOTIFIER: {
+            modifiedRecord = {
+                message: record.message,
+            };
+            break;
+        }
+        case PROJECT_MILESTONE: {
+            modifiedRecord = {
+                pmLable: record.projectmilestonename,
+            };
+            break;
+        }
+        case PROJECT_TASK: {
+            modifiedRecord = {
+                ptLable: record.projecttaskname,
+            };
+            break;
+        }
+        case MODULE_PROJECT: {
+            modifiedRecord = {
+                projectLable: record.projectname,
+            };
+            break;
+        }
+        case COMMENTS: {
+            modifiedRecord = {
+                comment: record.commentcontent,
+            };
+            break;
+        }
+        case CURRENCY: {
+            modifiedRecord = {
+                currency_name: record.currency_name,
+            };
+            break;
+        }
+        default: {
+            modifiedRecord = {
+                lable: (vtigerSeven)
+                    ? record[responseJson.result.headers[0].name]
+                    : record.label,
+            };
+        }
+    }
+    const a = [CALENDAR];
+    if (!a.includes(listerInstance.props.moduleName)) {
+        modifiedRecord.id = `${listerInstance.props.moduleId}x${record.id}`;
+    }
+    return modifiedRecord;
+}
 
 const saveInvoiceDetails = async (records, data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh, moduleName) => {
     try {
@@ -906,17 +724,18 @@ export const appendParamFor = (moduleName, param) => {
     }
 };
 
-export const deleteRecordHelper = async (listerInstance, recordId,
-    index, callback, dispatch) => {
+export const deleteRecordHelper = async (listerInstance, recordId, index, callback, dispatch) => {
     const { auth } = store.getState();
     const loginDetails = auth.loginDetails;
 
     const recordIdClean = recordId.toString().replace(/.*(?=x)+x/, '');
 
     try {
+        const vtigerSeven = loginDetails.vtigerVersion > 6;
         let param = new FormData();
+        //TODO error: update React state on Delete record. I can fix it?
         param.append('_operation', 'deleteRecords');
-        if (loginDetails.vtigerVersion < 7) {
+        if (!vtigerSeven) {
             param.append('record', recordId);
         } else {
             param.append('module', listerInstance.props.moduleName);

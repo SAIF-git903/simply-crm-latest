@@ -8,7 +8,7 @@ import {
 import { RECORD_ADDER, HOME_MAIN, RECORD_VIEWER } from '../variables/constants';
 import {
   userUrlHelper, loginHelper, renderDrawerView, fetchRecordHelper, fetchRefRecordHelper, viewRecord,
-  viewRecordRenderer, deleteRecordHelper, refreshRecordHelper, refreshRefRecordHelper, searchRecordHelper,
+  viewRecordRenderer, deleteRecordHelper, refreshRefRecordHelper, searchRecordHelper,
   refreshRecordDataHelper, getNextPageHelper, getNextRefPageHelper, fetchWidgetRecordHelper, refreshRecordWidgetHelper,
   getAddressDetails
 } from '../helper';
@@ -58,15 +58,15 @@ export const getDrawerViews = (loginDetails, drawerInstance) => {
 };
 
 export const fetchRecord = (recordListerInstance, moduleName) => (dispatch) => {
-  fetchRecordHelper(recordListerInstance, dispatch, moduleName);
+  fetchRecordHelper(recordListerInstance, dispatch, false, moduleName);
 };
 
 export const fetchRefRecord = (recordListerInstance) => (dispatch) => {
   fetchRefRecordHelper(recordListerInstance, dispatch);
 };
 
-export const refreshRecord = (recordListerInstance) => (dispatch) => {
-  refreshRecordHelper(recordListerInstance, dispatch);
+export const refreshRecord = (recordListerInstance, moduleName) => (dispatch) => {
+  fetchRecordHelper(recordListerInstance, dispatch, true, moduleName);
 };
 
 export const refreshRefRecord = (recordListerInstance) => (dispatch) => {

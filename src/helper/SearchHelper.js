@@ -30,40 +30,32 @@ const getDataFromInternet = async (searchInstance, pageToTake, data, mySearchNo,
     const { auth } = store.getState();
     const loginDetails = auth.loginDetails;
 
-    if (loginDetails.vtigerVersion < 7) {
-        const param = new FormData();
+    const param = new FormData();
+    const vtigerSeven = loginDetails.vtigerVersion > 6;
+    if (!vtigerSeven) {
         appendParamFor(searchInstance.state.moduleName, param);
-        param.append('page', pageToTake);
-        param.append('search_text', searchInstance.state.searchText);
-        const responseJson = await getDatafromNet(param, dispatch);
-        if (responseJson.success) {
-            return await getAndSaveDataVtiger(responseJson, searchInstance, data, mySearchNo, dispatch, false);
-        } else {
-            //Say unknown error occured
-            //Send this error to smackcoders
-            throw new Error(JSON.stringify(responseJson));
-        }
     } else {
-        const param = new FormData();
         param.append('_operation', 'listModuleRecords');
         param.append('module', searchInstance.state.moduleName);
-        param.append('page', pageToTake);
-        param.append('search_text', searchInstance.state.searchText);
-        const responseJson = await getDatafromNet(param, dispatch);
-        try {
-            if (responseJson.success) {
-                return await getAndSaveDataVtiger(responseJson, searchInstance, data, mySearchNo, dispatch, true);
-            }
-        } catch (e) {
-            if (searchInstance.didFinishSearch()) {
-                searchInstance.didFinishSearch();
-            }
-        }
-        //Say unknown error occured
-        //Send this error to smackcoders
-        console.log('ERROR');
-        throw new Error(JSON.stringify(responseJson));
     }
+    param.append('page', pageToTake);
+    if (searchInstance.state.searchText !== '') {
+        param.append('search_text', searchInstance.state.searchText);
+    }
+    const responseJson = await getDatafromNet(param, dispatch);
+    try {
+        if (responseJson.success) {
+            return await getAndSaveDataVtiger(responseJson, searchInstance, data, mySearchNo, dispatch, vtigerSeven);
+        }
+    } catch (e) {
+        if (searchInstance.didFinishSearch()) {
+            searchInstance.didFinishSearch();
+        }
+    }
+    //Say unknown error occured
+    //Send this error to smackcoders
+    console.log('ERROR');
+    throw new Error(JSON.stringify(responseJson));
 };
 
 const getAndSaveDataVtiger = async (responseJson, searchInstance, data, mySearchNo, dispatch, vtigerSeven) => {
@@ -90,16 +82,84 @@ function getModifiedRecord(moduleName, vtigerSeven, responseJson, record) {
     let modifiedRecord;
     switch (moduleName) {
         case CAMPAIGNS:
+            modifiedRecord = {
+                lable: record.campaignname,
+                id: record.id
+            };
+            break;
         case VENDORS:
+            modifiedRecord = {
+                vendorName: record.vendorname,
+                vendorEmail: record.email,
+                vendorPhone: record.phone,
+                vendorWebsite: record.website,
+                id: record.id
+            };
+            break;
         case FAQ:
+            modifiedRecord = {
+                question: record.question,
+                id: record.id
+            };
+            break;
         case QUOTES:
+            modifiedRecord = {
+                quoteLable: record.subject,
+                total: record.hdnGrandTotal,
+                quoteStage: record.quotestage,
+                id: record.id
+            };
+            break;
         case PURCHASEORDER:
+            modifiedRecord = {
+                poLable: record.subject,
+                status: record.postatus,
+                id: record.id
+            };
+            break;
         case SALESORDER:
+            modifiedRecord = {
+                soLable: record.subject,
+                status: record.sostatus,
+                id: record.id
+            };
+            break;
         case INVOICE:
+            modifiedRecord = {
+                invoiceLable: record.subject,
+                invoiceStatus: record.invoicestatus,
+                id: record.id
+            };
+            break;
         case PRICEBOOKS:
+            modifiedRecord = {
+                bookLable: record.bookname,
+                id: record.id
+            };
+            break;
         case CALENDAR:
+            modifiedRecord = {
+                eventLable: record.subject,
+                id: record.id
+            };
+            break;
         case LEADS:
+            modifiedRecord = {
+                contactsLable: record.firstname ? `${record.firstname} ${record.lastname}` : record.lastname,
+                phone: record.phone,
+                email: record.email,
+                id: record.id
+            };
+            break;
         case ACCOUNTS:
+            modifiedRecord = {
+                accountsLable: record.accountname,
+                website: record.website,
+                phone: record.phone,
+                email: record.email,
+                id: record.id
+            };
+            break;
         case CONTACTS:
             modifiedRecord = {
                 contactsLable: record.firstname
@@ -111,18 +171,89 @@ function getModifiedRecord(moduleName, vtigerSeven, responseJson, record) {
             };
             break;
         case OPPORTUNITIES:
+            modifiedRecord = {
+                potentialLable: record.potentialname,
+                amount: record.amount,
+                stage: record.sales_stage,
+                id: record.id
+            };
+            break;
         case PRODUCTS:
+            modifiedRecord = {
+                productLable: record.productname,
+                no: record.product_no,
+                productcategory: record.productcategory,
+                quantity: record.qtyinstock,
+                id: record.id
+            };
+            break;
         case DOCUMENTS:
+            modifiedRecord = {
+                documentLable: record.notes_title,
+                id: record.id
+            };
+            break;
         case TICKETS:
+            modifiedRecord = {
+                ticketLable: record.ticket_title,
+                priority: record.ticketpriorities,
+                id: record.id
+            };
+            break;
         case PBXMANAGER:
+            modifiedRecord = {
+                number: record.customernumber,
+                id: record.id
+            };
+            break;
         case SERVICECONTRACTS:
+            modifiedRecord = {
+                scLable: record.subject,
+                id: record.id
+            };
+            break;
         case SERVICES:
+            modifiedRecord = {
+                serviceLable: record.servicename,
+                id: record.id
+            };
+            break;
         case ASSETS:
+            modifiedRecord = {
+                assetLable: record.assetname,
+                id: record.id
+            };
+            break;
         case SMS_NOTIFIER:
+            modifiedRecord = {
+                message: record.message,
+                id: record.id
+            };
+            break;
         case PROJECT_MILESTONE:
+            modifiedRecord = {
+                pmLable: record.projectmilestonename,
+                id: record.id
+            };
+            break;
         case PROJECT_TASK:
+            modifiedRecord = {
+                ptLable: record.projecttaskname,
+                id: record.id
+            };
+            break;
         case MODULE_PROJECT:
+            modifiedRecord = {
+                projectLable: record.projectname,
+                id: record.id
+            };
+            break;
         case COMMENTS:
+            modifiedRecord = {
+                comment: record.commentcontent,
+                id: record.id
+            };
+            break;
         default:
             modifiedRecord = {
                 lable: (vtigerSeven)

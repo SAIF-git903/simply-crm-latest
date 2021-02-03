@@ -17,7 +17,7 @@ class Lister extends Component {
             data: [],
             selectedIndex: -1,
             nextPage: false,
-            pageToTake: 0,
+            pageToTake: 1,
             statusText: '',
             statusTextColor: '#000000',
             navigation: this.props.navigation
@@ -77,10 +77,11 @@ class Lister extends Component {
             searching: false,
             isFlatListRefreshing: true,
             selectedIndex: -1,
+            pageToTake: 1,
             statusText: 'Refreshing',
             Color: '#000000'
         }, () => {
-            this.props.dispatch(refreshRecord(this));
+            this.props.dispatch(refreshRecord(this, this.props.moduleName));
         });
     }
 
