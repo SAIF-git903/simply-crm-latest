@@ -46,11 +46,13 @@ const styles = StyleSheet.create({
 })
 
 const renderEmpty = () => {
-    return <View
-        style={styles.emptyList}
-    >
-        <Text style={fontStyles.fieldLabel}>No records found.</Text>
-    </View>
+    return (
+        <View
+            style={styles.emptyList}
+        >
+            <Text style={fontStyles.fieldLabel}>No records found.</Text>
+        </View>
+    );
 }
 
 export const fetchRecordHelper = async (listerInstance, dispatch, refresh, addExisting, moduleName) => {
@@ -161,6 +163,7 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
             param.append('module', listerInstance.props.moduleName);
         }
         param.append('page', listerInstance.state.pageToTake);
+        param.append('limit', 25);
         const responseJson = await getDatafromNet(param, dispatch);
         if (responseJson.success) {
             await getAndSaveDataVtiger(responseJson, listerInstance, vtigerSeven, refresh, addExisting, moduleName, dispatch);
@@ -234,197 +237,53 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance, vtigerSeven, r
         await saveInvoiceDetails(records, data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh, moduleName, dispatch);
     } else {
         for (const record of records) {
-            data.push(getListerModifiedRecord(listerInstance, responseJson, record));
+            data.push(getListerModifiedRecord(listerInstance, vtigerSeven, responseJson, record));
         }
         await saveData(data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh, moduleName);
     }
 };
 
-function getListerModifiedRecord(listerInstance, responseJson, record) {
-    let modifiedRecord;
-    switch (listerInstance.props.moduleName) {
-        case CAMPAIGNS: {
-            modifiedRecord = {
-                lable: record.campaignname,
-            };
-            break;
+function getListerModifiedRecord(listerInstance, vtigerSeven, responseJson, record) {
+    let modifiedRecord = {};
+    let modules = getAllowedModules();
+    if (modules.includes(listerInstance.props.moduleName)) {
+        let fields = getFieldsForModule(listerInstance.props.moduleName);
+        //at first - copy all get CRM values to object with needed keys
+        for (const [fieldKey, fieldValue] of Object.entries(fields)) {
+            modifiedRecord[fieldKey] = record[fieldValue];
         }
-        case VENDORS: {
-            modifiedRecord = {
-                vendorName: record.vendorname,
-                vendorEmail: record.email,
-                vendorPhone: record.phone,
-                vendorWebsite: record.website,
-            };
-            break;
+        //then specially change some fields for some modules
+        switch (listerInstance.props.moduleName) {
+            case LEADS:
+            case CONTACTS:
+                modifiedRecord.contactsLable = (modifiedRecord.firstname)
+                    ? `${modifiedRecord.firstname} ${modifiedRecord.lastname}`
+                    : modifiedRecord.lastname;
+                delete modifiedRecord.firstname;
+                delete modifiedRecord.lastname;
+                break;
+            case OPPORTUNITIES:
+                modifiedRecord.amount = Number(modifiedRecord.amount).toFixed(2);
+                break;
+            case PRODUCTS:
+                modifiedRecord.quantity = Number(modifiedRecord.qtyinstock).toFixed(2);
+                break;
+            default:
+                //if no change is required
+                break;
         }
-        case FAQ: {
-            modifiedRecord = {
-                question: record.question,
-            };
-            break;
+        if ([CALENDAR].includes(listerInstance.props.moduleName)) {
+            modifiedRecord.id = `${(record.type === 'Task') ? '9' : '18'}x${record.id}`;
+        } else {
+            modifiedRecord.id = `${listerInstance.props.moduleId}x${record.id}`;
         }
-        case QUOTES: {
-            modifiedRecord = {
-                quoteLable: record.subject,
-                total: record.hdnGrandTotal,
-                quoteStage: record.quotestage,
-            };
-            break;
-        }
-        case PURCHASEORDER: {
-            modifiedRecord = {
-                poLable: record.subject,
-                status: record.postatus,
-            };
-            break;
-        }
-        case SALESORDER: {
-            modifiedRecord = {
-                soLable: record.subject,
-                status: record.sostatus,
-            };
-            break;
-        }
-        case PRICEBOOKS: {
-            modifiedRecord = {
-                bookLable: record.bookname,
-            };
-            break;
-        }
-        case CALENDAR: {
-            modifiedRecord = {
-                eventLable: record.subject,
-                id: `${record.type === 'Task' ? '9' : '18'}x${record.id}`
-            };
-            break;
-        }
-        case LEADS: {
-            modifiedRecord = {
-                contactsLable: record.firstname ? `${record.firstname} ${record.lastname}` : record.lastname,
-                phone: record.phone,
-                email: record.email,
-            };
-            break;
-        }
-        case ACCOUNTS: {
-            modifiedRecord = {
-                accountsLable: record.accountname,
-                website: record.website,
-                phone: record.phone,
-                email: record.email1,
-            };
-            break;
-        }
-        case CONTACTS: {
-            modifiedRecord = {
-                contactsLable: record.firstname ? `${record.firstname} ${record.lastname}` : record.lastname,
-                phone: record.phone,
-                email: record.email,
-            };
-            break;
-        }
-        case OPPORTUNITIES: {
-            modifiedRecord = {
-                potentialLable: record.potentialname,
-                amount: Number(record.amount).toFixed(2),
-                stage: record.sales_stage,
-            };
-            break;
-        }
-        case PRODUCTS: {
-            modifiedRecord = {
-                productLable: record.productname,
-                no: record.product_no,
-                productcategory: record.productcategory,
-                quantity: Number(record.qtyinstock).toFixed(2),
-            };
-            break;
-        }
-        case DOCUMENTS: {
-            modifiedRecord = {
-                documentLable: record.notes_title,
-            };
-            break;
-        }
-        case TICKETS: {
-            modifiedRecord = {
-                ticketLable: record.ticket_title,
-                priority: record.ticketpriorities,
-            };
-            break;
-        }
-        case PBXMANAGER: {
-            modifiedRecord = {
-                number: record.customernumber,
-            };
-            break;
-        }
-        case SERVICECONTRACTS: {
-            modifiedRecord = {
-                scLable: record.subject,
-            };
-            break;
-        }
-        case SERVICES: {
-            modifiedRecord = {
-                serviceLable: record.servicename,
-            };
-            break;
-        }
-        case ASSETS: {
-            modifiedRecord = {
-                assetLable: record.assetname,
-            };
-            break;
-        }
-        case SMS_NOTIFIER: {
-            modifiedRecord = {
-                message: record.message,
-            };
-            break;
-        }
-        case PROJECT_MILESTONE: {
-            modifiedRecord = {
-                pmLable: record.projectmilestonename,
-            };
-            break;
-        }
-        case PROJECT_TASK: {
-            modifiedRecord = {
-                ptLable: record.projecttaskname,
-            };
-            break;
-        }
-        case MODULE_PROJECT: {
-            modifiedRecord = {
-                projectLable: record.projectname,
-            };
-            break;
-        }
-        case COMMENTS: {
-            modifiedRecord = {
-                comment: record.commentcontent,
-            };
-            break;
-        }
-        case CURRENCY: {
-            modifiedRecord = {
-                currency_name: record.currency_name,
-            };
-            break;
-        }
-        default: {
-            modifiedRecord = {
-                lable: (vtigerSeven)
-                    ? record[responseJson.result.headers[0].name]
-                    : record.label,
-            };
-        }
-    }
-    const a = [CALENDAR];
-    if (!a.includes(listerInstance.props.moduleName)) {
-        modifiedRecord.id = `${listerInstance.props.moduleId}x${record.id}`;
+    } else {
+        modifiedRecord = {
+            lable: (vtigerSeven)
+                ? record[responseJson.result.headers[0].name]
+                : record.label,
+            id: `${listerInstance.props.moduleId}x${record.id}`,
+        };
     }
     return modifiedRecord;
 }
@@ -436,8 +295,7 @@ const saveInvoiceDetails = async (records, data, vtigerSeven, responseJson, addE
 
         const moduleId = loginDetails.modules.filter((item) => item.name === 'Invoice').map(({ id }) => (id));
 
-        //TODO think about improve speed
-        //TODO do same as for Organization ?
+        //TODO think about improve speed = do process like others ?
         for (const record of records) {
             const param = new FormData();
 
@@ -581,117 +439,229 @@ const saveData = async (data, vtigerSeven, responseJson, addExisting, previousDa
 //    });
 // };
 
-export const appendParamFor = (moduleName, param) => {
-    console.log(`Appending module name: ${moduleName}`)
+const getFieldsForModule = (moduleName) => {
+    let fields = {};
+    //fields = { key: value }
+    //key - field name for mobileapp
+    //value - CRM database field name
     switch (moduleName) {
-        case CAMPAIGNS:
-            param.append('_operation', 'query');
-            param.append('query', 'select campaignname,id from Campaigns ORDER BY modifiedtime DESC');
+        case CAMPAIGNS: {
+            fields = {
+                lable: 'campaignname',
+            };
             break;
-        case VENDORS:
-            param.append('_operation', 'query');
-            param.append('query', 'select email,website,phone,vendorname, id from Vendors ORDER BY modifiedtime DESC');
+        }
+        case VENDORS: {
+            fields = {
+                vendorName: 'vendorname',
+                vendorEmail: 'email',
+                vendorPhone: 'phone',
+                vendorWebsite: 'website',
+            };
             break;
-        case FAQ:
-            param.append('_operation', 'query');
-            param.append('query', 'select question,id from Faq ORDER BY modifiedtime DESC');
+        }
+        case FAQ: {
+            fields = {
+                question: 'question',
+            };
             break;
-        case QUOTES:
-            param.append('_operation', 'query');
-            param.append('query', 'select hdnGrandTotal,quotestage,subject, id from Quotes ORDER BY modifiedtime DESC');
+        }
+        case QUOTES: {
+            fields = {
+                quoteLable: 'subject',
+                total: 'hdnGrandTotal',
+                quoteStage: 'quotestage',
+            };
             break;
-        case PURCHASEORDER:
-            param.append('_operation', 'query');
-            param.append('query', 'select postatus,subject,id from PurchaseOrder ORDER BY modifiedtime DESC');
+        }
+        case PURCHASEORDER: {
+            fields = {
+                poLable: 'subject',
+                status: 'postatus',
+            };
             break;
-        case SALESORDER:
-            param.append('_operation', 'query');
-            param.append('query', 'select sostatus,subject,id from SalesOrder ORDER BY modifiedtime DESC');
+        }
+        case SALESORDER: {
+            fields = {
+                soLable: 'subject',
+                status: 'sostatus',
+            };
             break;
-        case INVOICE:
-            param.append('_operation', 'query');
-            param.append('query', 'select * from Invoice ORDER BY modifiedtime DESC');
+        }
+        // case INVOICE: {
+        //     //invoice process in special function
+        //     break;
+        // }
+        case PRICEBOOKS: {
+            fields = {
+                bookLable: 'bookname',
+            };
             break;
-        case PRICEBOOKS:
-            param.append('_operation', 'query');
-            param.append('query', 'select bookname,id from PriceBooks ORDER BY modifiedtime DESC');
+        }
+        case CALENDAR: {
+            fields = {
+                eventLable: 'subject',
+            };
             break;
-        case CALENDAR:
-            param.append('_operation', 'query');
-            param.append('query', 'select subject,id from Calendar ORDER BY modifiedtime DESC');
+        }
+        case LEADS: {
+            fields = {
+                firstname: 'firstname',
+                lastname: 'lastname',
+                phone: 'phone',
+                email: 'email',
+            };
             break;
-        case LEADS:
-            param.append('_operation', 'query');
-            param.append('query', 'select firstnamse,lastname,phone,email,id from Leads ORDER BY modifiedtime DESC');
+        }
+        case ACCOUNTS: {
+            fields = {
+                accountsLable: 'accountname',
+                website: 'website',
+                phone: 'phone',
+                email: 'email1',
+            };
             break;
-        case ACCOUNTS:
-            param.append('_operation', 'query');
-            param.append('query', 'select accountname,website,phone,email1,id from Accounts ORDER BY modifiedtime DESC');
+        }
+        case CONTACTS: {
+            fields = {
+                firstname: 'firstname',
+                lastname: 'lastname',
+                phone: 'phone',
+                email: 'email',
+            };
             break;
-        case CONTACTS:
-            param.append('_operation', 'query');
-            param.append('query', 'select firstname,lastname,phone,email,id from Contacts ORDER BY modifiedtime DESC');
+        }
+        case OPPORTUNITIES: {
+            fields = {
+                potentialLable: 'potentialname',
+                amount: 'amount',
+                stage: 'sales_stage',
+            };
             break;
-        case OPPORTUNITIES:
-            param.append('_operation', 'query');
-            param.append('query', 'select potentialname,amount,sales_stage,id from Potentials ORDER BY modifiedtime DESC');
+        }
+        case PRODUCTS: {
+            fields = {
+                productLable: 'productname',
+                no: 'product_no',
+                discontinued: 'discontinued',
+                productcategory: 'productcategory',
+                qtyinstock: 'qtyinstock',
+            };
             break;
-        case PRODUCTS:
-            param.append('_operation', 'query');
-            param.append('query', 'select productname,product_no,discontinued,productcategory,qtyinstock,id from Products ORDER BY modifiedtime DESC');
+        }
+        case DOCUMENTS: {
+            fields = {
+                documentLable: 'notes_title',
+            };
             break;
-        case DOCUMENTS:
-            param.append('_operation', 'query');
-            param.append('query', 'select notes_title,id from Documents ORDER BY modifiedtime DESC');
+        }
+        case TICKETS: {
+            fields = {
+                ticketLable: 'ticket_title',
+                priority: 'ticketpriorities',
+            };
             break;
-        case TICKETS:
-            param.append('_operation', 'query');
-            param.append('query', 'select ticket_title,ticketpriorities,id from HelpDesk ORDER BY modifiedtime DESC');
+        }
+        case PBXMANAGER: {
+            fields = {
+                number: 'customernumber',
+            };
             break;
-        case PBXMANAGER:
-            param.append('_operation', 'query');
-            param.append('query', 'select customernumber,id from PBXManager ORDER BY modifiedtime DESC');
+        }
+        case SERVICECONTRACTS: {
+            fields = {
+                scLable: 'subject',
+            };
             break;
-        case SERVICECONTRACTS:
-            param.append('_operation', 'query');
-            param.append('query', 'select subject,id from ServiceContracts ORDER BY modifiedtime DESC');
+        }
+        case SERVICES: {
+            fields = {
+                serviceLable: 'servicename',
+            };
             break;
-        case SERVICES:
-            param.append('_operation', 'query');
-            param.append('query', 'select servicename,id from Services ORDER BY modifiedtime DESC');
+        }
+        case ASSETS: {
+            fields = {
+                assetLable: 'assetname',
+            };
             break;
-        case ASSETS:
-            param.append('_operation', 'query');
-            param.append('query', 'select assetname,id from Assets ORDER BY modifiedtime DESC');
+        }
+        case SMS_NOTIFIER: {
+            fields = {
+                message: 'message',
+            };
             break;
-        case SMS_NOTIFIER:
-            param.append('_operation', 'query');
-            param.append('query', 'select message,id from SMSNotifier ORDER BY modifiedtime DESC');
+        }
+        case PROJECT_MILESTONE: {
+            fields = {
+                pmLable: 'projectmilestonename',
+            };
             break;
-        case PROJECT_MILESTONE:
-            param.append('_operation', 'query');
-            param.append('query', 'select projectmilestonename,id from ProjectMilestone ORDER BY modifiedtime DESC');
+        }
+        case PROJECT_TASK: {
+            fields = {
+                ptLable: 'projecttaskname',
+            };
             break;
-        case PROJECT_TASK:
-            param.append('_operation', 'query');
-            param.append('query', 'select projecttaskname,id from ProjectTask ORDER BY modifiedtime DESC');
+        }
+        case MODULE_PROJECT: {
+            fields = {
+                projectLable: 'projectname',
+            };
             break;
-        case MODULE_PROJECT:
-            param.append('_operation', 'query');
-            param.append('query', 'select projectname,id from Project ORDER BY modifiedtime DESC');
+        }
+        case COMMENTS: {
+            fields = {
+                comment: 'commentcontent',
+            };
             break;
-        case COMMENTS:
-            param.append('_operation', 'query');
-            param.append('query', 'select commentcontent,id from ModComments ORDER BY modifiedtime DESC');
+        }
+        case CURRENCY: {
+            fields = {
+                currency_name: 'currency_name',
+            };
             break;
-        case CURRENCY:
-            param.append('_operation', 'query');
-            param.append('query', 'select currency_name,id from Currency');
+        }
+        default: {
             break;
-        default:
-            param.append('_operation', 'listModuleRecords');
-            param.append('module', moduleName);
-            break;
+        }
+    }
+    return fields;
+}
+
+const getAllowedModules = () => {
+    return [
+        CAMPAIGNS,          VENDORS,        FAQ,
+        QUOTES,             PURCHASEORDER,  SALESORDER,
+        INVOICE,            PRICEBOOKS,     CALENDAR,
+        LEADS,              ACCOUNTS,       CONTACTS,
+        OPPORTUNITIES,      PRODUCTS,       DOCUMENTS,
+        TICKETS,            PBXMANAGER,     SERVICECONTRACTS,
+        SERVICES,           ASSETS,         SMS_NOTIFIER,
+        PROJECT_MILESTONE,  PROJECT_TASK,   MODULE_PROJECT,
+        COMMENTS,           CURRENCY,
+    ];
+}
+
+export const appendParamFor = (moduleName, param) => {
+    console.log(`Appending module name: ${moduleName}`);
+    let modules = getAllowedModules();
+    if (modules.includes(moduleName)) {
+        let joinedFields;
+        if (moduleName === INVOICE) {
+            joinedFields = '*';
+        } else {
+            let fields = getFieldsForModule(moduleName);
+            joinedFields = 'id';
+            if (Object.keys(fields).length > 0) {
+                joinedFields += ',' + Object.keys(fields).join(',');
+            }
+        }
+        param.append('_operation', 'query');
+        param.append('query', `select ${joinedFields} from ${moduleName} ORDER BY modifiedtime DESC`);
+    } else {
+        param.append('_operation', 'listModuleRecords');
+        param.append('module', moduleName);
     }
 };
 
@@ -715,7 +685,6 @@ export const deleteRecordHelper = async (listerInstance, recordId, index, callba
         if (responseJson.success) {
             const obj = responseJson.result.deleted;
             const result = obj[Object.keys(obj)[0]];
-            //console.log(responseJson);
             if (result) {
                 //Successfully deleted.
                 await removeThisIndex(listerInstance, index);
@@ -761,693 +730,195 @@ const removeThisIndex = async (listerInstance, index) => {
 };
 
 export const recordListRendererHelper = (listerInstance) => {
+    return (
+        <FlatList
+            ListEmptyComponent={renderEmpty()}
+            style={styles.listWrapper}
+            contentContainerStyle={styles.list}
+            onRefresh={listerInstance.refreshData.bind(listerInstance)}
+            data={listerInstance.state.data}
+            refreshing={listerInstance.state.isFlatListRefreshing}
+            ListFooterComponent={(listerInstance.state.nextPage) ? listerInstance.renderFooter.bind(listerInstance) : null}
+            onEndReached={listerInstance.onEndReached.bind(listerInstance)}
+            onMomentumScrollBegin={() => {
+                listerInstance.onEndReachedCalledDuringMomentum = false;
+            }}
+            renderItem={({ item, index }) =>
+                getItem(listerInstance, item, index)
+            }
+        />
+    );
+};
+
+const getItem = (listerInstance, item, index) => {
+    let recordName;
+    let label = [];
+
     switch (listerInstance.props.moduleName) {
         case CAMPAIGNS: {
-            return (
-                <FlatList
-                    ListEmptyComponent={renderEmpty()}
-                    style={styles.listWrapper}
-                    contentContainerStyle={styles.list}
-                    onRefresh={listerInstance.refreshData.bind(listerInstance)}
-                    data={listerInstance.state.data}
-                    refreshing={listerInstance.state.isFlatListRefreshing}
-                    ListFooterComponent={(listerInstance.state.nextPage) ? listerInstance.renderFooter.bind(listerInstance) : undefined}
-                    onEndReached={listerInstance.onEndReached.bind(listerInstance)}
-                    onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
-                    renderItem={({ item, index }) =>
-                        <RecordItem
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            recordName={item.lable}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                        />}
-                />
-            );
+            recordName = item.lable;
+            break;
         }
         case CONTACTS: {
-            return (
-                <FlatList
-                    ListEmptyComponent={renderEmpty()}
-                    style={styles.listWrapper}
-                    contentContainerStyle={styles.list}
-                    onRefresh={listerInstance.refreshData.bind(listerInstance)}
-                    data={listerInstance.state.data}
-                    refreshing={listerInstance.state.isFlatListRefreshing}
-                    ListFooterComponent={(listerInstance.state.nextPage) ? listerInstance.renderFooter.bind(listerInstance) : undefined}
-                    onEndReached={listerInstance.onEndReached.bind(listerInstance)}
-                    onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
-                    renderItem={({ item, index }) =>
-                        <RecordItem
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            recordName={item.contactsLable}
-                            labels={[
-                                item.email
-                            ]}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                        />
-                    }
-                />
-            );
+            recordName = item.contactsLable;
+            label = [
+                item.email
+            ];
+            break;
         }
         case VENDORS: {
-            return (
-                <FlatList
-                    ListEmptyComponent={renderEmpty()}
-                    style={styles.listWrapper}
-                    contentContainerStyle={styles.list}
-                    onRefresh={listerInstance.refreshData.bind(listerInstance)}
-                    data={listerInstance.state.data}
-                    refreshing={listerInstance.state.isFlatListRefreshing}
-                    ListFooterComponent={(listerInstance.state.nextPage) ? listerInstance.renderFooter.bind(listerInstance) : undefined}
-                    onEndReached={listerInstance.onEndReached.bind(listerInstance)}
-                    onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
-                    renderItem={({ item, index }) =>
-                        <RecordItem
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            recordName={item.vendorName}
-                            labels={[
-                                item.vendorEmail,
-                                item.vendorPhone,
-                                item.vendorWebsite
-                            ]}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                        />}
-                />
-            );
+            recordName = item.vendorName;
+            label = [
+                item.vendorEmail,
+                item.vendorPhone,
+                item.vendorWebsite
+            ];
+            break;
         }
         case FAQ: {
-            return (
-                <FlatList
-                    ListEmptyComponent={renderEmpty()}
-                    style={styles.listWrapper}
-                    contentContainerStyle={styles.list}
-                    onRefresh={listerInstance.refreshData.bind(listerInstance)}
-                    data={listerInstance.state.data}
-                    refreshing={listerInstance.state.isFlatListRefreshing}
-                    ListFooterComponent={(listerInstance.state.nextPage) ? listerInstance.renderFooter.bind(listerInstance) : undefined}
-                    onEndReached={listerInstance.onEndReached.bind(listerInstance)}
-                    onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
-                    renderItem={({ item, index }) =>
-                        <RecordItem
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            recordName={item.question}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                        />}
-                />
-            );
+            recordName = item.question;
+            break;
         }
         case QUOTES: {
-            return (
-                <FlatList
-                    ListEmptyComponent={renderEmpty()}
-                    style={styles.listWrapper}
-                    contentContainerStyle={styles.list}
-                    onRefresh={listerInstance.refreshData.bind(listerInstance)}
-                    data={listerInstance.state.data}
-                    refreshing={listerInstance.state.isFlatListRefreshing}
-                    ListFooterComponent={(listerInstance.state.nextPage) ? listerInstance.renderFooter.bind(listerInstance) : undefined}
-                    onEndReached={listerInstance.onEndReached.bind(listerInstance)}
-                    onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
-                    renderItem={({ item, index }) =>
-                        <RecordItem
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            recordName={item.quoteLable}
-                            labels={[
-                                item.total,
-                                item.quoteStage
-                            ]}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                        />}
-                />
-            );
+            recordName = item.quoteLable;
+            label = [
+                item.total,
+                item.quoteStage
+            ];
+            break;
         }
         case PURCHASEORDER: {
-            return (
-                <FlatList
-                    ListEmptyComponent={renderEmpty()}
-                    style={styles.listWrapper}
-                    contentContainerStyle={styles.list}
-                    onRefresh={listerInstance.refreshData.bind(listerInstance)}
-                    data={listerInstance.state.data}
-                    refreshing={listerInstance.state.isFlatListRefreshing}
-                    ListFooterComponent={(listerInstance.state.nextPage) ? listerInstance.renderFooter.bind(listerInstance) : undefined}
-                    onEndReached={listerInstance.onEndReached.bind(listerInstance)}
-                    onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
-                    renderItem={({ item, index }) =>
-                        <RecordItem
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            recordName={item.polable}
-                            labels={[
-                                item.status
-                            ]}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                        />}
-                />
-            );
+            recordName = item.polable;
+            label = [
+                item.status
+            ];
+            break;
         }
         case SALESORDER: {
-            return (
-                <FlatList
-                    ListEmptyComponent={renderEmpty()}
-                    style={styles.listWrapper}
-                    contentContainerStyle={styles.list}
-                    onRefresh={listerInstance.refreshData.bind(listerInstance)}
-                    data={listerInstance.state.data}
-                    refreshing={listerInstance.state.isFlatListRefreshing}
-                    ListFooterComponent={(listerInstance.state.nextPage) ? listerInstance.renderFooter.bind(listerInstance) : undefined}
-                    onEndReached={listerInstance.onEndReached.bind(listerInstance)}
-                    onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
-                    renderItem={({ item, index }) =>
-                        <RecordItem
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            recordName={item.soLable}
-                            labels={[
-                                item.status
-                            ]}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                        />}
-                />
-            );
+            recordName = item.soLable;
+            label = [
+                item.status
+            ];
+            break;
         }
         case INVOICE: {
-            return (
-                <FlatList
-                    ListEmptyComponent={renderEmpty()}
-
-                    style={styles.listWrapper}
-                    contentContainerStyle={styles.list}
-                    onRefresh={listerInstance.refreshData.bind(listerInstance)}
-                    data={listerInstance.state.data}
-                    refreshing={listerInstance.state.isFlatListRefreshing}
-                    ListFooterComponent={(listerInstance.state.nextPage) ? listerInstance.renderFooter.bind(listerInstance) : undefined}
-                    onEndReached={listerInstance.onEndReached.bind(listerInstance)}
-                    onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
-                    renderItem={({ item, index }) =>
-                        <RecordItem
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            recordName={item.invoiceLable}
-                            labels={[
-                                item.invoiceNo,
-                                item.invoiceStatus,
-                                item.invoiceAmount,
-                                item.invoiceAccountId,
-                                item.invoiceItemName,
-                            ]}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                        />}
-                />
-            );
+            recordName = item.invoiceLable;
+            label = [
+                item.invoiceNo,
+                item.invoiceStatus,
+                item.invoiceAmount,
+                item.invoiceAccountId,
+                item.invoiceItemName,
+            ];
+            break;
         }
         case PRICEBOOKS: {
-            return (
-                <FlatList
-                    ListEmptyComponent={renderEmpty()}
-                    style={styles.listWrapper}
-                    contentContainerStyle={styles.list}
-                    onRefresh={listerInstance.refreshData.bind(listerInstance)}
-                    data={listerInstance.state.data}
-                    refreshing={listerInstance.state.isFlatListRefreshing}
-                    ListFooterComponent={(listerInstance.state.nextPage) ? listerInstance.renderFooter.bind(listerInstance) : undefined}
-                    onEndReached={listerInstance.onEndReached.bind(listerInstance)}
-                    onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
-                    renderItem={({ item, index }) =>
-                        <RecordItem
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            recordName={item.bookLable}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                        />}
-                />
-            );
+            recordName = item.bookLable;
+            break;
         }
         case CALENDAR: {
-            return (
-                <FlatList
-                    ListEmptyComponent={renderEmpty()}
-
-                    style={styles.listWrapper}
-                    contentContainerStyle={styles.list}
-                    onRefresh={listerInstance.refreshData.bind(listerInstance)}
-                    data={listerInstance.state.data}
-                    refreshing={listerInstance.state.isFlatListRefreshing}
-                    ListFooterComponent={(listerInstance.state.nextPage) ? listerInstance.renderFooter.bind(listerInstance) : undefined}
-                    onEndReached={listerInstance.onEndReached.bind(listerInstance)}
-                    onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
-                    renderItem={({ item, index }) =>
-                        <RecordItem
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            recordName={item.eventLable}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                        />
-                    }
-                />
-            );
+            recordName = item.eventLable;
+            break;
         }
         case LEADS: {
-            return (
-                <FlatList
-                    ListEmptyComponent={renderEmpty()}
-
-                    style={styles.listWrapper}
-                    contentContainerStyle={styles.list}
-                    onRefresh={listerInstance.refreshData.bind(listerInstance)}
-                    data={listerInstance.state.data}
-                    refreshing={listerInstance.state.isFlatListRefreshing}
-                    ListFooterComponent={(listerInstance.state.nextPage) ? listerInstance.renderFooter.bind(listerInstance) : undefined}
-                    onEndReached={listerInstance.onEndReached.bind(listerInstance)}
-                    onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
-                    renderItem={({ item, index }) =>
-                        <RecordItem
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            recordName={item.contactsLable}
-                            labels={[
-                                item.email
-                            ]}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                        />}
-                />
-            );
+            recordName = item.contactsLable;
+            label = [
+                item.email
+            ];
+            break;
         }
         case ACCOUNTS: {
-            return (
-                <FlatList
-                    ListEmptyComponent={renderEmpty()}
-                    style={styles.listWrapper}
-                    contentContainerStyle={styles.list}
-                    onRefresh={listerInstance.refreshData.bind(listerInstance)}
-                    data={listerInstance.state.data}
-                    refreshing={listerInstance.state.isFlatListRefreshing}
-                    ListFooterComponent={(listerInstance.state.nextPage) ? listerInstance.renderFooter.bind(listerInstance) : undefined}
-                    onEndReached={listerInstance.onEndReached.bind(listerInstance)}
-                    onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
-                    renderItem={({ item, index }) =>
-                        <RecordItem
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            recordName={item.accountsLable}
-                            labels={[
-                                item.website,
-                                item.phone,
-                                item.email,
-                            ]}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                        />}
-                />
-            );
+            recordName = item.accountsLable;
+            label = [
+                item.website,
+                item.phone,
+                item.email,
+            ];
+            break;
         }
         case OPPORTUNITIES: {
-            return (
-                <FlatList
-                    ListEmptyComponent={renderEmpty()}
-
-                    style={styles.listWrapper}
-                    contentContainerStyle={styles.list}
-                    onRefresh={listerInstance.refreshData.bind(listerInstance)}
-                    data={listerInstance.state.data}
-                    refreshing={listerInstance.state.isFlatListRefreshing}
-                    ListFooterComponent={(listerInstance.state.nextPage) ? listerInstance.renderFooter.bind(listerInstance) : undefined}
-                    onEndReached={listerInstance.onEndReached.bind(listerInstance)}
-                    onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
-                    renderItem={({ item, index }) =>
-                        <RecordItem
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            recordName={item.potentialLable}
-                            labels={[
-                                item.amount,
-                                item.stage
-                            ]}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                        />}
-                />
-            );
+            recordName = item.potentialLable;
+            label = [
+                item.amount,
+                item.stage
+            ];
+            break;
         }
         case PRODUCTS: {
-            return (
-                <FlatList
-                    ListEmptyComponent={renderEmpty()}
-
-                    style={styles.listWrapper}
-                    contentContainerStyle={styles.list}
-                    onRefresh={listerInstance.refreshData.bind(listerInstance)}
-                    data={listerInstance.state.data}
-                    refreshing={listerInstance.state.isFlatListRefreshing}
-                    ListFooterComponent={(listerInstance.state.nextPage) ? listerInstance.renderFooter.bind(listerInstance) : undefined}
-                    onEndReached={listerInstance.onEndReached.bind(listerInstance)}
-                    onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
-                    renderItem={({ item, index }) =>
-                        <RecordItem
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            recordName={item.productLable}
-                            labels={[
-                                item.no,
-                                item.productcategory,
-                                item.quantity
-                            ]}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                        />}
-                />
-            );
+            recordName = item.productLable;
+            label = [
+                item.no,
+                item.productcategory,
+                item.quantity
+            ];
+            break;
         }
         case DOCUMENTS: {
-            return (
-                <FlatList
-                    ListEmptyComponent={renderEmpty()}
-                    style={styles.listWrapper}
-                    contentContainerStyle={styles.list}
-                    onRefresh={listerInstance.refreshData.bind(listerInstance)}
-                    data={listerInstance.state.data}
-                    refreshing={listerInstance.state.isFlatListRefreshing}
-                    ListFooterComponent={(listerInstance.state.nextPage) ? listerInstance.renderFooter.bind(listerInstance) : undefined}
-                    onEndReached={listerInstance.onEndReached.bind(listerInstance)}
-                    onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
-                    renderItem={({ item, index }) =>
-                        <RecordItem
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            recordName={item.documentLable}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                        />}
-                />
-            );
+            recordName = item.documentLable;
+            break;
         }
         case TICKETS: {
-            return (
-                <FlatList
-                    onRefresh={listerInstance.refreshData.bind(listerInstance)}
-                    ListEmptyComponent={renderEmpty()}
-                    style={styles.listWrapper}
-                    contentContainerStyle={styles.list}
-                    data={listerInstance.state.data}
-                    refreshing={listerInstance.state.isFlatListRefreshing}
-                    ListFooterComponent={(listerInstance.state.nextPage) ? listerInstance.renderFooter.bind(listerInstance) : undefined}
-                    onEndReached={listerInstance.onEndReached.bind(listerInstance)}
-                    onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
-                    renderItem={({ item, index }) =>
-                        <RecordItem
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            recordName={item.ticketLable}
-                            labels={[
-                                item.priority
-                            ]}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                        />}
-                />
-            );
+            recordName = item.ticketLable;
+            label = [
+                item.priority
+            ];
+            break;
         }
         case PBXMANAGER: {
-            return (
-                <FlatList
-                    onRefresh={listerInstance.refreshData.bind(listerInstance)}
-                    data={listerInstance.state.data}
-                    refreshing={listerInstance.state.isFlatListRefreshing}
-                    ListFooterComponent={(listerInstance.state.nextPage) ? listerInstance.renderFooter.bind(listerInstance) : undefined}
-                    onEndReached={listerInstance.onEndReached.bind(listerInstance)}
-                    onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
-                    renderItem={({ item, index }) =>
-                        <RecordItem
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            recordName={item.number}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                        />}
-                />
-            );
+            recordName = item.number;
+            break;
         }
         case SERVICECONTRACTS: {
-            return (
-                <FlatList
-                    ListEmptyComponent={renderEmpty()}
-                    style={styles.listWrapper}
-                    contentContainerStyle={styles.list}
-                    onRefresh={listerInstance.refreshData.bind(listerInstance)}
-                    data={listerInstance.state.data}
-                    refreshing={listerInstance.state.isFlatListRefreshing}
-                    ListFooterComponent={(listerInstance.state.nextPage) ? listerInstance.renderFooter.bind(listerInstance) : undefined}
-                    onEndReached={listerInstance.onEndReached.bind(listerInstance)}
-                    onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
-                    renderItem={({ item, index }) =>
-                        <RecordItem
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            recordName={item.scLable}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                        />}
-                />
-            );
+            recordName = item.scLable;
+            break;
         }
         case SERVICES: {
-            return (
-                <FlatList
-                    ListEmptyComponent={renderEmpty()}
-                    style={styles.listWrapper}
-                    contentContainerStyle={styles.list}
-                    onRefresh={listerInstance.refreshData.bind(listerInstance)}
-                    data={listerInstance.state.data}
-                    refreshing={listerInstance.state.isFlatListRefreshing}
-                    ListFooterComponent={(listerInstance.state.nextPage) ? listerInstance.renderFooter.bind(listerInstance) : undefined}
-                    onEndReached={listerInstance.onEndReached.bind(listerInstance)}
-                    onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
-                    renderItem={({ item, index }) =>
-                        <RecordItem
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            recordName={item.serviceLable}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                        />}
-                />
-            );
+            recordName = item.serviceLable;
+            break;
         }
         case ASSETS: {
-            return (
-                <FlatList
-                    ListEmptyComponent={renderEmpty()}
-                    style={styles.listWrapper}
-                    contentContainerStyle={styles.list}
-                    onRefresh={listerInstance.refreshData.bind(listerInstance)}
-                    data={listerInstance.state.data}
-                    refreshing={listerInstance.state.isFlatListRefreshing}
-                    ListFooterComponent={(listerInstance.state.nextPage) ? listerInstance.renderFooter.bind(listerInstance) : undefined}
-                    onEndReached={listerInstance.onEndReached.bind(listerInstance)}
-                    onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
-                    renderItem={({ item, index }) =>
-                        <RecordItem
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            recordName={item.assetLable}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                        />}
-                />
-            );
+            recordName = item.assetLable;
+            break;
         }
         case SMS_NOTIFIER: {
-            return (
-                <FlatList
-                    onRefresh={listerInstance.refreshData.bind(listerInstance)}
-                    data={listerInstance.state.data}
-                    refreshing={listerInstance.state.isFlatListRefreshing}
-                    ListFooterComponent={(listerInstance.state.nextPage) ? listerInstance.renderFooter.bind(listerInstance) : undefined}
-                    onEndReached={listerInstance.onEndReached.bind(listerInstance)}
-                    onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
-                    renderItem={({ item, index }) =>
-                        <RecordItem
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            recordName={item.message}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                        />}
-                />
-            );
+            recordName = item.message;
+            break;
         }
         case PROJECT_MILESTONE: {
-            return (
-                <FlatList
-                    ListEmptyComponent={renderEmpty()}
-                    style={styles.listWrapper}
-                    contentContainerStyle={styles.list}
-                    onRefresh={listerInstance.refreshData.bind(listerInstance)}
-                    data={listerInstance.state.data}
-                    refreshing={listerInstance.state.isFlatListRefreshing}
-                    ListFooterComponent={(listerInstance.state.nextPage) ? listerInstance.renderFooter.bind(listerInstance) : undefined}
-                    onEndReached={listerInstance.onEndReached.bind(listerInstance)}
-                    onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
-                    renderItem={({ item, index }) =>
-                        <RecordItem
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            recordName={item.pmLable}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                        />}
-                />
-            );
+            recordName = item.pmLable;
+            break;
         }
         case PROJECT_TASK: {
-            return (
-                <FlatList
-                    ListEmptyComponent={renderEmpty()}
-                    style={styles.listWrapper}
-                    contentContainerStyle={styles.list}
-                    onRefresh={listerInstance.refreshData.bind(listerInstance)}
-                    data={listerInstance.state.data}
-                    refreshing={listerInstance.state.isFlatListRefreshing}
-                    ListFooterComponent={(listerInstance.state.nextPage) ? listerInstance.renderFooter.bind(listerInstance) : undefined}
-                    onEndReached={listerInstance.onEndReached.bind(listerInstance)}
-                    onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
-                    renderItem={({ item, index }) =>
-                        <RecordItem
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            recordName={item.ptLable}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                        />}
-                />
-            );
+            recordName = item.ptLable;
+            break;
         }
         case MODULE_PROJECT: {
-            return (
-                <FlatList
-                    ListEmptyComponent={renderEmpty()}
-                    style={styles.listWrapper}
-                    contentContainerStyle={styles.list}
-                    onRefresh={listerInstance.refreshData.bind(listerInstance)}
-                    data={listerInstance.state.data}
-                    refreshing={listerInstance.state.isFlatListRefreshing}
-                    ListFooterComponent={(listerInstance.state.nextPage) ? listerInstance.renderFooter.bind(listerInstance) : undefined}
-                    onEndReached={listerInstance.onEndReached.bind(listerInstance)}
-                    onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
-                    renderItem={({ item, index }) =>
-                        <RecordItem
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            recordName={item.projectLable}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                        />}
-                />
-            );
+            recordName = item.projectLable;
+            break;
         }
         case COMMENTS: {
-            return (
-                <FlatList
-                    onRefresh={listerInstance.refreshData.bind(listerInstance)}
-                    data={listerInstance.state.data}
-                    refreshing={listerInstance.state.isFlatListRefreshing}
-                    ListFooterComponent={(listerInstance.state.nextPage) ? listerInstance.renderFooter.bind(listerInstance) : undefined}
-                    onEndReached={listerInstance.onEndReached.bind(listerInstance)}
-                    onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
-                    renderItem={({ item, index }) =>
-                        <RecordItem
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            recordName={item.comment}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                        />}
-                />
-            );
+            recordName = item.comment;
+            break;
         }
         case CURRENCY: {
-            return (
-                <FlatList
-                    onRefresh={listerInstance.refreshData.bind(listerInstance)}
-                    data={listerInstance.state.data}
-                    refreshing={listerInstance.state.isFlatListRefreshing}
-                    ListFooterComponent={(listerInstance.state.nextPage) ? listerInstance.renderFooter.bind(listerInstance) : undefined}
-                    onEndReached={listerInstance.onEndReached.bind(listerInstance)}
-                    onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
-                    renderItem={({ item, index }) =>
-                        <RecordItem
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            recordName={item.currency_name}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                        />}
-                />
-            );
+            recordName = item.currency_name;
+            break;
         }
-        default:
-            return (
-                <FlatList
-                    ListEmptyComponent={renderEmpty()}
-                    style={styles.listWrapper}
-                    contentContainerStyle={styles.list}
-                    onRefresh={listerInstance.refreshData.bind(listerInstance)}
-                    data={listerInstance.state.data}
-                    refreshing={listerInstance.state.isFlatListRefreshing}
-                    ListFooterComponent={(listerInstance.state.nextPage) ? listerInstance.renderFooter.bind(listerInstance) : undefined}
-                    onEndReached={listerInstance.onEndReached.bind(listerInstance)}
-                    onMomentumScrollBegin={() => { listerInstance.onEndReachedCalledDuringMomentum = false; }}
-                    renderItem={({ item, index }) =>
-                        <RecordItem
-                            index={index}
-                            selectedIndex={listerInstance.state.selectedIndex}
-                            listerInstance={listerInstance}
-                            item={item}
-                            recordName={item.lable}
-                            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
-                        />}
-                />
-            );
+        default: {
+            recordName = item.lable;
+            break;
+        }
     }
-};
+
+    return (
+        <RecordItem
+            index={index}
+            selectedIndex={listerInstance.state.selectedIndex}
+            listerInstance={listerInstance}
+            item={item}
+            recordName={recordName}
+            labels={label}
+            onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
+        />
+    );
+}

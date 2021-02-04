@@ -65,6 +65,7 @@ class Lister extends Component {
             loading: true,
             data: [],
             selectedIndex: -1,
+            pageToTake: 1,
             statusText: 'Fetching Record',
             statusTextColor: '#000000'
         }, () => {
