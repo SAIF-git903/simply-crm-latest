@@ -40,23 +40,37 @@ class Viewer extends Component {
     onEndReached() {
         if (!this.onEndReachedCalledDuringMomentum) {
             if (this.state.nextPage) {
-                this.props.getNextPageRecord(this);
+                //TODO i am not sure that "this.props.moduleName" exist for every component call
+                this.props.getNextPageRecord(this, this.props.moduleName);
             }
         }
     }
 
     onRecordSelect(id, index) {
-        this.setState({ selectedIndex: index });
+        this.setState({
+            selectedIndex: index
+        });
         this.props.viewRecordAction(id, this);
     }
 
     fetchRecord() {
-        this.setState({ loading: true, data: [], selectedIndex: -1, statusText: 'Fetching Record', statusTextColor: '#000000' });
+        this.setState({
+            loading: true,
+            data: [],
+            selectedIndex: -1,
+            statusText: 'Fetching Record',
+            statusTextColor: '#000000'
+        });
         this.props.displayRecords(this);
     }
 
     refreshData() {
-        this.setState({ isFlatListRefreshing: true, selectedIndex: -1, statusText: 'Refreshing', statusTextColor: '#000000' });
+        this.setState({
+            isFlatListRefreshing: true,
+            selectedIndex: -1,
+            statusText: 'Refreshing',
+            statusTextColor: '#000000'
+        });
         this.props.refreshWidgetRecord(this);
     }
 

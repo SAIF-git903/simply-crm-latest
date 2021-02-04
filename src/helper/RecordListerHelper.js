@@ -53,7 +53,7 @@ const renderEmpty = () => {
     </View>
 }
 
-export const fetchRecordHelper = async (listerInstance, dispatch, refresh, moduleName) => {
+export const fetchRecordHelper = async (listerInstance, dispatch, refresh, addExisting, moduleName) => {
     //First checking if any data in offline.
     try {
         // const offlineData = JSON.parse(await AsyncStorage.getItem(listerInstance.props.moduleName));
@@ -80,46 +80,11 @@ export const fetchRecordHelper = async (listerInstance, dispatch, refresh, modul
         // } else {
 
         //Offline data is not available
-        await getDataFromInternet(listerInstance, false, {}, dispatch, refresh, moduleName);
+        await getDataFromInternet(listerInstance, false, {}, dispatch, refresh, addExisting, moduleName);
         // }
     } catch (error) {
         //Offline data is not available
-        await getDataFromInternet(listerInstance, false, {}, dispatch, refresh);
-    }
-};
-
-export const getNextPageHelper = async (listerInstance, dispatch) => {
-    try {
-        const { auth } = store.getState();
-        const loginDetails = auth.loginDetails;
-//TODO getNextPage unclear when it works
-        const vtigerSeven = loginDetails.vtigerVersion > 6;
-        let param = new FormData();
-        if (!vtigerSeven) {
-            appendParamFor(listerInstance.props.moduleName, param);
-        } else {
-            param.append('_operation', 'listModuleRecords');
-            param.append('module', listerInstance.props.moduleName);
-        }
-        param.append('page', listerInstance.state.pageToTake);
-        const responseJson = await getDatafromNet(param, dispatch);
-        if (responseJson.success) {
-            await getAndSaveDataVtiger(responseJson, listerInstance, vtigerSeven, false, true, listerInstance.props.moduleName);
-        } else {
-            //Show error to user that something went wrong.
-            listerInstance.setState({
-                isFlatListRefreshing: false,
-                statusText: 'Something went wrong',
-                statusTextColor: 'red'
-            });
-        }
-    } catch (error) {
-        //Show error to user that something went wrong.
-        listerInstance.setState({
-            isFlatListRefreshing: false,
-            statusText: 'Looks like no network connection',
-            statusTextColor: 'red'
-        });
+        await getDataFromInternet(listerInstance, false, {}, dispatch, refresh, addExisting);
     }
 };
 
@@ -179,11 +144,13 @@ export const viewRecord = async (recordId, listerInstance, dispatch) => {
     }
 };
 
-const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData, dispatch, refresh, moduleName) => {
+const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData, dispatch, refresh, addExisting, moduleName) => {
     //Getting data from internet
     try {
         const { auth } = store.getState();
         const loginDetails = auth.loginDetails;
+
+        //TODO getNextPage (refresh=false, addExisting=true) unclear when it works
 
         const vtigerSeven = loginDetails.vtigerVersion > 6;
         let param = new FormData();
@@ -196,11 +163,18 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
         param.append('page', listerInstance.state.pageToTake);
         const responseJson = await getDatafromNet(param, dispatch);
         if (responseJson.success) {
-            await getAndSaveDataVtiger(responseJson, listerInstance, vtigerSeven, refresh, false, moduleName);
+            await getAndSaveDataVtiger(responseJson, listerInstance, vtigerSeven, refresh, addExisting, moduleName, dispatch);
         } else {
-            let updState = {
-                loading: false,
-            };
+            let updState;
+            if (!addExisting) {
+                updState = {
+                    loading: false,
+                };
+            } else {
+                updState = {
+                    isFlatListRefreshing: false,
+                };
+            }
             if (!offlineAvailable) {
                 //Show error to user that something went wrong.
                 updState.statusText = 'Something went wrong';
@@ -216,9 +190,16 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
             listerInstance.setState(updState);
         }
     } catch (error) {
-        let updState = {
-            loading: false,
-        };
+        let updState;
+        if (!addExisting) {
+            updState = {
+                loading: false,
+            };
+        } else {
+            updState = {
+                isFlatListRefreshing: false,
+            };
+        }
         if (!offlineAvailable) {
             //Show error to user that something went wrong.
             updState.statusText = 'Looks like no network connection';
@@ -235,7 +216,7 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
     }
 };
 
-const getAndSaveDataVtiger = async (responseJson, listerInstance, vtigerSeven, refresh, addExisting, moduleName) => {
+const getAndSaveDataVtiger = async (responseJson, listerInstance, vtigerSeven, refresh, addExisting, moduleName, dispatch) => {
     let data;
     const previousDataLength = listerInstance.state.data.length;
     if (addExisting) {
@@ -250,14 +231,12 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance, vtigerSeven, r
     }
 
     if (listerInstance.props.moduleName === INVOICE) {
-        //TODO add await ??
-        saveInvoiceDetails(records, data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh, moduleName);
+        await saveInvoiceDetails(records, data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh, moduleName, dispatch);
     } else {
         for (const record of records) {
             data.push(getListerModifiedRecord(listerInstance, responseJson, record));
         }
-        //TODO add await ??
-        saveData(data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh, moduleName);
+        await saveData(data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh, moduleName);
     }
 };
 
@@ -450,13 +429,15 @@ function getListerModifiedRecord(listerInstance, responseJson, record) {
     return modifiedRecord;
 }
 
-const saveInvoiceDetails = async (records, data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh, moduleName) => {
+const saveInvoiceDetails = async (records, data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh, moduleName, dispatch) => {
     try {
         const { auth } = store.getState();
         const loginDetails = auth.loginDetails;
 
         const moduleId = loginDetails.modules.filter((item) => item.name === 'Invoice').map(({ id }) => (id));
 
+        //TODO think about improve speed
+        //TODO do same as for Organization ?
         for (const record of records) {
             const param = new FormData();
 
@@ -465,18 +446,8 @@ const saveInvoiceDetails = async (records, data, vtigerSeven, responseJson, addE
             param.append('record', `${moduleId}x${record.id}`);
             param.append('_session', loginDetails.session);
 
-            const response = await fetch((`${loginDetails.url}/modules/Mobile/api.php`), {
-                method: 'POST',
-                headers: {
-                    // 'Accept': 'application/json',
-                    // 'Content-Type': 'multipart/form-data; charset=utf-8',
-                    'cache-control': 'no-cache',
-                },
-                body: param
-            });
-            const detailResponseJson = await response.json();
-
-            const blocks = detailResponseJson.result.record.blocks;
+            const responseJson = await getDatafromNet(param, dispatch);
+            const blocks = responseJson.result.record.blocks;
             const detailsFeilds = blocks.filter((item) => item.label === 'Invoice Details').map(({ fields }) => (fields));
             // const itemdetailsFeilds = blocks.filter((item) => item.label === 'Item Details').map(({ fields }) => (fields));
 
@@ -502,7 +473,7 @@ const saveInvoiceDetails = async (records, data, vtigerSeven, responseJson, addE
             };
             data.push(modifiedRecord);
         }
-        saveData(data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh, moduleName);
+        await saveData(data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh, moduleName);
     } catch (error) {
         console.log(error);
     }
@@ -733,7 +704,6 @@ export const deleteRecordHelper = async (listerInstance, recordId, index, callba
     try {
         const vtigerSeven = loginDetails.vtigerVersion > 6;
         let param = new FormData();
-        //TODO error: update React state on Delete record. I can fix it?
         param.append('_operation', 'deleteRecords');
         if (!vtigerSeven) {
             param.append('record', recordId);
@@ -749,7 +719,9 @@ export const deleteRecordHelper = async (listerInstance, recordId, index, callba
             if (result) {
                 //Successfully deleted.
                 await removeThisIndex(listerInstance, index);
-                if (callback && typeof (callback) === 'function') callback();
+                if (callback && typeof (callback) === 'function') {
+                    callback();
+                }
                 Toast.show('Successfully Deleted.');
             } else {
                 callback?.callback();

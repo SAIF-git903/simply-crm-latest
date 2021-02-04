@@ -46,7 +46,7 @@ export default function RecordItem(props) {
                         setIsLoading(true);
                         dispatch(deleteRecord(listerInstance, item.id, index, () => {
                             setIsLoading(false);
-                        }))
+                        }));
                     }
                 }
             ],
