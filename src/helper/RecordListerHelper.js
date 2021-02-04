@@ -152,8 +152,6 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
         const { auth } = store.getState();
         const loginDetails = auth.loginDetails;
 
-        //TODO getNextPage (refresh=false, addExisting=true) unclear when it works
-
         const vtigerSeven = loginDetails.vtigerVersion > 6;
         let param = new FormData();
         if (!vtigerSeven) {
@@ -168,56 +166,41 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
         if (responseJson.success) {
             await getAndSaveDataVtiger(responseJson, listerInstance, vtigerSeven, refresh, addExisting, moduleName, dispatch);
         } else {
-            let updState;
-            if (!addExisting) {
-                updState = {
-                    loading: false,
-                };
-            } else {
-                updState = {
-                    isFlatListRefreshing: false,
-                };
-            }
-            if (!offlineAvailable) {
-                //Show error to user that something went wrong.
-                updState.statusText = 'Something went wrong';
-                updState.statusTextColor = 'red';
-            } else {
-                //Show offline data and notify user
-                updState.statusText = 'Showing Offline data - No internet Pull to refresh';
-                updState.statusTextColor = '#000000';
-                updState.data = offlineData.records;
-                updState.nextPage = offlineData.nextPage;
-                updState.pageToTake = offlineData.pageToTake;
-            }
-            listerInstance.setState(updState);
+            processError(listerInstance, offlineData, offlineAvailable, addExisting);
         }
     } catch (error) {
-        let updState;
-        if (!addExisting) {
-            updState = {
-                loading: false,
-            };
-        } else {
-            updState = {
-                isFlatListRefreshing: false,
-            };
-        }
-        if (!offlineAvailable) {
-            //Show error to user that something went wrong.
-            updState.statusText = 'Looks like no network connection';
-            updState.statusTextColor = 'red';
-        } else {
-            //Show offline data and notify user
-            updState.statusText = 'Showing Offline data - No internet Pull to refresh';
-            updState.statusTextColor = '#000000';
-            updState.data = offlineData.records;
-            updState.nextPage = offlineData.nextPage;
-            updState.pageToTake = offlineData.pageToTake;
-        }
-        listerInstance.setState(updState);
+        processError(listerInstance, offlineData, offlineAvailable, addExisting);
     }
 };
+
+const processError = (listerInstance, offlineData, offlineAvailable, addExisting) => {
+    let updState;
+    if (!addExisting) {
+        updState = {
+            loading: false,
+            isFlatListRefreshing: false,
+        };
+    } else {
+        updState = {
+            isFlatListRefreshing: false,
+            nextPage: true,
+            pageToTake: listerInstance.state.pageToTake - 1,
+        };
+    }
+    if (!offlineAvailable) {
+        //Show error to user that something went wrong.
+        updState.statusText = 'Looks like no network connection';
+        updState.statusTextColor = 'red';
+    } else {
+        //Show offline data and notify user
+        updState.statusText = 'Showing Offline data - No internet Pull to refresh';
+        updState.statusTextColor = '#000000';
+        updState.data = offlineData.records;
+        updState.nextPage = offlineData.nextPage;
+        updState.pageToTake = offlineData.pageToTake;
+    }
+    listerInstance.setState(updState);
+}
 
 const getAndSaveDataVtiger = async (responseJson, listerInstance, vtigerSeven, refresh, addExisting, moduleName, dispatch) => {
     let data;
@@ -739,6 +722,7 @@ export const recordListRendererHelper = (listerInstance) => {
             data={listerInstance.state.data}
             refreshing={listerInstance.state.isFlatListRefreshing}
             ListFooterComponent={(listerInstance.state.nextPage) ? listerInstance.renderFooter.bind(listerInstance) : null}
+            onEndReachedThreshold={0.1}
             onEndReached={listerInstance.onEndReached.bind(listerInstance)}
             onMomentumScrollBegin={() => {
                 listerInstance.onEndReachedCalledDuringMomentum = false;
