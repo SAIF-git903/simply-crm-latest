@@ -40,7 +40,7 @@ const getDataFromInternet = async (searchInstance, pageToTake, data, mySearchNo,
     }
     param.append('page', pageToTake);
     if (searchInstance.state.searchText !== '') {
-        param.append('search_text', searchInstance.state.searchText);
+        param.append('searchText', searchInstance.state.searchText);
     }
     const responseJson = await getDatafromNet(param, dispatch);
     try {

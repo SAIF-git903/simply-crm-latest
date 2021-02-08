@@ -153,6 +153,7 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
         const loginDetails = auth.loginDetails;
 
         const vtigerSeven = loginDetails.vtigerVersion > 6;
+        let [, specialFields] = getFieldsForModule(listerInstance.props.moduleName);
         let param = new FormData();
         if (!vtigerSeven) {
             appendParamFor(listerInstance.props.moduleName, param);
@@ -161,6 +162,7 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
             param.append('module', listerInstance.props.moduleName);
         }
         param.append('page', listerInstance.state.pageToTake);
+        param.append('specialFields', JSON.stringify(Object.values(specialFields)));
         param.append('limit', 25);
         const responseJson = await getDatafromNet(param, dispatch);
         if (responseJson.success) {
@@ -216,27 +218,27 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance, vtigerSeven, r
         records = [];
     }
 
-    if (listerInstance.props.moduleName === INVOICE) {
-        await saveInvoiceDetails(records, data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh, moduleName, dispatch);
-    } else {
-        for (const record of records) {
-            data.push(getListerModifiedRecord(listerInstance, vtigerSeven, responseJson, record));
-        }
-        await saveData(data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh, moduleName);
+    for (const record of records) {
+        data.push(getListerModifiedRecord(listerInstance, vtigerSeven, responseJson, record));
     }
+    await saveData(data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh, moduleName);
 };
 
 function getListerModifiedRecord(listerInstance, vtigerSeven, responseJson, record) {
     let modifiedRecord = {};
     let modules = getAllowedModules();
     if (modules.includes(listerInstance.props.moduleName)) {
-        let fields = getFieldsForModule(listerInstance.props.moduleName);
+        let [fields, specialFields] = getFieldsForModule(listerInstance.props.moduleName);
+        fields = Object.assign(fields, specialFields);
         //at first - copy all get CRM values to object with needed keys
         for (const [fieldKey, fieldValue] of Object.entries(fields)) {
             modifiedRecord[fieldKey] = record[fieldValue];
         }
         //then specially change some fields for some modules
         switch (listerInstance.props.moduleName) {
+            case INVOICE:
+                modifiedRecord.invoiceAmount = Number(modifiedRecord.invoiceAmount).toFixed(2);
+                break;
             case LEADS:
             case CONTACTS:
                 modifiedRecord.contactsLable = (modifiedRecord.firstname)
@@ -256,69 +258,22 @@ function getListerModifiedRecord(listerInstance, vtigerSeven, responseJson, reco
                 break;
         }
         if ([CALENDAR].includes(listerInstance.props.moduleName)) {
-            modifiedRecord.id = `${(record.type === 'Task') ? '9' : '18'}x${record.id}`;
+            //this case is not used because Calendar has its own component
+            let ids = record.id.split('x');
+            modifiedRecord.id = `${(record.type === 'Task') ? '9' : '18'}x${ids[1]}`;
         } else {
-            modifiedRecord.id = `${listerInstance.props.moduleId}x${record.id}`;
+            modifiedRecord.id = record.id;
         }
     } else {
         modifiedRecord = {
             lable: (vtigerSeven)
                 ? record[responseJson.result.headers[0].name]
                 : record.label,
-            id: `${listerInstance.props.moduleId}x${record.id}`,
+            id: record.id,
         };
     }
     return modifiedRecord;
 }
-
-const saveInvoiceDetails = async (records, data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh, moduleName, dispatch) => {
-    try {
-        const { auth } = store.getState();
-        const loginDetails = auth.loginDetails;
-
-        const moduleId = loginDetails.modules.filter((item) => item.name === 'Invoice').map(({ id }) => (id));
-
-        //TODO think about improve speed = do process like others ?
-        for (const record of records) {
-            const param = new FormData();
-
-            param.append('_operation', 'fetchRecordWithGrouping');
-            param.append('module', 'Invoice');
-            param.append('record', `${moduleId}x${record.id}`);
-            param.append('_session', loginDetails.session);
-
-            const responseJson = await getDatafromNet(param, dispatch);
-            const blocks = responseJson.result.record.blocks;
-            const detailsFeilds = blocks.filter((item) => item.label === 'Invoice Details').map(({ fields }) => (fields));
-            // const itemdetailsFeilds = blocks.filter((item) => item.label === 'Item Details').map(({ fields }) => (fields));
-
-            const accountObj = detailsFeilds[0].filter((item) => item.name === 'account_id').map(({ value }) => (value));
-            const amountObj = detailsFeilds[0].filter((item) => item.name === 'hdnGrandTotal').map(({ value }) => (value));
-            const itemObj = detailsFeilds[0].filter((item) => item.name === 'assigned_user_id').map(({ value }) => (value));
-            const invoiceNoObj = detailsFeilds[0].filter((item) => item.name === 'invoice_no').map(({ value }) => (value));
-
-
-            // const invoiceDateObj = detailsFeilds[0].filter((item) => item.name === 'invoicedate').map(({ value }) => (value));
-            // const dueDateObj = detailsFeilds[0].filter((item) => item.name === 'duedate').map(({ value }) => (value));
-
-            const modifiedRecord = {
-                invoiceLable: record.subject,
-                invoiceStatus: record.invoicestatus,
-                invoiceAmount: Number(amountObj[0]).toFixed(2),
-                invoiceAccountId: accountObj[0].label,
-                invoiceItemName: itemObj[0].label,
-                invoiceNo: invoiceNoObj[0],
-                // invoiceDate: invoiceDateObj[0],
-                // dueDate: dueDateObj[0],
-                id: `${moduleId}x${record.id}`
-            };
-            data.push(modifiedRecord);
-        }
-        await saveData(data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh, moduleName);
-    } catch (error) {
-        console.log(error);
-    }
-};
 
 const saveData = async (data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh, moduleName) => {
     try {
@@ -424,6 +379,7 @@ const saveData = async (data, vtigerSeven, responseJson, addExisting, previousDa
 
 const getFieldsForModule = (moduleName) => {
     let fields = {};
+    let specialFields = {};
     //fields = { key: value }
     //key - field name for mobileapp
     //value - CRM database field name
@@ -471,10 +427,19 @@ const getFieldsForModule = (moduleName) => {
             };
             break;
         }
-        // case INVOICE: {
-        //     //invoice process in special function
-        //     break;
-        // }
+        case INVOICE: {
+            fields = {
+                invoiceLable: 'subject',
+                invoiceStatus: 'invoicestatus',
+                invoiceAccountId: 'account_id',
+                invoiceItemName: 'assigned_user_id',
+            };
+            specialFields = {
+                invoiceAmount: 'hdnGrandTotal',
+                invoiceNo: 'invoice_no',
+            }
+            break;
+        }
         case PRICEBOOKS: {
             fields = {
                 bookLable: 'bookname',
@@ -609,7 +574,7 @@ const getFieldsForModule = (moduleName) => {
             break;
         }
     }
-    return fields;
+    return [fields, specialFields];
 }
 
 const getAllowedModules = () => {
@@ -630,15 +595,11 @@ export const appendParamFor = (moduleName, param) => {
     console.log(`Appending module name: ${moduleName}`);
     let modules = getAllowedModules();
     if (modules.includes(moduleName)) {
-        let joinedFields;
-        if (moduleName === INVOICE) {
-            joinedFields = '*';
-        } else {
-            let fields = getFieldsForModule(moduleName);
-            joinedFields = 'id';
-            if (Object.keys(fields).length > 0) {
-                joinedFields += ',' + Object.keys(fields).join(',');
-            }
+        let [fields, specialFields] = getFieldsForModule(moduleName);
+        fields = Object.assign(fields, specialFields);
+        let joinedFields = 'id';
+        if (Object.values(fields).length > 0) {
+            joinedFields += ',' + Object.values(fields).join(',');
         }
         param.append('_operation', 'query');
         param.append('query', `select ${joinedFields} from ${moduleName} ORDER BY modifiedtime DESC`);
@@ -791,8 +752,8 @@ const getItem = (listerInstance, item, index) => {
                 item.invoiceNo,
                 item.invoiceStatus,
                 item.invoiceAmount,
-                item.invoiceAccountId,
-                item.invoiceItemName,
+                item.invoiceAccountId.label,
+                item.invoiceItemName.label,
             ];
             break;
         }

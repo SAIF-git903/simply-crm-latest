@@ -34,6 +34,7 @@ export default function RecordItem(props) {
     const navigation = useNavigation();
 
     function onEdit() {
+        //TODO Non-serializable values were found in the navigation state. Use navigation.setOption() instead
         navigation.navigate('Edit Record', { id: item.id, lister: listerInstance });
     }
 
@@ -44,6 +45,7 @@ export default function RecordItem(props) {
                 {
                     text: 'Yes', onPress: () => {
                         setIsLoading(true);
+                        //TODO memory leak (setState called on deleted record) on record delete
                         dispatch(deleteRecord(listerInstance, item.id, index, () => {
                             setIsLoading(false);
                         }));

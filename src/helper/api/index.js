@@ -13,6 +13,12 @@ async function makeCall({ operation, module, recordId, ids, query, values, relat
         query,
         values
     };
+    //clear undefined
+    for (const [key, value] of Object.entries(body)) {
+        if (value === undefined) {
+            delete body[key];
+        }
+    }
 
     const endpoint = `${url}/modules/Mobile/api.php`;
 
@@ -68,7 +74,7 @@ export function listModuleRecords(module) {
     return makeCall({
         operation: 'listModuleRecords',
         module
-    })
+    });
 }
 
 export function describeModule(module) {
@@ -98,7 +104,7 @@ export function fetchRelatedRecordsWithGrouping(relatedmodule, recordId) {
     return makeCall({
         operation: 'relatedRecordsWithGrouping',
         recordId,
-        relatedmodule: relatedmodule,
+        relatedmodule,
     });
 }
 

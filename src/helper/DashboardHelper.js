@@ -179,8 +179,9 @@ const getAndSaveDataVtiger = async (responseJson, viewerInstance, vtigerSeven, r
         case 'Calendar':
             for (const rec of records) {
                 if (i < 5) {
+                    let ids = rec.id.split('x');
                     const tmp = {
-                        id: `${rec.type === 'Task' ? '9' : '18'}x${rec.id}`,
+                        id: `${rec.type === 'Task' ? '9' : '18'}x${ids[1]}`,
                         subject: rec.subject
                     };
                     tmpdata.push(tmp);
