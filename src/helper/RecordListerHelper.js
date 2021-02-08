@@ -154,6 +154,9 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
 
         const vtigerSeven = loginDetails.vtigerVersion > 6;
         let [, specialFields] = getFieldsForModule(listerInstance.props.moduleName);
+        let specialFields_values = Object.values(specialFields);
+        let searchText = listerInstance.state.searchText;
+
         let param = new FormData();
         if (!vtigerSeven) {
             appendParamFor(listerInstance.props.moduleName, param);
@@ -162,11 +165,16 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
             param.append('module', listerInstance.props.moduleName);
         }
         param.append('page', listerInstance.state.pageToTake);
-        param.append('specialFields', JSON.stringify(Object.values(specialFields)));
+        if (specialFields_values.length > 0) {
+            param.append('specialFields', JSON.stringify(specialFields_values));
+        }
         param.append('limit', 25);
+        if (searchText !== '') {
+            param.append('searchText', searchText);
+        }
         const responseJson = await getDatafromNet(param, dispatch);
         if (responseJson.success) {
-            await getAndSaveDataVtiger(responseJson, listerInstance, vtigerSeven, refresh, addExisting, moduleName, dispatch);
+            await getAndSaveDataVtiger(responseJson, listerInstance, vtigerSeven, refresh, addExisting, moduleName);
         } else {
             processError(listerInstance, offlineData, offlineAvailable, addExisting);
         }
@@ -176,18 +184,19 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
 };
 
 const processError = (listerInstance, offlineData, offlineAvailable, addExisting) => {
-    let updState;
-    if (!addExisting) {
-        updState = {
-            loading: false,
-            isFlatListRefreshing: false,
-        };
-    } else {
-        updState = {
-            isFlatListRefreshing: false,
-            nextPage: true,
-            pageToTake: listerInstance.state.pageToTake - 1,
-        };
+    let updState = {
+        loading: false,
+        isFlatListRefreshing: false,
+        searching: false,
+    };
+    let searchText = listerInstance.state.searchText;
+    if (searchText !== '') {
+        updState.searchLabel = `An error occurred while searching "${searchText}"`;
+    }
+    if (addExisting) {
+        let ptt = listerInstance.state.pageToTake - 1;
+        updState.nextPage = true;
+        updState.pageToTake = (ptt > 0) ? ptt : 1;
     }
     if (!offlineAvailable) {
         //Show error to user that something went wrong.
@@ -204,9 +213,8 @@ const processError = (listerInstance, offlineData, offlineAvailable, addExisting
     listerInstance.setState(updState);
 }
 
-const getAndSaveDataVtiger = async (responseJson, listerInstance, vtigerSeven, refresh, addExisting, moduleName, dispatch) => {
+const getAndSaveDataVtiger = async (responseJson, listerInstance, vtigerSeven, refresh, addExisting, moduleName) => {
     let data;
-    const previousDataLength = listerInstance.state.data.length;
     if (addExisting) {
         data = listerInstance.state.data;
     } else {
@@ -217,11 +225,10 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance, vtigerSeven, r
     if (records === null) {
         records = [];
     }
-
     for (const record of records) {
         data.push(getListerModifiedRecord(listerInstance, vtigerSeven, responseJson, record));
     }
-    await saveData(data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh, moduleName);
+    await saveData(data, vtigerSeven, responseJson, addExisting, listerInstance.state.data.length, listerInstance, refresh, moduleName);
 };
 
 function getListerModifiedRecord(listerInstance, vtigerSeven, responseJson, record) {
@@ -251,7 +258,7 @@ function getListerModifiedRecord(listerInstance, vtigerSeven, responseJson, reco
                 modifiedRecord.amount = Number(modifiedRecord.amount).toFixed(2);
                 break;
             case PRODUCTS:
-                modifiedRecord.quantity = Number(modifiedRecord.qtyinstock).toFixed(2);
+                modifiedRecord.qtyinstock = Number(modifiedRecord.qtyinstock).toFixed(2);
                 break;
             default:
                 //if no change is required
@@ -284,6 +291,7 @@ const saveData = async (data, vtigerSeven, responseJson, addExisting, previousDa
             // the array is defined and has at least one element
             statusText = 'Loading complete - Recently updated Pull to refresh';
             offlineData = {
+                searchText: listerInstance.state.searchText,
                 records: data,
                 nextPage: (vtigerSeven) ? (responseJson.result.moreRecords) : (responseJson.result.nextPage > 0),
                 finishedTime: JSON.stringify(moment()),
@@ -307,35 +315,39 @@ const saveData = async (data, vtigerSeven, responseJson, addExisting, previousDa
                 records: data,
                 nextPage: false,
                 finishedTime: JSON.stringify(moment()),
-                pageToTake: 0
+                pageToTake: 1
             };
             statusText = 'Loading complete - Module is Empty';
         }
-        if (refresh) {
-            listerInstance.setState({
-                isFlatListRefreshing: false,
-                statusText,
-                statusTextColor: '#000000',
-                data: offlineData.records,
-                nextPage: offlineData.nextPage,
-                pageToTake: offlineData.pageToTake
-            });
-        } else {
-            if (moduleName !== listerInstance.props.moduleName) {
-                console.log('Module name was: ' + moduleName)
-                console.log('but correct is: ' + listerInstance.props.moduleName)
-                return;
+        let updState = {
+            searching: false,
+            isFlatListRefreshing: false,
+            loading: false,
+            statusText,
+            statusTextColor: '#000000',
+            data: offlineData.records,
+            nextPage: offlineData.nextPage,
+            pageToTake: offlineData.pageToTake
+        };
+        //TODO state and props can be different at this moment, think about it
+        let searchText = listerInstance.state.searchText;
+        if (searchText !== '') {
+            let searchLabel = `No results found for "${searchText}"`;
+            let data_length = offlineData.records.length;
+            if (data_length > 0) {
+                searchLabel = `Displaying ${data_length} result(s) for "${searchText}"`;
             }
-
-            listerInstance.setState({
-                loading: false,
-                statusText,
-                statusTextColor: '#000000',
-                data: offlineData.records,
-                nextPage: offlineData.nextPage,
-                pageToTake: offlineData.pageToTake
-            });
+            updState.searchLabel = searchLabel;
         }
+
+        if (moduleName !== listerInstance.props.moduleName) {
+            //do not update the list of records because the user has gone to another module record list page
+            console.log('Module name was: ' + moduleName);
+            console.log('but correct is: ' + listerInstance.props.moduleName);
+            return;
+        }
+
+        listerInstance.setState(updState);
     } catch (error) {
         console.log(error);
     }
@@ -768,6 +780,7 @@ const getItem = (listerInstance, item, index) => {
         case LEADS: {
             recordName = item.contactsLable;
             label = [
+                item.phone,
                 item.email
             ];
             break;
@@ -794,7 +807,7 @@ const getItem = (listerInstance, item, index) => {
             label = [
                 item.no,
                 item.productcategory,
-                item.quantity
+                item.qtyinstock
             ];
             break;
         }

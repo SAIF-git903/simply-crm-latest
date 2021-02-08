@@ -8,7 +8,7 @@ import {
 import { RECORD_ADDER, HOME_MAIN, RECORD_VIEWER } from '../variables/constants';
 import {
   userUrlHelper, loginHelper, renderDrawerView, fetchRecordHelper, fetchRefRecordHelper, viewRecord,
-  viewRecordRenderer, deleteRecordHelper, refreshRefRecordHelper, searchRecordHelper,
+  viewRecordRenderer, deleteRecordHelper, refreshRefRecordHelper,
   refreshRecordDataHelper, getNextRefPageHelper, fetchWidgetRecordHelper, refreshRecordWidgetHelper,
   getAddressDetails
 } from '../helper';
@@ -106,10 +106,6 @@ export const viewRecordRendererActions = (viewerInstance) => (dispatch) => {
 
 export const deleteRecord = (listerInstance, recordId, index, recordInstance) => (dispatch) => {
   deleteRecordHelper(listerInstance, recordId, index, recordInstance, dispatch);
-};
-
-export const searchRecord = (searchInstance) => (dispatch) => {
-  searchRecordHelper(searchInstance, dispatch);
 };
 
 export const moduleSelected = (text) => ({

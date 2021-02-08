@@ -161,6 +161,7 @@ export const describeRecordHelper = async (addInstance) => {
                                     formArray.push(
                                         <View
                                             sequence={fArr.sequence}
+                                            key={fieldObj.name}
                                         >
                                             <NumericForm
                                                 obj={fieldObj}

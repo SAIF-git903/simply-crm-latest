@@ -2,66 +2,33 @@ import React, { Component } from 'react';
 import { View, StyleSheet, TextInput, Platform } from 'react-native';
 import { fontStyles } from '../../styles/common';
 import IconButton from '../../components/IconButton';
-import { searchRecord } from '../../actions';
 import { connect } from 'react-redux';
 
 class SearchBox extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            searchText: '',
             data: [],
-            searchNo: 0,
             moduleName: this.props.moduleName
         }
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        //to reset search text on refresh lister page
-        if (
-            prevProps.resetSearch === false
-            && this.props.resetSearch === true
-        ) {
-            this.setState({
-                searchText: ''
-            });
-        }
-        //to update search label on lister
-        if (
-            this.state.data !== prevState.data
-        ) {
-            this.props.onDataReceived({
-                data: this.state.data,
-                searchText: this.state.searchText
-            });
-        }
-    }
-
     onChangeText(text) {
-        this.setState({ searchText: text });
+        this.props.onChangeText(text);
     }
 
     onSubmit() {
-        if (this.state.searchText.length === 0 || this.props.disabled) return;
+        if (this.props.searchText.length === 0 || this.props.disabled) {
+            return;
+        }
 
         this.refs.searchbox.blur();
-        this.setState({
-            data: [],
-            statusText: 'Searching .....',
-            statusTextColor: '#000000',
-            searchNo: this.state.searchNo + 1
-        }, () => {
-            this.props.dispatch(searchRecord(this));
-        });
-    }
-
-    didFinishSearch() {
-        this.props.didFinishSearch();
+        this.props.doSearch(this.props.searchText);
     }
 
     render() {
         const { style } = this.props;
-        const { searchText } = this.state;
+        const { searchText } = this.props;
 
         return (
             <View
@@ -77,9 +44,7 @@ class SearchBox extends Component {
                     placeholder='Search'
                     placeholderTextColor='#707070'
                     ref='searchbox'
-                    onSubmitEditing={() => {
-                        this.onSubmit();
-                    }}
+                    onSubmitEditing={() => this.onSubmit()}
                     autoCapitalize='none'
                     returnKeyType='done'
                     value={searchText}

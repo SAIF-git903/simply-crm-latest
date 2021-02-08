@@ -11,13 +11,22 @@ class Lister extends Component {
         super(props);
         this.onEndReachedCalledDuringMomentum = true;
         this.state = {
-            searching: false,
-            loading: true,
-            isFlatListRefreshing: false,
-            data: [],
+            //label when search is active
+            searchLabel: null,
+
+            //progressbars
+            searching: false,//onSearch
+            loading: false,//onGetRecords and onRefresh
+            isFlatListRefreshing: false,//onGetNextPage
+
+            nextPage: false,//is the next page of the list of records available
+
+            //request params
+            data: [],//current records on page
+            pageToTake: 1,//current page
+            searchText: '',//text for search
+
             selectedIndex: -1,
-            nextPage: false,
-            pageToTake: 1,
             statusText: '',
             statusTextColor: '#000000',
             navigation: this.props.navigation
@@ -63,12 +72,16 @@ class Lister extends Component {
             searchLabel: null,
             searching: false,
             loading: true,
+            isFlatListRefreshing: false,
+            nextPage: false,
             data: [],
-            selectedIndex: -1,
             pageToTake: 1,
+            searchText: '',
+            selectedIndex: -1,
             statusText: 'Fetching Record',
             statusTextColor: '#000000'
         }, () => {
+
             this.props.dispatch(fetchRecord(this, this.props.moduleName));
             if (this.props.saved === 'saved') {
                 this.refreshData();
@@ -80,13 +93,33 @@ class Lister extends Component {
         this.setState({
             searchLabel: null,
             searching: false,
+            loading: false,
             isFlatListRefreshing: true,
-            selectedIndex: -1,
+            nextPage: false,
+            // data: [],
             pageToTake: 1,
+            selectedIndex: -1,
             statusText: 'Refreshing',
             Color: '#000000'
         }, () => {
             this.props.dispatch(refreshRecord(this, this.props.moduleName));
+        });
+    }
+
+    doSearch(searchText) {
+        this.setState({
+            searchLabel: null,
+            searching: true,
+            loading: false,
+            isFlatListRefreshing: false,
+            nextPage: false,
+            // data: [],
+            pageToTake: 1,
+            selectedIndex: -1,
+            statusText: 'Searching .....',
+            Color: '#000000'
+        }, () => {
+            this.props.dispatch(fetchRecord(this, this.props.moduleName));
         });
     }
 
@@ -133,19 +166,11 @@ class Lister extends Component {
                     paddingHorizontal: 40
                 }}>
                     <SearchBox
-                        resetSearch={this.state.isFlatListRefreshing}
+                        searchText={this.state.searchText}
                         disabled={this.state.searching}
                         moduleName={this.props.moduleName}
-                        onDataReceived={({ data, searchText }) => {
-                            if (data.length !== 0) {
-                                let searchLabel = searchText.length !== 0 ? `Displaying ${data.length} result(s) for "${searchText}"` : null;
-                                this.setState({ data, searching: true, searchLabel });
-                            } else {
-                                let searchLabel = `No results found for "${searchText}"`;
-                                this.setState({ searching: true, data: [], searchLabel });
-                            }
-                        }}
-                        didFinishSearch={() => this.setState({ searching: false })}
+                        onChangeText={(searchText) => this.setState({ searchText: searchText })}
+                        doSearch={(searchText) => this.doSearch(searchText)}
                     />
                 </View>
                 <View style={{

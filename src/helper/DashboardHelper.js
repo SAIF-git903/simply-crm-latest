@@ -162,7 +162,7 @@ const getAndSaveDataVtiger = async (responseJson, viewerInstance, vtigerSeven, r
             for (const rec of records) {
                 if (i < 5) {
                     const tmp = {
-                        id: `12x${rec.id}`,
+                        id: rec.id,
                         contactsLable: `${rec.firstname} ${rec.lastname}`,
                         email: rec.email
                     };
@@ -198,7 +198,7 @@ const getAndSaveDataVtiger = async (responseJson, viewerInstance, vtigerSeven, r
             for (const rec of records) {
                 if (i < 5) {
                     const tmp = {
-                        id: `10x${rec.id}`,
+                        id: rec.id,
                         lable: `${rec.firstname} ${rec.lastname}`,
                         email: rec.email
                     };
@@ -224,7 +224,7 @@ const getAndSaveDataVtiger = async (responseJson, viewerInstance, vtigerSeven, r
 
                 if (i < 5) {
                     const tmp = {
-                        id: `11x${id}`,
+                        id: rec.id,
                         accountname,
                         website,
                         phone,
