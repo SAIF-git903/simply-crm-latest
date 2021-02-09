@@ -52,7 +52,7 @@ export default function reducer(state = initialState, action = {}) {
 
         case DELETE_CALENDAR_RECORD_FULFILLED:
             let newRecords = JSON.parse(JSON.stringify(state.records));
-            newRecords = newRecords.filter(x => x.id !== action.payload)
+            newRecords = newRecords.filter(x => x.id !== action.payload);
 
             return {
                 ...state,
@@ -98,15 +98,16 @@ export const getCalendarRecords = (isRefreshing) => async (dispatch) => {
         let taskIds = [];
 
         for (const record of calendarRecords) {
+            let ids = record.id.split('x');
             if (record.type === 'Event') {
-                eventIds.push(record.id);
+                eventIds.push(ids[1]);
             } else {
-                taskIds.push(record.id);
+                taskIds.push(ids[1]);
             }
         }
 
-        eventIds = eventIds.map(x => `18x${x}`)
-        taskIds = taskIds.map(x => `9x${x}`)
+        eventIds = eventIds.map(x => `18x${x}`);
+        taskIds = taskIds.map(x => `9x${x}`);
 
         let eventsResponse;
         let tasksResponse;
@@ -123,11 +124,11 @@ export const getCalendarRecords = (isRefreshing) => async (dispatch) => {
 
         const eventRecords = eventsResponse?.result.records?.map(x => ({
             ...x, type: 'Event'
-        }))
+        }));
 
         const taskRecords = tasksResponse?.result.records?.map(x => ({
             ...x, type: 'Task'
-        }))
+        }));
 
         let records = [
             ...(Array.isArray(eventRecords) ? eventRecords : []),
@@ -148,8 +149,8 @@ export const getCalendarRecords = (isRefreshing) => async (dispatch) => {
 
         for (let record of records) {
             const taskDetailsFields = record.blocks[0].fields;
-            taskDetailsFields.push({ name: 'type', value: record.type })
-            taskDetailsFields.push({ name: 'id', value: record.id })
+            taskDetailsFields.push({ name: 'type', value: record.type });
+            taskDetailsFields.push({ name: 'id', value: record.id });
 
             mappedRecords.push(
                 taskDetailsFields.filter(x => requiredFields.includes(x.name))
@@ -164,7 +165,7 @@ export const getCalendarRecords = (isRefreshing) => async (dispatch) => {
             }
 
             return item;
-        })
+        });
         dispatch(getCalendarRecordsFulfilled(mappedRecords));
         return;
 

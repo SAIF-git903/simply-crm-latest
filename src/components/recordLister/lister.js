@@ -11,26 +11,34 @@ class Lister extends Component {
         super(props);
         this.onEndReachedCalledDuringMomentum = true;
         this.state = {
-            searching: false,
-            searchText: null,
-            loading: true,
-            isFlatListRefreshing: false,
-            data: [],
+            //label when search is active
+            searchLabel: null,
+
+            //progressbars
+            searching: false,//onSearch
+            loading: false,//onGetRecords and onRefresh
+            isFlatListRefreshing: false,//onGetNextPage
+
+            nextPage: false,//is the next page of the list of records available
+
+            //request params
+            data: [],//current records on page
+            pageToTake: 1,//current page
+            searchText: '',//text for search
+
             selectedIndex: -1,
-            nextPage: false,
-            pageToTake: 0,
             statusText: '',
             statusTextColor: '#000000',
             navigation: this.props.navigation
         };
     }
 
-    UNSAFE_componentWillMount() {
+    componentDidMount() {
         this.getRecords();
     }
 
     UNSAFE_componentWillReceiveProps(newprops) {
-        this.setState({ loading: true, searching: false, searchText: null, searchLabel: null })
+        this.setState({ loading: true, searching: false, searchLabel: null });
         this.props = newprops;
         if (this.props.saved !== 'not_saved') {
             this.getRecords();
@@ -45,7 +53,11 @@ class Lister extends Component {
     onEndReached() {
         if (!this.onEndReachedCalledDuringMomentum) {
             if (this.state.nextPage) {
-                this.setState({ pageToTake: this.state.pageToTake + 1 }, () => this.props.dispatch(getNextPageRecord(this)));
+                this.setState({
+                    pageToTake: this.state.pageToTake + 1
+                }, () => {
+                    this.props.dispatch(getNextPageRecord(this, this.props.moduleName));
+                });
             }
         }
     }
@@ -56,16 +68,59 @@ class Lister extends Component {
     // }
 
     getRecords() {
-        this.setState({ loading: true, data: [], selectedIndex: -1, statusText: 'Fetching Record', statusTextColor: '#000000' });
-        this.props.dispatch(fetchRecord(this, this.props.moduleName));
-        if (this.props.saved === 'saved') {
-            this.refreshData();
-        }
+        this.setState({
+            searchLabel: null,
+            searching: false,
+            loading: true,
+            isFlatListRefreshing: false,
+            nextPage: false,
+            data: [],
+            pageToTake: 1,
+            searchText: '',
+            selectedIndex: -1,
+            statusText: 'Fetching Record',
+            statusTextColor: '#000000'
+        }, () => {
+
+            this.props.dispatch(fetchRecord(this, this.props.moduleName));
+            if (this.props.saved === 'saved') {
+                this.refreshData();
+            }
+        });
     }
 
     refreshData() {
-        this.setState({ isFlatListRefreshing: true, selectedIndex: -1, statusText: 'Refreshing', statusTextColor: '#000000' });
-        this.props.dispatch(refreshRecord(this));
+        this.setState({
+            searchLabel: null,
+            searching: false,
+            loading: false,
+            isFlatListRefreshing: true,
+            nextPage: false,
+            // data: [],
+            pageToTake: 1,
+            selectedIndex: -1,
+            statusText: 'Refreshing',
+            Color: '#000000'
+        }, () => {
+            this.props.dispatch(refreshRecord(this, this.props.moduleName));
+        });
+    }
+
+    doSearch(searchText) {
+        this.setState({
+            searchLabel: null,
+            searching: true,
+            loading: false,
+            isFlatListRefreshing: false,
+            nextPage: false,
+            // data: [],
+            pageToTake: 1,
+            selectedIndex: -1,
+            statusText: 'Searching .....',
+            Color: '#000000'
+        }, () => {
+            this.props.dispatch(fetchRecord(this, this.props.moduleName));
+        });
     }
 
     renderFooter() {
@@ -111,19 +166,11 @@ class Lister extends Component {
                     paddingHorizontal: 40
                 }}>
                     <SearchBox
+                        searchText={this.state.searchText}
                         disabled={this.state.searching}
                         moduleName={this.props.moduleName}
-                        resetSearch={() => { }}
-                        onDataReceived={({ data, searchText }) => {
-                            if (data.length !== 0) {
-                                let searchLabel = searchText.length !== 0 ? `Displaying ${data.length} result(s) for "${searchText}"` : null
-                                this.setState({ data, searchText, searching: true, searchLabel })
-                            } else {
-                                let searchLabel = `No results found for "${searchText}"`
-                                this.setState({ searching: true, searchText: null, data: [], searchLabel })
-                            }
-                        }}
-                        didFinishSearch={() => this.setState({ searching: false })}
+                        onChangeText={(searchText) => this.setState({ searchText: searchText })}
+                        doSearch={(searchText) => this.doSearch(searchText)}
                     />
                 </View>
                 <View style={{
@@ -135,37 +182,31 @@ class Lister extends Component {
                             this.renderSearching()
                             :
                             <View style={{ flex: 1 }}>
-                                {this.state.searchLabel ?
-                                    <View style={{ paddingTop: 10, alignItems: 'center' }}>
-                                        <Text style={fontStyles.fieldLabel}>{this.state.searchLabel}</Text>
-                                        <Text
-                                            onPress={() => {
-                                                this.setState({ searchLabel: null, searching: false, loading: true, searchText: null }, () => {
-                                                    setTimeout(() => {
-                                                        this.getRecords()
-                                                    }, 500);
-                                                })
-                                            }}
-                                            style={[fontStyles.fieldLabel, { fontSize: 14, paddingTop: 5, color: '#007aff' }]}
-                                        >
-                                            Go Back
+                                {
+                                    this.state.searchLabel
+                                        ?
+                                        <View style={{ paddingTop: 10, alignItems: 'center' }}>
+                                            <Text style={fontStyles.fieldLabel}>
+                                                {this.state.searchLabel}
                                             </Text>
-
-                                    </View>
-                                    :
-                                    null
+                                            <Text
+                                                onPress={() => {
+                                                    this.getRecords();
+                                                }}
+                                                style={[fontStyles.fieldLabel, { fontSize: 14, paddingTop: 5, color: '#007aff' }]}
+                                            >
+                                                Go Back
+                                            </Text>
+                                        </View>
+                                        :
+                                        null
                                 }
-
                                 {recordListRendererHelper(this)}
                             </View>
                     }
                 </View>
             </View>
         );
-    }
-
-    renderSearch() {
-        return <Text>Search</Text>
     }
 
     render() {

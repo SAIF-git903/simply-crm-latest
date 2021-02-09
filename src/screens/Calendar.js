@@ -201,7 +201,7 @@ export default function Calendar() {
     }
 
     function fetchData(isRefreshing) {
-        dispatch(getCalendarRecords(isRefreshing))
+        dispatch(getCalendarRecords(isRefreshing));
     }
 
     function mapItemsToAgendaList(items) {
@@ -371,10 +371,12 @@ export default function Calendar() {
                             textTransform: 'uppercase'
                         }}
                         ListEmptyComponent={renderEmpty()}
-                        refreshControl={<RefreshControl
-                            refreshing={isLoading && isRefreshing || (isLoading && records.length === 0)}
-                            onRefresh={() => fetchData(true)}
-                        />}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={isLoading && isRefreshing || (isLoading && records.length === 0)}
+                                onRefresh={() => fetchData(true)}
+                            />
+                        }
                     />
                 </CalendarProvider>
             </View>

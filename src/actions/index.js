@@ -8,8 +8,8 @@ import {
 import { RECORD_ADDER, HOME_MAIN, RECORD_VIEWER } from '../variables/constants';
 import {
   userUrlHelper, loginHelper, renderDrawerView, fetchRecordHelper, fetchRefRecordHelper, viewRecord,
-  viewRecordRenderer, deleteRecordHelper, refreshRecordHelper, refreshRefRecordHelper, searchRecordHelper,
-  refreshRecordDataHelper, getNextPageHelper, getNextRefPageHelper, fetchWidgetRecordHelper, refreshRecordWidgetHelper,
+  viewRecordRenderer, deleteRecordHelper, refreshRefRecordHelper,
+  refreshRecordDataHelper, getNextRefPageHelper, fetchWidgetRecordHelper, refreshRecordWidgetHelper,
   getAddressDetails
 } from '../helper';
 
@@ -58,23 +58,23 @@ export const getDrawerViews = (loginDetails, drawerInstance) => {
 };
 
 export const fetchRecord = (recordListerInstance, moduleName) => (dispatch) => {
-  fetchRecordHelper(recordListerInstance, dispatch, moduleName);
+  fetchRecordHelper(recordListerInstance, dispatch, false, false, moduleName);
 };
 
 export const fetchRefRecord = (recordListerInstance) => (dispatch) => {
   fetchRefRecordHelper(recordListerInstance, dispatch);
 };
 
-export const refreshRecord = (recordListerInstance) => (dispatch) => {
-  refreshRecordHelper(recordListerInstance, dispatch);
+export const refreshRecord = (recordListerInstance, moduleName) => (dispatch) => {
+  fetchRecordHelper(recordListerInstance, dispatch, true, false, moduleName);
 };
 
 export const refreshRefRecord = (recordListerInstance) => (dispatch) => {
   refreshRefRecordHelper(recordListerInstance, dispatch);
 };
 
-export const getNextPageRecord = (recordListerInstance) => (dispatch) => {
-  getNextPageHelper(recordListerInstance, dispatch);
+export const getNextPageRecord = (recordListerInstance, moduleName) => (dispatch) => {
+  fetchRecordHelper(recordListerInstance, dispatch, false, true, moduleName);
 };
 
 export const getNextRefPageRecord = (recordListerInstance) => (dispatch) => {
@@ -106,10 +106,6 @@ export const viewRecordRendererActions = (viewerInstance) => (dispatch) => {
 
 export const deleteRecord = (listerInstance, recordId, index, recordInstance) => (dispatch) => {
   deleteRecordHelper(listerInstance, recordId, index, recordInstance, dispatch);
-};
-
-export const searchRecord = (searchInstance) => (dispatch) => {
-  searchRecordHelper(searchInstance, dispatch);
 };
 
 export const moduleSelected = (text) => ({

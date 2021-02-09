@@ -5,7 +5,6 @@ export * from './RecordListerHelper';
 export * from './RecordViewerHelper';
 export * from './DatabaseKeyHelper';
 export * from './DashboardHelper';
-export * from './SearchHelper';
 export * from './addRecordHelper';
 export * from './editRecordHelper';
 export * from './ReferenceHelper';
