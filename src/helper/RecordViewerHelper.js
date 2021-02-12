@@ -1,7 +1,7 @@
 import React from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 import store from '../store';
-import { getDatafromNet } from './networkHelper';
+import { getDataFromNet } from './networkHelper';
 import Section from '../components/common/section';
 import SectionBox from '../components/common/section/sectionBox';
 import Field from '../components/recordViewer/field';
@@ -61,13 +61,13 @@ export const refreshRecordDataHelper = async (viewerInstance, dispatch) => {
             const param = new FormData();
             param.append('_operation', 'fetchRecordWithGrouping');
             param.append('record', viewerInstance.props.recordId);
-            responseJson = await getDatafromNet(param, dispatch);
+            responseJson = await getDataFromNet(param, dispatch);
         } else {
             const param = new FormData();
             param.append('_operation', 'fetchRecordWithGrouping');
             param.append('module', viewerInstance.props.moduleName);
             param.append('record', viewerInstance.state.recordId);
-            responseJson = await getDatafromNet(param, dispatch);
+            responseJson = await getDataFromNet(param, dispatch);
         }
 
         if (responseJson.success) {
@@ -107,13 +107,13 @@ const getDataFromInternet = async (viewerInstance, offlineAvailable, offlineData
             const param = new FormData();
             param.append('_operation', 'fetchRecordWithGrouping');
             param.append('record', viewerInstance.props.recordId);
-            responseJson = await getDatafromNet(param, dispatch);
+            responseJson = await getDataFromNet(param, dispatch);
         } else {
             const param = new FormData();
             param.append('_operation', 'fetchRecordWithGrouping');
             param.append('module', viewerInstance.props.moduleName);
             param.append('record', viewerInstance.state.recordId);
-            responseJson = await getDatafromNet(param, dispatch);
+            responseJson = await getDataFromNet(param, dispatch);
         }
 
         if (responseJson.success) {

@@ -7,7 +7,7 @@ import {
 } from './types';
 import { RECORD_ADDER, HOME_MAIN, RECORD_VIEWER } from '../variables/constants';
 import {
-  userUrlHelper, loginHelper, renderDrawerView, fetchRecordHelper, fetchRefRecordHelper, viewRecord,
+  getInstancesList, renderDrawerView, fetchRecordHelper, fetchRefRecordHelper, viewRecord,
   viewRecordRenderer, deleteRecordHelper, refreshRefRecordHelper,
   refreshRecordDataHelper, getNextRefPageHelper, fetchWidgetRecordHelper, refreshRecordWidgetHelper,
   getAddressDetails
@@ -21,8 +21,7 @@ export const dimensionChanged = (isPortrait, width, height) => ({
 export const loginUser = (email, password, url, navigation, loginInstance) => (dispatch) => {
   if (validData(email, password, url)) {
     loginInstance.setState({ loading: true });
-    userUrlHelper(email, password, url, navigation, loginInstance, dispatch);
-    // loginHelper(username, password, url, navigation, loginInstance, dispatch);
+    getInstancesList(email, password, url, navigation, loginInstance, dispatch);
   }
 };
 

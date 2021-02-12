@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import {
     View, StyleSheet, Text, TextInput,
-    TouchableWithoutFeedback, Picker, TouchableOpacity
+    TouchableWithoutFeedback, TouchableOpacity
 } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { DatePickerDialog } from 'react-native-datepicker-dialog';
@@ -12,6 +13,7 @@ import moment from 'moment';
 
 
 class InputForm extends Component {
+    //TODO this component is not used ??
     constructor(props) {
         super(props);
         this.state = {

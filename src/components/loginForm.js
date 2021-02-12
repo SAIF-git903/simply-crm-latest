@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-    View, TextInput, Image, ActivityIndicator, Text, Animated, TouchableWithoutFeedback,
-    StyleSheet, Picker, TouchableOpacity, Platform, Keyboard
+    View, TextInput, Image, ActivityIndicator, Text, Animated,
+    StyleSheet, TouchableOpacity, Platform, Keyboard
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import { Picker } from '@react-native-picker/picker';
 import ModalDropdown from 'react-native-modal-dropdown';
 import SafeAreaView from 'react-native-safe-area-view';
-
-
 import IconButton from '../components/IconButton';
 import Icon from 'react-native-vector-icons/FontAwesome5Pro';
-
 import { URLDETAILSKEY, LOGINDETAILSKEY } from '../variables/strings';
 import { loginUser } from '../actions/';
 import { assignUrl } from '../helper';
@@ -33,14 +31,11 @@ class LoginForm extends Component {
             username: '',
             showPassword: false,
         };
-        this.handlePressIn = this.handlePressIn.bind(this);
-        this.handlePressOut = this.handlePressOut.bind(this);
     }
 
     UNSAFE_componentWillMount() {
         this.animatedValue = new Animated.Value(0);
         this.buttonAnimatedValue = new Animated.Value(1);
-        // userUrlHelper('albert.xhani@outlook.com', '987654321');
     }
 
     componentDidMount() {
@@ -70,7 +65,6 @@ class LoginForm extends Component {
         Keyboard.dismiss();
 
         const { email, password, url, username } = this.state;
-
         console.log(url, this.state.showUrlList);
         if (this.state.showUrlList && url !== '') {
             this.setState({ loading: true });
@@ -79,41 +73,35 @@ class LoginForm extends Component {
         } else {
             this.props.loginUser(email, password, '', this.props.navigation, this);
         }
+
+        Animated.spring(this.buttonAnimatedValue, {
+            toValue: 0.7,
+            useNativeDriver: true
+        }).start(() => {
+            Animated.spring(this.buttonAnimatedValue, {
+                toValue: 1,
+                useNativeDriver: true
+            }).start();
+        });
     }
 
     onForgotPasswordPress() {
-        console.log('forgot password clicked');
         const { navigate } = this.props.navigation;
         navigate('Forgot Password', { email: this.state.email });
     }
 
-    handlePressIn() {
-        Animated.spring(this.buttonAnimatedValue, {
-            toValue: 0.7,
-            useNativeDriver: true
-        }).start();
-    }
-
-    handlePressOut() {
-        Animated.spring(this.buttonAnimatedValue, {
-            toValue: 1,
-            useNativeDriver: true
-        }).start();
-        this.onButtonPress();
-    }
-
-    renderLoading() {
-        return (
+    getButtonText() {
+        let text = (
             <View>
                 <ActivityIndicator color={'#0069AE'} />
             </View>
         );
-    }
-
-    renderLoginButton() {
-        return (
-            <Text style={fontStyles.loginButtonLabel} >LOGIN</Text>
-        );
+        if (!this.state.loading) {
+            text = (
+                <Text style={fontStyles.loginButtonLabel} >LOGIN</Text>
+            );
+        }
+        return text;
     }
 
     onUrlSelected(url) {
@@ -123,7 +111,114 @@ class LoginForm extends Component {
             url: selectedUrlDetails.url,
             username: selectedUrlDetails.username
         });
+    }
 
+    getUrlList(options, optionsForiOS) {
+        let view = (
+            <View style={{ height: 30, padding: 10 }} />
+        );
+        if (this.state.showUrlList) {
+            view = (
+                <View style={styles.textInputWrapper}>
+                    <Icon
+                        name='globe'
+                        solid
+                        size={23}
+                        color='#92ADD1'
+                        style={{ width: 24 }}
+                    />
+                    {this.getInstanceList(options, optionsForiOS)}
+                </View>
+            );
+        }
+        return view;
+    }
+
+    getInstanceList(options, optionsForiOS) {
+        let picker;
+        if (Platform.OS === 'android') {
+            picker = (
+                <Picker
+                    style={[fontStyles.loginInputFieldLabel, { flex: 1, backgroundColor: 'transparent',  }]}
+                    mode={'dropdown'}
+                    selectedValue={this.state.url}
+                    onValueChange={(itemValue) => {
+                        this.onUrlSelected(itemValue);
+                    }}
+                >
+                    <Picker.Item
+                        label='Please Select Url' value={0}
+                    />
+                    {
+                        options.map((item, index) => {
+                            return (
+                                <Picker.Item
+                                    label={item.url}
+                                    value={item.url}
+                                    key={index}
+                                    color='black'
+                                />
+                            );
+                        })
+                    }
+                </Picker>
+            );
+        } else {
+            picker = (
+                <ModalDropdown
+                    onDropdownWillShow={() => Keyboard.dismiss()}
+                    options={optionsForiOS}
+                    onSelect={(index, value) => {
+                        this.onUrlSelected(value);
+                    }}
+                    style={{
+                        flex: 1,
+                        width: '100%',
+                        padding: 5,
+                        alignItems: 'flex-start'
+                    }}
+                    textStyle={fontStyles.loginInputFieldLabel}
+                    dropdownStyle={{ width: '80%', flex: 1 }}
+                    dropdownTextStyle={[fontStyles.loginInputFieldLabel, { fontSize: 14, color: 'black' }]}
+                />
+            );
+        }
+        return picker;
+    }
+
+    getClearButton() {
+        let clear = null;
+        if (this.state.email.length !== 0) {
+            clear = (
+                <IconButton
+                    icon={'times-circle'}
+                    solid
+                    size={14}
+                    onPress={() => this.setState({ email: '' })}
+                />
+            );
+        }
+        return clear;
+    }
+
+    getEye(password, showPassword) {
+        let eye = null;
+        if (password.length !== 0) {
+            eye = (
+                <View style={{
+                    flexDirection: 'row',
+                    alignItems: 'center'
+                }}>
+                    <IconButton
+                        solid
+                        icon={showPassword ? 'eye-slash' : 'eye'}
+                        size={16}
+                        onPress={() => this.setState({ showPassword: !showPassword })}
+                    />
+                </View>
+            );
+        }
+        return eye;
     }
 
     render() {
@@ -143,69 +238,13 @@ class LoginForm extends Component {
                     forceInset={{ top: 'always' }}
                     style={{ flex: 1 }}
                 >
-
                     <View style={styles.logoSection}>
                         <Image source={require('../../assets/images/logo_new_white.png')} style={styles.logo} />
                     </View>
 
                     <View style={styles.formSection}>
                         {/* url selector */}
-                        {
-                            (this.state.showUrlList) ?
-                                <View style={styles.textInputWrapper}>
-                                    <Icon
-                                        name='globe'
-                                        solid
-                                        size={23}
-                                        color='#92ADD1'
-                                        style={{ width: 24 }}
-                                    />
-
-                                    {
-                                        (Platform.OS === 'android') ?
-
-                                            <Picker
-                                                style={[fontStyles.loginInputFieldLabel, { flex: 1, backgroundColor: 'transparent' }]}
-
-                                                mode={'dropdown'}
-                                                selectedValue={this.state.url}
-                                                onValueChange={(itemValue) => {
-                                                    this.onUrlSelected(itemValue)
-                                                }}
-                                            >
-                                                <Picker.Item label='Please Select Url' value={0} />
-                                                {options.map((item, index) => {
-                                                    return (<Picker.Item label={item.url} value={item.url} key={index} color='black' />);
-                                                })}
-                                            </Picker>
-
-                                            :
-
-
-                                            <ModalDropdown
-                                                onDropdownWillShow={() => Keyboard.dismiss()}
-                                                options={optionsForiOS}
-                                                onSelect={(index, value) => {
-                                                    this.onUrlSelected(value);
-                                                }}
-                                                style={{
-                                                    flex: 1,
-                                                    width: '100%',
-                                                    padding: 5,
-                                                    alignItems: 'flex-start'
-                                                }}
-                                                textStyle={fontStyles.loginInputFieldLabel}
-                                                dropdownStyle={{ width: '80%', flex: 1 }}
-                                                dropdownTextStyle={[fontStyles.loginInputFieldLabel, { fontSize: 14, color: 'black' }]}
-                                            />
-
-                                    }
-
-                                </View>
-                                :
-                                <View style={{ height: 30, padding: 10 }} />
-
-                        }
+                        {this.getUrlList(options, optionsForiOS)}
 
                         {/* e-mail field */}
                         <View style={styles.textInputWrapper}>
@@ -222,7 +261,7 @@ class LoginForm extends Component {
                                 autoCorrect={false}
                                 spellCheck={false}
                                 underlineColorAndroid='rgba(0,0,0,0)'
-                                style={[fontStyles.loginInputFieldLabel, styles.inputFieldLabel, { marginBottom: Platform.OS === 'android' ? -5 : 0 }]}
+                                style={[fontStyles.loginInputFieldLabel, styles.inputFieldLabel, { marginBottom: (Platform.OS === 'android') ? -5 : 0 }]}
                                 placeholder='Enter e-mail'
                                 placeholderTextColor='#92ADD1'
                                 ref='email'
@@ -234,21 +273,11 @@ class LoginForm extends Component {
                                 value={this.state.email}
                                 onChangeText={this.onEmailChanged.bind(this)}
                             />
-                            {this.state.email.length !== 0 ?
-                                <IconButton
-                                    icon={'times-circle'}
-                                    solid
-                                    size={14}
-                                    onPress={() => this.setState({ email: '' })}
-                                />
-                                :
-                                null
-                            }
+                            {this.getClearButton()}
                         </View>
 
                         {/* password field */}
                         <View style={styles.textInputWrapper}>
-
                             <Icon
                                 name='lock-alt'
                                 solid
@@ -256,7 +285,6 @@ class LoginForm extends Component {
                                 color='#92ADD1'
                                 style={{ width: 24 }}
                             />
-
                             <TextInput
                                 autoGrow={true}
                                 autoCorrect={false}
@@ -273,31 +301,7 @@ class LoginForm extends Component {
                                 value={password}
                                 onChangeText={this.onPasswordChanged.bind(this)}
                             />
-
-                            {
-                                password.length !== 0 ?
-
-                                    <View style={{
-                                        flexDirection: 'row',
-                                        alignItems: 'center'
-                                    }}>
-                                        {/* <IconButton
-                                        icon={faTimesCircle}
-                                        size={14}
-                                        onPress={() => this.setState({ password: '' })}
-                                    /> */}
-
-                                        <IconButton
-                                            solid
-                                            icon={showPassword ? 'eye-slash' : 'eye'}
-                                            size={16}
-                                            onPress={() => this.setState({ showPassword: !showPassword })}
-                                        />
-                                    </View>
-                                    :
-                                    null
-                            }
-
+                            {this.getEye(password, showPassword)}
                         </View>
 
                         {/* forgot password */}
@@ -309,28 +313,18 @@ class LoginForm extends Component {
 
                         {/*Login Button */}
                         <View style={styles.loginButtonHolder}>
-                            <TouchableWithoutFeedback
-                                onPressIn={this.handlePressIn}
-                                onPressOut={this.handlePressOut}
+                            <TouchableOpacity
+                                disabled={this.state.loading}
+                                onPress={this.onButtonPress.bind(this)}
                             >
                                 <Animated.View style={[styles.loginButtonStyle, buttonAnimatedStyle]}>
-                                    {(this.state.loading) ? this.renderLoading() : this.renderLoginButton()}
+                                    {this.getButtonText()}
                                 </Animated.View>
-                            </TouchableWithoutFeedback>
-
+                            </TouchableOpacity>
                         </View>
-
                     </View>
 
-                    <View style={styles.signupSection}>
-                        {/* <Text
-                            style={fontStyles.signUpLabel}
-                            onPress={() => this.openSignUpUrl()}
-                        >
-                            Don't have an account? Sign up for free here
-                        </Text> */}
-
-                    </View>
+                    <View style={styles.signupSection}/>
                 </SafeAreaView>
             </View >
         );

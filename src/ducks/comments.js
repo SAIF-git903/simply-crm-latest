@@ -282,7 +282,7 @@ export const addComment = (relatedTo, parentCommentId, recordId, content) => asy
     try {
         const saveCommentResponse = await saveComment(relatedTo, content, parentCommentId, recordId);
         if (!saveCommentResponse.success) throw Error(`Failed to submit comment.`);
-        await dispatch(getComments(relatedTo, true))
+        await dispatch(getComments(relatedTo, true));
         dispatch(addCommentFulfilled());
     } catch (e) {
         console.log(e);

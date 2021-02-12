@@ -4,7 +4,7 @@ import Accounts from '../components/dashboardUpdates/Accounts';
 import Contacts from '../components/dashboardUpdates/Contacts';
 import Calendar from '../components/dashboardUpdates/Calendar';
 import Leads from '../components/dashboardUpdates/Leads';
-import { getDatafromNet } from './networkHelper';
+import { getDataFromNet } from './networkHelper';
 import store from '../store';
 import { fontStyles } from '../styles/common';
 
@@ -43,7 +43,7 @@ export const fetchWidgetRecordHelper = async (viewerInstance, dispatch) => {
             let param = new FormData();
             param.append('_operation', 'query');
             param.append('query', `select * from ${viewerInstance.props.moduleName} orderby modifiedtime desc`);
-            const responseJson = await getDatafromNet(param, dispatch);
+            const responseJson = await getDataFromNet(param, dispatch);
             if (responseJson.success) {
                 await getAndSaveDataVtiger(responseJson, viewerInstance);
             } else {
@@ -58,7 +58,7 @@ export const fetchWidgetRecordHelper = async (viewerInstance, dispatch) => {
             let param = new FormData();
             param.append('_operation', 'listModuleRecords');
             param.append('module', viewerInstance.props.moduleName);
-            const responseJson = await getDatafromNet(param, dispatch);
+            const responseJson = await getDataFromNet(param, dispatch);
             if (responseJson.success) {
                 await getAndSaveDataVtiger(responseJson, viewerInstance);
             } else {
@@ -87,7 +87,7 @@ export const refreshRecordWidgetHelper = async (viewerInstance, dispatch) => {
         if (loginDetails.vtigerVersion < 7) {
             let param = new FormData();
             appendParamFor(viewerInstance.props.moduleName, param);
-            const responseJson = await getDatafromNet(param, dispatch);
+            const responseJson = await getDataFromNet(param, dispatch);
             if (responseJson.success) {
                 await getAndSaveDataVtiger(responseJson, viewerInstance, false, true, false);
             } else {
@@ -102,7 +102,7 @@ export const refreshRecordWidgetHelper = async (viewerInstance, dispatch) => {
             let param = new FormData();
             param.append('_operation', 'listModuleRecords');
             param.append('module', viewerInstance.props.moduleName);
-            const responseJson = await getDatafromNet(param, dispatch);
+            const responseJson = await getDataFromNet(param, dispatch);
             if (responseJson.success) {
                 await getAndSaveDataVtiger(responseJson, viewerInstance, true, true, false);
             } else {

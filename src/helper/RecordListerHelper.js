@@ -2,7 +2,7 @@ import React from 'react';
 import Toast from 'react-native-simple-toast';
 import { FlatList, StyleSheet, View, Text } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import { getDatafromNet } from './networkHelper';
+import { getDataFromNet } from './networkHelper';
 import store from '../store';
 import RecordItem from '../components/recordLister/recordItem';
 
@@ -172,7 +172,7 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
         if (searchText !== '') {
             param.append('searchText', searchText);
         }
-        const responseJson = await getDatafromNet(param, dispatch);
+        const responseJson = await getDataFromNet(param, dispatch);
         if (responseJson.success) {
             await getAndSaveDataVtiger(responseJson, listerInstance, vtigerSeven, refresh, addExisting, moduleName);
         } else {
@@ -637,7 +637,7 @@ export const deleteRecordHelper = async (listerInstance, recordId, index, callba
             param.append('module', listerInstance.props.moduleName);
             param.append('record', recordIdClean);
         }
-        const responseJson = await getDatafromNet(param, dispatch);
+        const responseJson = await getDataFromNet(param, dispatch);
         if (responseJson.success) {
             const obj = responseJson.result.deleted;
             const result = obj[Object.keys(obj)[0]];

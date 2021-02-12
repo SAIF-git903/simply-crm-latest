@@ -3,8 +3,9 @@ import { LOGINDETAILSKEY } from '../variables/strings';
 import { LOGIN_USER_SUCCESS } from '../actions/types';
 import store from '../store';
 import { addDatabaseKey } from '.';
+import {loginAndFetchModules} from "./api";
 
-export const getDatafromNet = async (param, dispatch) => {
+export const getDataFromNet = async (param, dispatch) => {
     const { auth } = store.getState();
     const loginDetails = auth.loginDetails;
     param.append('_session', loginDetails.session);
@@ -24,33 +25,21 @@ export const getDatafromNet = async (param, dispatch) => {
     console.log(responseJson);
     if (!responseJson.success) {
         if (responseJson.error.code === 1501 || responseJson.error.code === '1501') {
-            //session expired
-            let param = new FormData();
-            param.append('_operation', 'loginAndFetchModules');
-            param.append('username', loginDetails.username);
-            param.append('password', loginDetails.password);
-
-            const newresponse = await fetch((`${loginDetails.url}/modules/Mobile/api.php`), {
-                method: 'POST',
-                headers: {
-                    // 'Accept': 'application/json',
-                    // 'Content-Type': 'multipart/form-data; charset=utf-8',
-                    'cache-control': 'no-cache',
-                },
-                body: param
-            });
-            const newresponseJson = newresponse.json();
-            if (newresponseJson.success) {
+            const newResponseJson = await loginAndFetchModules(loginDetails.url, loginDetails.username, loginDetails.password);
+            if (newResponseJson.success) {
                 const newLoginDetails = {
                     username: loginDetails.username,
                     password: loginDetails.password,
                     url: loginDetails.url,
-                    session: newresponseJson.result.login.session,
-                    userTz: newresponseJson.result.login.user_tz,
-                    crmTz: newresponseJson.result.login.crm_tz,
-                    vtigerVersion: parseInt(newresponseJson.result.login.vtiger_version.charAt(0), 10),
-                    dateFormat: newresponseJson.result.login.date_format,
-                    modules: newresponseJson.result.modules,
+                    session: newResponseJson.result.login.session,
+                    userTz: newResponseJson.result.login.user_tz,
+                    crmTz: newResponseJson.result.login.crm_tz,
+                    vtigerVersion: parseInt(newResponseJson.result.login.vtiger_version.charAt(0), 10),
+                    dateFormat: newResponseJson.result.login.date_format,
+                    modules: newResponseJson.result.modules,
+                    menu: newResponseJson.result.menu,
+                    userId: newResponseJson.result.login.userid,
+                    isAdmin: newResponseJson.result.login.isAdmin,
                 };
 
                 AsyncStorage.setItem(LOGINDETAILSKEY, JSON.stringify(newLoginDetails));
@@ -66,10 +55,9 @@ export const getDatafromNet = async (param, dispatch) => {
                     },
                     body: param
                 });
-                const newResponseJsonToReturn = newResponseToReturn.json();
-                return newResponseJsonToReturn;
+                return await newResponseToReturn.json();
             }
-            return newresponseJson;
+            return newResponseJson;
         } else {
             return responseJson;
         }

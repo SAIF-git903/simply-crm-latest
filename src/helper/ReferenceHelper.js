@@ -2,7 +2,7 @@ import React from 'react';
 import Toast from 'react-native-simple-toast';
 import { FlatList, StyleSheet, View, Text } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import { getDatafromNet } from './networkHelper';
+import { getDataFromNet } from './networkHelper';
 import store from '../store';
 import CampaignsRecord from
     '../components/addRecords/referenceRecordLister/recordItems/campaignsRecord';
@@ -150,7 +150,7 @@ export const refreshRefRecordHelper = async (listerInstance, dispatch) => {
         if (loginDetails.vtigerVersion < 7) {
             let param = new FormData();
             appendParamForRef(listerInstance.props.moduleName, param);
-            const responseJson = await getDatafromNet(param, dispatch);
+            const responseJson = await getDataFromNet(param, dispatch);
             if (responseJson.success) {
                 await getAndSaveDataVtiger(responseJson, listerInstance, false, true, false);
             } else {
@@ -165,7 +165,7 @@ export const refreshRefRecordHelper = async (listerInstance, dispatch) => {
             let param = new FormData();
             param.append('_operation', 'listModuleRecords');
             param.append('module', listerInstance.props.moduleName);
-            const responseJson = await getDatafromNet(param, dispatch);
+            const responseJson = await getDataFromNet(param, dispatch);
             if (responseJson.success) {
                 await getAndSaveDataVtiger(responseJson, listerInstance, true, true, false);
             } else {
@@ -196,7 +196,7 @@ export const getNextRefPageHelper = async (listerInstance, dispatch) => {
             let param = new FormData();
             appendParamForRef(listerInstance.props.moduleName, param);
             param.append('page', listerInstance.state.pageToTake);
-            const responseJson = await getDatafromNet(param, dispatch);
+            const responseJson = await getDataFromNet(param, dispatch);
             if (responseJson.success) {
                 await getAndSaveDataVtiger(responseJson, listerInstance, false, false, true);
             } else {
@@ -212,7 +212,7 @@ export const getNextRefPageHelper = async (listerInstance, dispatch) => {
             param.append('_operation', 'listModuleRecords');
             param.append('module', listerInstance.props.moduleName);
             param.append('page', listerInstance.state.pageToTake);
-            const responseJson = await getDatafromNet(param, dispatch);
+            const responseJson = await getDataFromNet(param, dispatch);
             if (responseJson.success) {
                 await getAndSaveDataVtiger(responseJson, listerInstance, true, false, true);
             } else {
@@ -302,7 +302,7 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
             appendParamForRef(listerInstance.props.moduleName, param);
             //console.log(listerInstance.state.pageToTake);
             param.append('page', listerInstance.state.pageToTake);
-            const responseJson = await getDatafromNet(param, dispatch);
+            const responseJson = await getDataFromNet(param, dispatch);
             console.log(responseJson);
             if (responseJson.success) {
                 await getAndSaveDataVtiger(responseJson, listerInstance, false, false, false);
@@ -331,7 +331,7 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
             appendParamForRef(listerInstance.props.moduleName, param);
             // param.append('_operation', 'listModuleRecords');
             // param.append('module', listerInstance.props.moduleName);
-            const responseJson = await getDatafromNet(param, dispatch);
+            const responseJson = await getDataFromNet(param, dispatch);
             console.log(responseJson);
             if (responseJson.success) {
                 await getAndSaveDataVtiger(responseJson, listerInstance, true, false, false);
@@ -925,7 +925,7 @@ export const deleteRefRecordHelper = async (listerInstance, recordId,
             param.append('module', listerInstance.props.moduleName);
             param.append('record', recordId);
         }
-        const responseJson = await getDatafromNet(param, dispatch);
+        const responseJson = await getDataFromNet(param, dispatch);
         if (responseJson.success) {
             const obj = responseJson.result.deleted;
             const result = obj[Object.keys(obj)[0]];
