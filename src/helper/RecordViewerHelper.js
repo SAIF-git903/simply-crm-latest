@@ -259,7 +259,6 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
                                 const crmValue = moment.tz(`${field.value}`, 'HH:mm:ss', loginDetails.crmTz);
                                 const userValue = crmValue.clone().tz(loginDetails.userTz);
                                 value = userValue.format('hh:mmA');
-                                //console.log(value);  
                             } else if (uiType === 70) {
                                 const crmValue = moment.tz(`${field.value}`, 'YYYY-MM-DD HH:mm:ss', loginDetails.crmTz);
                                 const userValue = crmValue.clone().tz(loginDetails.userTz);
@@ -268,7 +267,7 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
                                 value = field.value;
                             }
                         } catch (error) {
-                            //console.log(error);
+                            console.log(error);
                             value = field.value;
                         }
                     }
@@ -326,7 +325,8 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
                     headerName={block.label}
                     content={<SectionBox style={{ padding: 5 }}>{fieldViews}</SectionBox>}
                     contentHeight={fieldViews.length * 60 + 5}
-                />);
+                />
+            );
 
             i++;
         }

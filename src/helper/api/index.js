@@ -14,13 +14,13 @@ async function makeCall(body, request_url, headers, method = 'POST') {
         };
     }
     const body_data = {
-        _session: session,
-        _operation: body.operation,
+        _session: (body._session) ? body._session : session,
+        _operation: body._operation,
         username: body.username,
         password: body.password,
         module: body.module,
         relatedmodule: body.relatedModule,
-        record: body.recordId,
+        record: body.record,
         ids: JSON.stringify(body.ids),
         query: body.query,
         values: body.values
@@ -49,27 +49,6 @@ async function makeCall(body, request_url, headers, method = 'POST') {
     return responseJson;
 }
 
-export function fetchComments(recordId) {
-    return fetchRelatedRecordsWithGrouping('ModComments', recordId);
-}
-
-export function saveComment(relatedTo, content, parentComment, recordId) {
-    const { auth: { loginDetails: { userId } } } = store.getState();
-
-    return makeCall({
-        operation: 'saveRecord',
-        module: 'ModComments',
-        recordId,
-        values: {
-            "related_to": relatedTo,
-            "commentcontent": content,
-            "is_private": 0,
-            "assigned_user_id": '19x'+userId,
-            "parent_comments": parentComment ? parentComment : undefined
-        }
-    });
-}
-
 export function locateInstance(email, password) {
     const en_email = encodeURIComponent(email);
     const en_password = encodeURIComponent(password);
@@ -86,7 +65,7 @@ export function locateInstance(email, password) {
 export function loginAndFetchModules(trimmedUrl, username, password) {
     return makeCall(
         {
-            operation: 'loginAndFetchModules',
+            _operation: 'loginAndFetchModules',
             username,
             password
         },
@@ -107,55 +86,79 @@ export function forgotPassword(email) {
 
 export function listModuleRecords(module) {
     return makeCall({
-        operation: 'listModuleRecords',
+        _operation: 'listModuleRecords',
         module
     });
 }
 
 export function describeModule(module) {
     return makeCall({
-        operation: 'describe',
+        _operation: 'describe',
         module
     });
 }
 
-export function fetchRecordHistory(module, recordId) {
+export function structure(module) {
     return makeCall({
-        operation: 'history',
+        _operation: 'structure',
+        module
+    });
+}
+
+export function fetchRecord(body, request_url) {
+    body._operation = 'fetchRecord';
+    return makeCall(
+        body,
+        request_url
+    );
+}
+
+export function fetchRecordHistory(module, record) {
+    return makeCall({
+        _operation: 'history',
         module,
-        recordId
+        record
     });
 }
 
 export function fetchRecordsWithGrouping(module, ids) {
     return makeCall({
-        operation: 'fetchRecordsWithGrouping',
+        _operation: 'fetchRecordsWithGrouping',
         module,
         ids
     });
 }
 
-export function fetchRelatedRecordsWithGrouping(relatedModule, recordId) {
+export function deleteRecord(module, record) {
     return makeCall({
-        operation: 'relatedRecordsWithGrouping',
-        recordId,
-        relatedModule: relatedModule,
-    });
-}
-
-export function deleteRecord(module, recordId) {
-    return makeCall({
-        operation: 'deleteRecords',
+        _operation: 'deleteRecords',
         module,
-        recordId
+        record
     });
 }
 
-export async function trackCall(recordId) {
+export function fetchComments(record) {
+    return makeCall({
+        _operation: 'relatedRecordsWithGrouping',
+        record,
+        relatedModule: 'ModComments',
+    });
+}
+
+export function saveRecord(module, record, values) {
+    return makeCall({
+        _operation: 'saveRecord',
+        module,
+        record,
+        values
+    });
+}
+
+export async function trackCall(record) {
     try {
         const response = await makeCall({
-            operation: 'trackcall',
-            recordId
+            _operation: 'trackcall',
+            record
         });
 
         if (response) {

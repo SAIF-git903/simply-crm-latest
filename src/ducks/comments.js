@@ -1,9 +1,10 @@
 import {
     fetchComments,
     deleteRecord,
-    saveComment,
+    saveRecord,
     describeModule
 } from '../helper/api';
+import store from '../store';
 
 const GET_ENABLED_MODULES_FULFILLED = 'comments/GET_ENABLED_MODULES_FULFILLED';
 
@@ -263,24 +264,35 @@ export const addComment = (relatedTo, parentCommentId, recordId, content) => asy
     const addCommentFulfilled = () => {
         return ({
             type: ADD_COMMENT_FULFILLED,
-            payload: recordId ? recordId : undefined
-        })
+            payload: (recordId) ? recordId : undefined
+        });
     }
 
     const addCommentRejected = () => {
         return ({
             type: ADD_COMMENT_REJECTED,
-            payload: recordId ? recordId : undefined
-        })
+            payload: (recordId) ? recordId : undefined
+        });
     }
 
     dispatch({
         type: ADD_COMMENT,
-        payload: recordId ? recordId : undefined
+        payload: (recordId) ? recordId : undefined
     });
 
     try {
-        const saveCommentResponse = await saveComment(relatedTo, content, parentCommentId, recordId);
+        const { auth: { loginDetails: { userId } } } = store.getState();
+        const saveCommentResponse = await saveRecord(
+            'ModComments',
+            recordId,
+        {
+                "related_to": relatedTo,
+                "commentcontent": content,
+                "is_private": 0,
+                "assigned_user_id": '19x'+userId,
+                "parent_comments": (parentCommentId) ? parentCommentId : undefined
+            }
+        );
         if (!saveCommentResponse.success) throw Error(`Failed to submit comment.`);
         await dispatch(getComments(relatedTo, true));
         dispatch(addCommentFulfilled());

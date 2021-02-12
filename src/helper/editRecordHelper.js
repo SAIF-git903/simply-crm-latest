@@ -2,7 +2,6 @@ import React from 'react';
 import { Alert, View } from 'react-native';
 import Toast from 'react-native-simple-toast';
 // import { NavigationActions } from 'react-navigation';
-import moment from 'moment';
 import store from '../store';
 import FormSection from '../components/common/FormSection';
 import StringForm from '../components/editRecords/inputComponents/stringType';
@@ -14,28 +13,11 @@ import TimeForm from '../components/editRecords/inputComponents/timeType';
 import MultiPickerForm from '../components/editRecords/inputComponents/multipicklistType';
 import ReferenceForm from '../components/editRecords/inputComponents/referenceType';
 import { saveSuccess } from '../actions';
+import { structure, fetchRecord, saveRecord } from "./api";
 
 export const describeEditRecordHelper = async (editInstance) => {
-    const { auth } = store.getState();
-    const loginDetails = auth.loginDetails;
-
-    const param = new FormData();
-    param.append('_session', loginDetails.session);
-    param.append('_operation', 'structure');
-    param.append('module', editInstance.props.moduleName);
-
     try {
-        const response = await fetch((`${loginDetails.url}/modules/Mobile/api.php`), {
-            method: 'POST',
-            headers: {
-                // 'Accept': 'application/json',
-                // 'Content-Type': 'multipart/form-data; charset=utf-8',
-                'cache-control': 'no-cache',
-            },
-            body: param
-        });
-        const responseJson = await response.json();
-
+        const responseJson = await structure(editInstance.props.moduleName);
         if (responseJson.success) {
             const structures = responseJson.result.structure;
 
@@ -290,57 +272,37 @@ export const describeEditRecordHelper = async (editInstance) => {
 export const getDataHelper = async (editInstance) => {
     const { auth } = store.getState();
     const loginDetails = auth.loginDetails;
-    const param = new FormData();
+    const vtigerSeven = loginDetails.vtigerVersion > 6;
 
     try {
-        if (loginDetails.vtigerVersion < 7) {
-            param.append('_session', loginDetails.session);
-            param.append('_operation', 'fetchRecord');
-            param.append('record', editInstance.props.recordId);
-        } else {
-            param.append('_session', loginDetails.session);
-            param.append('_operation', 'fetchRecord');
-            param.append('record', editInstance.props.recordId);
-            // param.append('record', editInstance.props.recordId);
-            param.append('module', editInstance.props.moduleName);
+        const param = {
+            record: editInstance.props.recordId
+        };
+        if (vtigerSeven) {
+            param.module = editInstance.props.moduleName;
         }
-
-        const response = await fetch((`${loginDetails.url}/modules/Mobile/api.php`), {
-            method: 'POST',
-            headers: {
-                // 'Accept': 'application/json',
-                // 'Content-Type': 'multipart/form-data; charset=utf-8',
-                'cache-control': 'no-cache',
-            },
-            body: param
-        });
-
-        const responseJson = await response.json();
-
+        const responseJson = await fetchRecord(param);
         if (responseJson.success) {
             const record = responseJson.result.record;
             const formInstance = editInstance.state.inputInstance;
-            const feilds = Object.keys(record);
+            const fields = Object.keys(record);
             const formArray = [];
             const tmpArray = [];
 
             for (let i = 0; i < formInstance.length; i++) {
                 formArray.push(formInstance[i].state.fieldName);
-                // if (formInstance[i].state.reference) {
-                //     //console.log('reference');
-                // }
             }
 
-            for (let i = 0; i < feilds.length; i++) {
-                for (let j = 0; j < feilds.length; j++) {
-                    if (feilds[i] === formArray[j]) {
-                        tmpArray.push({ feild: formArray[j], feildValue: record[feilds[i]] });
+            for (let i = 0; i < fields.length; i++) {
+                for (let j = 0; j < fields.length; j++) {
+                    if (fields[i] === formArray[j]) {
+                        tmpArray.push({ feild: formArray[j], feildValue: record[fields[i]] });
                         break;
                     }
                 }
             }
 
-            if (loginDetails.vtigerVersion < 7) {
+            if (!vtigerSeven) {
                 for (let i = 0; i < formInstance.length; i++) {
                     for (let j = 0; j < tmpArray.length; j++) {
                         if (tmpArray[j].feild === formInstance[i].state.fieldName) {
@@ -358,10 +320,7 @@ export const getDataHelper = async (editInstance) => {
                 for (let i = 0; i < formInstance.length; i++) {
                     for (let j = 0; j < tmpArray.length; j++) {
                         if (tmpArray[j].feild === formInstance[i].state.fieldName) {
-
                             let formattedDate;
-
-
                             if (formInstance[i].state.reference) {
                                 formInstance[i].setState({ referenceValue: tmpArray[j].feildValue.label });
                                 formInstance[i].setState({ saveValue: tmpArray[j].feildValue.value });
@@ -373,7 +332,6 @@ export const getDataHelper = async (editInstance) => {
                     }
                 }
             }
-            // console.log(formInstance[0].state.saveValue);
         } else {
             Alert.alert('Api error', 'Api response error.Vtiger is modified');
         }
@@ -416,17 +374,6 @@ export const saveEditRecordHelper = (editInstance, headerInstance, dispatch, lis
 };
 
 const editRecordHelper = async (editInstance, headerInstance, jsonObj, dispatch, listerInstance) => {
-    const { auth } = store.getState();
-    const loginDetails = auth.loginDetails;
-    const obj = JSON.stringify(jsonObj);
-    // console.log(obj);
-    const param = new FormData();
-    param.append('_session', loginDetails.session);
-    param.append('_operation', 'saveRecord');
-    param.append('module', editInstance.props.moduleName);
-    param.append('record', editInstance.props.recordId);
-    param.append('values', obj);
-
     try {
         for (const field of editInstance.state.inputInstance) {
             if (field.state.error) {
@@ -435,20 +382,8 @@ const editRecordHelper = async (editInstance, headerInstance, jsonObj, dispatch,
             }
         }
 
-        const response = await fetch((`${loginDetails.url}/modules/Mobile/api.php`), {
-            method: 'POST',
-            headers: {
-                // 'Accept': 'application/json',
-                // 'Content-Type': 'multipart/form-data; charset=utf-8',
-                'cache-control': 'no-cache',
-            },
-            body: param
-        });
-
-        const responseJson = await response.json();
-
+        const responseJson = await saveRecord(editInstance.props.moduleName, editInstance.props.recordId, JSON.stringify(jsonObj));
         if (responseJson.success) {
-            //console.log(responseJson);
             Toast.show('Successfully Edited');
             dispatch(saveSuccess('saved'));
             headerInstance.setState({ loading: false });
@@ -462,8 +397,7 @@ const editRecordHelper = async (editInstance, headerInstance, jsonObj, dispatch,
             listerInstance.refreshData();
             //editInstance.props.navigation.goBack(null);
         } else {
-            // console.log(responseJson);
-            //console.log('Failed');
+            console.log(responseJson);
             headerInstance.setState({ loading: false });
             if (responseJson.error.message === '') {
                 Alert.alert('', 'Vtiger API error');

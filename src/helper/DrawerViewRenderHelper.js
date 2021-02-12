@@ -24,56 +24,62 @@ import MenuHolder from '../components/drawer/layouts/menuHolder';
 export const renderDrawerView = async (loginDetails, drawerInstance) => {
     const drawerViews = [];
 
-
-    //.................................................................................
-
-    let homeButton = <ImageButton
-        navigation={drawerInstance.props.navigation}
-        type={HOME}
-        label={HOME}
-        key='home_menu'
-        icon={'home'}
-    />;
-
+    let homeButton = (
+        <ImageButton
+            navigation={drawerInstance.props.navigation}
+            type={HOME}
+            label={HOME}
+            key='home_menu'
+            icon={'home'}
+        />
+    );
     let menuButtons = [homeButton];
-
-    let menu = <Menu key='menu1'>{menuButtons}</Menu>;
-
+    let menu = (
+        <Menu key='menu1'>
+            {menuButtons}
+        </Menu>
+    );
     drawerViews.push(menu);
 
     // console.log(loginDetails);
     for (const module of loginDetails.modules) {
         if (module.name === CONTACTS) {
-            homeButton = <ImageButton
-                navigation={drawerInstance.props.navigation}
-                type={CONTACTS}
-                label={module.label}
-                module={module}
-                key='contact_menu'
-                icon={'user'}
-            />;
-
+            homeButton = (
+                <ImageButton
+                    navigation={drawerInstance.props.navigation}
+                    type={CONTACTS}
+                    label={module.label}
+                    module={module}
+                    key='contact_menu'
+                    icon={'user'}
+                />
+            );
             menuButtons = [homeButton];
-
-            menu = <Menu key='menu2'>{menuButtons}</Menu>;
-
+            menu = (
+                <Menu key='menu2'>
+                    {menuButtons}
+                </Menu>
+            );
             drawerViews.push(menu);
         }
 
         if (module.name === ACCOUNTS) {
-            homeButton = <ImageButton
-                navigation={drawerInstance.props.navigation}
-                type={ACCOUNTS}
-                label={module.label}
-                module={module}
-                key='account_menu'
-                icon={'building'}
-            />;
-
+            homeButton = (
+                <ImageButton
+                    navigation={drawerInstance.props.navigation}
+                    type={ACCOUNTS}
+                    label={module.label}
+                    module={module}
+                    key='account_menu'
+                    icon={'building'}
+                />
+            );
             menuButtons = [homeButton];
-
-            menu = <Menu key='menu3'>{menuButtons}</Menu>;
-
+            menu = (
+                <Menu key='menu3'>
+                    {menuButtons}
+                </Menu>
+            );
             drawerViews.push(menu);
         }
     }
