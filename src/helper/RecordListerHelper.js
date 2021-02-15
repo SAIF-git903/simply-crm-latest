@@ -17,6 +17,7 @@ import {
 import { addDatabaseKey } from '.';
 
 import { fontStyles } from '../styles/common';
+import {listModuleRecords, query} from "./api";
 
 const moment = require('moment-timezone');
 
@@ -153,26 +154,38 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
         const loginDetails = auth.loginDetails;
 
         const vtigerSeven = loginDetails.vtigerVersion > 6;
-        let [, specialFields] = getFieldsForModule(listerInstance.props.moduleName);
+        let modules = getAllowedModules();
+        let [fields, specialFields] = getFieldsForModule(listerInstance.props.moduleName);
         let specialFields_values = Object.values(specialFields);
         let searchText = listerInstance.state.searchText;
 
-        let param = new FormData();
+        let responseJson;
         if (!vtigerSeven) {
-            appendParamFor(listerInstance.props.moduleName, param);
+            let joinedFields = '*';
+            if (modules.includes(listerInstance.props.moduleName)) {
+                fields = Object.assign(fields, specialFields);
+                joinedFields = 'id';
+                if (Object.values(fields).length > 0) {
+                    joinedFields += ',' + Object.values(fields).join(',');
+                }
+            }
+
+            let limit = 25;
+            let offset = (listerInstance.state.pageToTake - 1) * limit;
+            responseJson = await query(
+                `SELECT ${joinedFields} FROM ${listerInstance.props.moduleName} ORDER BY modifiedtime DESC LIMIT ${offset},${limit}`,
+                searchText
+            );
+            //TODO search will not work for vt6
         } else {
-            param.append('_operation', 'listModuleRecords');
-            param.append('module', listerInstance.props.moduleName);
+            responseJson = await listModuleRecords(
+                listerInstance.props.moduleName,
+                listerInstance.state.pageToTake,
+                specialFields_values,
+                25,
+                searchText
+            );
         }
-        param.append('page', listerInstance.state.pageToTake);
-        if (specialFields_values.length > 0) {
-            param.append('specialFields', JSON.stringify(specialFields_values));
-        }
-        param.append('limit', 25);
-        if (searchText !== '') {
-            param.append('searchText', searchText);
-        }
-        const responseJson = await getDataFromNet(param, dispatch);
         if (responseJson.success) {
             await getAndSaveDataVtiger(responseJson, listerInstance, vtigerSeven, refresh, addExisting, moduleName);
         } else {
@@ -602,24 +615,6 @@ const getAllowedModules = () => {
         COMMENTS,           CURRENCY,
     ];
 }
-
-export const appendParamFor = (moduleName, param) => {
-    console.log(`Appending module name: ${moduleName}`);
-    let modules = getAllowedModules();
-    if (modules.includes(moduleName)) {
-        let [fields, specialFields] = getFieldsForModule(moduleName);
-        fields = Object.assign(fields, specialFields);
-        let joinedFields = 'id';
-        if (Object.values(fields).length > 0) {
-            joinedFields += ',' + Object.values(fields).join(',');
-        }
-        param.append('_operation', 'query');
-        param.append('query', `select ${joinedFields} from ${moduleName} ORDER BY modifiedtime DESC`);
-    } else {
-        param.append('_operation', 'listModuleRecords');
-        param.append('module', moduleName);
-    }
-};
 
 export const deleteRecordHelper = async (listerInstance, recordId, index, callback, dispatch) => {
     const { auth } = store.getState();

@@ -113,11 +113,11 @@ export const moduleSelected = (text) => ({
 });
 
 export const displayRecords = (viewerInstance) => (dispatch) => {
-  fetchWidgetRecordHelper(viewerInstance, dispatch);
+  fetchWidgetRecordHelper(viewerInstance, false, dispatch);
 };
 
 export const refreshWidgetRecord = (viewerInstance) => (dispatch) => {
-  refreshRecordWidgetHelper(viewerInstance, dispatch);
+  fetchWidgetRecordHelper(viewerInstance, true, dispatch);
 };
 
 

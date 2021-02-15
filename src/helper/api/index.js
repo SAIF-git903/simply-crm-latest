@@ -1,7 +1,12 @@
 import store from '../../store';
+import AsyncStorage from "@react-native-community/async-storage";
+import {LOGINDETAILSKEY} from "../../variables/strings";
+import {addDatabaseKey} from "../DatabaseKeyHelper";
+import {LOGIN_USER_SUCCESS} from "../../actions/types";
 
 async function makeCall(body, request_url, headers, method = 'POST') {
-    const { auth: { loginDetails: { session, url } } } = store.getState();
+    const { auth: { loginDetails: loginDetails } } = store.getState();
+    const { session, url } = loginDetails;
 
     if (request_url === undefined) {
         request_url = `${url}/modules/Mobile/api.php`;
@@ -23,7 +28,11 @@ async function makeCall(body, request_url, headers, method = 'POST') {
         record: body.record,
         ids: JSON.stringify(body.ids),
         query: body.query,
-        values: body.values
+        values: body.values,
+        page: (body.page) ? body.page : 1,
+        specialFields: (body.specialFields !== undefined && body.specialFields.length > 0) ? JSON.stringify(body.specialFields) : undefined,
+        limit: (body.limit) ? body.limit : 25,
+        searchText: (body.searchText !== '') ? body.searchText : undefined,
     };
     //clear undefined
     for (const [key, value] of Object.entries(body_data)) {
@@ -32,20 +41,56 @@ async function makeCall(body, request_url, headers, method = 'POST') {
         }
     }
 
+    let responseJson = await doFetch(request_url, method, headers, body_data);
+
+    //TODO check me
+    if (
+        responseJson.error !== undefined
+        && responseJson.error.code !== undefined
+        && parseInt(responseJson.error.code, 10) === 1501
+    ) {
+        const newResponseJson = await loginAndFetchModules(loginDetails.url, loginDetails.username, loginDetails.password);
+        if (newResponseJson.success) {
+            //TODO combine with LoginHelper.js ??
+            const newLoginDetails = {
+                username: loginDetails.username,
+                password: loginDetails.password,
+                url: loginDetails.url,
+                session: newResponseJson.result.login.session,
+                userTz: newResponseJson.result.login.user_tz,
+                crmTz: newResponseJson.result.login.crm_tz,
+                vtigerVersion: parseInt(newResponseJson.result.login.vtiger_version.charAt(0), 10),
+                dateFormat: newResponseJson.result.login.date_format,
+                modules: newResponseJson.result.modules,
+                menu: newResponseJson.result.menu,
+                userId: newResponseJson.result.login.userid,
+                isAdmin: newResponseJson.result.login.isAdmin,
+            };
+            AsyncStorage.setItem(LOGINDETAILSKEY, JSON.stringify(newLoginDetails));
+            await addDatabaseKey(LOGINDETAILSKEY);
+            dispatch({ type: LOGIN_USER_SUCCESS, payload: newLoginDetails });
+
+            body_data._session = newLoginDetails.session;
+            responseJson = await doFetch(request_url, method, headers, body_data);
+        } else {
+            console.log('Cant get new session');
+            //TODO Toast ??
+        }
+    }
+
+    return responseJson;
+}
+
+async function doFetch(request_url, method, headers, body_data) {
     const response = await fetch((request_url), {
         method: method,
         headers: headers,
         body: (method === 'POST') ? JSON.stringify(body_data) : null
     });
-
     console.log(`### API CALL ###: ${request_url}`);
     console.log(body_data);
-    const responseJson = await response.json();
+    let responseJson = await response.json();
     console.log(responseJson);
-
-    //TODO add here get _session if expired
-    //if (responseJson.error.code === 1501 || responseJson.error.code === '1501') {
-
     return responseJson;
 }
 
@@ -84,10 +129,14 @@ export function forgotPassword(email) {
     );
 }
 
-export function listModuleRecords(module) {
+export function listModuleRecords(module, page, specialFields, limit, searchText) {
     return makeCall({
         _operation: 'listModuleRecords',
-        module
+        module,
+        page,
+        specialFields,
+        limit,
+        searchText
     });
 }
 
@@ -159,6 +208,13 @@ export function saveRecord(module, values, record) {
         module,
         values,
         record
+    });
+}
+
+export function query(query) {
+    return makeCall({
+        _operation: 'query',
+        query
     });
 }
 

@@ -246,7 +246,7 @@ export const describeEditRecordHelper = async (editInstance) => {
                     >
                         {formArray}
                     </FormSection>
-                )
+                );
             }
 
             // Sort sections
@@ -264,7 +264,7 @@ export const describeEditRecordHelper = async (editInstance) => {
     } catch (error) {
         //console.log(error);
         editInstance.setState({ loading: false });
-        Alert.alert('No network connection', 'Please check your internet connection and tryagin');
+        Alert.alert('No network connection', 'Please check your internet connection and try again');
     }
 };
 
@@ -336,7 +336,7 @@ export const getDataHelper = async (editInstance) => {
         }
     } catch (error) {
         console.log(error);
-        Alert.alert('No network connection', 'Please check your internet connection and tryagin');
+        Alert.alert('No network connection', 'Please check your internet connection and try again');
     }
 };
 

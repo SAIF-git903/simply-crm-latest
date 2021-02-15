@@ -7,6 +7,7 @@ import Leads from '../components/dashboardUpdates/Leads';
 import { getDataFromNet } from './networkHelper';
 import store from '../store';
 import { fontStyles } from '../styles/common';
+import { query, listModuleRecords } from "./api";
 
 const styles = StyleSheet.create({
     list: {
@@ -28,124 +29,109 @@ const styles = StyleSheet.create({
 });
 
 const renderEmpty = () => {
-    return <View
-        style={styles.emptyList}
-    >
-        <Text style={fontStyles.fieldLabel}>No records found.</Text>
-    </View>
+    return (
+        <View style={styles.emptyList}>
+            <Text style={fontStyles.fieldLabel}>No records found.</Text>
+        </View>
+    );
 };
 
-export const fetchWidgetRecordHelper = async (viewerInstance, dispatch) => {
+export const fetchWidgetRecordHelper = async (viewerInstance, refresh, dispatch) => {
     try {
         const { auth } = store.getState();
         const loginDetails = auth.loginDetails;
-        if (loginDetails.vtigerVersion < 7) {
-            let param = new FormData();
-            param.append('_operation', 'query');
-            param.append('query', `select * from ${viewerInstance.props.moduleName} orderby modifiedtime desc`);
-            const responseJson = await getDataFromNet(param, dispatch);
-            if (responseJson.success) {
-                await getAndSaveDataVtiger(responseJson, viewerInstance);
-            } else {
-                //Show offline data and notify user
-                viewerInstance.setState({
-                    loading: false,
-                    statusText: 'Showing Offline data - No internet Pull to refresh',
-                    statusTextColor: '#000000',
-                });
-            }
+        const vtigerSeven = loginDetails.vtigerVersion > 6;
+        let responseJson;
+        if (!vtigerSeven) {
+            //TODO replace with
+            appendParamFor(viewerInstance.props.moduleName);
+            responseJson = await query(`SELECT * FROM ${viewerInstance.props.moduleName} ORDER BY modifiedtime DESC`);
+            // responseJson = await query(`SELECT * FROM ${viewerInstance.props.moduleName} ORDER BY modifiedtime DESC`);
         } else {
-            let param = new FormData();
-            param.append('_operation', 'listModuleRecords');
-            param.append('module', viewerInstance.props.moduleName);
-            const responseJson = await getDataFromNet(param, dispatch);
-            if (responseJson.success) {
-                await getAndSaveDataVtiger(responseJson, viewerInstance);
-            } else {
-                //Show offline data and notify user
-                viewerInstance.setState({
-                    loading: false,
-                    statusText: 'Showing Offline data - No internet Pull to refresh',
-                    statusTextColor: '#000000',
-                });
-            }
+            responseJson = await listModuleRecords(viewerInstance.props.moduleName);
+        }
+        if (responseJson.success) {
+            await getAndSaveDataVtiger(responseJson, viewerInstance, vtigerSeven, refresh);
+        } else {
+            //Show offline data and notify user
+            viewerInstance.setState({
+                loading: false,
+                isFlatListRefreshing: false,
+                statusText: 'Showing Offline data - No internet Pull to refresh',
+                statusTextColor: '#000000',
+            });
         }
     } catch (error) {
         //Show error to user that something went wrong.
         viewerInstance.setState({
             loading: false,
-            statusText: 'Looks like no network connection',
-            statusTextColor: 'red'
-        });
-    }
-};
-export const refreshRecordWidgetHelper = async (viewerInstance, dispatch) => {
-    try {
-        const { auth } = store.getState();
-        const loginDetails = auth.loginDetails;
-
-        if (loginDetails.vtigerVersion < 7) {
-            let param = new FormData();
-            appendParamFor(viewerInstance.props.moduleName, param);
-            const responseJson = await getDataFromNet(param, dispatch);
-            if (responseJson.success) {
-                await getAndSaveDataVtiger(responseJson, viewerInstance, false, true, false);
-            } else {
-                //Show error to user that something went wrong.
-                viewerInstance.setState({
-                    isFlatListRefreshing: false,
-                    statusText: 'Something went wrong',
-                    statusTextColor: 'red'
-                });
-            }
-        } else {
-            let param = new FormData();
-            param.append('_operation', 'listModuleRecords');
-            param.append('module', viewerInstance.props.moduleName);
-            const responseJson = await getDataFromNet(param, dispatch);
-            if (responseJson.success) {
-                await getAndSaveDataVtiger(responseJson, viewerInstance, true, true, false);
-            } else {
-                //Show error to user that something went wrong.
-                viewerInstance.setState({
-                    isFlatListRefreshing: false,
-                    statusText: 'Something went wrong',
-                    statusTextColor: 'red'
-                });
-            }
-        }
-    } catch (error) {
-        //Show error to user that something went wrong.
-        viewerInstance.setState({
             isFlatListRefreshing: false,
             statusText: 'Looks like no network connection',
             statusTextColor: 'red'
         });
     }
 };
+// export const refreshRecordWidgetHelper = async (viewerInstance, dispatch) => {
+//     try {
+//         const { auth } = store.getState();
+//         const loginDetails = auth.loginDetails;
+//
+//         if (loginDetails.vtigerVersion < 7) {
+//             let param = new FormData();
+//             appendParamFor(viewerInstance.props.moduleName, param);
+//             const responseJson = await getDataFromNet(param, dispatch);
+//             if (responseJson.success) {
+//                 await getAndSaveDataVtiger(responseJson, viewerInstance, false, true, false);
+//             } else {
+//                 //Show error to user that something went wrong.
+//                 viewerInstance.setState({
+//                     isFlatListRefreshing: false,
+//                     statusText: 'Something went wrong',
+//                     statusTextColor: 'red'
+//                 });
+//             }
+//         } else {
+//             let param = new FormData();
+//             param.append('_operation', 'listModuleRecords');
+//             param.append('module', viewerInstance.props.moduleName);
+//             const responseJson = await getDataFromNet(param, dispatch);
+//             if (responseJson.success) {
+//                 await getAndSaveDataVtiger(responseJson, viewerInstance, true, true, false);
+//             } else {
+//                 //Show error to user that something went wrong.
+//                 viewerInstance.setState({
+//                     isFlatListRefreshing: false,
+//                     statusText: 'Something went wrong',
+//                     statusTextColor: 'red'
+//                 });
+//             }
+//         }
+//     } catch (error) {
+//         //Show error to user that something went wrong.
+//         viewerInstance.setState({
+//             isFlatListRefreshing: false,
+//             statusText: 'Looks like no network connection',
+//             statusTextColor: 'red'
+//         });
+//     }
+// };
 
-const appendParamFor = (moduleName, param) => {
+const appendParamFor = (moduleName) => {
+    let query;
     switch (moduleName) {
-
         case 'Calendar':
-            param.append('_operation', 'query');
-            param.append('query', 'select subject,id from Calendar ORDER BY modifiedtime DESC');
+            query = 'select subject,id from Calendar ORDER BY modifiedtime DESC';
             break;
         case 'Leads':
-            param.append('_operation', 'query');
-            param.append('query', 'select firstname,lastname,phone,email,id from Leads ORDER BY modifiedtime DESC');
+            query = 'select firstname,lastname,phone,email,id from Leads ORDER BY modifiedtime DESC';
             break;
-
         case 'Contacts':
-            param.append('_operation', 'query');
-            param.append('query', 'select firstname,lastname,phone,email,id from Contacts ORDER BY modifiedtime DESC');
+            query = 'select firstname,lastname,phone,email,id from Contacts ORDER BY modifiedtime DESC';
             break;
-
         default:
-            param.append('_operation', 'listModuleRecords ORDER BY modifiedtime DESC');
-            param.append('module', moduleName);
             break;
     }
+    return query;
 };
 
 const getAndSaveDataVtiger = async (responseJson, viewerInstance, vtigerSeven, refresh) => {

@@ -290,7 +290,7 @@ export const describeRecordHelper = async (addInstance) => {
     } catch (error) {
         console.log(error);
         addInstance.setState({ loading: false });
-        Alert.alert('No network connection', 'Please check your internet connection and tryagin');
+        Alert.alert('No network connection', 'Please check your internet connection and try again');
     }
 };
 
