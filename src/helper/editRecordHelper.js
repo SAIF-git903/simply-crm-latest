@@ -13,11 +13,11 @@ import TimeForm from '../components/editRecords/inputComponents/timeType';
 import MultiPickerForm from '../components/editRecords/inputComponents/multipicklistType';
 import ReferenceForm from '../components/editRecords/inputComponents/referenceType';
 import { saveSuccess } from '../actions';
-import { structure, fetchRecord, saveRecord } from "./api";
+import { API_structure, API_fetchRecord, API_saveRecord } from "./api";
 
 export const describeEditRecordHelper = async (editInstance) => {
     try {
-        const responseJson = await structure(editInstance.props.moduleName);
+        const responseJson = await API_structure(editInstance.props.moduleName);
         if (responseJson.success) {
             const structures = responseJson.result.structure;
 
@@ -280,7 +280,7 @@ export const getDataHelper = async (editInstance) => {
         if (vtigerSeven) {
             param.module = editInstance.props.moduleName;
         }
-        const responseJson = await fetchRecord(param);
+        const responseJson = await API_fetchRecord(param);
         if (responseJson.success) {
             const record = responseJson.result.record;
             const formInstance = editInstance.state.inputInstance;
@@ -381,7 +381,7 @@ const editRecordHelper = async (editInstance, headerInstance, jsonObj, dispatch,
             }
         }
 
-        const responseJson = await saveRecord(editInstance.props.moduleName, JSON.stringify(jsonObj), editInstance.props.recordId);
+        const responseJson = await API_saveRecord(editInstance.props.moduleName, JSON.stringify(jsonObj), editInstance.props.recordId);
         if (responseJson.success) {
             Toast.show('Successfully Edited');
             dispatch(saveSuccess('saved'));

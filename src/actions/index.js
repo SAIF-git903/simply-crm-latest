@@ -9,8 +9,7 @@ import { RECORD_ADDER, HOME_MAIN, RECORD_VIEWER } from '../variables/constants';
 import {
   getInstancesList, renderDrawerView, fetchRecordHelper, fetchRefRecordHelper, viewRecord,
   viewRecordRenderer, deleteRecordHelper, refreshRefRecordHelper,
-  refreshRecordDataHelper, getNextRefPageHelper, fetchWidgetRecordHelper, refreshRecordWidgetHelper,
-  getAddressDetails
+  refreshRecordDataHelper, getNextRefPageHelper, getAddressDetails
 } from '../helper';
 
 export const dimensionChanged = (isPortrait, width, height) => ({
@@ -60,20 +59,20 @@ export const fetchRecord = (recordListerInstance, moduleName) => (dispatch) => {
   fetchRecordHelper(recordListerInstance, dispatch, false, false, moduleName);
 };
 
-export const fetchRefRecord = (recordListerInstance) => (dispatch) => {
-  fetchRefRecordHelper(recordListerInstance, dispatch);
-};
-
 export const refreshRecord = (recordListerInstance, moduleName) => (dispatch) => {
   fetchRecordHelper(recordListerInstance, dispatch, true, false, moduleName);
 };
 
-export const refreshRefRecord = (recordListerInstance) => (dispatch) => {
-  refreshRefRecordHelper(recordListerInstance, dispatch);
-};
-
 export const getNextPageRecord = (recordListerInstance, moduleName) => (dispatch) => {
   fetchRecordHelper(recordListerInstance, dispatch, false, true, moduleName);
+};
+
+export const fetchRefRecord = (recordListerInstance) => (dispatch) => {
+  fetchRefRecordHelper(recordListerInstance, dispatch);
+};
+
+export const refreshRefRecord = (recordListerInstance) => (dispatch) => {
+  refreshRefRecordHelper(recordListerInstance, dispatch);
 };
 
 export const getNextRefPageRecord = (recordListerInstance) => (dispatch) => {
@@ -112,12 +111,12 @@ export const moduleSelected = (text) => ({
   payload: text
 });
 
-export const displayRecords = (viewerInstance) => (dispatch) => {
-  fetchWidgetRecordHelper(viewerInstance, false, dispatch);
+export const dashboardFetchRecord = (viewerInstance, moduleName) => (dispatch) => {
+  fetchRecordHelper(viewerInstance, dispatch, false, false, moduleName, true);
 };
 
-export const refreshWidgetRecord = (viewerInstance) => (dispatch) => {
-  fetchWidgetRecordHelper(viewerInstance, true, dispatch);
+export const dashboardRefreshRecord = (viewerInstance, moduleName) => (dispatch) => {
+  fetchRecordHelper(viewerInstance, dispatch, true, false, moduleName, true);
 };
 
 

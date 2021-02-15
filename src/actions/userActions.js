@@ -3,13 +3,13 @@ import {
     FETCH_USER_DATA_FULFILLED,
     FETCH_USER_DATA_REJECTED
 } from './types';
-import { fetchRecord } from "../helper/api";
+import { API_fetchRecord } from "../helper/api";
 
 export const fetchUserData = (loginDetails) => async (dispatch) => {
     dispatch({ type: FETCH_USER_DATA });
 
     try {
-        const responseJson = await fetchRecord(
+        const responseJson = await API_fetchRecord(
             {
                 record: '19x' + loginDetails.userId,
                 session: loginDetails.session

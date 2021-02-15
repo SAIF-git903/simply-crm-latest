@@ -49,7 +49,7 @@ async function makeCall(body, request_url, headers, method = 'POST') {
         && responseJson.error.code !== undefined
         && parseInt(responseJson.error.code, 10) === 1501
     ) {
-        const newResponseJson = await loginAndFetchModules(loginDetails.url, loginDetails.username, loginDetails.password);
+        const newResponseJson = await API_loginAndFetchModules(loginDetails.url, loginDetails.username, loginDetails.password);
         if (newResponseJson.success) {
             //TODO combine with LoginHelper.js ??
             const newLoginDetails = {
@@ -94,7 +94,7 @@ async function doFetch(request_url, method, headers, body_data) {
     return responseJson;
 }
 
-export function locateInstance(email, password) {
+export function API_locateInstance(email, password) {
     const en_email = encodeURIComponent(email);
     const en_password = encodeURIComponent(password);
     return makeCall(
@@ -107,7 +107,7 @@ export function locateInstance(email, password) {
     );
 }
 
-export function loginAndFetchModules(trimmedUrl, username, password) {
+export function API_loginAndFetchModules(trimmedUrl, username, password) {
     return makeCall(
         {
             _operation: 'loginAndFetchModules',
@@ -118,7 +118,7 @@ export function loginAndFetchModules(trimmedUrl, username, password) {
     );
 }
 
-export function forgotPassword(email) {
+export function API_forgotPassword(email) {
     return makeCall(
         {},
         `https://sai.simplyhq.com/index.php?action=AppForgotPassword&email=${email}&api_key=jNuaPq7MRfLDvnLs5gZ9XgU1H7n3URma`,
@@ -129,7 +129,7 @@ export function forgotPassword(email) {
     );
 }
 
-export function listModuleRecords(module, page, specialFields, limit, searchText) {
+export function API_listModuleRecords(module, page, specialFields, limit, searchText) {
     return makeCall({
         _operation: 'listModuleRecords',
         module,
@@ -140,21 +140,21 @@ export function listModuleRecords(module, page, specialFields, limit, searchText
     });
 }
 
-export function describe(module) {
+export function API_describe(module) {
     return makeCall({
         _operation: 'describe',
         module
     });
 }
 
-export function structure(module) {
+export function API_structure(module) {
     return makeCall({
         _operation: 'structure',
         module
     });
 }
 
-export function fetchRecord(body, request_url) {
+export function API_fetchRecord(body, request_url) {
     body._operation = 'fetchRecord';
     return makeCall(
         body,
@@ -162,7 +162,7 @@ export function fetchRecord(body, request_url) {
     );
 }
 
-export function history(module, record) {
+export function API_history(module, record) {
     return makeCall({
         _operation: 'history',
         module,
@@ -170,7 +170,7 @@ export function history(module, record) {
     });
 }
 
-export function fetchRecordWithGrouping(module, record) {
+export function API_fetchRecordWithGrouping(module, record) {
     return makeCall({
         _operation: 'fetchRecordWithGrouping',
         module,
@@ -178,7 +178,7 @@ export function fetchRecordWithGrouping(module, record) {
     });
 }
 
-export function fetchRecordsWithGrouping(module, ids) {
+export function API_fetchRecordsWithGrouping(module, ids) {
     return makeCall({
         _operation: 'fetchRecordsWithGrouping',
         module,
@@ -186,7 +186,7 @@ export function fetchRecordsWithGrouping(module, ids) {
     });
 }
 
-export function deleteRecord(module, record) {
+export function API_deleteRecord(module, record) {
     return makeCall({
         _operation: 'deleteRecords',
         module,
@@ -194,7 +194,7 @@ export function deleteRecord(module, record) {
     });
 }
 
-export function fetchComments(record) {
+export function API_fetchComments(record) {
     return makeCall({
         _operation: 'relatedRecordsWithGrouping',
         record,
@@ -202,7 +202,7 @@ export function fetchComments(record) {
     });
 }
 
-export function saveRecord(module, values, record) {
+export function API_saveRecord(module, values, record) {
     return makeCall({
         _operation: 'saveRecord',
         module,
@@ -211,14 +211,14 @@ export function saveRecord(module, values, record) {
     });
 }
 
-export function query(query) {
+export function API_query(query) {
     return makeCall({
         _operation: 'query',
         query
     });
 }
 
-export async function trackCall(record) {
+export async function API_trackCall(record) {
     try {
         const response = await makeCall({
             _operation: 'trackcall',

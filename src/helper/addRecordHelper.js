@@ -13,13 +13,13 @@ import TimeForm from '../components/addRecords/inputComponents/timeType';
 import MultiPickerForm from '../components/addRecords/inputComponents/multipicklistType';
 import ReferenceForm from '../components/addRecords/inputComponents/referenceType';
 import { saveSuccess } from '../actions';
-import { structure, saveRecord } from "./api";
+import { API_structure, API_saveRecord } from "./api";
 
 export const describeRecordHelper = async (addInstance) => {
     const { auth } = store.getState();
     const loginDetails = auth.loginDetails;
     try {
-        const responseJson = await structure(addInstance.props.moduleName);
+        const responseJson = await API_structure(addInstance.props.moduleName);
         if (responseJson.success) {
             const structures = responseJson.result.structure;
 
@@ -204,7 +204,7 @@ export const describeRecordHelper = async (addInstance) => {
                                     >
                                         <ReferenceForm
                                             defaultValue={
-                                                fieldObj.name === 'currency_id'
+                                                (fieldObj.name === 'currency_id')
                                                     ? store.getState().UserReducer.userData.currency_id
                                                     : null
                                             }
@@ -336,7 +336,7 @@ const addRecordHelper = async (addInstance, headerInstance, jsonObj, dispatch, l
             }
         }
 
-        const responseJson = await saveRecord(addInstance.props.moduleName, JSON.stringify(jsonObj));
+        const responseJson = await API_saveRecord(addInstance.props.moduleName, JSON.stringify(jsonObj));
         if (responseJson.success) {
             console.log(responseJson);
             headerInstance.setState({ loading: false });

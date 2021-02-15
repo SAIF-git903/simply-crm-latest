@@ -1,6 +1,6 @@
 import {
-    describe,
-    history
+    API_describe,
+    API_history
 } from '../helper/api';
 
 const FETCH_HISTORY = 'updates/FETCH_HISTORY';
@@ -61,12 +61,12 @@ export const fetchHistory = (moduleName, recordId, keepState) => async (dispatch
     });
 
     try {
-        const describeResponse = await describe(moduleName);
+        const describeResponse = await API_describe(moduleName);
         if (!describeResponse.success) {
             throw Error(`Failed to call describe method on ${moduleName}`);
         }
 
-        const historyResponse = await history(moduleName, recordId);
+        const historyResponse = await API_history(moduleName, recordId);
         if (!historyResponse.success) {
             throw Error(`Failed to fetch history of ${moduleName}`);
         }

@@ -1,8 +1,8 @@
 import {
-    fetchComments,
-    deleteRecord,
-    saveRecord,
-    describe
+    API_fetchComments,
+    API_deleteRecord,
+    API_saveRecord,
+    API_describe
 } from '../helper/api';
 import store from '../store';
 
@@ -162,7 +162,7 @@ export const getEnabledModules = () => async (dispatch) => {
     }
 
     try {
-        const describeResponse = await describe('ModComments');
+        const describeResponse = await API_describe('ModComments');
         if (!describeResponse.success) throw Error(`Failed to fetch enabled modules for ModComments`);
 
         let modules = null;
@@ -200,7 +200,7 @@ export const getComments = (recordId, keepState) => async (dispatch) => {
     });
 
     try {
-        const commentsResponse = await fetchComments(recordId);
+        const commentsResponse = await API_fetchComments(recordId);
         if (!commentsResponse.success) throw Error(`Failed to fetch comments for ${recordId}`);
 
         const new_comments = changeCommentStructure(commentsResponse.result.records);
@@ -250,7 +250,7 @@ export const deleteComment = (commentId) => async (dispatch) => {
     });
 
     try {
-        const deleteCommentResponse = await deleteRecord('ModComments', commentId);
+        const deleteCommentResponse = await API_deleteRecord('ModComments', commentId);
         if (!deleteCommentResponse.success) throw Error(`Failed to delete comment: ${recordId}`);
 
         dispatch(deleteCommentFulfilled());
@@ -282,7 +282,7 @@ export const addComment = (relatedTo, parentCommentId, recordId, content) => asy
 
     try {
         const { auth: { loginDetails: { userId } } } = store.getState();
-        const saveCommentResponse = await saveRecord(
+        const saveCommentResponse = await API_saveRecord(
             'ModComments',
             {
                 "related_to": relatedTo,

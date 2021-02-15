@@ -173,7 +173,12 @@ const formatNumber = (numberString) => {
             thousandSeparated: true,
             mantissa: decimalCount
         });
-
+        //TODO there is error: for non simplysupport user params 'currency_decimal_separator' and 'currency_grouping_separator' is undefined
+        // because it empty in response from server, because tables 'vtiger_profile2field' and 'vtiger_def_org_field' dont have lines for these fieldIds
+// console.log('currency_decimal_separator');
+// console.log(currency_decimal_separator);
+// console.log('currency_grouping_separator');
+// console.log(currency_grouping_separator);
         result = result.replace(/\./, currency_decimal_separator);
         result = result.replace(/,/g, currency_grouping_separator);
 

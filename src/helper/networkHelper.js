@@ -3,7 +3,7 @@ import { LOGINDETAILSKEY } from '../variables/strings';
 import { LOGIN_USER_SUCCESS } from '../actions/types';
 import store from '../store';
 import { addDatabaseKey } from '.';
-import {loginAndFetchModules} from "./api";
+import {API_loginAndFetchModules} from "./api";
 
 export const getDataFromNet = async (param, dispatch) => {
     const { auth } = store.getState();
@@ -25,7 +25,7 @@ export const getDataFromNet = async (param, dispatch) => {
     console.log(responseJson);
     if (!responseJson.success) {
         if (responseJson.error.code === 1501 || responseJson.error.code === '1501') {
-            const newResponseJson = await loginAndFetchModules(loginDetails.url, loginDetails.username, loginDetails.password);
+            const newResponseJson = await API_loginAndFetchModules(loginDetails.url, loginDetails.username, loginDetails.password);
             if (newResponseJson.success) {
                 const newLoginDetails = {
                     username: loginDetails.username,

@@ -1,7 +1,7 @@
 import {
-    listModuleRecords,
-    fetchRecordsWithGrouping,
-    deleteRecord
+    API_listModuleRecords,
+    API_fetchRecordsWithGrouping,
+    API_deleteRecord
 } from '../helper/api';
 
 const GET_CALENDAR_RECORDS = 'calendar/GET_CALENDAR_RECORDS';
@@ -91,7 +91,7 @@ export const getCalendarRecords = (isRefreshing) => async (dispatch) => {
     });
 
     try {
-        const response = await listModuleRecords('Calendar');
+        const response = await API_listModuleRecords('Calendar');
         const calendarRecords = response.result?.records || [];
 
         let eventIds = [];
@@ -112,8 +112,8 @@ export const getCalendarRecords = (isRefreshing) => async (dispatch) => {
         let eventsResponse;
         let tasksResponse;
 
-        if (eventIds?.length) eventsResponse = await fetchRecordsWithGrouping('Events', eventIds);
-        if (taskIds?.length) tasksResponse = await fetchRecordsWithGrouping('Calendar', taskIds);
+        if (eventIds?.length) eventsResponse = await API_fetchRecordsWithGrouping('Events', eventIds);
+        if (taskIds?.length) tasksResponse = await API_fetchRecordsWithGrouping('Calendar', taskIds);
 
         const success = eventsResponse || tasksResponse;
 
@@ -197,7 +197,7 @@ export const deleteCalendarRecord = (recordId) => async (dispatch) => {
 
     try {
         const recordIdClean = recordId.toString().replace(/.*(?=x)+x/, '');
-        const response = await deleteRecord('Calendar', recordIdClean);
+        const response = await API_deleteRecord('Calendar', recordIdClean);
         if (!response.success) throw Error('Failed to delete record: ' + response);
         dispatch(deleteCalendarRecordFulfilled(recordId))
     } catch (e) {

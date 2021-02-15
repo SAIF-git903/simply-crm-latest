@@ -7,7 +7,7 @@ import { LOGIN_USER_SUCCESS } from '../actions/types';
 import { addDatabaseKey } from '.';
 import { fetchUserData } from '../actions/userActions';
 import store from '../store';
-import { loginAndFetchModules, locateInstance, forgotPassword } from './api';
+import { API_loginAndFetchModules, API_locateInstance, API_forgotPassword } from './api';
 
 export const getInstancesList = async (email, password, url, navigation, loginInstance, dispatch) => {
     try {
@@ -15,7 +15,7 @@ export const getInstancesList = async (email, password, url, navigation, loginIn
         if (URLDetails !== null) {
             doUserLogin(URLDetails.userName, URLDetails.password, URLDetails.url, navigation, loginInstance, dispatch);
         } else {
-            const responseJson = await locateInstance(email, password);
+            const responseJson = await API_locateInstance(email, password);
             if (responseJson.output.success !== 0) {
                 const output = responseJson.output;
                 if (output.length > 1) {
@@ -69,7 +69,7 @@ export const doUserLogin = async (username, password, url, navigation, loginInst
             trimmedUrl = trimmedUrl.replace('http://', 'https://');
         }
 
-        const responseJson = await loginAndFetchModules(trimmedUrl, username, password);
+        const responseJson = await API_loginAndFetchModules(trimmedUrl, username, password);
         if (responseJson.success) {
             const loginDetails = {
                 username,
@@ -151,7 +151,7 @@ const loginUserSuccess = (dispatch, loginDetails, navigation) => {
 
 export const resetPassword = async (email, forgotPasswordInstance) => {
     try {
-        const responseJson = await forgotPassword(email);
+        const responseJson = await API_forgotPassword(email);
         if (responseJson.output.success !== 0) {
             forgotPasswordInstance.setState({ buttonText: 'BACK', loading: false });
             Toast.show('Thank you - we\'ve now sent password reset instructions to the email you entered.');

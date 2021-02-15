@@ -17,7 +17,7 @@ import {
 import { addDatabaseKey } from '.';
 
 import { fontStyles } from '../styles/common';
-import {listModuleRecords, query} from "./api";
+import {API_listModuleRecords, API_query} from "./api";
 
 const moment = require('moment-timezone');
 
@@ -56,7 +56,7 @@ const renderEmpty = () => {
     );
 }
 
-export const fetchRecordHelper = async (listerInstance, dispatch, refresh, addExisting, moduleName) => {
+export const fetchRecordHelper = async (listerInstance, dispatch, refresh, addExisting, moduleName, isDashboard = false) => {
     //First checking if any data in offline.
     try {
         // const offlineData = JSON.parse(await AsyncStorage.getItem(listerInstance.props.moduleName));
@@ -83,11 +83,11 @@ export const fetchRecordHelper = async (listerInstance, dispatch, refresh, addEx
         // } else {
 
         //Offline data is not available
-        await getDataFromInternet(listerInstance, false, {}, dispatch, refresh, addExisting, moduleName);
+        await getDataFromInternet(listerInstance, false, {}, dispatch, refresh, addExisting, isDashboard, moduleName);
         // }
     } catch (error) {
         //Offline data is not available
-        await getDataFromInternet(listerInstance, false, {}, dispatch, refresh, addExisting);
+        await getDataFromInternet(listerInstance, false, {}, dispatch, refresh, addExisting, isDashboard);
     }
 };
 
@@ -147,7 +147,7 @@ export const viewRecord = async (recordId, listerInstance, dispatch) => {
     }
 };
 
-const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData, dispatch, refresh, addExisting, moduleName) => {
+const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData, dispatch, refresh, addExisting, isDashboard, moduleName) => {
     //Getting data from internet
     try {
         const { auth } = store.getState();
@@ -158,6 +158,7 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
         let [fields, specialFields] = getFieldsForModule(listerInstance.props.moduleName);
         let specialFields_values = Object.values(specialFields);
         let searchText = listerInstance.state.searchText;
+        let limit = (isDashboard) ? 5 : 25;
 
         let responseJson;
         if (!vtigerSeven) {
@@ -170,19 +171,18 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
                 }
             }
 
-            let limit = 25;
             let offset = (listerInstance.state.pageToTake - 1) * limit;
-            responseJson = await query(
+            responseJson = await API_query(
                 `SELECT ${joinedFields} FROM ${listerInstance.props.moduleName} ORDER BY modifiedtime DESC LIMIT ${offset},${limit}`,
                 searchText
             );
             //TODO search will not work for vt6
         } else {
-            responseJson = await listModuleRecords(
+            responseJson = await API_listModuleRecords(
                 listerInstance.props.moduleName,
                 listerInstance.state.pageToTake,
                 specialFields_values,
-                25,
+                limit,
                 searchText
             );
         }

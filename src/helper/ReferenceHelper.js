@@ -68,7 +68,7 @@ import {
 } from '../variables/constants';
 import { addDatabaseKey } from '.';
 import { fontStyles } from '../styles/common';
-import { listModuleRecords, fetchRecordWithGrouping } from "./api";
+import { API_listModuleRecords, API_fetchRecordWithGrouping } from "./api";
 
 const styles = StyleSheet.create({
     list: {
@@ -2048,7 +2048,7 @@ export const getUserName = async (referenceInstance) => {
         const { auth } = store.getState();
         const loginDetails = auth.loginDetails;
         //TODO need to check 'listModuleRecords'
-        const responseJson = await listModuleRecords('Users');
+        const responseJson = await API_listModuleRecords('Users');
         if (responseJson.success) {
             const records = responseJson.result.records;
             for (const record of records) {
@@ -2077,7 +2077,7 @@ export const getAddressDetails = async (referenceInstance, dispatch) => {
 
         const moduleId = (referenceInstance.state.selectedRefModule === 'Contacts') ? contactModuleId[0] : accountModuleId[0];
         //TODO need to check 'fetchRecordWithGrouping'
-        const responseJson = await fetchRecordWithGrouping(referenceInstance.state.selectedRefModule, referenceInstance.state.saveValue);
+        const responseJson = await API_fetchRecordWithGrouping(referenceInstance.state.selectedRefModule, referenceInstance.state.saveValue);
         if (responseJson.success) {
             const blocks = responseJson.result.record.blocks;
             for (const block of blocks) {
@@ -2114,7 +2114,7 @@ export const getPriceDetails = async (referenceInstance) => {
         const modules = loginDetails.modules;
         const productModuleId = modules.filter((item) => item.name === 'Products').map(({ id }) => (id));
         //TODO need to check 'fetchRecordWithGrouping'
-        const responseJson = await fetchRecordWithGrouping(referenceInstance.state.selectedRefModule, referenceInstance.state.saveValue);
+        const responseJson = await API_fetchRecordWithGrouping(referenceInstance.state.selectedRefModule, referenceInstance.state.saveValue);
         if (responseJson.success) {
             const blocks = responseJson.result.record.blocks;
             let priceFields;

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {View, Text, Linking, Platform} from 'react-native';
 import { fontStyles } from '../../styles/common';
-import { trackCall } from '../../helper/api';
+import { API_trackCall } from '../../helper/api';
 
 export default class Field extends Component {
     onPressAction() {
@@ -9,7 +9,7 @@ export default class Field extends Component {
         switch (uiType) {
             case '11':
                 Linking.openURL(`tel:${value}`).then(() => {
-                    trackCall(this.props.recordId);
+                    API_trackCall(this.props.recordId);
                 });
                 break;
 

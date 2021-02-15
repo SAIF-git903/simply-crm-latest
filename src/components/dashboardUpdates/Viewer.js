@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { View, ActivityIndicator, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { dashboardHelper } from '../../helper';
+import {dashboardHelper, recordListRendererHelper} from '../../helper';
 import {
     viewRecordAction,
-    refreshWidgetRecord,
-    getNextPageRecord,
-    displayRecords
+    dashboardRefreshRecord,
+    dashboardFetchRecord
 } from '../../actions';
 import StatusView from './statusView';
 
@@ -20,7 +19,7 @@ class Viewer extends Component {
             data: [],
             selectedIndex: -1,
             nextPage: false,
-            pageToTake: 0,
+            pageToTake: 1,
             statusText: '',
             statusTextColor: '#000000',
         };
@@ -31,17 +30,14 @@ class Viewer extends Component {
     }
 
     UNSAFE_componentWillReceiveProps(newProps) {
-        //console.log('ReceiveProps');
         this.props = newProps;
-        //console.log(this.props.moduleName);
         this.fetchRecord();
     }
 
     onEndReached() {
         if (!this.onEndReachedCalledDuringMomentum) {
             if (this.state.nextPage) {
-                //TODO i am not sure that "this.props.moduleName" exist for every component call
-                this.props.getNextPageRecord(this, this.props.moduleName);
+                //do nothing
             }
         }
     }
@@ -61,7 +57,7 @@ class Viewer extends Component {
             statusText: 'Fetching Record',
             statusTextColor: '#000000'
         });
-        this.props.displayRecords(this);
+        this.props.dashboardFetchRecord(this, this.props.moduleName);
     }
 
     refreshData() {
@@ -71,51 +67,39 @@ class Viewer extends Component {
             statusText: 'Refreshing',
             statusTextColor: '#000000'
         });
-        this.props.refreshWidgetRecord(this);
+        this.props.dashboardRefreshRecord(this, this.props.moduleName);
     }
 
     renderFooter() {
         if (this.state.nextPage) {
-            return (
-                <View
-                    style={{ width: '100%', justifyContent: 'space-around', alignItems: 'center', height: 50, flexDirection: 'row' }}
-                >
-                    <Text>Getting next page</Text>
-                    <ActivityIndicator />
-                </View>
-            );
+            //do render nothing
+            return null;
         }
     }
 
-
-    renderLoading() {
-        return (
-            <View style={{ width: '100%', height: 50, alignItems: 'center', marginTop: 20 }}>
-                <ActivityIndicator color={'#000000'} />
-            </View>
-        );
-    }
-
-    renderRecordList() {
-        ////console.log(this.state.data);
-        return (
-            <View style={{
-                width: '100%'
-            }}>
-                {dashboardHelper(this)}
-            </View>
-
-        );
+    doRender() {
+        let view;
+        if (this.state.loading) {
+            view = (
+                <View style={{ width: '100%', height: 50, alignItems: 'center', marginTop: 20 }}>
+                    <ActivityIndicator color={'#000000'} />
+                </View>
+            );
+        } else {
+            view = (
+                <View style={{ width: '100%' }}>
+                    {/*{dashboardHelper(this)}*/}
+                    {recordListRendererHelper(this)}
+                </View>
+            );
+        }
+        return view;
     }
 
     render() {
         return (
             <View style={styles.subContainer}>
-                {
-                    (this.state.loading) ?
-                        this.renderLoading() :
-                        this.renderRecordList()
-                }
+                {this.doRender()}
             </View>
         );
     }
@@ -135,8 +119,7 @@ const mapStateToProps = ({ dashboardUpdate }) => {
     return { moduleName };
 };
 export default connect(mapStateToProps, {
-    displayRecords,
+    dashboardFetchRecord,
     viewRecordAction,
-    refreshWidgetRecord,
-    getNextPageRecord
+    dashboardRefreshRecord
 })(Viewer);
