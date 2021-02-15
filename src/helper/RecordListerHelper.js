@@ -17,7 +17,7 @@ import {
 import { addDatabaseKey } from '.';
 
 import { fontStyles } from '../styles/common';
-import {API_listModuleRecords, API_query} from "./api";
+import {API_deleteRecord, API_listModuleRecords, API_query} from "./api";
 
 const moment = require('moment-timezone');
 
@@ -620,19 +620,11 @@ export const deleteRecordHelper = async (listerInstance, recordId, index, callba
     const { auth } = store.getState();
     const loginDetails = auth.loginDetails;
 
-    const recordIdClean = recordId.toString().replace(/.*(?=x)+x/, '');
-
     try {
-        const vtigerSeven = loginDetails.vtigerVersion > 6;
-        let param = new FormData();
-        param.append('_operation', 'deleteRecords');
-        if (!vtigerSeven) {
-            param.append('record', recordId);
-        } else {
-            param.append('module', listerInstance.props.moduleName);
-            param.append('record', recordIdClean);
+        if (loginDetails.vtigerVersion > 6) {
+            recordId = recordId.toString().replace(/.*(?=x)+x/, '');
         }
-        const responseJson = await getDataFromNet(param, dispatch);
+        const responseJson = await API_deleteRecord(listerInstance.props.moduleName, recordId);
         if (responseJson.success) {
             const obj = responseJson.result.deleted;
             const result = obj[Object.keys(obj)[0]];

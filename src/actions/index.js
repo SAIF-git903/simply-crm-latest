@@ -102,8 +102,8 @@ export const viewRecordRendererActions = (viewerInstance) => (dispatch) => {
   viewRecordRenderer(viewerInstance, dispatch);
 };
 
-export const deleteRecord = (listerInstance, recordId, index, recordInstance) => (dispatch) => {
-  deleteRecordHelper(listerInstance, recordId, index, recordInstance, dispatch);
+export const deleteRecord = (listerInstance, recordId, index, callback) => (dispatch) => {
+  deleteRecordHelper(listerInstance, recordId, index, callback, dispatch);
 };
 
 export const moduleSelected = (text) => ({

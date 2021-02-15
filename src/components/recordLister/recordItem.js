@@ -44,11 +44,15 @@ export default function RecordItem(props) {
                 { text: 'Cancel', onPress: () => { }, style: 'cancel' },
                 {
                     text: 'Yes', onPress: () => {
-                        setIsLoading(true);
-                        //TODO memory leak (setState called on deleted record) on record delete
-                        dispatch(deleteRecord(listerInstance, item.id, index, () => {
-                            setIsLoading(false);
-                        }));
+                        listerInstance.setState({
+                            isFlatListRefreshing: true
+                        }, () => {
+                            dispatch(deleteRecord(listerInstance, item.id, index, () => {
+                                listerInstance.setState({
+                                    isFlatListRefreshing: false
+                                });
+                            }));
+                        });
                     }
                 }
             ],
@@ -132,12 +136,13 @@ export default function RecordItem(props) {
                         onPress={() => { onRecordSelect(item.id, index); }}
                     >
                         <View
-                            style={[styles.backgroundStyle, {
-                                borderTopWidth: (index === 0) ? 1 : 0,
-                                backgroundColor:
-                                    (selectedIndex === index) ?
-                                        RECORD_SELECTED_COLOR : RECORD_COLOR
-                            }]}
+                            style={[
+                                styles.backgroundStyle,
+                                {
+                                    borderTopWidth: (index === 0) ? 1 : 0,
+                                    backgroundColor: (selectedIndex === index) ? RECORD_SELECTED_COLOR : RECORD_COLOR
+                                }
+                            ]}
                         >
                             <Text
                                 key={1}
@@ -146,7 +151,7 @@ export default function RecordItem(props) {
                             >
                                 {recordName}
                             </Text>
-                            {labels ? renderLabels(labels) : null}
+                            {(labels) ? renderLabels(labels) : null}
                         </View>
                     </TouchableOpacity>
                 </SwipeOut>
@@ -156,18 +161,18 @@ export default function RecordItem(props) {
 
     return (
         <View
-            style={[styles.backgroundStyle, {
-                borderTopWidth: (index === 0) ? 1 : 0,
-                justifyContent: 'space-around',
-                flexDirection: 'row',
-                alignItems: 'center',
-                backgroundColor:
-                    (selectedIndex === index) ?
-                        RECORD_SELECTED_COLOR : RECORD_COLOR
-            }]}
+            style={[
+                styles.backgroundStyle,
+                {
+                    borderTopWidth: (index === 0) ? 1 : 0,
+                    justifyContent: 'space-around',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    backgroundColor: (selectedIndex === index) ? RECORD_SELECTED_COLOR : RECORD_COLOR
+                }
+            ]}
         >
             <Text style={fontStyles.fieldValue}>Deleting.....</Text>
-
             <ActivityIndicator />
         </View>
     );
