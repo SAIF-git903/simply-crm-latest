@@ -13,30 +13,13 @@ import TimeForm from '../components/addRecords/inputComponents/timeType';
 import MultiPickerForm from '../components/addRecords/inputComponents/multipicklistType';
 import ReferenceForm from '../components/addRecords/inputComponents/referenceType';
 import { saveSuccess } from '../actions';
+import { structure, saveRecord } from "./api";
 
 export const describeRecordHelper = async (addInstance) => {
     const { auth } = store.getState();
     const loginDetails = auth.loginDetails;
-
-    const param = new FormData();
-    param.append('_session', loginDetails.session);
-    param.append('_operation', 'structure');
-    param.append('module', addInstance.props.moduleName);
-    //console.log(param);
-
-    // console.log('Login Details', loginDetails);
     try {
-        const response = await fetch((`${loginDetails.url}/modules/Mobile/api.php`), {
-            method: 'POST',
-            headers: {
-                // 'Accept': 'application/json',
-                // 'Content-Type': 'multipart/form-data; charset=utf-8',
-                'cache-control': 'no-cache',
-            },
-            body: param
-        });
-        const responseJson = await response.json();
-
+        const responseJson = await structure(addInstance.props.moduleName);
         if (responseJson.success) {
             const structures = responseJson.result.structure;
 
@@ -345,35 +328,15 @@ export const saveRecordHelper = (addInstance, headerInstance, dispatch, listerIn
 };
 
 const addRecordHelper = async (addInstance, headerInstance, jsonObj, dispatch, listerInstance) => {
-    const { auth } = store.getState();
-    const loginDetails = auth.loginDetails;
-    const obj = JSON.stringify(jsonObj);
-
-    const param = new FormData();
-    param.append('_session', loginDetails.session);
-    param.append('_operation', 'saveRecord');
-    param.append('module', addInstance.props.moduleName);
-    param.append('values', obj);
-
     try {
         for (const field of addInstance.state.inputInstance) {
             if (field.state.error) {
-                field.setState({ showError: true })
+                field.setState({ showError: true });
                 throw Error(`${field.state.error} at ${field.props.obj.lable}`);
             }
         }
 
-        const response = await fetch((`${loginDetails.url}/modules/Mobile/api.php`), {
-            method: 'POST',
-            headers: {
-                // 'Accept': 'application/json',
-                // 'Content-Type': 'multipart/form-data; charset=utf-8',
-                'cache-control': 'no-cache',
-            },
-            body: param
-        });
-
-        const responseJson = await response.json();
+        const responseJson = await saveRecord(addInstance.props.moduleName, JSON.stringify(jsonObj));
         if (responseJson.success) {
             console.log(responseJson);
             headerInstance.setState({ loading: false });

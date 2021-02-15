@@ -188,8 +188,7 @@ export const describeEditRecordHelper = async (editInstance) => {
                                             formId={i}
                                             ref={(ref) => {
                                                 return (ref !== null) ? formInstance.push(ref) : undefined;
-                                            }
-                                            }
+                                            }}
                                         />
                                         <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
                                     </View>
@@ -382,7 +381,7 @@ const editRecordHelper = async (editInstance, headerInstance, jsonObj, dispatch,
             }
         }
 
-        const responseJson = await saveRecord(editInstance.props.moduleName, editInstance.props.recordId, JSON.stringify(jsonObj));
+        const responseJson = await saveRecord(editInstance.props.moduleName, JSON.stringify(jsonObj), editInstance.props.recordId);
         if (responseJson.success) {
             Toast.show('Successfully Edited');
             dispatch(saveSuccess('saved'));

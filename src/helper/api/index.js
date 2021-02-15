@@ -91,7 +91,7 @@ export function listModuleRecords(module) {
     });
 }
 
-export function describeModule(module) {
+export function describe(module) {
     return makeCall({
         _operation: 'describe',
         module
@@ -113,9 +113,17 @@ export function fetchRecord(body, request_url) {
     );
 }
 
-export function fetchRecordHistory(module, record) {
+export function history(module, record) {
     return makeCall({
         _operation: 'history',
+        module,
+        record
+    });
+}
+
+export function fetchRecordWithGrouping(module, record) {
+    return makeCall({
+        _operation: 'fetchRecordWithGrouping',
         module,
         record
     });
@@ -145,12 +153,12 @@ export function fetchComments(record) {
     });
 }
 
-export function saveRecord(module, record, values) {
+export function saveRecord(module, values, record) {
     return makeCall({
         _operation: 'saveRecord',
         module,
-        record,
-        values
+        values,
+        record
     });
 }
 

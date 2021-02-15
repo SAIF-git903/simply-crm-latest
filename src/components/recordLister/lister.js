@@ -81,7 +81,6 @@ class Lister extends Component {
             statusText: 'Fetching Record',
             statusTextColor: '#000000'
         }, () => {
-
             this.props.dispatch(fetchRecord(this, this.props.moduleName));
             if (this.props.saved === 'saved') {
                 this.refreshData();
@@ -123,6 +122,45 @@ class Lister extends Component {
         });
     }
 
+    doRender() {
+        let view;
+        if (this.state.loading) {
+            view = (
+                <View style={{ width: '100%', height: 50, alignItems: 'center', marginTop: 20 }}>
+                    <ActivityIndicator color={'#000000'} />
+                </View>
+            );
+        } else {
+            view = (
+                <View style={{
+                    flex: 1
+                }}>
+                    <View style={{
+                        padding: 15,
+                        paddingBottom: 5,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        paddingHorizontal: 40
+                    }}>
+                        <SearchBox
+                            searchText={this.state.searchText}
+                            disabled={this.state.searching}
+                            moduleName={this.props.moduleName}
+                            onChangeText={(searchText) => this.setState({ searchText: searchText })}
+                            doSearch={(searchText) => this.doSearch(searchText)}
+                        />
+                    </View>
+                    <View style={{
+                        flex: 1
+                    }}>
+                        {this.renderSearching()}
+                    </View>
+                </View>
+            );
+        }
+        return view;
+    }
+
     renderFooter() {
         if (this.state.nextPage) {
             return (
@@ -136,87 +174,52 @@ class Lister extends Component {
         }
     }
 
-    renderLoading() {
-        return (
-            <View style={{ width: '100%', height: 50, alignItems: 'center', marginTop: 20 }}>
-                <ActivityIndicator color={'#000000'} />
-            </View>
-        );
-    }
-
     renderSearching() {
-        return (
-            <View style={{ width: '100%', height: 50, alignItems: 'center', marginTop: 20 }}>
-                <Text style={[fontStyles.fieldLabel, { paddingBottom: 10, fontSize: 14 }]}>Searching...</Text>
-                <ActivityIndicator color={'#000000'} />
-            </View>
-        );
+        let view;
+        if (this.state.searching) {
+            view = (
+                <View style={{ width: '100%', height: 50, alignItems: 'center', marginTop: 20 }}>
+                    <Text style={[fontStyles.fieldLabel, { paddingBottom: 10, fontSize: 14 }]}>Searching...</Text>
+                    <ActivityIndicator color={'#000000'} />
+                </View>
+            );
+        } else {
+            view = (
+                <View style={{ flex: 1 }}>
+                    {this.renderSearchLabel()}
+                    {recordListRendererHelper(this)}
+                </View>
+            );
+        }
+        return view;
     }
 
-    renderRecordList() {
-        return (
-            <View style={{
-                flex: 1
-            }}>
-                <View style={{
-                    padding: 15,
-                    paddingBottom: 5,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    paddingHorizontal: 40
-                }}>
-                    <SearchBox
-                        searchText={this.state.searchText}
-                        disabled={this.state.searching}
-                        moduleName={this.props.moduleName}
-                        onChangeText={(searchText) => this.setState({ searchText: searchText })}
-                        doSearch={(searchText) => this.doSearch(searchText)}
-                    />
+    renderSearchLabel() {
+        let view;
+        if (this.state.searchLabel) {
+            view = (
+                <View style={{ paddingTop: 10, alignItems: 'center' }}>
+                    <Text style={fontStyles.fieldLabel}>
+                        {this.state.searchLabel}
+                    </Text>
+                    <Text
+                        onPress={() => this.getRecords()}
+                        style={[fontStyles.fieldLabel, { fontSize: 14, paddingTop: 5, color: '#007aff' }]}
+                    >
+                        Go Back
+                    </Text>
                 </View>
-                <View style={{
-                    flex: 1
-                }}>
-                    {
-                        this.state.searching
-                            ?
-                            this.renderSearching()
-                            :
-                            <View style={{ flex: 1 }}>
-                                {
-                                    this.state.searchLabel
-                                        ?
-                                        <View style={{ paddingTop: 10, alignItems: 'center' }}>
-                                            <Text style={fontStyles.fieldLabel}>
-                                                {this.state.searchLabel}
-                                            </Text>
-                                            <Text
-                                                onPress={() => {
-                                                    this.getRecords();
-                                                }}
-                                                style={[fontStyles.fieldLabel, { fontSize: 14, paddingTop: 5, color: '#007aff' }]}
-                                            >
-                                                Go Back
-                                            </Text>
-                                        </View>
-                                        :
-                                        null
-                                }
-                                {recordListRendererHelper(this)}
-                            </View>
-                    }
-                </View>
-            </View>
-        );
+            );
+        } else {
+            view = null;
+        }
+        return view;
     }
 
     render() {
         return (
             <View style={commonStyles.recordListerBackground} >
-                {
-                    (this.state.loading) ?
-                        this.renderLoading() :
-                        this.renderRecordList()
-                }
+                {this.doRender()}
             </View>
         );
     }

@@ -20,8 +20,13 @@ class Viewer extends Component {
 
     onFetchCall() {
         const { moduleId } = this.props;
-        this.setState({ loading: true, id: moduleId, recordId: `${this.props.moduleId}x${this.props.recordId}` },
-            () => { describeEditRecordHelper(this); });
+        this.setState({
+            loading: true,
+            id: moduleId,
+            recordId: `${this.props.moduleId}x${this.props.recordId}`
+        },() => {
+            describeEditRecordHelper(this);
+        });
 
         //getDataHelper(this, state.params.id);
     }
@@ -66,7 +71,6 @@ class Viewer extends Component {
                         this.renderRecordView()
                 }
             </View>
-
         );
     }
 }

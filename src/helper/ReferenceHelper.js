@@ -68,6 +68,7 @@ import {
 } from '../variables/constants';
 import { addDatabaseKey } from '.';
 import { fontStyles } from '../styles/common';
+import { listModuleRecords, fetchRecordWithGrouping } from "./api";
 
 const styles = StyleSheet.create({
     list: {
@@ -114,7 +115,6 @@ export const fetchRefRecordHelper = async (listerInstance, dispatch) => {
 
         if (offlineData !== null) {
             //Offline data is avialable
-            console.log(offlineData);
             const offlineFinishedTime = JSON.parse(offlineData.finishedTime);
             const currentTime = moment();
             const duration = moment.duration(currentTime.diff(offlineFinishedTime));
@@ -251,8 +251,6 @@ export const viewRefRecord = async (recordId, listerInstance, dispatch) => {
             }
         });
         const navigation = listerInstance.props.navigation;
-        //console.log(listerInstance);
-        //console.log(navigation);
         navigation.navigate('Record Details');
     } else {
         if (width > 600) {
@@ -300,10 +298,8 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
         if (loginDetails.vtigerVersion < 7) {
             let param = new FormData();
             appendParamForRef(listerInstance.props.moduleName, param);
-            //console.log(listerInstance.state.pageToTake);
             param.append('page', listerInstance.state.pageToTake);
             const responseJson = await getDataFromNet(param, dispatch);
-            console.log(responseJson);
             if (responseJson.success) {
                 await getAndSaveDataVtiger(responseJson, listerInstance, false, false, false);
             } else {
@@ -332,7 +328,6 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
             // param.append('_operation', 'listModuleRecords');
             // param.append('module', listerInstance.props.moduleName);
             const responseJson = await getDataFromNet(param, dispatch);
-            console.log(responseJson);
             if (responseJson.success) {
                 await getAndSaveDataVtiger(responseJson, listerInstance, true, false, false);
             } else {
@@ -357,7 +352,7 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
             }
         }
     } catch (error) {
-        // console.log(error);
+        console.log(error);
         if (!offlineAvailable) {
             //Show error to user that something went wrong.
             listerInstance.setState({
@@ -376,7 +371,6 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
                 pageToTake: offlineData.pageToTake
             });
         }
-        //console.log(error);
     }
 };
 
@@ -464,7 +458,6 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance,
             break;
         }
         case INVOICE: {
-            // console.log('Invoice records', records);
             for (const record of records) {
                 const modifiedRecord = {
                     invoiceLable: record.subject,
@@ -929,7 +922,6 @@ export const deleteRefRecordHelper = async (listerInstance, recordId,
         if (responseJson.success) {
             const obj = responseJson.result.deleted;
             const result = obj[Object.keys(obj)[0]];
-            //console.log(responseJson);
             if (result) {
                 //Successfully deleted.
                 await removeThisIndex(listerInstance, index);
@@ -2055,45 +2047,24 @@ export const getUserName = async (referenceInstance) => {
     try {
         const { auth } = store.getState();
         const loginDetails = auth.loginDetails;
-
-        const param = new FormData();
-
-        param.append('_operation', 'listModuleRecords');
-        param.append('module', 'Users');
-        param.append('_session', loginDetails.session);
-        const response = await fetch((`${loginDetails.url}/modules/Mobile/api.php`), {
-            method: 'POST',
-            headers: {
-                // 'Accept': 'application/json',
-                // 'Content-Type': 'multipart/form-data; charset=utf-8',
-                'cache-control': 'no-cache',
-            },
-            body: param
-        });
-        const responseJson = await response.json();
-
-
+        //TODO need to check 'listModuleRecords'
+        const responseJson = await listModuleRecords('Users');
         if (responseJson.success) {
-
             const records = responseJson.result.records;
             for (const record of records) {
-
                 if (record.id === loginDetails.userId) {
                     const userName = `${record.first_name} ${record.last_name}`;
                     referenceInstance.setState({ saveValue: loginDetails.userId, referenceValue: userName });
-
                     break;
                 }
             }
-
         }
     } catch (error) {
-        // console.log(error);
+        console.log('getUserName: ' + error);
     }
 };
 
 export const getAddressDetails = async (referenceInstance, dispatch) => {
-
     //Get record details
     try {
         const { auth } = store.getState();
@@ -2105,28 +2076,8 @@ export const getAddressDetails = async (referenceInstance, dispatch) => {
         const accountModuleId = modules.filter((item) => item.name === 'Accounts').map(({ id }) => (id));
 
         const moduleId = (referenceInstance.state.selectedRefModule === 'Contacts') ? contactModuleId[0] : accountModuleId[0];
-
-
-        const param = new FormData();
-
-        param.append('_operation', 'fetchRecordWithGrouping');
-        param.append('module', referenceInstance.state.selectedRefModule);
-        // param.append('record', `${moduleId}x${referenceInstance.state.saveValue}`);
-        param.append('record', referenceInstance.state.saveValue);
-        param.append('_session', loginDetails.session);
-
-        const response = await fetch((`${loginDetails.url}/modules/Mobile/api.php`), {
-            method: 'POST',
-            headers: {
-                // 'Accept': 'application/json',
-                // 'Content-Type': 'multipart/form-data; charset=utf-8',
-                'cache-control': 'no-cache',
-            },
-            body: param
-        });
-        const responseJson = await response.json();
-
-        // console.log(responseJson);
+        //TODO need to check 'fetchRecordWithGrouping'
+        const responseJson = await fetchRecordWithGrouping(referenceInstance.state.selectedRefModule, referenceInstance.state.saveValue);
         if (responseJson.success) {
             const blocks = responseJson.result.record.blocks;
             for (const block of blocks) {
@@ -2151,7 +2102,7 @@ export const getAddressDetails = async (referenceInstance, dispatch) => {
             }
         }
     } catch (error) {
-        // console.log('Error occured', error);
+        console.log('getAddressDetails: ' + error);
     }
 };
 
@@ -2160,32 +2111,11 @@ export const getPriceDetails = async (referenceInstance) => {
     try {
         const { auth } = store.getState();
         const loginDetails = auth.loginDetails;
-
         const modules = loginDetails.modules;
-
         const productModuleId = modules.filter((item) => item.name === 'Products').map(({ id }) => (id));
-
-        const param = new FormData();
-
-        param.append('_operation', 'fetchRecordWithGrouping');
-        param.append('module', referenceInstance.state.selectedRefModule);
-        // param.append('record', `${productModuleId[0]}x${referenceInstance.state.saveValue}`);
-        param.append('record', referenceInstance.state.saveValue);
-        param.append('_session', loginDetails.session);
-
-        const response = await fetch((`${loginDetails.url}/modules/Mobile/api.php`), {
-            method: 'POST',
-            headers: {
-                // 'Accept': 'application/json',
-                // 'Content-Type': 'multipart/form-data; charset=utf-8',
-                'cache-control': 'no-cache',
-            },
-            body: param
-        });
-        const responseJson = await response.json();
-
+        //TODO need to check 'fetchRecordWithGrouping'
+        const responseJson = await fetchRecordWithGrouping(referenceInstance.state.selectedRefModule, referenceInstance.state.saveValue);
         if (responseJson.success) {
-            console.log(responseJson);
             const blocks = responseJson.result.record.blocks;
             let priceFields;
             let stockFields;
@@ -2203,7 +2133,7 @@ export const getPriceDetails = async (referenceInstance) => {
             referenceInstance.props.onCopyPriceDetails(priceFields, stockFields);
         }
     } catch (error) {
-        // console.log('Error occured', error);
+        console.log('getPriceDetails: ' + error);
     }
 };
 

@@ -76,13 +76,13 @@ export const getCalendarRecords = (isRefreshing) => async (dispatch) => {
         return ({
             type: GET_CALENDAR_RECORDS_FULFILLED,
             payload: records
-        })
+        });
     }
 
     const getCalendarRecordsRejected = () => {
         return ({
             type: GET_CALENDAR_RECORDS_REJECTED
-        })
+        });
     }
 
     dispatch({

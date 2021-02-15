@@ -2,7 +2,7 @@ import {
     fetchComments,
     deleteRecord,
     saveRecord,
-    describeModule
+    describe
 } from '../helper/api';
 import store from '../store';
 
@@ -162,7 +162,7 @@ export const getEnabledModules = () => async (dispatch) => {
     }
 
     try {
-        const describeResponse = await describeModule('ModComments');
+        const describeResponse = await describe('ModComments');
         if (!describeResponse.success) throw Error(`Failed to fetch enabled modules for ModComments`);
 
         let modules = null;
@@ -284,14 +284,14 @@ export const addComment = (relatedTo, parentCommentId, recordId, content) => asy
         const { auth: { loginDetails: { userId } } } = store.getState();
         const saveCommentResponse = await saveRecord(
             'ModComments',
-            recordId,
-        {
+            {
                 "related_to": relatedTo,
                 "commentcontent": content,
                 "is_private": 0,
                 "assigned_user_id": '19x'+userId,
                 "parent_comments": (parentCommentId) ? parentCommentId : undefined
-            }
+            },
+            recordId
         );
         if (!saveCommentResponse.success) throw Error(`Failed to submit comment.`);
         await dispatch(getComments(relatedTo, true));
