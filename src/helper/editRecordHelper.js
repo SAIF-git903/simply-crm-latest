@@ -241,7 +241,7 @@ export const describeEditRecordHelper = async (editInstance) => {
                 content.push(
                     <FormSection
                         key={k}
-                        sequence={parseInt(sequence)}
+                        sequence={parseInt(sequence, 10)}
                         title={label}
                     >
                         {formArray}
@@ -252,17 +252,20 @@ export const describeEditRecordHelper = async (editInstance) => {
             // Sort sections
             content.sort((a, b) => a.props.sequence - b.props.sequence);
 
-            editInstance.setState(
-                { inputForm: content, inputInstance: formInstance, loading: false },
-                () => { getDataHelper(editInstance); }
-            );
+            editInstance.setState({
+                inputForm: content,
+                inputInstance: formInstance,
+                loading: false
+            }, () => {
+                getDataHelper(editInstance);
+            });
         } else {
             //console.log('Failed');
             editInstance.setState({ loading: false });
             Alert.alert('Api error', 'Api response error.Vtiger is modified');
         }
     } catch (error) {
-        //console.log(error);
+        console.log(error);
         editInstance.setState({ loading: false });
         Alert.alert('No network connection', 'Please check your internet connection and try again');
     }

@@ -4,25 +4,49 @@ import { connect } from 'react-redux';
 import Header from './header';
 import Viewer from './viewer';
 import { saveEditRecordHelper, } from '../../helper';
+import {CALENDAR} from "../../variables/constants";
 
-
-class AddRecords extends Component {
+class EditRecord extends Component {
     static navigationOptions = {
         header: null
     }
 
+    componentDidMount() {
+        //TODO fixed unserialized values ??
+        this.props.navigation.setOptions({
+            id: this.props.route.params.id,
+            lister: this.props.route.params.lister,
+            isDashboard: this.props.route.params.isDashboard
+        });
+    }
+
     callViewer(headerInstance) {
-        //console.log('call viewer');
         headerInstance.setState({ loading: true });
         saveEditRecordHelper(this.viewer, headerInstance, this.props.dispatch, this.props.route.params.lister);
     }
 
     render() {
+        let moduleName;
+        if (this.props.route.params.isDashboard){
+            moduleName = this.props.route.params.lister.props.moduleName;
+        } else {
+            moduleName = this.props.selectedButton;
+        }
+        if (moduleName === CALENDAR) {
+            let ids = this.props.route.params.id.split('x');
+            if (parseInt(ids[0], 10) === 18) {
+                moduleName = 'Events';
+            }
+            //TODO editRecord dont work for Calendar (Task)
+            //else if (parseInt(ids[0], 10) === 9) {
+            //    moduleName = 'Task';
+            //}
+        }
         return (
             <View style={styles.backgroundStyle}>
                 <Header
                     navigation={this.props.navigation}
-                    moduleName={this.props.selectedButton}
+                    moduleName={moduleName}
                     moduleId={this.props.moduleId}
                     moduleLable={this.props.moduleLable}
                     callViewer={this.callViewer.bind(this)}
@@ -31,7 +55,7 @@ class AddRecords extends Component {
                     <Viewer
                         recordId={this.props.route.params.id}
                         navigation={this.props.navigation}
-                        moduleName={this.props.selectedButton}
+                        moduleName={moduleName}
                         moduleId={this.props.moduleId}
                         moduleLable={this.props.moduleLable}
                         onRef={ref => (this.viewer = ref)}
@@ -54,4 +78,4 @@ const mapStateToProps = ({ drawer }) => {
     return { selectedButton, moduleId, moduleLable };
 };
 
-export default connect(mapStateToProps)(AddRecords);
+export default connect(mapStateToProps)(EditRecord);

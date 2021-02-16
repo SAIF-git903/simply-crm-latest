@@ -19,18 +19,19 @@ class AccountsRecord extends Component {
     renderLabel(label) {
         if (!label || label.length === 0) return null;
 
-        return <Text
-            numberOfLines={1}
-            style={fontStyles.dashboardRecordLabel}
-        >
-            {label}
-        </Text>
+        return (
+            <Text
+                numberOfLines={1}
+                style={fontStyles.dashboardRecordLabel}
+            >
+                {label}
+            </Text>
+        );
     }
 
     render() {
         if (!this.state.loading) {
             return (
-
                 <TouchableOpacity
                     onPress={() => { this.props.onRecordSelect(this.props.item.id, this.props.item.accountsLable, this.props.index); }}
                 >

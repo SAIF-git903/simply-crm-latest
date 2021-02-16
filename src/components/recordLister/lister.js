@@ -29,7 +29,7 @@ class Lister extends Component {
             selectedIndex: -1,
             statusText: '',
             statusTextColor: '#000000',
-            navigation: this.props.navigation
+            // navigation: this.props.navigation
         };
     }
 
@@ -38,16 +38,24 @@ class Lister extends Component {
     }
 
     UNSAFE_componentWillReceiveProps(newprops) {
-        this.setState({ loading: true, searching: false, searchLabel: null });
-        this.props = newprops;
-        if (this.props.saved !== 'not_saved') {
-            this.getRecords();
-        }
+        this.setState({
+            loading: true,
+            searching: false,
+            searchLabel: null
+        },() => {
+            this.props = newprops;
+            if (this.props.saved !== 'not_saved') {
+                this.getRecords();
+            }
+        });
     }
 
     onRecordSelect(id, index) {
-        this.setState({ selectedIndex: index });
-        this.props.dispatch(viewRecordAction(id, this));
+        this.setState({
+            selectedIndex: index
+        },() => {
+            this.props.dispatch(viewRecordAction(id, this));
+        });
     }
 
     onEndReached() {
@@ -150,9 +158,7 @@ class Lister extends Component {
                             doSearch={(searchText) => this.doSearch(searchText)}
                         />
                     </View>
-                    <View style={{
-                        flex: 1
-                    }}>
+                    <View style={{ flex: 1 }}>
                         {this.renderSearching()}
                     </View>
                 </View>

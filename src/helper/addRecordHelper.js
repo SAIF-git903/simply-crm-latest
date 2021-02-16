@@ -269,7 +269,7 @@ export const describeRecordHelper = async (addInstance) => {
                 content.push(
                     <FormSection
                         key={k}
-                        sequence={parseInt(sequence)}
+                        sequence={parseInt(sequence, 10)}
                         title={label}
                     >
                         {formArray}

@@ -16,18 +16,13 @@ const moment = require('moment-timezone');
 import SwipeOut from 'react-native-swipeout';
 
 import { UPDATE_RECORD_VIEWER } from '../actions/types';
-import {
-    getCalendarRecords,
-    deleteCalendarRecord,
-    editRecord,
-    editRecordCompleted
-} from '../ducks/calendar';
+import { getCalendarRecords, deleteCalendarRecord } from '../ducks/calendar';
 import Header from '../components/common/Header';
 import { fontStyles } from '../styles/common';
 
 export default function Calendar() {
 
-    const [currentDate, setCurrentDate] = useState(new moment())
+    const [currentDate, setCurrentDate] = useState(new moment());
     const [showCalendar, setShowCalendar] = useState(false);
 
     const dispatch = useDispatch();
@@ -44,33 +39,35 @@ export default function Calendar() {
 
     useFocusEffect(
         React.useCallback(() => {
-            fetchData()
+            fetchData();
         }, [])
-    )
+    );
 
     function renderAddRecordButton() {
-        return <TouchableOpacity onPress={() => navigation.navigate('Add Record', {
-            lister: {
-                refreshData: () => fetchData()
-            }
-        })}>
-            <View
-                style={{
-                    backgroundColor: 'rgba(255,255,255,.2)',
-                    width: 27,
-                    height: 27,
-                    borderRadius: 3,
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                }}
-            >
-                <Icon
-                    name='plus'
-                    size={18}
-                    color='white'
-                />
-            </View>
-        </TouchableOpacity>
+        return (
+            <TouchableOpacity onPress={() => navigation.navigate('Add Record', {
+                lister: {
+                    refreshData: () => fetchData()
+                }
+            })}>
+                <View
+                    style={{
+                        backgroundColor: 'rgba(255,255,255,.2)',
+                        width: 27,
+                        height: 27,
+                        borderRadius: 3,
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}
+                >
+                    <Icon
+                        name='plus'
+                        size={18}
+                        color='white'
+                    />
+                </View>
+            </TouchableOpacity>
+        );
     }
 
     function onRecordPress(recordId) {
@@ -85,7 +82,7 @@ export default function Calendar() {
             }
         });
 
-        navigation.navigate('Record Details')
+        navigation.navigate('Record Details');
     }
 
     function onEdit(item) {
@@ -102,7 +99,7 @@ export default function Calendar() {
                 { text: 'Cancel', onPress: () => { }, style: 'cancel' },
                 {
                     text: 'Yes', onPress: () => {
-                        dispatch(deleteCalendarRecord(item.id))
+                        dispatch(deleteCalendarRecord(item.id));
                     }
                 }
             ],
@@ -157,47 +154,48 @@ export default function Calendar() {
             onPress: () => onDelete(item)
         }];
 
-        return <SwipeOut
-            style={{
-                backgroundColor: 'transparent'
-            }}
-            buttonWidth={70}
-            right={swipeOutButtons}
-            autoClose
-        >
-            <TouchableOpacity
-                style={{ ...styles.itemWrapper, paddingTop: props.index === 0 ? 10 : 0 }}
-                onPress={() => onRecordPress(item.id)}
+        return (
+            <SwipeOut
+                style={{
+                    backgroundColor: 'transparent'
+                }}
+                buttonWidth={70}
+                right={swipeOutButtons}
+                autoClose
             >
-                <View style={{ ...styles.item, opacity: recordsLoading.includes(item.id) ? 0.35 : 1 }}>
-                    <Text style={fontStyles.calendarTitle}>{item.subject}</Text>
-                    <Text style={fontStyles.calendarTextMedium}>{item.type}</Text>
-                    <Text style={fontStyles.calendarText}>{item.title}</Text>
-                    <Text style={fontStyles.calendarText}>{timeFrame}</Text>
+                <TouchableOpacity
+                    style={{ ...styles.itemWrapper, paddingTop: props.index === 0 ? 10 : 0 }}
+                    onPress={() => onRecordPress(item.id)}
+                >
+                    <View style={{ ...styles.item, opacity: recordsLoading.includes(item.id) ? 0.35 : 1 }}>
+                        <Text style={fontStyles.calendarTitle}>{item.subject}</Text>
+                        <Text style={fontStyles.calendarTextMedium}>{item.type}</Text>
+                        <Text style={fontStyles.calendarText}>{item.title}</Text>
+                        <Text style={fontStyles.calendarText}>{timeFrame}</Text>
+                        {
+                            (item.taskstatus)
+                                ? <Text style={fontStyles.calendarText}>{item.taskstatus}</Text>
+                                : null
+                        }
+                    </View>
                     {
-                        item.taskstatus ?
-                            <Text style={fontStyles.calendarText}>{item.taskstatus}</Text>
+                        (recordsLoading.includes(item.id))
+                            ? <ActivityIndicator
+                                style={{
+                                    position: 'absolute',
+                                    top: 0,
+                                    left: 0,
+                                    right: 0,
+                                    bottom: 0,
+                                    justifyContent: 'center',
+                                    alignItems: 'center'
+                                }}
+                            />
                             : null
                     }
-                </View>
-                {
-                    recordsLoading.includes(item.id)
-                        ? <ActivityIndicator
-                            style={{
-                                position: 'absolute',
-                                top: 0,
-                                left: 0,
-                                right: 0,
-                                bottom: 0,
-                                justifyContent: 'center',
-                                alignItems: 'center'
-                            }}
-                        />
-                        : null
-                }
-
-            </TouchableOpacity>
-        </SwipeOut>
+                </TouchableOpacity>
+            </SwipeOut>
+        );
     }
 
     function fetchData(isRefreshing) {
@@ -231,7 +229,7 @@ export default function Calendar() {
                 time_start,
                 time_end,
                 id
-            }
+            };
 
             const existingDate = mappedItems.find(x => x.title === itemData.title);
 
@@ -261,67 +259,69 @@ export default function Calendar() {
 
         // set current date selected
         const dateObj = marked[new moment(currentDate).format('YYYY-MM-DD')];
-        marked[new moment(currentDate).format('YYYY-MM-DD')] = { ...dateObj, selected: true }
+        marked[new moment(currentDate).format('YYYY-MM-DD')] = { ...dateObj, selected: true };
         return marked;
     }
 
     function renderEmpty() {
         if (isLoading) return null;
 
-        return <View
-            style={{
-                marginTop: 10,
-                padding: 20,
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: 'white'
-            }}
-        >
-            <Text style={fontStyles.fieldLabel}>No records found.</Text>
-        </View>
+        return (
+            <View
+                style={{
+                    marginTop: 10,
+                    padding: 20,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: 'white'
+                }}
+            >
+                <Text style={fontStyles.fieldLabel}>No records found.</Text>
+            </View>
+        );
     }
 
     function renderHeader() {
-        return <View
-            style={{
-                zIndex: 6000,
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                paddingHorizontal: 40,
-                paddingTop: 20,
-                paddingBottom: 10,
-                backgroundColor: 'white'
-            }}
-        >
+        return (
             <View
-                style={{ width: 30 }}
-            />
-            <Text style={{
-                fontSize: 17,
-                fontFamily: 'Poppins-Medium',
-                color: '#62717C'
-            }}>
-                {new moment(currentDate).format('Y MMMM D')}
-            </Text>
-
-
-            <TouchableOpacity
-                onPress={() => setShowCalendar(true)}
                 style={{
-                    width: 30,
-                    height: 30,
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                }}>
-                <Icon
-                    style={{ marginLeft: 7, marginTop: -3 }}
-                    name='calendar-alt'
-                    size={20}
-                    color='#00BBF2'
+                    zIndex: 6000,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    paddingHorizontal: 40,
+                    paddingTop: 20,
+                    paddingBottom: 10,
+                    backgroundColor: 'white'
+                }}
+            >
+                <View
+                    style={{ width: 30 }}
                 />
-            </TouchableOpacity>
-        </View >
+                <Text style={{
+                    fontSize: 17,
+                    fontFamily: 'Poppins-Medium',
+                    color: '#62717C'
+                }}>
+                    {new moment(currentDate).format('Y MMMM D')}
+                </Text>
+                <TouchableOpacity
+                    onPress={() => setShowCalendar(true)}
+                    style={{
+                        width: 30,
+                        height: 30,
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
+                    <Icon
+                        style={{ marginLeft: 7, marginTop: -3 }}
+                        name='calendar-alt'
+                        size={20}
+                        color='#00BBF2'
+                    />
+                </TouchableOpacity>
+            </View>
+        );
     }
 
     return (
@@ -331,7 +331,6 @@ export default function Calendar() {
                 customRightButton={renderAddRecordButton()}
             />
             <View style={styles.wrapper}>
-
                 <CalendarProvider
                     date={currentDate.format('YYYY-MM-DD')}
                     disabledOpacity={0.6}
@@ -339,7 +338,7 @@ export default function Calendar() {
                     onDateChanged={(date) => setCurrentDate(new moment(date))}
                 >
                     {
-                        showCalendar
+                        (showCalendar)
                             ? <CalendarList
                                 current={currentDate.format('YYYY-MM-DD')}
                                 firstDay={1}

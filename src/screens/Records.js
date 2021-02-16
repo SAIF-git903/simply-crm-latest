@@ -12,24 +12,26 @@ export default class Records extends Component {
     }
 
     renderAddRecordButton() {
-        return <TouchableOpacity onPress={() => this.props.navigation.navigate('Add Record', { lister: this.lister })}>
-            <View
-                style={{
-                    backgroundColor: 'rgba(255,255,255,.2)',
-                    width: 27,
-                    height: 27,
-                    borderRadius: 3,
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                }}
-            >
-                <Icon
-                    name='plus'
-                    size={18}
-                    color='white'
-                />
-            </View>
-        </TouchableOpacity>
+        return (
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Add Record', { lister: this.lister })}>
+                <View
+                    style={{
+                        backgroundColor: 'rgba(255,255,255,.2)',
+                        width: 27,
+                        height: 27,
+                        borderRadius: 3,
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}
+                >
+                    <Icon
+                        name='plus'
+                        size={18}
+                        color='white'
+                    />
+                </View>
+            </TouchableOpacity>
+        );
     }
 
     render() {

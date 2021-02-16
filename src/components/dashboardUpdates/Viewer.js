@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { View, ActivityIndicator, Text } from 'react-native';
 import { connect } from 'react-redux';
-import {dashboardHelper, recordListRendererHelper} from '../../helper';
+import {recordListRendererHelper} from '../../helper';
 import {
     viewRecordAction,
     dashboardRefreshRecord,
     dashboardFetchRecord
 } from '../../actions';
-import StatusView from './statusView';
 
 class Viewer extends Component {
     constructor(props) {
@@ -88,8 +87,7 @@ class Viewer extends Component {
         } else {
             view = (
                 <View style={{ width: '100%' }}>
-                    {/*{dashboardHelper(this)}*/}
-                    {recordListRendererHelper(this)}
+                    {recordListRendererHelper(this, true)}
                 </View>
             );
         }

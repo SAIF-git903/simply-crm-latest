@@ -2,22 +2,45 @@ import React from 'react';
 import Toast from 'react-native-simple-toast';
 import { FlatList, StyleSheet, View, Text } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import { getDataFromNet } from './networkHelper';
 import store from '../store';
-import RecordItem from '../components/recordLister/recordItem';
-
 import { UPDATE_RECORD_VIEWER } from '../actions/types';
 import {
     CAMPAIGNS, VENDORS, FAQ, QUOTES, PURCHASEORDER, SALESORDER,
     INVOICE, PRICEBOOKS, CALENDAR, LEADS, ACCOUNTS, CONTACTS, OPPORTUNITIES,
     PRODUCTS, DOCUMENTS, TICKETS, PBXMANAGER, SERVICECONTRACTS, SERVICES,
     ASSETS, SMS_NOTIFIER, PROJECT_MILESTONE, PROJECT_TASK, MODULE_PROJECT,
-    COMMENTS, CURRENCY
+    COMMENTS, CURRENCY, DOCUMENTFOLDERS
 } from '../variables/constants';
 import { addDatabaseKey } from '.';
-
 import { fontStyles } from '../styles/common';
 import {API_deleteRecord, API_listModuleRecords, API_query} from "./api";
+import CampaignsRecord from '../components/addRecords/referenceRecordLister/recordItems/campaignsRecord';
+import ContactsRecord from '../components/addRecords/referenceRecordLister/recordItems/contactsRecord';
+import VendorRecord from '../components/addRecords/referenceRecordLister/recordItems/vendorRecord';
+import FaqRecord from '../components/addRecords/referenceRecordLister/recordItems/faqRecord';
+import QuotesRecord from '../components/addRecords/referenceRecordLister/recordItems/quotesRecord';
+import PurchaseOrderRecord from '../components/addRecords/referenceRecordLister/recordItems/purchaseOrderRecord';
+import SalesOrderRecord from '../components/addRecords/referenceRecordLister/recordItems/salesOrderRecord';
+import InvoiceRecord from '../components/addRecords/referenceRecordLister/recordItems/invoiceRecord';
+import PriceBooksRecord from '../components/addRecords/referenceRecordLister/recordItems/priceBooksRecord';
+import CalendarRecord from '../components/addRecords/referenceRecordLister/recordItems/calendarRecord';
+import AccountsRecord from '../components/addRecords/referenceRecordLister/recordItems/accountsRecord';
+import OpportunitiesRecord from '../components/addRecords/referenceRecordLister/recordItems/opportunitiesRecord';
+import ProductsRecord from '../components/addRecords/referenceRecordLister/recordItems/productsRecord';
+import DocumentsRecord from '../components/addRecords/referenceRecordLister/recordItems/documentsRecord';
+import TicketsRecord from '../components/addRecords/referenceRecordLister/recordItems/ticketsRecord';
+import PbxRecord from '../components/addRecords/referenceRecordLister/recordItems/pbxRecord';
+import ServiceContractRecord from '../components/addRecords/referenceRecordLister/recordItems/serviceContractsRecord';
+import ServiceRecord from '../components/addRecords/referenceRecordLister/recordItems/serviceRecord';
+import AssetRecord from '../components/addRecords/referenceRecordLister/recordItems/assetRecord';
+import SMSnotifierRecord from '../components/addRecords/referenceRecordLister/recordItems/smsnotifierRecord';
+import ProjectTaskRecord from '../components/addRecords/referenceRecordLister/recordItems/projectTaskRecord';
+import ModuleProjectRecord from '../components/addRecords/referenceRecordLister/recordItems/moduleProjectRecord';
+import CommentsRecord from '../components/addRecords/referenceRecordLister/recordItems/commentRecord';
+import CustomRecord from '../components/addRecords/referenceRecordLister/recordItems/customRecord';
+import CurrencyRecord from '../components/addRecords/referenceRecordLister/recordItems/currencyRecord';
+import DocumentFoldersRecord from '../components/addRecords/referenceRecordLister/recordItems/documentFoldersRecord';
+import RecordItem from '../components/recordLister/recordItem';
 
 const moment = require('moment-timezone');
 
@@ -48,9 +71,7 @@ const styles = StyleSheet.create({
 
 const renderEmpty = () => {
     return (
-        <View
-            style={styles.emptyList}
-        >
+        <View style={styles.emptyList}>
             <Text style={fontStyles.fieldLabel}>No records found.</Text>
         </View>
     );
@@ -61,7 +82,8 @@ export const fetchRecordHelper = async (listerInstance, dispatch, refresh, addEx
     try {
         // const offlineData = JSON.parse(await AsyncStorage.getItem(listerInstance.props.moduleName));
         // if (offlineData !== null) {
-        //     console.log('offline data available')
+        //     console.log('offline data available');
+        //     console.log(offlineData);
         //     //Offline data is avialable
         //     const offlineFinishedTime = JSON.parse(offlineData.finishedTime);
         //     const currentTime = moment();
@@ -81,9 +103,8 @@ export const fetchRecordHelper = async (listerInstance, dispatch, refresh, addEx
         //         await getDataFromInternet(listerInstance, true, offlineData, dispatch);
         //     }
         // } else {
-
-        //Offline data is not available
-        await getDataFromInternet(listerInstance, false, {}, dispatch, refresh, addExisting, isDashboard, moduleName);
+            //Offline data is not available
+            await getDataFromInternet(listerInstance, false, {}, dispatch, refresh, addExisting, isDashboard, moduleName);
         // }
     } catch (error) {
         //Offline data is not available
@@ -107,8 +128,7 @@ export const viewRecord = async (recordId, listerInstance, dispatch) => {
                 recordId
             }
         });
-        const navigation = listerInstance.props.navigation;
-        navigation.navigate('Record Details');
+        listerInstance.props.navigation.navigate('Record Details');
     } else {
         if (width > 600) {
             //It is a tablet
@@ -141,8 +161,7 @@ export const viewRecord = async (recordId, listerInstance, dispatch) => {
                     recordId
                 }
             });
-            const navigation = listerInstance.props.navigation;
-            navigation.navigate('Record Details');
+            listerInstance.props.navigation.navigate('Record Details');
         }
     }
 };
@@ -152,8 +171,8 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
     try {
         const { auth } = store.getState();
         const loginDetails = auth.loginDetails;
-
         const vtigerSeven = loginDetails.vtigerVersion > 6;
+
         let modules = getAllowedModules();
         let [fields, specialFields] = getFieldsForModule(listerInstance.props.moduleName);
         let specialFields_values = Object.values(specialFields);
@@ -189,9 +208,13 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
         if (responseJson.success) {
             await getAndSaveDataVtiger(responseJson, listerInstance, vtigerSeven, refresh, addExisting, moduleName);
         } else {
+            console.log('getDataFromInternet unsuccess response');
+            console.log(responseJson);
             processError(listerInstance, offlineData, offlineAvailable, addExisting);
         }
     } catch (error) {
+        console.log('getDataFromInternet error');
+        console.log(error);
         processError(listerInstance, offlineData, offlineAvailable, addExisting);
     }
 };
@@ -365,42 +388,6 @@ const saveData = async (data, vtigerSeven, responseJson, addExisting, previousDa
         console.log(error);
     }
 };
-
-// const getAndSaveDataVtigerSeven = (responseJson, listerInstance) => {
-//     const data = [];
-//     switch (listerInstance.props.moduleName) {
-//         case CAMPAIGNS: {
-//             const records = responseJson.result.records;
-//             for (const record of records) {
-//                 const modifiedRecord = { lable: record.campaignname,
-//                                             id: record.id };
-//                 data.push(modifiedRecord);
-//             }
-//             break;
-//         }
-//         default : {
-//             const records = responseJson.result.records;
-//             for (const record of records) {
-//                 const modifiedRecord = { lable: record[responseJson.result.headers[0].name],
-//                     id: record.id };
-//                 data.push(modifiedRecord);
-//             }
-//         }
-//     }
-//     const offlineData = { records: data,
-//         nextPage: responseJson.result.moreRecords,
-//         finishedTime: JSON.stringify(moment()), 
-//         pageToTake: responseJson.result.page + 1 };
-//     AsyncStorage.setItem(listerInstance.props.moduleName, JSON.stringify(offlineData));
-//     listerInstance.setState({
-//         loading: false,
-//         statusText: 'Loading complete - Recently updated Pull to refresh',
-//         statusTextColor: '#000000',
-//         data: offlineData.records,
-//         nextPage: offlineData.nextPage,
-//         pageToTake: offlineData.pageToTake
-//    });
-// };
 
 const getFieldsForModule = (moduleName) => {
     let fields = {};
@@ -595,6 +582,12 @@ const getFieldsForModule = (moduleName) => {
             };
             break;
         }
+        case DOCUMENTFOLDERS: {
+            fields = {
+                foldername: 'foldername',
+            };
+            break;
+        }
         default: {
             break;
         }
@@ -612,7 +605,7 @@ const getAllowedModules = () => {
         TICKETS,            PBXMANAGER,     SERVICECONTRACTS,
         SERVICES,           ASSETS,         SMS_NOTIFIER,
         PROJECT_MILESTONE,  PROJECT_TASK,   MODULE_PROJECT,
-        COMMENTS,           CURRENCY,
+        COMMENTS,           CURRENCY,       DOCUMENTFOLDERS
     ];
 }
 
@@ -672,7 +665,7 @@ const removeThisIndex = async (listerInstance, index) => {
     }
 };
 
-export const recordListRendererHelper = (listerInstance) => {
+export const recordListRendererHelper = (listerInstance, isDashboard = false, isRefRecord = false) => {
     return (
         <FlatList
             ListEmptyComponent={renderEmpty()}
@@ -687,16 +680,15 @@ export const recordListRendererHelper = (listerInstance) => {
             onMomentumScrollBegin={() => {
                 listerInstance.onEndReachedCalledDuringMomentum = false;
             }}
-            renderItem={({ item, index }) =>
-                getItem(listerInstance, item, index)
-            }
+            renderItem={({ item, index }) => getItem(listerInstance, item, index, isDashboard, isRefRecord)}
         />
     );
 };
 
-const getItem = (listerInstance, item, index) => {
+const getItem = (listerInstance, item, index, isDashboard, isRefRecord) => {
     let recordName;
-    let label = [];
+    let ComponentName;
+    let labels = [];
 
     switch (listerInstance.props.moduleName) {
         case CAMPAIGNS: {
@@ -705,14 +697,14 @@ const getItem = (listerInstance, item, index) => {
         }
         case CONTACTS: {
             recordName = item.contactsLable;
-            label = [
+            labels = [
                 item.email
             ];
             break;
         }
         case VENDORS: {
             recordName = item.vendorName;
-            label = [
+            labels = [
                 item.vendorEmail,
                 item.vendorPhone,
                 item.vendorWebsite
@@ -725,7 +717,7 @@ const getItem = (listerInstance, item, index) => {
         }
         case QUOTES: {
             recordName = item.quoteLable;
-            label = [
+            labels = [
                 item.total,
                 item.quoteStage
             ];
@@ -733,21 +725,21 @@ const getItem = (listerInstance, item, index) => {
         }
         case PURCHASEORDER: {
             recordName = item.polable;
-            label = [
+            labels = [
                 item.status
             ];
             break;
         }
         case SALESORDER: {
             recordName = item.soLable;
-            label = [
+            labels = [
                 item.status
             ];
             break;
         }
         case INVOICE: {
             recordName = item.invoiceLable;
-            label = [
+            labels = [
                 item.invoiceNo,
                 item.invoiceStatus,
                 item.invoiceAmount,
@@ -766,7 +758,7 @@ const getItem = (listerInstance, item, index) => {
         }
         case LEADS: {
             recordName = item.contactsLable;
-            label = [
+            labels = [
                 item.phone,
                 item.email
             ];
@@ -774,7 +766,7 @@ const getItem = (listerInstance, item, index) => {
         }
         case ACCOUNTS: {
             recordName = item.accountsLable;
-            label = [
+            labels = [
                 item.website,
                 item.phone,
                 item.email,
@@ -783,7 +775,7 @@ const getItem = (listerInstance, item, index) => {
         }
         case OPPORTUNITIES: {
             recordName = item.potentialLable;
-            label = [
+            labels = [
                 item.amount,
                 item.stage
             ];
@@ -791,7 +783,7 @@ const getItem = (listerInstance, item, index) => {
         }
         case PRODUCTS: {
             recordName = item.productLable;
-            label = [
+            labels = [
                 item.no,
                 item.productcategory,
                 item.qtyinstock
@@ -804,7 +796,7 @@ const getItem = (listerInstance, item, index) => {
         }
         case TICKETS: {
             recordName = item.ticketLable;
-            label = [
+            labels = [
                 item.priority
             ];
             break;
@@ -849,21 +841,67 @@ const getItem = (listerInstance, item, index) => {
             recordName = item.currency_name;
             break;
         }
+        case DOCUMENTFOLDERS: {
+            //TODO check me in RecordLister and RefRecordLister
+            recordName = item.foldername;
+            break;
+        }
         default: {
             recordName = item.lable;
             break;
         }
     }
 
+    if (!isRefRecord) {
+        //TODO redo this later
+        ComponentName = RecordItem;
+    } else {
+        ComponentName = getReactComponent(listerInstance.props.moduleName);
+    }
+
     return (
-        <RecordItem
+        <ComponentName
             index={index}
             selectedIndex={listerInstance.state.selectedIndex}
             listerInstance={listerInstance}
             item={item}
             recordName={recordName}
-            labels={label}
+            labels={labels}
+            isDashboard={isDashboard}
             onRecordSelect={listerInstance.onRecordSelect.bind(listerInstance)}
+            navigation={listerInstance.props.navigation}
         />
     );
+}
+
+const getReactComponent = (moduleName) => {
+    let components = {};
+    components[CAMPAIGNS] = CampaignsRecord;
+    components[VENDORS] = VendorRecord;
+    components[FAQ] = FaqRecord;
+    components[QUOTES] = QuotesRecord;
+    components[PURCHASEORDER] = PurchaseOrderRecord;
+    components[SALESORDER] = SalesOrderRecord;
+    components[INVOICE] = InvoiceRecord;
+    components[PRICEBOOKS] = PriceBooksRecord;
+    components[CALENDAR] = CalendarRecord;
+    components[LEADS] = ContactsRecord;
+    components[ACCOUNTS] = AccountsRecord;
+    components[CONTACTS] = ContactsRecord;
+    components[OPPORTUNITIES] = OpportunitiesRecord;
+    components[PRODUCTS] = ProductsRecord;
+    components[DOCUMENTS] = DocumentsRecord;
+    components[TICKETS] = TicketsRecord;
+    components[PBXMANAGER] = PbxRecord;
+    components[SERVICECONTRACTS] = ServiceContractRecord;
+    components[SERVICES] = ServiceRecord;
+    components[ASSETS] = AssetRecord;
+    components[SMS_NOTIFIER] = SMSnotifierRecord;
+    components[PROJECT_MILESTONE] = RecordItem;
+    components[PROJECT_TASK] = ProjectTaskRecord;
+    components[MODULE_PROJECT] = ModuleProjectRecord;
+    components[COMMENTS] = CommentsRecord;
+    components[CURRENCY] = CurrencyRecord;
+    components[DOCUMENTFOLDERS] = DocumentFoldersRecord;
+    return components[moduleName];
 }

@@ -16,57 +16,61 @@ class InvoiceRecord extends Component {
         if (!this.state.loading) {
             return (
                 <TouchableOpacity 
-                onPress={() => { this.props.onRecordSelect(this.props.item.id, this.props.item.invoiceLable, this.props.index); }}
+                    onPress={() => { this.props.onRecordSelect(this.props.item.id, this.props.item.invoiceLable, this.props.index); }}
                 >
                 <View 
-                style={[styles.backgroundStyle, { 
-                    borderTopWidth: (this.props.index === 0) ? 1 : 0,
-                    backgroundColor: 
-                    (this.props.selectedIndex === this.props.index) ? 
-                    RECORD_SELECTED_COLOR : RECORD_COLOR }]}
+                    style={[styles.backgroundStyle, {
+                        borderTopWidth: (this.props.index === 0) ? 1 : 0,
+                        backgroundColor: (this.props.selectedIndex === this.props.index) ? RECORD_SELECTED_COLOR : RECORD_COLOR
+                    }]}
                 >
                     {
-                        (this.props.item.invoiceLable !== '') ?
-                        <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10, color: 'black' }}>
-                            {this.props.item.invoiceLable}
-                        </Text> :
-                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
-                            no lable
-                        </Text>
+                        (this.props.item.invoiceLable !== '')
+                            ?
+                            <Text numberOfLines={1} style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10, color: 'black' }}>
+                                {this.props.item.invoiceLable}
+                            </Text>
+                            :
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
+                                no lable
+                            </Text>
                     }
                     {
-                        (this.props.item.invoiceStatus !== '') ?
-                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
-                            {this.props.item.invoiceStatus}
-                        </Text> :
-                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
-                            no status
-                        </Text>
+                        (this.props.item.invoiceStatus !== '')
+                            ?
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
+                                {this.props.item.invoiceStatus}
+                            </Text>
+                            :
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
+                                no status
+                            </Text>
                     }
                     {
-                        (this.props.item.invoiceAmount !== '') ?
-                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
-                            {this.props.item.invoiceAmount}
-                        </Text> :
-                        <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
-                            no amount
-                        </Text>
+                        (this.props.item.invoiceAmount !== '')
+                            ?
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10 }}>
+                                {this.props.item.invoiceAmount}
+                            </Text>
+                            :
+                            <Text numberOfLines={1} style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}>
+                                no amount
+                            </Text>
                     }
                 </View>
                 </TouchableOpacity>
             );
-        } 
+        }
 
         return (
             <View 
-            style={[styles.backgroundStyle, { 
-                borderTopWidth: (this.props.index === 0) ? 1 : 0,
-                justifyContent: 'space-around',
-                flexDirection: 'row',
-                alignItems: 'center',
-                backgroundColor: 
-                (this.props.selectedIndex === this.props.index) ? 
-                RECORD_SELECTED_COLOR : RECORD_COLOR }]}
+                style={[styles.backgroundStyle, {
+                    borderTopWidth: (this.props.index === 0) ? 1 : 0,
+                    justifyContent: 'space-around',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    backgroundColor: (this.props.selectedIndex === this.props.index) ? RECORD_SELECTED_COLOR : RECORD_COLOR
+                }]}
             >
                 <Text>Deleting.....</Text>
                 <ActivityIndicator />
