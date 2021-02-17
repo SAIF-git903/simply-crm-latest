@@ -17,54 +17,56 @@ class Viewer extends Component {
     }
 
     onFetchCall() {
-        this.setState({ loading: true });
-        describeRecordHelper(this);
+        this.setState({
+            loading: true
+        }, () => {
+            describeRecordHelper(this);
+        });
     }
-    onCopyPriceDetails(priceFields, stockFields) {
 
+    onCopyPriceDetails(priceFields, stockFields) {
         copyPriceDetails(this, priceFields, stockFields);
     }
 
-    renderLoading() {
-        return (
-            <View style={{ width: '100%', height: 50, alignItems: 'center', marginTop: 30 }}>
-                <ActivityIndicator color={'#000000'} />
-            </View>
-        );
-    }
-    renderRecordView() {
-        return (
-            <KeyboardAvoidingView
-                style={{ flex: 1 }}
-                behavior={Platform.OS === "ios" ? "padding" : "height"}
-                keyboardVerticalOffset={122}
-            >
-                <ScrollView
-                    enableResetScrollToCoords={false}
-                    onScrollBeginDrag={() => {
-                        if (Platform.OS === 'ios') {
-                            return;
-                        }
-
-                        Keyboard.dismiss();
-                    }}
-                    keyboardShouldPersistTaps="handled"
-                    contentContainerStyle={{ paddingTop: 10 }}
+    doRender() {
+        let view;
+        if (this.state.loading) {
+            view = (
+                <View style={{ width: '100%', height: 50, alignItems: 'center', marginTop: 30 }}>
+                    <ActivityIndicator color={'#000000'} />
+                </View>
+            );
+        } else {
+            view = (
+                <KeyboardAvoidingView
+                    style={{ flex: 1 }}
+                    behavior={(Platform.OS === "ios") ? "padding" : "height"}
+                    keyboardVerticalOffset={122}
                 >
-                    {this.state.inputForm}
-                </ScrollView>
-            </KeyboardAvoidingView>
-        );
+                    <ScrollView
+                        enableResetScrollToCoords={false}
+                        onScrollBeginDrag={() => {
+                            if (Platform.OS === 'ios') {
+                                return;
+                            }
+
+                            Keyboard.dismiss();
+                        }}
+                        keyboardShouldPersistTaps="handled"
+                        contentContainerStyle={{ paddingTop: 10 }}
+                    >
+                        {this.state.inputForm}
+                    </ScrollView>
+                </KeyboardAvoidingView>
+            );
+        }
+        return view;
     }
 
     render() {
         return (
             <View style={{ flex: 1, backgroundColor: '#f2f3f8' }}>
-                {
-                    (this.state.loading) ?
-                        this.renderLoading() :
-                        this.renderRecordView()
-                }
+                {this.doRender()}
             </View>
         );
     }

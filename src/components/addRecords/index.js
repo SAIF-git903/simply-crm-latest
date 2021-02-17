@@ -5,7 +5,6 @@ import Header from './header';
 import Viewer from './viewer';
 import { saveRecordHelper, copyAddress } from '../../helper';
 
-
 class AddRecords extends Component {
     static navigationOptions = {
         header: null
@@ -30,6 +29,7 @@ class AddRecords extends Component {
                     moduleLable={this.props.moduleLable}
                     callViewer={this.callViewer.bind(this)}
                     showCopyOptions={this.showCopyOptions.bind(this)}
+                    isEdit={false}
                 />
                 <View style={{ width: '100%', height: '100%', paddingBottom: 100 }}>
                     <Viewer

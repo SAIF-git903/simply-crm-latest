@@ -119,7 +119,6 @@ export const describeEditRecordHelper = async (editInstance) => {
                                     </View>
                                 );
                                 break;
-
                             case 'phone':
                             case 'currency':
                             case 'integer':
@@ -229,7 +228,6 @@ export const describeEditRecordHelper = async (editInstance) => {
                                 );
                                 break;
                         }
-
                     }
                 }
 

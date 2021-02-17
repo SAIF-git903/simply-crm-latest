@@ -168,18 +168,24 @@ class Splash extends Component {
     }
 
     renderView() {
+        let view;
         switch (this.state.componentToLoad) {
             case LOADER:
-                return this.renderSplashLoader();
+                view = this.renderSplashLoader();
+                break;
             case INTRO:
-                return this.renderIntro();
+                view = this.renderIntro();
+                break;
             case LOGINFORM:
-                return this.renderSplashLoginForm();
+                view = this.renderSplashLoginForm();
+                break;
             default:
-                return (
+                view = (
                     <View style={{ flex: 1 }} />
                 );
+                break;
         }
+        return view;
     }
 
     render() {

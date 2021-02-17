@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import Header from './header';
+import Header from '../addRecords/header';
 import Viewer from './viewer';
 import { saveEditRecordHelper, } from '../../helper';
 import {CALENDAR} from "../../variables/constants";
@@ -50,6 +50,7 @@ class EditRecord extends Component {
                     moduleId={this.props.moduleId}
                     moduleLable={this.props.moduleLable}
                     callViewer={this.callViewer.bind(this)}
+                    isEdit={true}
                 />
                 <View style={{ width: '100%', height: '100%', paddingBottom: 100 }}>
                     <Viewer
