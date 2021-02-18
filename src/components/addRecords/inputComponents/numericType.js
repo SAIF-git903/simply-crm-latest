@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, TextInput } from 'react-native';
-import { fontStyles } from '../../../styles/common';
+import {View, TextInput} from 'react-native';
+import { fontStyles, commonStyles } from '../../../styles/common';
 
 class NumericType extends Component {
     constructor(props) {
@@ -16,33 +16,17 @@ class NumericType extends Component {
     }
 
     render() {
-        const mandatory = this.props.obj.mandatory;
-        const amp = '&amp;';
-        const validLable = (this.props.obj.lable.indexOf(amp) !== -1) ? this.props.obj.lable.replace('&amp;', '&') : this.props.obj.lable;
-
         return (
-            <View style={styles.inputHolder}>
-                <View style={{ flex: .5, justifyContent: 'flex-start' }}>
-                    <Text style={[styles.label, fontStyles.fieldLabel]}>{validLable}</Text>
-                    {
-                        (mandatory)
-                            ?
-                            <View style={styles.mandatory}>
-                                <Text style={[fontStyles.fieldLabel, { color: 'red', fontSize: 16 }]}>*</Text>
-                            </View>
-                            :
-                            // undefined
-                            <View style={styles.mandatory} />
-                    }
-                </View>
+            <View style={commonStyles.inputHolder}>
+                {this.props.fieldLabelView}
                 <View style={{ flex: 1 }}>
                     <TextInput
                         autoGrow={true}
                         placeholderTextColor={'#C5C5C5'}
-                        placeholder={validLable}
+                        placeholder={this.props.validLable}
                         autoCorrect={false}
                         autoCapitalize='none'
-                        style={[styles.label, fontStyles.fieldValue, { paddingLeft: 0 }]}
+                        style={[commonStyles.label, fontStyles.fieldValue, { paddingLeft: 0 }]}
                         keyboardType='numeric'
                         value={this.state.saveValue}
                         onChangeText={this.onTextInputChange.bind(this)}
@@ -52,30 +36,5 @@ class NumericType extends Component {
         );
     }
 }
-
-const styles = StyleSheet.create(
-    {
-        inputHolder: {
-            flex: 1,
-            flexDirection: 'row',
-            marginTop: 10,
-            marginRight: 2
-        },
-        label: {
-            fontSize: 16,
-            padding: 10,
-            paddingLeft: 20
-        },
-        mandatory: {
-            position: 'absolute',
-            marginTop: 10,
-            marginLeft: 5,
-            width: 10,
-            height: 25,
-            justifyContent: 'center',
-            alignItems: 'flex-end',
-        },
-    }
-);
 
 export default NumericType;

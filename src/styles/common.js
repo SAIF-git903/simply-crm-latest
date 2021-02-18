@@ -57,6 +57,48 @@ export const commonStyles = StyleSheet.create({
         height: 1,
         backgroundColor: '#d3d3d3'
     },
+    inputHolder: {
+        flex: 1,
+        flexDirection: 'row',
+        marginVertical: 10,
+        marginRight: 2,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    label: {
+        fontSize: 16,
+        padding: 10,
+        paddingLeft: 20
+    },
+    mandatory: {
+        position: 'absolute',
+        marginTop: 10,
+        marginLeft: 5,
+        width: 10,
+        height: 25,
+        justifyContent: 'center',
+        alignItems: 'flex-end',
+    },
+    textbox: {
+        //paddingTop: 9,
+        borderColor: '#ABABAB',
+        borderWidth: 0.5,
+        padding: 0,
+        paddingLeft: 5,
+        borderTopLeftRadius: 4,
+        borderTopRightRadius: 4,
+        borderBottomLeftRadius: 4,
+        borderBottomRightRadius: 4,
+        height: 42,
+        // height: 38,
+        justifyContent: 'center'
+    },
+    text: {
+        fontSize: 14,
+        marginLeft: 5,
+        borderWidth: 0,
+        color: '#121212',
+    },
 });
 
 export const fontStyles = StyleSheet.create({

@@ -72,10 +72,8 @@ class Header extends Component {
     }
 
     getCopyView() {
-        let view;
-        if (this.props.recordId) {
-            view = null;
-        } else {
+        let view = null;
+        if (!this.props.recordId) {
             const copyOptions = [];
             copyOptions.push({ label: 'Contacts', value: 0 });
             copyOptions.push({ label: 'Organisation', value: 1 });

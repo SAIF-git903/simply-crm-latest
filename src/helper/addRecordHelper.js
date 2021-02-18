@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, View } from 'react-native';
+import {Alert, StyleSheet, Text, View} from 'react-native';
 import Toast from 'react-native-simple-toast';
 // import { NavigationActions } from 'react-navigation';
 import store from '../store';
@@ -11,9 +11,10 @@ import NumericForm from '../components/addRecords/inputComponents/numericType';
 import DateForm from '../components/addRecords/inputComponents/dateType';
 import TimeForm from '../components/addRecords/inputComponents/timeType';
 import MultiPickerForm from '../components/addRecords/inputComponents/multipicklistType';
-import ReferenceForm from '../components/addRecords/inputComponents/referenceType';
+import ReferenceType from '../components/addRecords/inputComponents/referenceType';
 import { saveSuccess } from '../actions';
 import { API_structure, API_fetchRecord, API_saveRecord } from "./api";
+import {fontStyles, commonStyles} from "../styles/common";
 
 export const describeRecordHelper = async (currentInstance) => {
     const { auth } = store.getState();
@@ -21,11 +22,9 @@ export const describeRecordHelper = async (currentInstance) => {
     try {
         const responseJson = await API_structure(currentInstance.props.moduleName);
         if (responseJson.success) {
-            const structures = responseJson.result.structure;
-
             const formInstance = [];
             const content = [];
-
+            const structures = responseJson.result.structure;
             for (let k = 1; k < structures.length; k++) {
                 const structure = structures[k];
                 const {
@@ -44,16 +43,14 @@ export const describeRecordHelper = async (currentInstance) => {
                     }
 
                     const hiddenFields = [
-                        'createdtime',
-                        'modifiedtime',
-                        'pricebook_no',
-                        'source',
-                        'starred',
-                        'tags',
+                        'createdtime', 'modifiedtime', 'pricebook_no',
+                        'source', 'starred', 'tags',
                         'modifiedby'
                     ];
 
-                    if (hiddenFields.includes(fArr.name)) continue;
+                    if (hiddenFields.includes(fArr.name)) {
+                        continue;
+                    }
 
                     const fieldObj = {
                         name: fArr.name,
@@ -77,6 +74,8 @@ export const describeRecordHelper = async (currentInstance) => {
                         )
                     ) {
                         let type = fieldObj.type.name;
+                        let defaultValue = null;
+                        let ComponentName;
 
                         // if (type === 'currency' && fieldObj.name === 'unit_price' && currentInstance.props.moduleName === 'Products') {
                         //     type = 'picklist';
@@ -84,62 +83,11 @@ export const describeRecordHelper = async (currentInstance) => {
                         // }
 
                         switch (type) {
-                            case 'string':
-                            case 'text':
-                            case 'url':
-                            case 'email':
-                                formArray.push(
-                                    <View
-                                        sequence={fArr.sequence}
-                                        key={fieldObj.name}
-                                    >
-                                        <StringForm
-                                            obj={fieldObj}
-                                            navigate={currentInstance.props.navigation}
-                                            moduleName={currentInstance.props.moduleName}
-                                            formId={i}
-                                            ref={(ref) => formInstance.push(ref)}
-                                            key={i}
-                                        />
-                                        <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
-                                    </View>
-                                );
-                                break;
                             case 'boolean':
-                                formArray.push(
-                                    <View
-                                        sequence={fArr.sequence}
-                                        key={fieldObj.name}
-                                    >
-                                        <BooleanForm
-                                            obj={fieldObj}
-                                            navigate={currentInstance.props.navigation}
-                                            moduleName={currentInstance.props.moduleName}
-                                            formId={i}
-                                            ref={(ref) => formInstance.push(ref)}
-                                            key={i}
-                                        />
-                                        <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
-                                    </View>
-                                );
+                                ComponentName = BooleanForm;
                                 break;
                             case 'picklist':
-                                formArray.push(
-                                    <View
-                                        sequence={fArr.sequence}
-                                        key={fieldObj.name}
-                                    >
-                                        <PickerForm
-                                            obj={fieldObj}
-                                            navigate={currentInstance.props.navigation}
-                                            moduleName={currentInstance.props.moduleName}
-                                            formId={i}
-                                            ref={(ref) => formInstance.push(ref)}
-                                            key={i}
-                                        />
-                                        <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
-                                    </View>
-                                );
+                                ComponentName = PickerForm;
                                 break;
                             case 'phone':
                             case 'currency':
@@ -147,129 +95,65 @@ export const describeRecordHelper = async (currentInstance) => {
                             case 'double':
                                 //TODO 'if' is necessary ??
                                 if (fieldObj.name !== 'shipping_&_handling_') {
-                                    formArray.push(
-                                        <View
-                                            sequence={fArr.sequence}
-                                            key={fieldObj.name}
-                                        >
-                                            <NumericForm
-                                                obj={fieldObj}
-                                                navigate={currentInstance.props.navigation}
-                                                moduleName={currentInstance.props.moduleName}
-                                                formId={i}
-                                                ref={(ref) => formInstance.push(ref)}
-                                                key={i}
-                                            />
-                                            <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
-                                        </View>
-                                    );
+                                    ComponentName = NumericForm;
                                 }
                                 break;
                             case 'date':
-                                formArray.push(
-                                    <View
-                                        sequence={fArr.sequence}
-                                        key={fieldObj.name}
-                                    >
-                                        <DateForm
-                                            obj={fieldObj}
-                                            navigate={currentInstance.props.navigation}
-                                            moduleName={currentInstance.props.moduleName}
-                                            formId={i}
-                                            ref={(ref) => formInstance.push(ref)}
-                                            key={i}
-                                        />
-                                        <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
-                                    </View>
-                                );
+                                ComponentName = DateForm;
                                 break;
                             case 'multipicklist':
-                                formArray.push(
-                                    <View
-                                        sequence={fArr.sequence}
-                                        key={fieldObj.name}
-                                    >
-                                        <MultiPickerForm
-                                            obj={fieldObj}
-                                            navigate={currentInstance.props.navigation}
-                                            moduleName={currentInstance.props.moduleName}
-                                            formId={i}
-                                            ref={(ref) => formInstance.push(ref)}
-                                            key={i}
-                                        />
-                                        <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
-                                    </View>
-                                );
+                                ComponentName = MultiPickerForm;
                                 break;
                             case 'reference':
                             case 'owner':
-                                let defaultValue = null;
                                 if (fieldObj.name === 'currency_id') {
                                     defaultValue = store.getState().UserReducer.userData.currency_id;
                                 }
-                                formArray.push(
-                                    <View
-                                        sequence={fArr.sequence}
-                                        key={fieldObj.name}
-                                    >
-                                        <ReferenceForm
-                                            defaultValue={defaultValue}
-                                            obj={fieldObj}
-                                            navigate={currentInstance.props.navigation}
-                                            moduleName={currentInstance.props.moduleName}
-                                            formId={i}
-                                            ref={(ref) => {
-                                                return (ref !== null) ? formInstance.push(ref) : undefined;
-                                            }}
-                                            userId={loginDetails.userId}
-                                            onCopyPriceDetails={currentInstance.onCopyPriceDetails.bind(currentInstance)}
-                                            key={i}
-                                        />
-                                        <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
-                                    </View>
-                                );
+                                ComponentName = ReferenceType;
                                 break;
                             case 'time':
-                                formArray.push(
-                                    <View
-                                        sequence={fArr.sequence}
-                                        key={fieldObj.name}
-                                    >
-                                        <TimeForm
-                                            obj={fieldObj}
-                                            navigate={currentInstance.props.navigation}
-                                            moduleName={currentInstance.props.moduleName}
-                                            formId={i}
-                                            ref={(ref) => formInstance.push(ref)}
-                                            key={i}
-                                        />
-                                        <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
-                                    </View>
-                                );
+                                ComponentName = TimeForm;
                                 break;
+                            case 'string':
+                            case 'text':
+                            case 'url':
+                            case 'email':
                             default:
-                                formArray.push(
-                                    <View
-                                        sequence={fArr.sequence}
-                                        key={fieldObj.name}
-                                    >
-                                        <StringForm
-                                            obj={fieldObj}
-                                            navigate={currentInstance.props.navigation}
-                                            moduleName={currentInstance.props.moduleName}
-                                            formId={i}
-                                            ref={(ref) => formInstance.push(ref)}
-                                            key={i}
-                                        />
-                                        <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
-                                    </View>
-                                );
+                                ComponentName = StringForm;
                                 break;
                         }
+
+                        const amp = '&amp;';
+                        const validLable = (fieldObj.lable.indexOf(amp) !== -1) ? fieldObj.lable.replace(amp, '&') : fieldObj.lable;
+                        formArray.push(
+                            <View
+                                sequence={fArr.sequence}
+                                key={fieldObj.name}
+                            >
+                                <ComponentName
+                                    obj={fieldObj}
+                                    validLable={validLable}
+                                    fieldLabelView={getFieldLabelView(fieldObj.mandatory, validLable)}
+                                    navigate={currentInstance.props.navigation}
+                                    moduleName={currentInstance.props.moduleName}
+                                    formId={i}
+                                    ref={(ref) => {
+                                        return (ref !== null) ? formInstance.push(ref) : undefined;
+                                    }}
+                                    key={i}
+                                    defaultValue={defaultValue}
+                                    userId={loginDetails.userId}
+                                    onCopyPriceDetails={currentInstance.onCopyPriceDetails.bind(currentInstance)}
+                                />
+                                <View style={{ width: '100%', height: 1, backgroundColor: '#f2f3f8' }} />
+                            </View>
+                        );
                     }
                 }
 
-                if (formArray.length === 0) continue;
+                if (formArray.length === 0) {
+                    continue;
+                }
 
                 // Sort fields
                 formArray.sort((a, b) => a.props.sequence - b.props.sequence);
@@ -282,7 +166,7 @@ export const describeRecordHelper = async (currentInstance) => {
                     >
                         {formArray}
                     </FormSection>
-                )
+                );
             }
 
             // Sort sections
@@ -309,6 +193,23 @@ export const describeRecordHelper = async (currentInstance) => {
         Alert.alert('No network connection', 'Please check your internet connection and try again');
     }
 };
+
+const getFieldLabelView = (mandatory, validLable) => {
+    let view = null;
+    if (mandatory) {
+        view = (
+            <Text style={[fontStyles.fieldLabel, { color: 'red', fontSize: 16 }]}>*</Text>
+        );
+    }
+    return (
+        <View style={{ flex: .5, justifyContent: 'flex-start' }}>
+            <Text style={[commonStyles.label, fontStyles.fieldLabel]}>{validLable}</Text>
+            <View style={commonStyles.mandatory}>
+                {view}
+            </View>
+        </View>
+    );
+}
 
 export const getDataHelper = async (currentInstance) => {
     const { auth } = store.getState();
@@ -427,7 +328,7 @@ const doSaveRecord = async (currentInstance, headerInstance, jsonObj, dispatch, 
                 throw Error(`${field.state.error} at ${field.props.obj.lable}`);
             }
         }
-        //TODO check with recordId 0 and not 0
+        //TODO check with recordId = ''
         const responseJson = await API_saveRecord(currentInstance.props.moduleName, JSON.stringify(jsonObj), currentInstance.state.recordId);
         if (responseJson.success) {
             headerInstance.setState({ loading: false });
@@ -468,6 +369,7 @@ export const copyAddress = (currentInstance, headerInstance) => {
     try {
         const { auth } = store.getState();
         const loginDetails = auth.loginDetails;
+        const vtigerSeven = loginDetails.vtigerVersion > 6;
 
         const formInstance = currentInstance.state.inputInstance;
         let emptyFlag = true;
@@ -515,7 +417,7 @@ export const copyAddress = (currentInstance, headerInstance) => {
                 if (checkValue !== '' && targetAddress.length > 0) {
                     targetAddress = targetAddress.filter((item) => item.name === checkValue).map(({ value }) => ({ value }));
                     if (targetAddress.length > 0) {
-                        formInstance[i].setState({ saveValue: (loginDetails.vtigerVersion === 7) ? targetAddress[0].value : targetAddress[0].value.value });
+                        formInstance[i].setState({ saveValue: (vtigerSeven) ? targetAddress[0].value : targetAddress[0].value.value });
                         // formInstance[i].setState({ saveValue: targetAddress[0].value });    
                         if (targetAddress[0].value !== '') {
                             emptyFlag = false;
@@ -540,7 +442,7 @@ export const copyPriceDetails = (currentInstance, priceFields, stockFields) => {
     try {
         const { auth } = store.getState();
         const loginDetails = auth.loginDetails;
-
+        const vtigerSeven = loginDetails.vtigerVersion > 6;
         const formInstance = currentInstance.state.inputInstance;
         let pfields = priceFields;
         let sfields = stockFields;
@@ -548,16 +450,21 @@ export const copyPriceDetails = (currentInstance, priceFields, stockFields) => {
         for (let i = 0; i < formInstance.length; i++) {
             if (formInstance[i].state.fieldName === 'listprice') {
                 pfields = pfields.filter((item) => item.name === 'unit_price').map(({ value }) => ({ value }));
-                formInstance[i].setState({ saveValue: (loginDetails.vtigerVersion === 7) ? Number(pfields[0].value).toFixed(2) : Number(pfields[0].value.value).toFixed(2) });
-                // formInstance[i].setState({ saveValue: pfields[0].value });               
+                let val;
+                if (vtigerSeven) {
+                    val = Number(pfields[0].value).toFixed(2);
+                } else {
+                    val = Number(pfields[0].value.value).toFixed(2);
+                }
+                formInstance[i].setState({ saveValue: val });
+                // formInstance[i].setState({ saveValue: pfields[0].value });
             }
             if (formInstance[i].state.fieldName === 'quantity') {
                 sfields = sfields.filter((item) => item.name === 'qty_per_unit').map(({ value }) => ({ value }));
-                const qunatity = (loginDetails.vtigerVersion === 7) ? sfields[0].value : sfields[0].value.value;
-                // const qunatity = (loginDetails.vtigerVersion === 7) ? sfields : sfields[0].value.value;  
-                // const qunatity = sfields[0].value;  
+                const qunatity = (vtigerSeven) ? sfields[0].value : sfields[0].value.value;
+                // const qunatity = (vtigerSeven) ? sfields : sfields[0].value.value;
+                // const qunatity = sfields[0].value;
                 formInstance[i].setState({ saveValue: (qunatity === '0.00') ? '1' : qunatity });
-
             }
         }
     } catch (error) {

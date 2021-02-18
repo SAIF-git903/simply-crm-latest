@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import {View} from 'react-native';
 import MultiSelect from 'react-native-multiple-select';
-import { fontStyles } from '../../../styles/common';
+import {commonStyles} from '../../../styles/common';
 
 class MultiPickListType extends Component {
     constructor(props) {
@@ -14,7 +14,6 @@ class MultiPickListType extends Component {
     }
 
     render() {
-        const mandatory = this.props.obj.mandatory;
         const items = [];
         const options = this.props.obj.type.picklistValues;
         options.map((item) => {
@@ -24,24 +23,10 @@ class MultiPickListType extends Component {
                 // name: item.value
             });
         });
-        const amp = '&amp;';
-        const validLable = (this.props.obj.lable.indexOf(amp) !== -1) ? this.props.obj.lable.replace('&amp;', '&') : this.props.obj.lable;
 
         return (
-            <View style={styles.inputHolder}>
-                <View style={{ flex: .5, justifyContent: 'flex-start' }}>
-                    <Text style={[styles.label, fontStyles.fieldLabel]}>{validLable}</Text>
-                    {
-                        (mandatory)
-                            ?
-                            <View style={styles.mandatory}>
-                                <Text style={[fontStyles.fieldLabel, { color: 'red', fontSize: 16 }]}>*</Text>
-                            </View>
-                            :
-                            // undefined
-                            <View style={styles.mandatory} />
-                    }
-                </View>
+            <View style={commonStyles.inputHolder}>
+                {this.props.fieldLabelView}
                 <View style={{ flex: 1 }}>
                     <MultiSelect
                         fontFamily={'Poppins-Regular'}
@@ -69,30 +54,5 @@ class MultiPickListType extends Component {
         );
     }
 }
-
-const styles = StyleSheet.create(
-    {
-        inputHolder: {
-            flex: 1,
-            flexDirection: 'row',
-            marginTop: 10,
-            marginRight: 2
-        },
-        label: {
-            fontSize: 16,
-            padding: 10,
-            paddingLeft: 20
-        },
-        mandatory: {
-            position: 'absolute',
-            marginTop: 10,
-            marginLeft: 5,
-            width: 10,
-            height: 25,
-            justifyContent: 'center',
-            alignItems: 'flex-end',
-        },
-    }
-);
 
 export default MultiPickListType;
