@@ -13,7 +13,8 @@ class Header extends Component {
         this.state = {
             loading: false,
             dialogueVisible: false,
-            copyFrom: 'Contacts'
+            copyFrom: 'Contacts',
+            recordId: this.props.recordId
         };
     }
 
@@ -72,7 +73,7 @@ class Header extends Component {
 
     getCopyView() {
         let view;
-        if (this.props.isEdit) {
+        if (this.props.recordId) {
             view = null;
         } else {
             const copyOptions = [];

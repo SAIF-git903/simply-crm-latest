@@ -2,36 +2,31 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, Alert } from 'react-native';
 import { SinglePickerMaterialDialog } from 'react-native-material-dialog';
 import { connect } from 'react-redux';
-import { COPY_CONTACT_ADDRESS } from '../../../actions/types';
-import { getUserName, getAddressDetails, getPriceDetails } from '../../../helper';
 import { fontStyles } from '../../../styles/common';
-
-const mapStateToProps = ({ recordViewer }) => {
-    const { label, recordId, uniqueId } = recordViewer;
-    return { label, recordId, uniqueId };
-};
+import { getUserName, getAddressDetails, getPriceDetails } from '../../../helper';
 
 class ReferenceType extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
             dialogueVisible: false,
             dialogueSelectedValue: undefined,
-            referenceValue: this.props.defaultValue ? this.props.defaultValue.label : '',
+            referenceValue: (this.props.defaultValue) ? this.props.defaultValue.label : '',
             formId: 0,
-            saveValue: this.props.defaultValue ? this.props.defaultValue.value : this.props.obj.default,
+            saveValue: (this.props.defaultValue) ? this.props.defaultValue.value : this.props.obj.default,
             fieldName: this.props.obj.name,
-            selectedRefModule: ''
+            selectedRefModule: '',
+            reference: true
         };
     }
 
     UNSAFE_componentWillMount() {
         this.setState({
             formId: this.props.formId,
-            referenceValue: this.props.defaultValue ? this.props.defaultValue.label : this.props.label
+            referenceValue: (this.props.defaultValue) ? this.props.defaultValue.label : this.props.label
             //referenceValue: label
         });
+        //TODO use callback ??
         this.assignUserId();
     }
 
@@ -69,6 +64,7 @@ class ReferenceType extends Component {
                 } else {
                     const { navigate } = this.props.navigate;
                     this.setState({ selectedRefModule: type.refersTo[0] });
+                    //TODO use callback ??
                     navigate('Reference Screen', { selectedModule: type.refersTo[0], uniqueId: this.state.formId });
                 }
             }
@@ -76,16 +72,19 @@ class ReferenceType extends Component {
     }
 
     assignUserId() {
+        //TODO disable for edit ??
         if (this.props.obj.name === 'assigned_user_id') {
             getUserName(this);
         }
     }
 
     assignAddress() {
+        //TODO disable for edit ??
         getAddressDetails(this, this.props.dispatch);
     }
 
     assignPriceDetails() {
+        //TODO disable for edit ??
         getPriceDetails(this);
     }
 
@@ -101,18 +100,18 @@ class ReferenceType extends Component {
             });
         }
         const amp = '&amp;';
-
         const validLable = (this.props.obj.lable.indexOf(amp) !== -1) ? this.props.obj.lable.replace('&amp;', '&') : this.props.obj.lable;
-
         // if (this.props.obj.name === 'assigned_user_id') {
         //     this.se
         // }
+
         return (
             <View style={styles.inputHolder}>
                 <View style={{ flex: .5, justifyContent: 'flex-start' }}>
                     <Text style={[styles.label, fontStyles.fieldLabel]}>{validLable}</Text>
                     {
-                        (mandatory) ?
+                        (mandatory)
+                            ?
                             <View style={styles.mandatory}>
                                 <Text style={[fontStyles.fieldLabel, { color: 'red', fontSize: 16 }]}>*</Text>
                             </View>
@@ -122,13 +121,14 @@ class ReferenceType extends Component {
                     }
                 </View>
                 <View style={{ flex: 1 }}>
-                    <TouchableOpacity onPress={this.onReferencePress.bind(this, type)} >
+                    <TouchableOpacity onPress={this.onReferencePress.bind(this, type)}>
                         <View style={styles.textbox}>
-                            <Text numberOfLines={1} style={[styles.text, fontStyles.fieldValue]}>{this.state.referenceValue}</Text>
+                            <Text numberOfLines={1} style={[styles.text, fontStyles.fieldValue]}>
+                                {this.state.referenceValue}
+                            </Text>
                         </View>
                     </TouchableOpacity>
                 </View>
-
 
                 <SinglePickerMaterialDialog
                     title={'Choose one'}
@@ -143,13 +143,15 @@ class ReferenceType extends Component {
                             this.setState({ dialogueVisible: false });
                         } else {
                             navigate('Reference Screen', { selectedModule: result.selectedItem.label, uniqueId: this.state.formId });
-                            this.setState({ dialogueSelectedValue: result.selectedItem, selectedRefModule: result.selectedItem.label });
-                            this.setState({ dialogueVisible: false });
+                            this.setState({
+                                dialogueSelectedValue: result.selectedItem,
+                                selectedRefModule: result.selectedItem.label,
+                                dialogueVisible: false
+                            });
                         }
                     }}
                     scrolled
                 />
-
             </View>
         );
     }
@@ -188,6 +190,7 @@ const styles = StyleSheet.create(
             borderBottomLeftRadius: 4,
             borderBottomRightRadius: 4,
             height: 42,
+            // height: 38,
             justifyContent: 'center'
         },
         text: {
@@ -199,5 +202,9 @@ const styles = StyleSheet.create(
     }
 );
 
+const mapStateToProps = ({ recordViewer }) => {
+    const { label, recordId, uniqueId } = recordViewer;
+    return { label, recordId, uniqueId };
+};
 
 export default connect(mapStateToProps, null, null, { forwardRef: true })(ReferenceType);

@@ -1,15 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { View, Text, TextInput, StyleSheet, Alert, TouchableOpacity, Image } from 'react-native';
-import { SinglePickerMaterialDialog } from 'react-native-material-dialog';
-import { DRAWER_SECTION_HEADER_BACKGROUND_COLOR } from '../../../variables/themeColors';
-import store from '../../../store';
-import { copyAddress } from '../../../helper';
-// import { connect } from 'react-redux';
-// import { saveData } from '../../../actions';
+import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { fontStyles } from '../../../styles/common';
-
-
 
 class StringType extends Component {
     constructor(props) {
@@ -28,13 +19,11 @@ class StringType extends Component {
 
         switch (type) {
             case 'email':
-                errorMsg = this.validateEmail(text) ? null : 'Invalid e-mail address';
+                errorMsg = (this.validateEmail(text)) ? null : 'Invalid e-mail address';
                 break;
-
             case 'url':
-                errorMsg = this.validateUrl(text) ? null : 'Invalid website address';
+                errorMsg = (this.validateUrl(text)) ? null : 'Invalid website address';
                 break;
-
             default:
                 break;
         }
@@ -42,15 +31,13 @@ class StringType extends Component {
         this.setState({
             ...this.state,
             saveValue: text,
-            error: text.length !== 0
-                ? errorMsg
-                : null,
+            error: (text.length !== 0) ? errorMsg : null,
             showError: false
         });
     }
 
     validateEmail(text) {
-        return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(text)
+        return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(text);
     }
 
     validateUrl(text) {
@@ -78,16 +65,15 @@ class StringType extends Component {
                             <View style={styles.mandatory} />
                     }
                 </View>
-
-
                 <View style={{ flex: 1 }}>
                     {
-
-                        (type === 'email') ?
+                        (type === 'email')
+                            ?
                             <View>
                                 {
-                                    this.state.showError
-                                        ? <Text style={[
+                                    (this.state.showError)
+                                        ?
+                                        <Text style={[
                                             fontStyles.fieldValue,
                                             {
                                                 fontSize: 12,
@@ -98,7 +84,8 @@ class StringType extends Component {
                                         ]}>
                                             {this.state.error}
                                         </Text>
-                                        : null
+                                        :
+                                        null
                                 }
                                 <TextInput
                                     autoGrow={true}
@@ -110,8 +97,9 @@ class StringType extends Component {
                                         fontStyles.fieldValue,
                                         {
                                             paddingLeft: 0,
-                                            color: this.state.showError ? 'red' : fontStyles.fieldValue.color,
-                                        }]}
+                                            color: (this.state.showError) ? 'red' : fontStyles.fieldValue.color,
+                                        }
+                                    ]}
                                     keyboardType='email-address'
                                     value={this.state.saveValue}
                                     onChangeText={this.onTextInputChange.bind(this)}
@@ -121,8 +109,9 @@ class StringType extends Component {
                             :
                             <View>
                                 {
-                                    this.state.showError
-                                        ? <Text style={[
+                                    (this.state.showError)
+                                        ?
+                                        <Text style={[
                                             fontStyles.fieldValue,
                                             {
                                                 fontSize: 12,
@@ -133,7 +122,8 @@ class StringType extends Component {
                                         ]}>
                                             {this.state.error}
                                         </Text>
-                                        : null
+                                        :
+                                        null
                                 }
                                 <TextInput
                                     autoGrow={true}
@@ -145,8 +135,9 @@ class StringType extends Component {
                                         fontStyles.fieldValue,
                                         {
                                             paddingLeft: 0,
-                                            color: this.state.showError ? 'red' : fontStyles.fieldValue.color,
-                                        }]}
+                                            color: (this.state.showError) ? 'red' : fontStyles.fieldValue.color,
+                                        }
+                                    ]}
                                     value={this.state.saveValue}
                                     onChangeText={this.onTextInputChange.bind(this)}
                                     placeholderTextColor={'#C5C5C5'}
@@ -154,8 +145,6 @@ class StringType extends Component {
                             </View>
                     }
                 </View>
-
-
             </View>
         );
     }

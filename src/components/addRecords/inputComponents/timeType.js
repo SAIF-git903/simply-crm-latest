@@ -15,7 +15,6 @@ class TimeType extends Component {
     render() {
         const mandatory = this.props.obj.mandatory;
         const amp = '&amp;';
-
         const validLable = (this.props.obj.lable.indexOf(amp) !== -1) ? this.props.obj.lable.replace('&amp;', '&') : this.props.obj.lable;
 
         return (
@@ -23,7 +22,8 @@ class TimeType extends Component {
                 <View style={{ flex: .5, justifyContent: 'flex-start' }}>
                     <Text style={[styles.label, fontStyles.fieldLabel]}>{validLable}</Text>
                     {
-                        (mandatory) ?
+                        (mandatory)
+                            ?
                             <View style={styles.mandatory}>
                                 <Text style={[fontStyles.fieldLabel, { color: 'red', fontSize: 16 }]}>*</Text>
                             </View>
@@ -35,6 +35,7 @@ class TimeType extends Component {
                 <View style={{ flex: 1 }}>
                     <DatePicker
                         style={{ width: '100%' }}
+                        // style={{ width: 200 }}
                         date={this.state.saveValue}
                         mode="time"
                         format="HH:mm"
@@ -55,10 +56,11 @@ class TimeType extends Component {
                                 borderBottomRightRadius: 4,
                                 height: 38,
                                 justifyContent: 'center'
-
                             }
                         }}
-                        onDateChange={(time) => { this.setState({ saveValue: time }); }}
+                        onDateChange={(time) => {
+                            this.setState({ saveValue: time });
+                        }}
                     />
                 </View>
             </View>
@@ -71,6 +73,7 @@ const styles = StyleSheet.create(
             flex: 1,
             flexDirection: 'row',
             marginVertical: 10,
+            // marginRight: 2
         },
         label: {
             fontSize: 16,
@@ -86,6 +89,24 @@ const styles = StyleSheet.create(
             justifyContent: 'center',
             alignItems: 'flex-end',
         },
+        // textbox: {
+        //     //paddingTop: 9,
+        //     borderColor: '#ABABAB',
+        //     borderWidth: 0.5,
+        //     padding: 0,
+        //     borderTopLeftRadius: 4,
+        //     borderTopRightRadius: 4,
+        //     borderBottomLeftRadius: 4,
+        //     borderBottomRightRadius: 4,
+        //     height: 38,
+        //     justifyContent: 'center'
+        // },
+        // text: {
+        //     fontSize: 14,
+        //     marginLeft: 5,
+        //     borderWidth: 0,
+        //     color: '#121212',
+        // },
     }
 );
 

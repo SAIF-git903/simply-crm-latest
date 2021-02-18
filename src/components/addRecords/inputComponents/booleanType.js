@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text, TouchableWithoutFeedback, } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5Pro';
-
 import { fontStyles } from '../../../styles/common';
 
 class BooleanType extends Component {
@@ -15,20 +14,24 @@ class BooleanType extends Component {
     }
 
     toggle() {
-        this.setState(
-            { checked: !this.state.checked },
-            () => this.changeSaveValue(),
-        );
+        this.setState({
+            checked: !this.state.checked
+        }, () => {
+            this.changeSaveValue();
+        });
     }
 
     changeSaveValue() {
-        (this.state.checked) ? this.setState({ saveValue: '1' }) : this.setState({ saveValue: '0' });
+        if (this.state.checked) {
+            this.setState({ saveValue: '1' });
+        } else {
+            this.setState({ saveValue: '0' });
+        }
     }
 
     render() {
         const mandatory = this.props.obj.mandatory;
         const amp = '&amp;';
-
         const validLable = (this.props.obj.lable.indexOf(amp) !== -1) ? this.props.obj.lable.replace('&amp;', '&') : this.props.obj.lable;
 
         return (
@@ -36,7 +39,8 @@ class BooleanType extends Component {
                 <View style={{ flex: .5, justifyContent: 'flex-start' }}>
                     <Text style={[styles.label, fontStyles.fieldLabel]}>{validLable}</Text>
                     {
-                        (mandatory) ?
+                        (mandatory)
+                            ?
                             <View style={styles.mandatory}>
                                 <Text style={[fontStyles.fieldLabel, { color: 'red', fontSize: 16 }]}>*</Text>
                             </View>
@@ -57,7 +61,10 @@ class BooleanType extends Component {
                             }}
                         >
                             {
-                                (this.state.checked) ?
+                                (this.state.checked
+                                    // || this.state.saveValue === '1'
+                                )
+                                    ?
                                     <Icon
                                         name={'check'}
                                         size={22}
@@ -69,7 +76,6 @@ class BooleanType extends Component {
                         </View>
                     </View>
                 </TouchableWithoutFeedback>
-
             </View>
         );
     }

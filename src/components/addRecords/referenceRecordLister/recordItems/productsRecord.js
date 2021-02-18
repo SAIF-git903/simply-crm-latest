@@ -30,19 +30,17 @@ class ProductsRecord extends Component {
     render() {
         if (!this.state.loading) {
             return (
-
                 <TouchableOpacity
-                    onPress={() => { this.props.onRecordSelect(this.props.item.id, this.props.item.productLable, this.props.index); }}
+                    onPress={() => {
+                        this.props.onRecordSelect(this.props.item.id, this.props.item.productLable, this.props.index);
+                    }}
                 >
                     <View
                         style={[styles.backgroundStyle, {
                             borderTopWidth: (this.props.index === 0) ? 1 : 0,
-                            backgroundColor:
-                                (this.props.selectedIndex === this.props.index) ?
-                                    RECORD_SELECTED_COLOR : RECORD_COLOR
+                            backgroundColor: (this.props.selectedIndex === this.props.index) ? RECORD_SELECTED_COLOR : RECORD_COLOR
                         }]}
                     >
-
                         <Text
                             numberOfLines={1}
                             style={fontStyles.dashboardRecordLabelBig}
@@ -51,7 +49,7 @@ class ProductsRecord extends Component {
                         </Text>
                         {this.renderLabel(this.props.item.no)}
                         {this.renderLabel(this.props.item.productcategory)}
-                        {this.renderLabel(this.props.item.quantity)}
+                        {this.renderLabel(this.props.item.qtyinstock)}
                     </View>
                 </TouchableOpacity>
             );
@@ -64,9 +62,7 @@ class ProductsRecord extends Component {
                     justifyContent: 'space-around',
                     flexDirection: 'row',
                     alignItems: 'center',
-                    backgroundColor:
-                        (this.props.selectedIndex === this.props.index) ?
-                            RECORD_SELECTED_COLOR : RECORD_COLOR
+                    backgroundColor: (this.props.selectedIndex === this.props.index) ? RECORD_SELECTED_COLOR : RECORD_COLOR
                 }]}
             >
                 <Text>Deleting.....</Text>

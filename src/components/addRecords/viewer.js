@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import {View, ActivityIndicator, ScrollView, Platform, Keyboard, KeyboardAvoidingView} from 'react-native';
 import { describeRecordHelper, copyPriceDetails } from '../../helper';
 
@@ -7,7 +8,9 @@ class Viewer extends Component {
         super(props);
         this.state = {
             loading: false,
-            inputForm: []
+            inputForm: [],
+            id: this.props.moduleId,
+            recordId: (this.props.recordId) ? this.props.recordId : '',
         };
     }
 
@@ -18,7 +21,7 @@ class Viewer extends Component {
 
     onFetchCall() {
         this.setState({
-            loading: true
+            loading: true,
         }, () => {
             describeRecordHelper(this);
         });
@@ -72,4 +75,9 @@ class Viewer extends Component {
     }
 }
 
-export default Viewer;
+const mapStateToProps = ({ drawer }) => {
+    const { moduleId } = drawer;
+    return { moduleId };
+};
+
+export default connect(mapStateToProps)(Viewer);

@@ -12,13 +12,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome5Pro';
 import { WeekCalendar, CalendarProvider, AgendaList, CalendarList } from 'react-native-calendars';
-const moment = require('moment-timezone');
 import SwipeOut from 'react-native-swipeout';
-
 import { UPDATE_RECORD_VIEWER } from '../actions/types';
 import { getCalendarRecords, deleteCalendarRecord } from '../ducks/calendar';
 import Header from '../components/common/Header';
 import { fontStyles } from '../styles/common';
+
+const moment = require('moment-timezone');
 
 export default function Calendar() {
 
@@ -81,13 +81,13 @@ export default function Calendar() {
                 recordId: recordId
             }
         });
-
         navigation.navigate('Record Details');
     }
 
     function onEdit(item) {
         navigation.navigate('Edit Record', {
-            id: item.id, lister: {
+            id: item.id,
+            lister: {
                 refreshData: () => fetchData(true)
             }
         });
@@ -174,13 +174,16 @@ export default function Calendar() {
                         <Text style={fontStyles.calendarText}>{timeFrame}</Text>
                         {
                             (item.taskstatus)
-                                ? <Text style={fontStyles.calendarText}>{item.taskstatus}</Text>
-                                : null
+                                ?
+                                <Text style={fontStyles.calendarText}>{item.taskstatus}</Text>
+                                :
+                                null
                         }
                     </View>
                     {
                         (recordsLoading.includes(item.id))
-                            ? <ActivityIndicator
+                            ?
+                            <ActivityIndicator
                                 style={{
                                     position: 'absolute',
                                     top: 0,
@@ -191,7 +194,8 @@ export default function Calendar() {
                                     alignItems: 'center'
                                 }}
                             />
-                            : null
+                            :
+                            null
                     }
                 </TouchableOpacity>
             </SwipeOut>
@@ -204,7 +208,6 @@ export default function Calendar() {
 
     function mapItemsToAgendaList(items) {
         let mappedItems = [];
-
 
         const sortedItems = items.sort((a, b) => {
             let aNumber = a.date_start.replace(/-/g, '');
@@ -240,7 +243,6 @@ export default function Calendar() {
                     title: item.date_start,
                     data: [itemData]
                 };
-
                 mappedItems.push(date);
             }
         }
@@ -339,7 +341,8 @@ export default function Calendar() {
                 >
                     {
                         (showCalendar)
-                            ? <CalendarList
+                            ?
+                            <CalendarList
                                 current={currentDate.format('YYYY-MM-DD')}
                                 firstDay={1}
                                 markedDates={getMarkedDates()}
@@ -348,7 +351,8 @@ export default function Calendar() {
                                     setShowCalendar(false)
                                 }}
                             />
-                            : <View>
+                            :
+                            <View>
                                 {renderHeader()}
                                 <WeekCalendar
                                     firstDay={1}

@@ -18,17 +18,22 @@ class MultiPickListType extends Component {
         const items = [];
         const options = this.props.obj.type.picklistValues;
         options.map((item) => {
-            items.push({ id: item.label, name: item.label });
+            items.push({
+                id: item.label,
+                name: item.label,
+                // name: item.value
+            });
         });
         const amp = '&amp;';
-
         const validLable = (this.props.obj.lable.indexOf(amp) !== -1) ? this.props.obj.lable.replace('&amp;', '&') : this.props.obj.lable;
+
         return (
             <View style={styles.inputHolder}>
                 <View style={{ flex: .5, justifyContent: 'flex-start' }}>
                     <Text style={[styles.label, fontStyles.fieldLabel]}>{validLable}</Text>
                     {
-                        (mandatory) ?
+                        (mandatory)
+                            ?
                             <View style={styles.mandatory}>
                                 <Text style={[fontStyles.fieldLabel, { color: 'red', fontSize: 16 }]}>*</Text>
                             </View>
@@ -44,13 +49,12 @@ class MultiPickListType extends Component {
                         itemFontFamily={'Poppins-Regular'}
                         items={items}
                         uniqueKey="id"
-                        onSelectedItemsChange={
-                            (selectedItems) => {
-                                this.setState({
-                                    selectedValues: selectedItems,
-                                    saveValue: selectedItems.join(' |##| ')
-                                });
-                            }}
+                        onSelectedItemsChange={(selectedItems) => {
+                            this.setState({
+                                selectedValues: selectedItems,
+                                saveValue: selectedItems.join(' |##| ')
+                            });
+                        }}
                         selectedItems={this.state.selectedValues}
                         selectText="Pick Items"
                         tagRemoveIconColor="#CCC"
@@ -61,7 +65,6 @@ class MultiPickListType extends Component {
                         itemTextColor="#000"
                     />
                 </View>
-
             </View>
         );
     }

@@ -13,9 +13,9 @@ class RecordLister extends Component {
         return (
             <View style={styles.backgroundStyle}>
                 <Header
+                    navigation={this.props.navigation}
                     moduleName={this.props.route.params.selectedModule}
                     moduleLable={this.props.moduleLable}
-                    navigation={this.props.navigation}
                 />
                 <Lister
                     navigation={this.props.navigation}

@@ -16,7 +16,6 @@ import RecordDetails from './screens/Record/';
 import ForgotPassword from './screens/ForgotPassword';
 import Calendar from './screens/Calendar';
 import AddRecord from './components/addRecords';
-import EditRecord from './components/editRecords';
 import ReferenceScreen from './components/addRecords/referenceRecordLister';
 
 const Stack = createStackNavigator();
@@ -55,7 +54,7 @@ export default class Router extends Component {
         <Stack.Screen name="Drawer" component={this.createDrawer} />
         <Stack.Screen name="Record Details" component={RecordDetails} />
         <Stack.Screen name="Add Record" component={AddRecord} />
-        <Stack.Screen name="Edit Record" component={EditRecord} />
+        <Stack.Screen name="Edit Record" component={AddRecord} />
         <Stack.Screen name="Reference Screen" component={ReferenceScreen} />
         <Stack.Screen name="Forgot Password" component={ForgotPassword} />
     </Stack.Navigator>;

@@ -10,22 +10,23 @@ class NumericType extends Component {
             fieldName: this.props.obj.name
         };
     }
+
     onTextInputChange(text) {
         this.setState({ ...this.state, saveValue: text });
     }
+
     render() {
         const mandatory = this.props.obj.mandatory;
         const amp = '&amp;';
-
         const validLable = (this.props.obj.lable.indexOf(amp) !== -1) ? this.props.obj.lable.replace('&amp;', '&') : this.props.obj.lable;
-
 
         return (
             <View style={styles.inputHolder}>
                 <View style={{ flex: .5, justifyContent: 'flex-start' }}>
                     <Text style={[styles.label, fontStyles.fieldLabel]}>{validLable}</Text>
                     {
-                        (mandatory) ?
+                        (mandatory)
+                            ?
                             <View style={styles.mandatory}>
                                 <Text style={[fontStyles.fieldLabel, { color: 'red', fontSize: 16 }]}>*</Text>
                             </View>
@@ -46,7 +47,6 @@ class NumericType extends Component {
                         value={this.state.saveValue}
                         onChangeText={this.onTextInputChange.bind(this)}
                     />
-
                 </View>
             </View>
         );

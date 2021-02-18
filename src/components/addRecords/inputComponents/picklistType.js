@@ -11,26 +11,25 @@ class PickListType extends Component {
             fieldName: this.props.obj.name
         };
     }
+
     render() {
         const mandatory = this.props.obj.mandatory;
-        let options = [];
-        options = this.props.obj.type.picklistValues;
-
+        let options = this.props.obj.type.picklistValues;
         const amp = '&amp';
-
         const validLable = (this.props.obj.lable.indexOf(amp) !== -1) ? this.props.obj.lable.replace('&amp;', '&') : this.props.obj.lable;
-
         // console.log(validLable);
         // if (validLable === 'Company country') {
         //     this.setState({ saveValue: '' });
         // }
         // console.log(this.state.saveValue);
+
         return (
             <View style={styles.inputHolder}>
                 <View style={{ flex: .5, justifyContent: 'flex-start' }}>
                     <Text style={[styles.label, fontStyles.fieldLabel]}>{validLable}</Text>
                     {
-                        (mandatory) ?
+                        (mandatory)
+                            ?
                             <View style={styles.mandatory}>
                                 <Text style={[fontStyles.fieldLabel, { color: 'red', fontSize: 16 }]}>*</Text>
                             </View>
@@ -47,16 +46,20 @@ class PickListType extends Component {
                             if (itemValue !== 0) {
                                 this.setState({ saveValue: itemValue });
                             }
-                        }
-                        }
+                        }}
                     >
                         <Picker.Item label='Please Select' value={0} />
                         {options.map((item, index) => {
-                            return (<Picker.Item label={item.label} value={item.value} key={index} />);
+                            return (
+                                <Picker.Item
+                                    label={item.label}
+                                    value={item.value}
+                                    key={index}
+                                />
+                            );
                         })}
                     </Picker>
                 </View>
-
             </View>
         );
     }

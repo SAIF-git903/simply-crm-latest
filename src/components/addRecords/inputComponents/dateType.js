@@ -13,6 +13,7 @@ class DateType extends Component {
             fieldName: this.props.obj.name
         };
     }
+
     onDatePress = () => {
         let pickedDate = this.state.pickDate;
         const dob = this.props.obj.name;
@@ -27,7 +28,7 @@ class DateType extends Component {
             //To open the dialog
             this.refs.dateDialog.open({
                 date: pickedDate,
-                maxDate: new Date() //To restirct future date
+                maxDate: new Date() //To restrict future date
             });
         } else {
             //To open the dialog
@@ -45,10 +46,10 @@ class DateType extends Component {
             saveValue: moment(date).format(formatDate)
         });
     }
+
     render() {
         const mandatory = this.props.obj.mandatory;
         const amp = '&amp;';
-
         const validLable = (this.props.obj.lable.indexOf(amp) !== -1) ? this.props.obj.lable.replace('&amp;', '&') : this.props.obj.lable;
 
         return (
@@ -56,7 +57,8 @@ class DateType extends Component {
                 <View style={{ flex: .5, justifyContent: 'flex-start' }}>
                     <Text style={[styles.label, fontStyles.fieldLabel]}>{validLable}</Text>
                     {
-                        (mandatory) ?
+                        (mandatory)
+                            ?
                             <View style={styles.mandatory}>
                                 <Text style={[fontStyles.fieldLabel, { color: 'red', fontSize: 16 }]}>*</Text>
                             </View>
@@ -71,9 +73,13 @@ class DateType extends Component {
                             <Text style={[styles.text, fontStyles.fieldValue]}>{this.state.saveValue}</Text>
                         </View>
                     </TouchableOpacity>
-
                 </View>
-                <DatePickerDialog ref="dateDialog" okLabel="ok" cancelLabel="cancel" onDatePicked={this.onDatePicked.bind(this)} />
+                <DatePickerDialog
+                    ref="dateDialog"
+                    okLabel="ok"
+                    cancelLabel="cancel"
+                    onDatePicked={this.onDatePicked.bind(this)}
+                />
             </View>
         );
     }
