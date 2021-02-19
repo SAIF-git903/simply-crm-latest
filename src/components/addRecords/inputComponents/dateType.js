@@ -18,7 +18,7 @@ class DateType extends Component {
         let pickedDate = this.state.pickDate;
         const dob = this.props.obj.name;
 
-        if (!pickedDate || pickedDate == null) {
+        if (!pickedDate) {
             pickedDate = new Date();
             this.setState({
                 pickDate: pickedDate

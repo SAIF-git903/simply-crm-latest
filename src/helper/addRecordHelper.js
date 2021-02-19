@@ -227,41 +227,46 @@ export const fillWithDataHelper = async (currentInstance) => {
             const record = responseJson.result.record;
             const formInstance = currentInstance.state.inputInstance;
             const fields = Object.keys(record);
-            const formArray = [];
             const tmpArray = [];
-
-            for (let i = 0; i < formInstance.length; i++) {
-                formArray.push(formInstance[i].state.fieldName);
-            }
+// console.log('formInstance');
+// console.log(formInstance[0].state.fieldName);
+// console.log(formInstance[1].state.fieldName);
+// console.log(formInstance[2].state.fieldName);
+// console.log('fields');
+// console.log(fields[0]);
+// console.log(fields[1]);
+// console.log(fields[2]);
 
             for (let i = 0; i < fields.length; i++) {
-                for (let j = 0; j < fields.length; j++) {
-                    if (fields[i] === formArray[j]) {
+                for (let j = 0; j < formInstance.length; j++) {
+                    let recordFieldName = fields[i];
+                    let formInputName = formInstance[j].state.fieldName;
+                    if (recordFieldName === formInputName) {
                         tmpArray.push({
-                            field: formArray[j],
-                            fieldValue: record[fields[i]]
+                            field: formInputName,
+                            fieldValue: record[recordFieldName]
                         });
                         break;
                     }
                 }
             }
 
-            for (let i = 0; i < formInstance.length; i++) {
-                for (let j = 0; j < tmpArray.length; j++) {
-                    if (tmpArray[j].field === formInstance[i].state.fieldName) {
+            for (let i = 0; i < tmpArray.length; i++) {
+                for (let j = 0; j < formInstance.length; j++) {
+                    if (tmpArray[i].field === formInstance[j].state.fieldName) {
                         let newState;
-                        if (formInstance[i].state.reference) {
+                        if (formInstance[j].state.reference) {
                             newState = {
-                                referenceValue: tmpArray[j].fieldValue.label,
-                                saveValue: tmpArray[j].fieldValue.value
+                                referenceValue: tmpArray[i].fieldValue.label,
+                                saveValue: tmpArray[i].fieldValue.value
                             };
                         } else {
                             newState = {
-                                saveValue: tmpArray[j].fieldValue
+                                saveValue: tmpArray[i].fieldValue
                             };
                         }
                         //TODO refactor me
-                        formInstance[i].setState(newState);
+                        formInstance[j].setState(newState);
                         break;
                     }
                 }
