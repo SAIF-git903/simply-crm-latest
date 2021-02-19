@@ -15,12 +15,12 @@ class RecordLister extends Component {
                 <Header
                     navigation={this.props.navigation}
                     moduleName={this.props.route.params.selectedModule}
-                    moduleLable={this.props.moduleLable}
+                    moduleLable={this.props.route.params.moduleLable}
                 />
                 <Lister
                     navigation={this.props.navigation}
                     moduleName={this.props.route.params.selectedModule}
-                    moduleLable={this.props.moduleLable}
+                    moduleLable={this.props.route.params.moduleLable}
                     moduleId={this.props.moduleId}
                     uniqueId={this.props.route.params.uniqueId}
                 />

@@ -66,13 +66,13 @@ export const getNextPageRecord = (recordListerInstance, moduleName) => (dispatch
 };
 
 //RefRecordLister
-export const fetchRefRecord = (recordListerInstance) => (dispatch) => {
+export const fetchRefRecord = (recordListerInstance, moduleName) => (dispatch) => {
   fetchRecordHelper(recordListerInstance, dispatch, false, false, moduleName);
 };
-export const refreshRefRecord = (recordListerInstance) => (dispatch) => {
+export const refreshRefRecord = (recordListerInstance, moduleName) => (dispatch) => {
   fetchRecordHelper(recordListerInstance, dispatch, true, false, moduleName);
 };
-export const getNextRefPageRecord = (recordListerInstance) => (dispatch) => {
+export const getNextRefPageRecord = (recordListerInstance, moduleName) => (dispatch) => {
   fetchRecordHelper(recordListerInstance, dispatch, false, true, moduleName);
 };
 

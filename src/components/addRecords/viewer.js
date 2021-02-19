@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {View, ActivityIndicator, ScrollView, Platform, Keyboard, KeyboardAvoidingView} from 'react-native';
-import { describeRecordHelper, copyPriceDetails } from '../../helper';
+import { getRecordStructureHelper, copyPriceDetails } from '../../helper';
 
 class Viewer extends Component {
     constructor(props) {
@@ -23,7 +23,7 @@ class Viewer extends Component {
         this.setState({
             loading: true,
         }, () => {
-            describeRecordHelper(this);
+            getRecordStructureHelper(this);
         });
     }
 

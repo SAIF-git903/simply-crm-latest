@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { View, ActivityIndicator, Text } from 'react-native';
 import { commonStyles } from '../../../styles/common';
 import { fetchRefRecord, refreshRefRecord, getNextRefPageRecord, markReferenceLabel } from '../../../actions';
+import { recordListRendererHelper } from '../../../helper';
 
 class Lister extends Component {
     constructor(props) {
@@ -43,7 +44,7 @@ class Lister extends Component {
                 this.setState({
                     pageToTake: this.state.pageToTake + 1
                 }, () => {
-                    this.props.dispatch(getNextRefPageRecord(this));
+                    this.props.dispatch(getNextRefPageRecord(this, this.props.moduleName));
                 });
             }
         }
@@ -59,7 +60,7 @@ class Lister extends Component {
             statusText: 'Fetching Record',
             statusTextColor: '#000000'
         }, () => {
-            this.props.dispatch(fetchRefRecord(this));
+            this.props.dispatch(fetchRefRecord(this, this.props.moduleName));
         });
     }
 
@@ -73,7 +74,7 @@ class Lister extends Component {
             statusText: 'Refreshing',
             statusTextColor: '#000000'
         }, () => {
-            this.props.dispatch(refreshRefRecord(this));
+            this.props.dispatch(refreshRefRecord(this, this.props.moduleName));
         });
     }
 

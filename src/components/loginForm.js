@@ -86,8 +86,7 @@ class LoginForm extends Component {
     }
 
     onForgotPasswordPress() {
-        const { navigate } = this.props.navigation;
-        navigate('Forgot Password', { email: this.state.email });
+        this.props.navigation.navigate('Forgot Password', { email: this.state.email });
     }
 
     getButtonText() {

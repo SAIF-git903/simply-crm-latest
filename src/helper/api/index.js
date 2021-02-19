@@ -29,9 +29,9 @@ async function makeCall(body, request_url, headers, method = 'POST') {
         ids: JSON.stringify(body.ids),
         query: body.query,
         values: body.values,
-        page: (body.page) ? body.page : 1,
+        page: body.page,
         specialFields: (body.specialFields !== undefined && body.specialFields.length > 0) ? JSON.stringify(body.specialFields) : undefined,
-        limit: (body.limit) ? body.limit : 25,
+        limit: body.limit,
         searchText: (body.searchText !== '') ? body.searchText : undefined,
     };
     //clear undefined
@@ -133,9 +133,9 @@ export function API_listModuleRecords(module, page, specialFields, limit, search
     return makeCall({
         _operation: 'listModuleRecords',
         module,
-        page,
+        page: (page) ? page : 1,
+        limit: (limit) ? limit : 25,
         specialFields,
-        limit,
         searchText
     });
 }
@@ -156,9 +156,11 @@ export function API_structure(module) {
 
 export function API_fetchRecord(body, request_url) {
     body._operation = 'fetchRecord';
+    body.page = (body.page) ? body.page : 1;
+    body.limit = (body.limit) ? body.limit : 25;
     return makeCall(
         body,
-        request_url
+        request_url,
     );
 }
 

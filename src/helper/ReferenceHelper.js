@@ -20,8 +20,7 @@ export const viewRefRecord = async (recordId, listerInstance, dispatch) => {
                 recordId
             }
         });
-        const navigation = listerInstance.props.navigation;
-        navigation.navigate('Record Details');
+        listerInstance.props.navigation.navigate('Record Details');
     } else {
         if (width > 600) {
             //It is a tablet
@@ -52,8 +51,7 @@ export const viewRefRecord = async (recordId, listerInstance, dispatch) => {
                     recordId
                 }
             });
-            const navigation = listerInstance.props.navigation;
-            navigation.navigate('Record Details');
+            listerInstance.props.navigation.navigate('Record Details');
         }
     }
 };

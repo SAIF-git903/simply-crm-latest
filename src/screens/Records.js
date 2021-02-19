@@ -13,7 +13,9 @@ export default class Records extends Component {
 
     renderAddRecordButton() {
         return (
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('Add Record', { lister: this.lister })}>
+            <TouchableOpacity onPress={() => {
+                this.props.navigation.navigate('Add Record', { lister: this.lister });
+            }}>
                 <View
                     style={{
                         backgroundColor: 'rgba(255,255,255,.2)',

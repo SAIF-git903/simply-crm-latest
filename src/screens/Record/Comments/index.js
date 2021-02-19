@@ -33,11 +33,11 @@ export default function Comments({ recordId }) {
 
     useEffect(() => {
         if (editedComment) {
-            setInputValue(editedComment.content)
+            setInputValue(editedComment.content);
         } else {
-            setInputValue('')
+            setInputValue('');
         }
-    }, [editedComment])
+    }, [editedComment]);
 
     function onChangeText(text) {
         setInputValue(text);
@@ -75,43 +75,46 @@ export default function Comments({ recordId }) {
     }
 
     function renderEmpty() {
-        if (isLoading && isFirstLoad) {
-            return <View
-                style={{
-                    flex: 1,
-                    margin: 10,
-                    justifyContent: 'center'
-                }}
-            >
-                <ActivityIndicator size={'large'} />
+        let view = (
+            <View style={styles.emptyList}>
+                <Text style={fontStyles.fieldLabel}>No comments added yet.</Text>
             </View>
+        );
+        if (isLoading && isFirstLoad) {
+            view = (
+                <View
+                    style={{
+                        flex: 1,
+                        margin: 10,
+                        justifyContent: 'center'
+                    }}
+                >
+                    <ActivityIndicator size={'large'} />
+                </View>
+            );
         }
 
-        return <View
-            style={styles.emptyList}
-        >
-            <Text style={fontStyles.fieldLabel}>No comments added yet.</Text>
-        </View>
+        return view;
     }
 
     function onRefresh() {
-        if (isFirstLoad) setFirstLoad(false);
+        if (isFirstLoad) {
+            setFirstLoad(false);
+        }
         dispatch(getComments(recordId, true));
     }
-
-    const data = getRootComments();
 
     return (
         <KeyboardAvoidingView
             style={{ flex: 1 }}
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            behavior={(Platform.OS === "ios") ? "padding" : "height"}
             keyboardVerticalOffset={122}
         >
             <View style={styles.wrapper}>
                 <CommentList
                     isLoading={isLoading}
                     scrollEnabled={true}
-                    comments={data}
+                    comments={getRootComments()}
                     ListEmptyComponent={renderEmpty}
                     refreshControl={
                         <RefreshControl

@@ -16,7 +16,7 @@ import { saveSuccess } from '../actions';
 import { API_structure, API_fetchRecord, API_saveRecord } from "./api";
 import {fontStyles, commonStyles} from "../styles/common";
 
-export const describeRecordHelper = async (currentInstance) => {
+export const getRecordStructureHelper = async (currentInstance) => {
     const { auth } = store.getState();
     const loginDetails = auth.loginDetails;
     try {
@@ -25,7 +25,7 @@ export const describeRecordHelper = async (currentInstance) => {
             const formInstance = [];
             const content = [];
             const structures = responseJson.result.structure;
-            for (let k = 1; k < structures.length; k++) {
+            for (let k = 0; k < structures.length; k++) {
                 const structure = structures[k];
                 const {
                     fields,
@@ -35,7 +35,7 @@ export const describeRecordHelper = async (currentInstance) => {
                 } = structure;
                 const formArray = [];
 
-                for (let i = 1; i < fields.length; i++) {
+                for (let i = 0; i < fields.length; i++) {
                     const fArr = fields[i];
 
                     if (currentInstance.props.moduleName === 'Calendar' && fArr.name === 'contact_id') {
@@ -134,7 +134,7 @@ export const describeRecordHelper = async (currentInstance) => {
                                     obj={fieldObj}
                                     validLable={validLable}
                                     fieldLabelView={getFieldLabelView(fieldObj.mandatory, validLable)}
-                                    navigate={currentInstance.props.navigation}
+                                    navigation={currentInstance.props.navigation}
                                     moduleName={currentInstance.props.moduleName}
                                     formId={i}
                                     ref={(ref) => {
@@ -179,7 +179,8 @@ export const describeRecordHelper = async (currentInstance) => {
                 loading: false
             }, () => {
                 if (currentInstance.state.recordId) {
-                    getDataHelper(currentInstance);
+                    //TODO redo for instant show data without rerender
+                    fillWithDataHelper(currentInstance);
                 }
             });
         } else {
@@ -211,18 +212,16 @@ const getFieldLabelView = (mandatory, validLable) => {
     );
 }
 
-export const getDataHelper = async (currentInstance) => {
+export const fillWithDataHelper = async (currentInstance) => {
     const { auth } = store.getState();
     const loginDetails = auth.loginDetails;
     const vtigerSeven = loginDetails.vtigerVersion > 6;
 
     try {
         const param = {
-            record: currentInstance.state.recordId
+            record: currentInstance.state.recordId,
+            module: (vtigerSeven) ? currentInstance.props.moduleName : undefined,
         };
-        if (vtigerSeven) {
-            param.module = currentInstance.props.moduleName;
-        }
         const responseJson = await API_fetchRecord(param);
         if (responseJson.success) {
             const record = responseJson.result.record;
@@ -238,39 +237,32 @@ export const getDataHelper = async (currentInstance) => {
             for (let i = 0; i < fields.length; i++) {
                 for (let j = 0; j < fields.length; j++) {
                     if (fields[i] === formArray[j]) {
-                        tmpArray.push({ feild: formArray[j], feildValue: record[fields[i]] });
+                        tmpArray.push({
+                            field: formArray[j],
+                            fieldValue: record[fields[i]]
+                        });
                         break;
                     }
                 }
             }
 
-            if (!vtigerSeven) {
-                for (let i = 0; i < formInstance.length; i++) {
-                    for (let j = 0; j < tmpArray.length; j++) {
-                        if (tmpArray[j].feild === formInstance[i].state.fieldName) {
-                            if (formInstance[i].state.reference) {
-                                formInstance[i].setState({ referenceValue: tmpArray[j].feildValue.label });
-                                formInstance[i].setState({ saveValue: tmpArray[j].feildValue.value });
-                            } else {
-                                formInstance[i].setState({ saveValue: tmpArray[j].feildValue });
-                            }
-                            break;
+            for (let i = 0; i < formInstance.length; i++) {
+                for (let j = 0; j < tmpArray.length; j++) {
+                    if (tmpArray[j].field === formInstance[i].state.fieldName) {
+                        let newState;
+                        if (formInstance[i].state.reference) {
+                            newState = {
+                                referenceValue: tmpArray[j].fieldValue.label,
+                                saveValue: tmpArray[j].fieldValue.value
+                            };
+                        } else {
+                            newState = {
+                                saveValue: tmpArray[j].fieldValue
+                            };
                         }
-                    }
-                }
-            } else {
-                for (let i = 0; i < formInstance.length; i++) {
-                    for (let j = 0; j < tmpArray.length; j++) {
-                        if (tmpArray[j].feild === formInstance[i].state.fieldName) {
-                            let formattedDate;
-                            if (formInstance[i].state.reference) {
-                                formInstance[i].setState({ referenceValue: tmpArray[j].feildValue.label });
-                                formInstance[i].setState({ saveValue: tmpArray[j].feildValue.value });
-                            } else {
-                                formInstance[i].setState({ saveValue: formattedDate || tmpArray[j].feildValue });
-                            }
-                            break;
-                        }
+                        //TODO refactor me
+                        formInstance[i].setState(newState);
+                        break;
                     }
                 }
             }
@@ -333,7 +325,7 @@ const doSaveRecord = async (currentInstance, headerInstance, jsonObj, dispatch, 
         if (responseJson.success) {
             headerInstance.setState({ loading: false });
             let message;
-            if (this.state.recordId) {
+            if (currentInstance.state.recordId) {
                 message = 'Successfully edited';
             } else {
                 message = 'Successfully added';

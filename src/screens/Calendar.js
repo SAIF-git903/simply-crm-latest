@@ -266,7 +266,9 @@ export default function Calendar() {
     }
 
     function renderEmpty() {
-        if (isLoading) return null;
+        if (isLoading) {
+            return null;
+        }
 
         return (
             <View
@@ -347,8 +349,8 @@ export default function Calendar() {
                                 firstDay={1}
                                 markedDates={getMarkedDates()}
                                 onDayPress={(date) => {
-                                    setCurrentDate(new moment(date.dateString))
-                                    setShowCalendar(false)
+                                    setCurrentDate(new moment(date.dateString));
+                                    setShowCalendar(false);
                                 }}
                             />
                             :

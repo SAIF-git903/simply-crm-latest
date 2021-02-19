@@ -27,7 +27,6 @@ export default function reducer(state = initialState, action = {}) {
                 isLoading: true,
                 isRefreshing: action.payload ? action.payload : state.isRefreshing
             }
-
         case GET_CALENDAR_RECORDS_FULFILLED:
             return {
                 ...state,
@@ -36,36 +35,30 @@ export default function reducer(state = initialState, action = {}) {
                 isLoading: false,
                 isRefreshing: false
             }
-
         case GET_CALENDAR_RECORDS_REJECTED:
             return {
                 ...state,
                 isLoading: false,
                 isRefreshing: false
             }
-
         case DELETE_CALENDAR_RECORD:
             return {
                 ...state,
                 recordsLoading: cloneArrayAndPush(state.recordsLoading, action.payload)
             }
-
         case DELETE_CALENDAR_RECORD_FULFILLED:
             let newRecords = JSON.parse(JSON.stringify(state.records));
             newRecords = newRecords.filter(x => x.id !== action.payload);
-
             return {
                 ...state,
                 records: newRecords,
                 recordsLoading: cloneArrayAndRemove(state.recordsLoading, action.payload)
             }
-
         case DELETE_CALENDAR_RECORD_REJECTED:
             return {
                 ...state,
                 recordsLoading: cloneArrayAndRemove(state.recordsLoading, action.payload)
             }
-
         default:
             return state;
     }
@@ -159,16 +152,12 @@ export const getCalendarRecords = (isRefreshing) => async (dispatch) => {
 
         mappedRecords = mappedRecords.map(x => {
             let item = {};
-
             for (const field of x) {
                 item[field.name] = field.value;
             }
-
             return item;
         });
         dispatch(getCalendarRecordsFulfilled(mappedRecords));
-        return;
-
     } catch (e) {
         console.log(e);
         dispatch(getCalendarRecordsRejected());

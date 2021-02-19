@@ -47,13 +47,16 @@ class AddRecords extends Component {
         }
         if (moduleName === CALENDAR) {
             let ids = this.state.recordId.split('x');
-            if (parseInt(ids[0], 10) === 18) {
-                moduleName = 'Events';
+            switch (parseInt(ids[0], 10)) {
+                case 18:
+                    moduleName = 'Events';
+                    break;
+                case 9:
+                default:
+                    //TODO editRecord dont work for Calendar (Task)
+                    //moduleName = 'Task';
+                    break;
             }
-            //TODO editRecord dont work for Calendar (Task)
-            //else if (parseInt(ids[0], 10) === 9) {
-            //    moduleName = 'Task';
-            //}
         }
 
         return (

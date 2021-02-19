@@ -53,7 +53,11 @@ class ReferenceType extends Component {
 
     onReferencePress(type) {
         if (type.name === 'owner') {
-            this.props.navigation.navigate('Reference Screen', { selectedModule: 'Users', uniqueId: this.state.formId });
+            this.props.navigation.navigate('Reference Screen', {
+                selectedModule: 'Users',
+                uniqueId: this.state.formId,
+                moduleLable: this.props.validLable
+            });
         } else {
             if (type.refersTo.length < 1) {
                 Alert.alert('Empty', 'No references');
@@ -64,7 +68,11 @@ class ReferenceType extends Component {
                     this.setState({
                         selectedRefModule: type.refersTo[0]
                     }, () => {
-                        this.props.navigation.navigate('Reference Screen', { selectedModule: type.refersTo[0], uniqueId: this.state.formId });
+                        this.props.navigation.navigate('Reference Screen', {
+                            selectedModule: type.refersTo[0],
+                            uniqueId: this.state.formId,
+                            moduleLable: this.props.validLable
+                        });
                     });
                 }
             }
@@ -122,12 +130,16 @@ class ReferenceType extends Component {
                         if (result.selectedItem === undefined) {
                             this.setState({ dialogueVisible: false });
                         } else {
-                            //TODO use callback ??
-                            this.props.navigation.navigate('Reference Screen', { selectedModule: result.selectedItem.label, uniqueId: this.state.formId });
                             this.setState({
                                 dialogueSelectedValue: result.selectedItem,
                                 selectedRefModule: result.selectedItem.label,
                                 dialogueVisible: false
+                            }, () => {
+                                this.props.navigation.navigate('Reference Screen', {
+                                    selectedModule: result.selectedItem.label,
+                                    uniqueId: this.state.formId,
+                                    moduleLable: this.props.validLable
+                                });
                             });
                         }
                     }}

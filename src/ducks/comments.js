@@ -185,13 +185,13 @@ export const getComments = (recordId, keepState) => async (dispatch) => {
         return ({
             type: FETCH_COMMENTS_FULFILLED,
             payload
-        })
+        });
     };
 
     const fetchCommentsRejected = () => {
         return ({
             type: FETCH_COMMENTS_REJECTED
-        })
+        });
     };
 
     dispatch({
@@ -234,14 +234,14 @@ export const deleteComment = (commentId) => async (dispatch) => {
         return ({
             type: DELETE_COMMENT_FULFILLED,
             payload: commentId
-        })
+        });
     }
 
     const deleteCommentRejected = () => {
         return ({
             type: DELETE_COMMENT_REJECTED,
             payload: commentId
-        })
+        });
     }
 
     dispatch({
