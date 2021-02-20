@@ -89,7 +89,13 @@ async function doFetch(request_url, method, headers, body_data) {
     });
     console.log(`### API CALL ###: ${request_url}`);
     console.log(body_data);
-    let responseJson = await response.json();
+    let responseJson = await response.json().catch(
+        function (error) {
+            console.log('JSON parse failed on:');
+            console.log(response);
+            throw error;
+        }
+    );
     console.log(responseJson);
     return responseJson;
 }

@@ -65,13 +65,21 @@ class LoginForm extends Component {
         Keyboard.dismiss();
 
         const { email, password, url, username } = this.state;
-        console.log(url, this.state.showUrlList);
-        if (this.state.showUrlList && url !== '') {
-            this.setState({ loading: true });
-            console.log('assign url called in loginform');
-            assignUrl(url, username, password, this.props.navigation, this, this.state.dispatch);
+        console.log('url: ' + url);
+        console.log('this.state.showUrlList: ' + this.state.showUrlList);
+        if (url) {
+            this.setState({
+                loading: true
+            }, () => {
+                console.log('assign url called in loginform');
+                assignUrl(url, username, password, this.props.navigation, this, this.state.dispatch);
+            });
         } else {
-            this.props.loginUser(email, password, '', this.props.navigation, this);
+            this.setState({
+                showUrlList: false
+            }, () => {
+                this.props.loginUser(email, password, '', this.props.navigation, this);
+            });
         }
 
         Animated.spring(this.buttonAnimatedValue, {
@@ -107,8 +115,8 @@ class LoginForm extends Component {
         const selectedUrlDetails = this.state.urlList.find(x => x.url === url);
 
         this.setState({
-            url: selectedUrlDetails.url,
-            username: selectedUrlDetails.username
+            url: (selectedUrlDetails?.url) ? selectedUrlDetails.url : '',
+            username: (selectedUrlDetails?.username) ? selectedUrlDetails?.username : ''
         });
     }
 
