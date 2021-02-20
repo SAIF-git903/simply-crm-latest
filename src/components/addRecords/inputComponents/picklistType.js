@@ -6,8 +6,13 @@ import {commonStyles} from '../../../styles/common';
 class PickListType extends Component {
     constructor(props) {
         super(props);
+        let val = (this.props.obj.lable === 'Company country') ? '' : this.props.obj.type.defaultValue;
+        val = (this.props.obj.currentValue !== undefined) ? this.props.obj.currentValue : val;
+// console.log('--component data--');
+// console.log(this.props.obj.currentValue);
+// console.log(val);
         this.state = {
-            saveValue: (this.props.obj.lable === 'Company country') ? '' : this.props.obj.type.defaultValue,
+            saveValue: val,
             fieldName: this.props.obj.name
         };
     }

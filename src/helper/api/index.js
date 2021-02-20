@@ -43,6 +43,8 @@ async function makeCall(body, request_url, headers, method = 'POST') {
 
     let responseJson = await doFetch(request_url, method, headers, body_data);
 
+// console.log('responseJson.error.code');
+// console.log(responseJson?.error?.code);
     //TODO check me
     if (
         responseJson.error !== undefined
@@ -66,15 +68,18 @@ async function makeCall(body, request_url, headers, method = 'POST') {
                 userId: newResponseJson.result.login.userid,
                 isAdmin: newResponseJson.result.login.isAdmin,
             };
+            //TODO check me
+            console.log('before update session');
             AsyncStorage.setItem(LOGINDETAILSKEY, JSON.stringify(newLoginDetails));
             await addDatabaseKey(LOGINDETAILSKEY);
-            dispatch({ type: LOGIN_USER_SUCCESS, payload: newLoginDetails });
+            await store.dispatch({ type: LOGIN_USER_SUCCESS, payload: newLoginDetails });
+            console.log('after update session');
 
             body_data._session = newLoginDetails.session;
             responseJson = await doFetch(request_url, method, headers, body_data);
         } else {
-            console.log('Cant get new session');
-            //TODO Toast ??
+            //TODO check me
+            throw new Error('Cant get new session. Please re login');
         }
     }
 
@@ -87,7 +92,7 @@ async function doFetch(request_url, method, headers, body_data) {
         headers: headers,
         body: (method === 'POST') ? JSON.stringify(body_data) : null
     });
-    console.log(`### API CALL ###: ${request_url}`);
+    console.log(`### ${method} API CALL ###: ${request_url}`);
     console.log(body_data);
     let responseJson = await response.json().catch(
         function (error) {

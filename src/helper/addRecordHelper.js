@@ -11,7 +11,7 @@ import NumericForm from '../components/addRecords/inputComponents/numericType';
 import DateForm from '../components/addRecords/inputComponents/dateType';
 import TimeForm from '../components/addRecords/inputComponents/timeType';
 import MultiPickerForm from '../components/addRecords/inputComponents/multipicklistType';
-import ReferenceType from '../components/addRecords/inputComponents/referenceType';
+import ReferenceForm from '../components/addRecords/inputComponents/referenceType';
 import { saveSuccess } from '../actions';
 import { API_structure, API_fetchRecord, API_saveRecord } from "./api";
 import {fontStyles, commonStyles} from "../styles/common";
@@ -19,10 +19,28 @@ import {fontStyles, commonStyles} from "../styles/common";
 export const getRecordStructureHelper = async (currentInstance) => {
     const { auth } = store.getState();
     const loginDetails = auth.loginDetails;
+    const vtigerSeven = loginDetails.vtigerVersion > 6;
+
     try {
+        //get empty inputs
         const responseJson = await API_structure(currentInstance.props.moduleName);
+        let dataResponseJson;
+
+        //edit record - request data for inputs
+        if (currentInstance.state.recordId) {
+            //get data for inputs
+            const param = {
+                record: currentInstance.state.recordId,
+                module: (vtigerSeven) ? currentInstance.props.moduleName : undefined,
+            };
+            dataResponseJson = await API_fetchRecord(param);
+console.log(dataResponseJson?.result?.record);
+            if (!responseJson.success) {
+                throw new Error('Cant get data for record');
+            }
+        }
+
         if (responseJson.success) {
-            const formInstance = [];
             const content = [];
             const structures = responseJson.result.structure;
             for (let k = 0; k < structures.length; k++) {
@@ -59,22 +77,42 @@ export const getRecordStructureHelper = async (currentInstance) => {
                         type: fArr.type,
                         nullable: fArr.nullable,
                         editable: fArr.masseditable,
-                        default: fArr.default
+                        default: fArr.default,
+                        sequence: fArr.sequence,
                     };
+                    const dataField = dataResponseJson?.result?.record[fArr.name];
+// console.log('----line----');
+// console.log('fArr.name');
+// console.log(fArr.name);
+// console.log('dataField');
+// console.log(dataField);
+                    if (dataField !== undefined) {
+// console.log('fArr.type.name');
+// console.log(fArr.type.name);
+                        if (['owner', 'reference'].includes(fArr.type.name)) {
+// console.log('dataField.label');
+// console.log(dataField.label);
+// console.log('dataField.value');
+// console.log(dataField.value);
+                            fieldObj.currentReferenceValue = dataField.label;
+                            fieldObj.currentValue = dataField.value;
+                        } else {
+                            fieldObj.currentValue = dataField;
+                        }
+                    }
                     // if (fieldObj.name.includes('currency') && fieldObj.name.match(/\d+$/) && currentInstance.props.moduleName === 'Products') {
                     //     currencyArr.push({ label: fieldObj.lable, value: fieldObj.lable });
                     // }
 
+                    let type = fieldObj.type.name;
                     // if (fieldObj.editable) {
                     if (
                         fieldObj.editable
                         && !(
                             fieldObj.name.includes('currency')
-                            && fieldObj.type.name === 'double'
+                            && type === 'double'
                         )
                     ) {
-                        let type = fieldObj.type.name;
-                        let defaultValue = null;
                         let ComponentName;
 
                         // if (type === 'currency' && fieldObj.name === 'unit_price' && currentInstance.props.moduleName === 'Products') {
@@ -107,9 +145,9 @@ export const getRecordStructureHelper = async (currentInstance) => {
                             case 'reference':
                             case 'owner':
                                 if (fieldObj.name === 'currency_id') {
-                                    defaultValue = store.getState().UserReducer.userData.currency_id;
+                                    fieldObj.defaultValue = store.getState().UserReducer.userData.currency_id;
                                 }
-                                ComponentName = ReferenceType;
+                                ComponentName = ReferenceForm;
                                 break;
                             case 'time':
                                 ComponentName = TimeForm;
@@ -125,9 +163,10 @@ export const getRecordStructureHelper = async (currentInstance) => {
 
                         const amp = '&amp;';
                         const validLable = (fieldObj.lable.indexOf(amp) !== -1) ? fieldObj.lable.replace(amp, '&') : fieldObj.lable;
+                        //TODO Check all types
                         formArray.push(
                             <View
-                                sequence={fArr.sequence}
+                                sequence={fieldObj.sequence}
                                 key={fieldObj.name}
                             >
                                 <ComponentName
@@ -137,11 +176,14 @@ export const getRecordStructureHelper = async (currentInstance) => {
                                     navigation={currentInstance.props.navigation}
                                     moduleName={currentInstance.props.moduleName}
                                     formId={i}
-                                    ref={(ref) => {
-                                        return (ref !== null) ? formInstance.push(ref) : undefined;
-                                    }}
                                     key={i}
-                                    defaultValue={defaultValue}
+                                    ref={(ref) => {
+                                        if (ref !== null) {
+                                            let arr = currentInstance.state.inputInstance;
+                                            arr.push(ref);
+                                            currentInstance.setState({ inputInstance: arr });
+                                        }
+                                    }}
                                     userId={loginDetails.userId}
                                     onCopyPriceDetails={currentInstance.onCopyPriceDetails.bind(currentInstance)}
                                 />
@@ -173,15 +215,8 @@ export const getRecordStructureHelper = async (currentInstance) => {
             content.sort((a, b) => a.props.sequence - b.props.sequence);
 
             currentInstance.setState({
-                ...currentInstance.state,
                 inputForm: content,
-                inputInstance: formInstance,
                 loading: false
-            }, () => {
-                if (currentInstance.state.recordId) {
-                    //TODO redo for instant show data without rerender
-                    fillWithDataHelper(currentInstance);
-                }
             });
         } else {
             console.log('Failed');
@@ -212,74 +247,6 @@ const getFieldLabelView = (mandatory, validLable) => {
     );
 }
 
-export const fillWithDataHelper = async (currentInstance) => {
-    const { auth } = store.getState();
-    const loginDetails = auth.loginDetails;
-    const vtigerSeven = loginDetails.vtigerVersion > 6;
-
-    try {
-        const param = {
-            record: currentInstance.state.recordId,
-            module: (vtigerSeven) ? currentInstance.props.moduleName : undefined,
-        };
-        const responseJson = await API_fetchRecord(param);
-        if (responseJson.success) {
-            const record = responseJson.result.record;
-            const formInstance = currentInstance.state.inputInstance;
-            const fields = Object.keys(record);
-            const tmpArray = [];
-// console.log('formInstance');
-// console.log(formInstance[0].state.fieldName);
-// console.log(formInstance[1].state.fieldName);
-// console.log(formInstance[2].state.fieldName);
-// console.log('fields');
-// console.log(fields[0]);
-// console.log(fields[1]);
-// console.log(fields[2]);
-
-            for (let i = 0; i < fields.length; i++) {
-                for (let j = 0; j < formInstance.length; j++) {
-                    let recordFieldName = fields[i];
-                    let formInputName = formInstance[j].state.fieldName;
-                    if (recordFieldName === formInputName) {
-                        tmpArray.push({
-                            field: formInputName,
-                            fieldValue: record[recordFieldName]
-                        });
-                        break;
-                    }
-                }
-            }
-
-            for (let i = 0; i < tmpArray.length; i++) {
-                for (let j = 0; j < formInstance.length; j++) {
-                    if (tmpArray[i].field === formInstance[j].state.fieldName) {
-                        let newState;
-                        if (formInstance[j].state.reference) {
-                            newState = {
-                                referenceValue: tmpArray[i].fieldValue.label,
-                                saveValue: tmpArray[i].fieldValue.value
-                            };
-                        } else {
-                            newState = {
-                                saveValue: tmpArray[i].fieldValue
-                            };
-                        }
-                        //TODO refactor me
-                        formInstance[j].setState(newState);
-                        break;
-                    }
-                }
-            }
-        } else {
-            Alert.alert('Api error', 'Api response error. Vtiger is modified');
-        }
-    } catch (error) {
-        console.log(error);
-        Alert.alert('No network connection', 'Please check your internet connection and try again');
-    }
-};
-
 export const saveRecordHelper = (currentInstance, headerInstance, dispatch, listerInstance) => {
     const formInstance = currentInstance.state.inputInstance;
     const jsonObj = {};
@@ -289,7 +256,10 @@ export const saveRecordHelper = (currentInstance, headerInstance, dispatch, list
     for (let i = 0; i < formInstance.length; i++) {
         const fieldName = formInstance[i].state.fieldName;
         const value = formInstance[i].state.saveValue;
-
+// console.log('fieldName value');
+// console.log(fieldName);
+// console.log(value);
+        //TODO check me
         jsonObj[fieldName] = value;
         if (currentInstance.props.moduleName === 'Invoice' || currentInstance.props.moduleName === 'Quotes') {
             if (fieldName !== 'quantity' || fieldName !== 'listprice') {

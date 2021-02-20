@@ -6,7 +6,7 @@ class StringType extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            saveValue: this.props.obj.default,
+            saveValue: (this.props.obj.currentValue !== undefined) ? this.props.obj.currentValue : this.props.obj.default,
             fieldName: this.props.obj.name,
             error: null,
             showError: false

@@ -6,35 +6,24 @@ import { commonStyles } from '../../../styles/common';
 class BooleanType extends Component {
     constructor(props) {
         super(props);
+        let checked = (this.props.obj.currentValue !== undefined && this.props.obj.currentValue === '1') ? true : false;
         this.state = {
-            checked: false,
-            saveValue: '0',
+            checked: checked,
+            saveValue: (checked) ? '1' : '0',
             fieldName: this.props.obj.name
         };
     }
 
     toggle() {
         this.setState({
-            checked: !this.state.checked
-        }, () => {
-            this.changeSaveValue();
+            checked: !this.state.checked,
+            saveValue: (this.state.checked) ? '0' : '1',
         });
-    }
-
-    changeSaveValue() {
-        if (this.state.checked) {
-            this.setState({ saveValue: '1' });
-        } else {
-            this.setState({ saveValue: '0' });
-        }
     }
 
     getCheckView() {
         let view = null;
-        if (
-            this.state.checked
-            // || this.state.saveValue === '1'
-        ) {
+        if (this.state.checked) {
             view = (
                 <Icon
                     name={'check'}

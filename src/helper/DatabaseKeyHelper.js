@@ -6,8 +6,7 @@ export const addDatabaseKey = async (key) => {
         let allKeys = JSON.parse(await AsyncStorage.getItem(DB_KEYS_COLLECTION));
         if (allKeys !== null) {
             allKeys.push(key);
-            const uniqueArray = allKeys.filter((item, index, inputArray) =>
-                (inputArray.indexOf(item) === index));
+            const uniqueArray = allKeys.filter((item, index, inputArray) => (inputArray.indexOf(item) === index));
             await AsyncStorage.setItem(DB_KEYS_COLLECTION, JSON.stringify(uniqueArray));
         } else {
             allKeys = [];

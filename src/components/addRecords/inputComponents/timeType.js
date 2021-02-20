@@ -7,7 +7,7 @@ class TimeType extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            saveValue: '',
+            saveValue: (this.props.obj.currentValue !== undefined) ? this.props.obj.currentValue : '',
             fieldName: this.props.obj.name
         };
     }

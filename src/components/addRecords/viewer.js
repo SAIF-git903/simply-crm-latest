@@ -9,6 +9,7 @@ class Viewer extends Component {
         this.state = {
             loading: false,
             inputForm: [],
+            inputInstance: [],
             id: this.props.moduleId,
             recordId: (this.props.recordId) ? this.props.recordId : '',
         };
@@ -18,6 +19,19 @@ class Viewer extends Component {
         this.props.onRef(this);
         this.onFetchCall();
     }
+
+    // componentWillUnmount() {
+    //     console.log('unmount');
+    // }
+
+    // componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
+    //     if (prevState.inputInstance !== this.state.inputInstance) {
+    //         console.log('prevState.inputInstance');
+    //         // console.log(prevState.inputInstance);
+    //         console.log('this.state.inputInstance');
+    //         // console.log(this.state.inputInstance);
+    //     }
+    // }
 
     onFetchCall() {
         this.setState({
@@ -67,6 +81,7 @@ class Viewer extends Component {
     }
 
     render() {
+// console.log('rerender viewer');
         return (
             <View style={{ flex: 1, backgroundColor: '#f2f3f8' }}>
                 {this.doRender()}

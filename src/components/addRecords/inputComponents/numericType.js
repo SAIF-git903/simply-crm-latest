@@ -5,8 +5,9 @@ import { fontStyles, commonStyles } from '../../../styles/common';
 class NumericType extends Component {
     constructor(props) {
         super(props);
+        let val = (this.props.obj.currentValue !== undefined) ? this.props.obj.currentValue : this.props.obj.default;
         this.state = {
-            saveValue: (this.props.obj.type.name === 'double') ? Number(this.props.obj.default).toFixed(2) : this.props.obj.default,
+            saveValue: (this.props.obj.type.name === 'double') ? Number(val).toFixed(2) : val,
             fieldName: this.props.obj.name
         };
     }

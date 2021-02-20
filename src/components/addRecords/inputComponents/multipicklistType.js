@@ -9,7 +9,7 @@ class MultiPickListType extends Component {
         this.state = {
             selectedValue: [],
             fieldName: this.props.obj.name,
-            saveValue: this.props.obj.default
+            saveValue: (this.props.obj.currentValue !== undefined) ? this.props.obj.currentValue : this.props.obj.default
         };
     }
 

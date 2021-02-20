@@ -8,12 +8,19 @@ import { getUserName, getAddressDetails, getPriceDetails } from '../../../helper
 class ReferenceType extends Component {
     constructor(props) {
         super(props);
+        let val = (this.props.obj.defaultValue) ? this.props.obj.defaultValue.value : this.props.obj.default;
+        val = (this.props.obj.currentValue !== undefined) ? this.props.obj.currentValue : val;
+        let refVal = (this.props.obj.defaultValue) ? this.props.obj.defaultValue.label : '';
+        refVal = (this.props.obj.currentReferenceValue) ? this.props.obj.currentReferenceValue : refVal;
+// console.log('--component data--');
+// console.log(val);
+// console.log(refVal);
         this.state = {
             dialogueVisible: false,
             dialogueSelectedValue: undefined,
-            referenceValue: (this.props.defaultValue) ? this.props.defaultValue.label : '',
+            referenceValue: refVal,
             formId: 0,
-            saveValue: (this.props.defaultValue) ? this.props.defaultValue.value : this.props.obj.default,
+            saveValue: val,
             fieldName: this.props.obj.name,
             selectedRefModule: '',
             reference: true
@@ -23,7 +30,7 @@ class ReferenceType extends Component {
     UNSAFE_componentWillMount() {
         this.setState({
             formId: this.props.formId,
-            referenceValue: (this.props.defaultValue) ? this.props.defaultValue.label : this.props.label
+            // referenceValue: (this.props.obj.defaultValue) ? this.props.obj.defaultValue.label : this.props.label
             //referenceValue: label
         }, () => {
             this.assignUserId();

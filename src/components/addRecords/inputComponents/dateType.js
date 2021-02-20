@@ -7,10 +7,16 @@ import { fontStyles, commonStyles } from '../../../styles/common';
 class DateType extends Component {
     constructor(props) {
         super(props);
+// console.log('--component data--');
+// console.log(this.props.obj.type.format);
+// console.log(this.props.obj.currentValue);
+        const formatDate = this.props.obj.type.format.toUpperCase();
+        let val = (this.props.obj.currentValue !== undefined) ? this.props.obj.currentValue : this.props.obj.default;
         this.state = {
             pickDate: null,
-            saveValue: this.props.obj.default,
-            fieldName: this.props.obj.name
+            saveValue: (val) ? moment(val).format(formatDate) : '',
+            fieldName: this.props.obj.name,
+            formatDate: formatDate
         };
     }
 
@@ -40,10 +46,9 @@ class DateType extends Component {
 
     onDatePicked = (date) => {
         //Here you will get the selected date
-        const formatDate = this.props.obj.type.format.toUpperCase();
         this.setState({
             pickDate: date,
-            saveValue: moment(date).format(formatDate)
+            saveValue: moment(date).format(this.state.formatDate)
         });
     }
 
