@@ -6,7 +6,7 @@ import { commonStyles, fontStyles } from '../../../styles/common';
 import { viewSearchAction, updateSearchModule } from '../../../actions';
 import Icon from 'react-native-vector-icons/FontAwesome5Pro';
 
-class Header extends Component {
+class ReferenceHeader extends Component {
     componentDidMount() {
 
     }
@@ -78,4 +78,4 @@ const mapStateToProp = ({ event, mgr }) => {
     return { isPortrait, width, height };
 };
 
-export default connect(mapStateToProp, { viewSearchAction, updateSearchModule })(Header);
+export default connect(mapStateToProp, { viewSearchAction, updateSearchModule })(ReferenceHeader);

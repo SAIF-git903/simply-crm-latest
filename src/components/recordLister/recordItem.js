@@ -1,12 +1,5 @@
 import React, { Component } from 'react';
-import {
-    View,
-    ActivityIndicator,
-    Alert,
-    Text,
-    TouchableOpacity,
-    StyleSheet
-} from 'react-native';
+import { View, ActivityIndicator, Alert, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5Pro';
 import SwipeOut from 'react-native-swipeout';
@@ -121,25 +114,22 @@ class RecordItem extends Component {
     renderLoading() {
         return (
             <View
-                style={[
-                    styles.backgroundStyle,
-                    {
-                        borderTopWidth: (this.props.index === 0) ? 1 : 0,
-                        justifyContent: 'space-around',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        backgroundColor: (this.props.selectedIndex === this.props.index) ? RECORD_SELECTED_COLOR : RECORD_COLOR
-                    }
-                ]}
+                style={[styles.backgroundStyle, {
+                    borderTopWidth: (this.props.index === 0) ? 1 : 0,
+                    justifyContent: 'space-around',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    backgroundColor: (this.props.selectedIndex === this.props.index) ? RECORD_SELECTED_COLOR : RECORD_COLOR
+                }]}
             >
-                <Text style={fontStyles.fieldValue}>Deleting.....</Text>
+                <Text style={fontStyles.fieldValue}>Loading.....</Text>
                 <ActivityIndicator />
             </View>
         );
     }
 
     renderLine() {
-        //TODO swipe must be disabled for refRecordLister ??
+        //TODO take id from this.props.item and pass it like this.props.id and delete passing this.props.item
         return (
             <View>
                 <SwipeOut
@@ -154,20 +144,17 @@ class RecordItem extends Component {
                         }}
                     >
                         <View
-                            style={[
-                                styles.backgroundStyle,
-                                {
-                                    borderTopWidth: (this.props.index === 0) ? 1 : 0,
-                                    backgroundColor: (this.props.selectedIndex === this.props.index) ? RECORD_SELECTED_COLOR : RECORD_COLOR
-                                }
-                            ]}
+                            style={[styles.backgroundStyle, {
+                                borderTopWidth: (this.props.index === 0) ? 1 : 0,
+                                backgroundColor: (this.props.selectedIndex === this.props.index) ? RECORD_SELECTED_COLOR : RECORD_COLOR
+                            }]}
                         >
                             <Text
                                 key={1}
                                 numberOfLines={1}
                                 style={fontStyles.dashboardRecordLabelBig}
                             >
-                                {this.props.recordName}
+                                {(this.props.recordName) ? this.props.recordName : '*no title*'}
                             </Text>
                             {(this.props.labels) ? this.renderLabels(this.props.labels) : null}
                         </View>

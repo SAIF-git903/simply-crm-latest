@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5Pro';
-
 import Header from '../components/common/Header';
 import Lister from '../components/recordLister/lister';
 

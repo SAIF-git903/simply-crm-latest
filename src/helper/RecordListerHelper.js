@@ -14,33 +14,8 @@ import {
 import { addDatabaseKey } from '.';
 import { fontStyles } from '../styles/common';
 import {API_deleteRecord, API_listModuleRecords, API_query} from "./api";
-import CampaignsRecord from '../components/addRecords/referenceRecordLister/recordItems/campaignsRecord';
-import ContactsRecord from '../components/addRecords/referenceRecordLister/recordItems/contactsRecord';
-import VendorRecord from '../components/addRecords/referenceRecordLister/recordItems/vendorRecord';
-import FaqRecord from '../components/addRecords/referenceRecordLister/recordItems/faqRecord';
-import QuotesRecord from '../components/addRecords/referenceRecordLister/recordItems/quotesRecord';
-import PurchaseOrderRecord from '../components/addRecords/referenceRecordLister/recordItems/purchaseOrderRecord';
-import SalesOrderRecord from '../components/addRecords/referenceRecordLister/recordItems/salesOrderRecord';
-import InvoiceRecord from '../components/addRecords/referenceRecordLister/recordItems/invoiceRecord';
-import PriceBooksRecord from '../components/addRecords/referenceRecordLister/recordItems/priceBooksRecord';
-import CalendarRecord from '../components/addRecords/referenceRecordLister/recordItems/calendarRecord';
-import AccountsRecord from '../components/addRecords/referenceRecordLister/recordItems/accountsRecord';
-import OpportunitiesRecord from '../components/addRecords/referenceRecordLister/recordItems/opportunitiesRecord';
-import ProductsRecord from '../components/addRecords/referenceRecordLister/recordItems/productsRecord';
-import DocumentsRecord from '../components/addRecords/referenceRecordLister/recordItems/documentsRecord';
-import TicketsRecord from '../components/addRecords/referenceRecordLister/recordItems/ticketsRecord';
-import PbxRecord from '../components/addRecords/referenceRecordLister/recordItems/pbxRecord';
-import ServiceContractRecord from '../components/addRecords/referenceRecordLister/recordItems/serviceContractsRecord';
-import ServiceRecord from '../components/addRecords/referenceRecordLister/recordItems/serviceRecord';
-import AssetRecord from '../components/addRecords/referenceRecordLister/recordItems/assetRecord';
-import SMSnotifierRecord from '../components/addRecords/referenceRecordLister/recordItems/smsnotifierRecord';
-import ProjectTaskRecord from '../components/addRecords/referenceRecordLister/recordItems/projectTaskRecord';
-import ModuleProjectRecord from '../components/addRecords/referenceRecordLister/recordItems/moduleProjectRecord';
-import CommentsRecord from '../components/addRecords/referenceRecordLister/recordItems/commentRecord';
-import CustomRecord from '../components/addRecords/referenceRecordLister/recordItems/customRecord';
-import CurrencyRecord from '../components/addRecords/referenceRecordLister/recordItems/currencyRecord';
-import DocumentFoldersRecord from '../components/addRecords/referenceRecordLister/recordItems/documentFoldersRecord';
 import RecordItem from '../components/recordLister/recordItem';
+import ReferenceRecordItem from "../components/addRecords/referenceRecordLister/referenceRecordItem";
 
 const moment = require('moment-timezone');
 
@@ -264,7 +239,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance, vtigerSeven, r
     for (const record of records) {
         data.push(getListerModifiedRecord(listerInstance, vtigerSeven, responseJson, record));
     }
-    await saveData(data, vtigerSeven, responseJson, addExisting, listerInstance.state.data.length, listerInstance, refresh, moduleName);
+    await saveDataToState(data, vtigerSeven, responseJson, addExisting, listerInstance.state.data.length, listerInstance, refresh, moduleName);
 };
 
 function getListerModifiedRecord(listerInstance, vtigerSeven, responseJson, record) {
@@ -318,7 +293,7 @@ function getListerModifiedRecord(listerInstance, vtigerSeven, responseJson, reco
     return modifiedRecord;
 }
 
-const saveData = async (data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh, moduleName) => {
+const saveDataToState = async (data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh, moduleName) => {
     try {
         let offlineData;
         let statusText;
@@ -588,6 +563,16 @@ const getFieldsForModule = (moduleName) => {
             };
             break;
         }
+        //TODO add USERS ?? and in view bold 'first_name + last_name' with normal text 'user_name'
+
+        // case 'Users': {
+        //     fields = {
+        //         first_name: 'first_name',
+        //         last_name: 'last_name',
+        //         user_name: user_name,
+        //     };
+        //     break;
+        // }
         default: {
             break;
         }
@@ -691,6 +676,7 @@ const getItem = (listerInstance, item, index, isDashboard, isRefRecord) => {
     let labels = [];
 
     switch (listerInstance.props.moduleName) {
+        //TODO add keys for label, for 'Amount: 130' instead of '130' in recordItem
         case CAMPAIGNS: {
             recordName = item.lable;
             break;
@@ -724,7 +710,7 @@ const getItem = (listerInstance, item, index, isDashboard, isRefRecord) => {
             break;
         }
         case PURCHASEORDER: {
-            recordName = item.polable;
+            recordName = item.poLable;
             labels = [
                 item.status
             ];
@@ -847,16 +833,17 @@ const getItem = (listerInstance, item, index, isDashboard, isRefRecord) => {
             break;
         }
         default: {
+console.log('default case module');
+console.log(item);
             recordName = item.lable;
             break;
         }
     }
 
-    if (!isRefRecord) {
-        //TODO redo this later
-        ComponentName = RecordItem;
+    if (isRefRecord) {
+        ComponentName = ReferenceRecordItem;
     } else {
-        ComponentName = getReactComponent(listerInstance.props.moduleName);
+        ComponentName = RecordItem;
     }
 
     return (
@@ -872,36 +859,4 @@ const getItem = (listerInstance, item, index, isDashboard, isRefRecord) => {
             navigation={listerInstance.props.navigation}
         />
     );
-}
-
-const getReactComponent = (moduleName) => {
-    let components = {};
-    components[CAMPAIGNS] = CampaignsRecord;
-    components[VENDORS] = VendorRecord;
-    components[FAQ] = FaqRecord;
-    components[QUOTES] = QuotesRecord;
-    components[PURCHASEORDER] = PurchaseOrderRecord;
-    components[SALESORDER] = SalesOrderRecord;
-    components[INVOICE] = InvoiceRecord;
-    components[PRICEBOOKS] = PriceBooksRecord;
-    components[CALENDAR] = CalendarRecord;
-    components[LEADS] = ContactsRecord;
-    components[ACCOUNTS] = AccountsRecord;
-    components[CONTACTS] = ContactsRecord;
-    components[OPPORTUNITIES] = OpportunitiesRecord;
-    components[PRODUCTS] = ProductsRecord;
-    components[DOCUMENTS] = DocumentsRecord;
-    components[TICKETS] = TicketsRecord;
-    components[PBXMANAGER] = PbxRecord;
-    components[SERVICECONTRACTS] = ServiceContractRecord;
-    components[SERVICES] = ServiceRecord;
-    components[ASSETS] = AssetRecord;
-    components[SMS_NOTIFIER] = SMSnotifierRecord;
-    components[PROJECT_MILESTONE] = RecordItem;
-    components[PROJECT_TASK] = ProjectTaskRecord;
-    components[MODULE_PROJECT] = ModuleProjectRecord;
-    components[COMMENTS] = CommentsRecord;
-    components[CURRENCY] = CurrencyRecord;
-    components[DOCUMENTFOLDERS] = DocumentFoldersRecord;
-    return components[moduleName];
 }

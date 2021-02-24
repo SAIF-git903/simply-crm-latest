@@ -295,7 +295,7 @@ const doSaveRecord = async (currentInstance, headerInstance, jsonObj, dispatch, 
                 throw Error(`${field.state.error} at ${field.props.obj.lable}`);
             }
         }
-        //TODO check with recordId = ''
+        //TODO check with recordId = '' (Contact good)
         const responseJson = await API_saveRecord(currentInstance.props.moduleName, JSON.stringify(jsonObj), currentInstance.state.recordId);
         if (responseJson.success) {
             headerInstance.setState({ loading: false });

@@ -5,7 +5,7 @@ import { commonStyles } from '../../../styles/common';
 import { fetchRefRecord, refreshRefRecord, getNextRefPageRecord, markReferenceLabel } from '../../../actions';
 import { recordListRendererHelper } from '../../../helper';
 
-class Lister extends Component {
+class ReferenceLister extends Component {
     constructor(props) {
         super(props);
         this.onEndReachedCalledDuringMomentum = true;
@@ -26,15 +26,11 @@ class Lister extends Component {
     }
 
     onRecordSelect(id, lable, index) {
-        let recordId = id;
-        if (this.props.moduleName === 'Users') {
-            recordId = `19x${id}`;
-        }
         this.setState({
             selectedIndex: index
         },() => {
             this.props.navigation.goBack();
-            this.props.dispatch(markReferenceLabel(recordId, lable, this.props.uniqueId));
+            this.props.dispatch(markReferenceLabel(id, lable, this.props.uniqueId));
         });
     }
 
@@ -56,6 +52,7 @@ class Lister extends Component {
             isFlatListRefreshing: false,
             nextPage: false,
             data: [],
+            pageToTake: 1,
             selectedIndex: -1,
             statusText: 'Fetching Record',
             statusTextColor: '#000000'
@@ -70,6 +67,7 @@ class Lister extends Component {
             isFlatListRefreshing: true,
             nextPage: false,
             // data: [],
+            pageToTake: 1,
             selectedIndex: -1,
             statusText: 'Refreshing',
             statusTextColor: '#000000'
@@ -81,9 +79,7 @@ class Lister extends Component {
     renderFooter() {
         if (this.state.nextPage) {
             return (
-                <View
-                    style={{ width: '100%', justifyContent: 'space-around', alignItems: 'center', height: 50, flexDirection: 'row' }}
-                >
+                <View style={{ width: '100%', justifyContent: 'space-around', alignItems: 'center', height: 50, flexDirection: 'row' }}>
                     <Text>Getting next page</Text>
                     <ActivityIndicator />
                 </View>
@@ -123,4 +119,4 @@ const mapStateToProps = ({ event }) => {
     return { isPortrait, width, height };
 };
 
-export default connect(mapStateToProps)(Lister);
+export default connect(mapStateToProps)(ReferenceLister);

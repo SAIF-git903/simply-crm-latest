@@ -107,7 +107,7 @@ class Lister extends Component {
             pageToTake: 1,
             selectedIndex: -1,
             statusText: 'Refreshing',
-            Color: '#000000'
+            statusTextColor: '#000000'
         }, () => {
             this.props.dispatch(refreshRecord(this, this.props.moduleName));
         });
@@ -124,7 +124,7 @@ class Lister extends Component {
             pageToTake: 1,
             selectedIndex: -1,
             statusText: 'Searching .....',
-            Color: '#000000'
+            statusTextColor: '#000000'
         }, () => {
             this.props.dispatch(fetchRecord(this, this.props.moduleName));
         });
@@ -140,9 +140,7 @@ class Lister extends Component {
             );
         } else {
             view = (
-                <View style={{
-                    flex: 1
-                }}>
+                <View style={{ flex: 1 }}>
                     <View style={{
                         padding: 15,
                         paddingBottom: 5,
@@ -170,9 +168,7 @@ class Lister extends Component {
     renderFooter() {
         if (this.state.nextPage) {
             return (
-                <View
-                    style={{ width: '100%', justifyContent: 'space-around', alignItems: 'center', height: 50, flexDirection: 'row' }}
-                >
+                <View style={{ width: '100%', justifyContent: 'space-around', alignItems: 'center', height: 50, flexDirection: 'row' }}>
                     <Text>Getting next page</Text>
                     <ActivityIndicator />
                 </View>
@@ -239,4 +235,3 @@ const mapStateToProps = ({ event, recordViewer, drawer }) => {
 };
 
 export default connect(mapStateToProps, null, null, { forwardRef: true })(Lister);
-
