@@ -1,7 +1,6 @@
 import React from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 import store from '../store';
-import { getDatafromNet } from './networkHelper';
 import Section from '../components/common/section';
 import SectionBox from '../components/common/section/sectionBox';
 import Field from '../components/recordViewer/field';
@@ -11,6 +10,7 @@ import {
 } from '../variables/themeColors';
 import { processFile } from './showImage';
 import { addDatabaseKey } from '.';
+import { API_fetchRecordWithGrouping } from "./api";
 
 var numbro = require('numbro');
 const moment = require('moment-timezone');
@@ -52,24 +52,7 @@ export const viewRecordRenderer = async (viewerInstance, dispatch) => {
 
 export const refreshRecordDataHelper = async (viewerInstance, dispatch) => {
     try {
-        const { auth } = store.getState();
-        const loginDetails = auth.loginDetails;
-
-        let responseJson;
-
-        if (loginDetails.vtigerVersion < 7) {
-            const param = new FormData();
-            param.append('_operation', 'fetchRecordWithGrouping');
-            param.append('record', viewerInstance.props.recordId);
-            responseJson = await getDatafromNet(param, dispatch);
-        } else {
-            const param = new FormData();
-            param.append('_operation', 'fetchRecordWithGrouping');
-            param.append('module', viewerInstance.props.moduleName);
-            param.append('record', viewerInstance.state.recordId);
-            responseJson = await getDatafromNet(param, dispatch);
-        }
-
+        const responseJson = await API_fetchRecordWithGrouping(viewerInstance.props.moduleName, viewerInstance.props.recordId);
         if (responseJson.success) {
             await getAndSaveData(responseJson, viewerInstance, false, '');
         } else {
@@ -78,8 +61,9 @@ export const refreshRecordDataHelper = async (viewerInstance, dispatch) => {
                     isScrollViewRefreshing: false,
                     statusText: 'Loading...',
                     recordId: viewerInstance.props.recordId
-                },
-                    async () => { await refreshRecordDataHelper(viewerInstance, dispatch); });
+                }, async () => {
+                    await refreshRecordDataHelper(viewerInstance, dispatch);
+                });
             } else {
                 viewerInstance.setState({
                     isScrollViewRefreshing: false,
@@ -99,23 +83,7 @@ export const refreshRecordDataHelper = async (viewerInstance, dispatch) => {
 
 const getDataFromInternet = async (viewerInstance, offlineAvailable, offlineData, dispatch) => {
     try {
-        const { auth } = store.getState();
-        const loginDetails = auth.loginDetails;
-
-        let responseJson;
-        if (loginDetails.vtigerVersion < 7) {
-            const param = new FormData();
-            param.append('_operation', 'fetchRecordWithGrouping');
-            param.append('record', viewerInstance.props.recordId);
-            responseJson = await getDatafromNet(param, dispatch);
-        } else {
-            const param = new FormData();
-            param.append('_operation', 'fetchRecordWithGrouping');
-            param.append('module', viewerInstance.props.moduleName);
-            param.append('record', viewerInstance.state.recordId);
-            responseJson = await getDatafromNet(param, dispatch);
-        }
-
+        const responseJson = await API_fetchRecordWithGrouping(viewerInstance.props.moduleName, viewerInstance.props.recordId);
         if (responseJson.success) {
             await getAndSaveData(responseJson, viewerInstance, false, '');
         } else {
@@ -124,8 +92,9 @@ const getDataFromInternet = async (viewerInstance, offlineAvailable, offlineData
                     isScrollViewRefreshing: false,
                     statusText: 'Loading...',
                     recordId: viewerInstance.props.recordId
-                },
-                    async () => { await getDataFromInternet(viewerInstance, false, {}, dispatch); });
+                }, async () => {
+                    await getDataFromInternet(viewerInstance, false, {}, dispatch);
+                });
             } else {
                 if (offlineAvailable) {
                     console.log('offline');
@@ -173,7 +142,12 @@ const formatNumber = (numberString) => {
             thousandSeparated: true,
             mantissa: decimalCount
         });
-
+        //TODO there is error: for non simplysupport user params 'currency_decimal_separator' and 'currency_grouping_separator' is undefined
+        // because it empty in response from server, because tables 'vtiger_profile2field' and 'vtiger_def_org_field' dont have lines for these fieldIds
+// console.log('currency_decimal_separator');
+// console.log(currency_decimal_separator);
+// console.log('currency_grouping_separator');
+// console.log(currency_grouping_separator);
         result = result.replace(/\./, currency_decimal_separator);
         result = result.replace(/,/g, currency_grouping_separator);
 
@@ -259,7 +233,6 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
                                 const crmValue = moment.tz(`${field.value}`, 'HH:mm:ss', loginDetails.crmTz);
                                 const userValue = crmValue.clone().tz(loginDetails.userTz);
                                 value = userValue.format('hh:mmA');
-                                //console.log(value);  
                             } else if (uiType === 70) {
                                 const crmValue = moment.tz(`${field.value}`, 'YYYY-MM-DD HH:mm:ss', loginDetails.crmTz);
                                 const userValue = crmValue.clone().tz(loginDetails.userTz);
@@ -268,7 +241,7 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
                                 value = field.value;
                             }
                         } catch (error) {
-                            //console.log(error);
+                            console.log(error);
                             value = field.value;
                         }
                     }
@@ -326,7 +299,8 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
                     headerName={block.label}
                     content={<SectionBox style={{ padding: 5 }}>{fieldViews}</SectionBox>}
                     contentHeight={fieldViews.length * 60 + 5}
-                />);
+                />
+            );
 
             i++;
         }

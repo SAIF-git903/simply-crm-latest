@@ -5,12 +5,10 @@ import {
   UPDATE_SEARCH_MODULE, MODULE_SELECT,
   SHOW_HOME, REFERENCE_LABEL, SAVE_SUCCESS,
 } from './types';
-import { RECORD_ADDER, HOME_MAIN, RECORD_VIEWER } from '../variables/constants';
+import { HOME_MAIN, RECORD_VIEWER } from '../variables/constants';
 import {
-  userUrlHelper, loginHelper, renderDrawerView, fetchRecordHelper, fetchRefRecordHelper, viewRecord,
-  viewRecordRenderer, deleteRecordHelper, refreshRefRecordHelper,
-  refreshRecordDataHelper, getNextRefPageHelper, fetchWidgetRecordHelper, refreshRecordWidgetHelper,
-  getAddressDetails
+  getInstancesList, renderDrawerView, fetchRecordHelper, viewRecord,
+  viewRecordRenderer, deleteRecordHelper, refreshRecordDataHelper, getAddressDetails
 } from '../helper';
 
 export const dimensionChanged = (isPortrait, width, height) => ({
@@ -21,8 +19,7 @@ export const dimensionChanged = (isPortrait, width, height) => ({
 export const loginUser = (email, password, url, navigation, loginInstance) => (dispatch) => {
   if (validData(email, password, url)) {
     loginInstance.setState({ loading: true });
-    userUrlHelper(email, password, url, navigation, loginInstance, dispatch);
-    // loginHelper(username, password, url, navigation, loginInstance, dispatch);
+    getInstancesList(email, password, url, navigation, loginInstance, dispatch);
   }
 };
 
@@ -57,28 +54,34 @@ export const getDrawerViews = (loginDetails, drawerInstance) => {
   renderDrawerView(loginDetails, drawerInstance);
 };
 
+//RecordLister
 export const fetchRecord = (recordListerInstance, moduleName) => (dispatch) => {
   fetchRecordHelper(recordListerInstance, dispatch, false, false, moduleName);
 };
-
-export const fetchRefRecord = (recordListerInstance) => (dispatch) => {
-  fetchRefRecordHelper(recordListerInstance, dispatch);
-};
-
 export const refreshRecord = (recordListerInstance, moduleName) => (dispatch) => {
   fetchRecordHelper(recordListerInstance, dispatch, true, false, moduleName);
 };
-
-export const refreshRefRecord = (recordListerInstance) => (dispatch) => {
-  refreshRefRecordHelper(recordListerInstance, dispatch);
-};
-
 export const getNextPageRecord = (recordListerInstance, moduleName) => (dispatch) => {
   fetchRecordHelper(recordListerInstance, dispatch, false, true, moduleName);
 };
 
-export const getNextRefPageRecord = (recordListerInstance) => (dispatch) => {
-  getNextRefPageHelper(recordListerInstance, dispatch);
+//RefRecordLister
+export const fetchRefRecord = (recordListerInstance, moduleName) => (dispatch) => {
+  fetchRecordHelper(recordListerInstance, dispatch, false, false, moduleName);
+};
+export const refreshRefRecord = (recordListerInstance, moduleName) => (dispatch) => {
+  fetchRecordHelper(recordListerInstance, dispatch, true, false, moduleName);
+};
+export const getNextRefPageRecord = (recordListerInstance, moduleName) => (dispatch) => {
+  fetchRecordHelper(recordListerInstance, dispatch, false, true, moduleName);
+};
+
+//dashboardLister
+export const dashboardFetchRecord = (viewerInstance, moduleName) => (dispatch) => {
+  fetchRecordHelper(viewerInstance, dispatch, false, false, moduleName, true);
+};
+export const dashboardRefreshRecord = (viewerInstance, moduleName) => (dispatch) => {
+  fetchRecordHelper(viewerInstance, dispatch, true, false, moduleName, true);
 };
 
 export const refreshRecordData = (recordViewerInstance) => (dispatch) => {
@@ -104,23 +107,14 @@ export const viewRecordRendererActions = (viewerInstance) => (dispatch) => {
   viewRecordRenderer(viewerInstance, dispatch);
 };
 
-export const deleteRecord = (listerInstance, recordId, index, recordInstance) => (dispatch) => {
-  deleteRecordHelper(listerInstance, recordId, index, recordInstance, dispatch);
+export const deleteRecord = (listerInstance, recordId, index, callback) => (dispatch) => {
+  deleteRecordHelper(listerInstance, recordId, index, callback, dispatch);
 };
 
 export const moduleSelected = (text) => ({
   type: MODULE_SELECT,
   payload: text
 });
-
-export const displayRecords = (viewerInstance) => (dispatch) => {
-  fetchWidgetRecordHelper(viewerInstance, dispatch);
-};
-
-export const refreshWidgetRecord = (viewerInstance) => (dispatch) => {
-  refreshRecordWidgetHelper(viewerInstance, dispatch);
-};
-
 
 export const markReferenceLabel = (recordId, label, uniqueId) => (dispatch) => {
   dispatch({ type: REFERENCE_LABEL, payload: { recordId, label, uniqueId } });

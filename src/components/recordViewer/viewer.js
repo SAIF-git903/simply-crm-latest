@@ -7,7 +7,6 @@ import { commonStyles } from '../../styles/common';
 import { viewRecordRendererActions, refreshRecordData } from '../../actions';
 
 class Viewer extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -24,13 +23,27 @@ class Viewer extends Component {
     }
 
     getRecords() {
-        this.setState({ loading: true, data: [], statusText: '', statusTextColor: '#000000', recordId: this.props.recordId });
-        this.props.dispatch(viewRecordRendererActions(this));
+        this.setState({
+            loading: true,
+            isScrollViewRefreshing: false,
+            data: [],
+            statusText: '',
+            statusTextColor: '#000000',
+            recordId: this.props.recordId
+        }, () => {
+            this.props.dispatch(viewRecordRendererActions(this));
+        });
     }
 
     refreshData() {
-        this.setState({ isScrollViewRefreshing: true, statusText: 'Refreshing', statusTextColor: '#000000' });
-        this.props.dispatch(refreshRecordData(this));
+        this.setState({
+            loading: false,
+            isScrollViewRefreshing: true,
+            statusText: 'Refreshing',
+            statusTextColor: '#000000'
+        }, () => {
+            this.props.dispatch(refreshRecordData(this));
+        });
     }
 
     renderLoading() {
@@ -65,8 +78,10 @@ class Viewer extends Component {
                 paddingBottom: 10
             }]} >
                 {
-                    (this.state.loading) ?
-                        this.renderLoading() :
+                    (this.state.loading)
+                        ?
+                        this.renderLoading()
+                        :
                         this.renderRecordView()
                 }
                 {/* <StatusView text={this.state.statusText} textColor={this.state.statusTextColor} /> */}
@@ -74,9 +89,10 @@ class Viewer extends Component {
         );
     }
 }
+
 // const mapStateToProps = ({ drawer }) => {
 //     const { moduleId } = drawer;
 //     return { moduleId };
 // };
-export default connect(null)(Viewer);
 
+export default connect(null)(Viewer);

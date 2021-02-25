@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5Pro';
-
 import Header from '../components/common/Header';
 import Lister from '../components/recordLister/lister';
 
@@ -12,24 +11,28 @@ export default class Records extends Component {
     }
 
     renderAddRecordButton() {
-        return <TouchableOpacity onPress={() => this.props.navigation.navigate('Add Record', { lister: this.lister })}>
-            <View
-                style={{
-                    backgroundColor: 'rgba(255,255,255,.2)',
-                    width: 27,
-                    height: 27,
-                    borderRadius: 3,
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                }}
-            >
-                <Icon
-                    name='plus'
-                    size={18}
-                    color='white'
-                />
-            </View>
-        </TouchableOpacity>
+        return (
+            <TouchableOpacity onPress={() => {
+                this.props.navigation.navigate('Add Record', { lister: this.lister });
+            }}>
+                <View
+                    style={{
+                        backgroundColor: 'rgba(255,255,255,.2)',
+                        width: 27,
+                        height: 27,
+                        borderRadius: 3,
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}
+                >
+                    <Icon
+                        name='plus'
+                        size={18}
+                        color='white'
+                    />
+                </View>
+            </TouchableOpacity>
+        );
     }
 
     render() {

@@ -1,54 +1,91 @@
-import React, { useState } from 'react';
-import {
-    View,
-    ActivityIndicator,
-    Alert,
-    Text,
-    TouchableOpacity,
-    StyleSheet
-} from 'react-native';
-import { useDispatch } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
-
+import React, { Component } from 'react';
+import { View, ActivityIndicator, Alert, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5Pro';
 import SwipeOut from 'react-native-swipeout';
-
 import { deleteRecord } from '../../actions';
 import { RECORD_COLOR, RECORD_SELECTED_COLOR } from '../../variables/themeColors';
-import { fontStyles } from '../../styles/common';
+import {commonStyles, fontStyles} from '../../styles/common';
 
-export default function RecordItem(props) {
-    const {
-        recordName,
-        labels,
-        listerInstance,
-        item,
-        index,
-        selectedIndex,
-        onRecordSelect
-    } = props;
-
-    const [isLoading, setIsLoading] = useState(false);
-
-    const dispatch = useDispatch();
-    const navigation = useNavigation();
-
-    function onEdit() {
-        //TODO Non-serializable values were found in the navigation state. Use navigation.setOption() instead
-        navigation.navigate('Edit Record', { id: item.id, lister: listerInstance });
+class RecordItem extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            loading: false
+        };
     }
 
-    function onDelete() {
-        Alert.alert('Are you sure want to delete this record ?', recordName,
+    getActions() {
+        return [
+            {
+                component: (
+                    <View
+                        style={{
+                            flex: 1,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            backgroundColor: '#f2f3f8',
+                            borderColor: 'white',
+                            borderRightWidth: 1
+                        }}
+                    >
+                        <Icon
+                            name='pencil-alt'
+                            solid
+                            size={30}
+                            color='black'
+                        />
+                    </View>
+                ),
+                onPress: this.onEdit.bind(this)
+            },
+            {
+                component: (
+                    <View
+                        style={{
+                            flex: 1,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            backgroundColor: '#f2f3f8'
+                        }}
+                    >
+                        <Icon
+                            name='trash-alt'
+                            solid
+                            size={30}
+                            color='black'
+                        />
+                    </View>
+                ),
+                onPress: this.onDelete.bind(this)
+            }
+        ];
+    }
+
+    onEdit() {
+        //TODO Non-serializable values were found in the navigation state. Use navigation.setOption() instead
+        this.props.navigation.navigate('Edit Record', {
+            id: this.props.id,
+            lister: this.props.listerInstance,
+            isDashboard: this.props.isDashboard
+        });
+    }
+
+    onDelete() {
+        Alert.alert('Are you sure want to delete this record ?', this.props.recordName,
             [
                 { text: 'Cancel', onPress: () => { }, style: 'cancel' },
                 {
                     text: 'Yes', onPress: () => {
-                        setIsLoading(true);
-                        //TODO memory leak (setState called on deleted record) on record delete
-                        dispatch(deleteRecord(listerInstance, item.id, index, () => {
-                            setIsLoading(false);
-                        }));
+                        this.props.listerInstance.setState({
+                            isFlatListRefreshing: true
+                        }, () => {
+                            this.props.dispatch(deleteRecord(this.props.listerInstance, this.props.id, this.props.index, () => {
+                                this.props.listerInstance.setState({
+                                    isFlatListRefreshing: false
+                                });
+                            }));
+                        });
                     }
                 }
             ],
@@ -56,7 +93,7 @@ export default function RecordItem(props) {
         );
     }
 
-    function renderLabel(label, index) {
+    renderLabel(label, index) {
         if (!label || label.length === 0) return null;
 
         return (
@@ -70,83 +107,61 @@ export default function RecordItem(props) {
         );
     }
 
-    function renderLabels(labels) {
-        return labels.map(renderLabel);
+    renderLabels(labels) {
+        return labels.map(this.renderLabel);
     }
 
-    const swipeOutButtons = [{
-        component: (
+    renderLoading() {
+        return (
             <View
-                style={{
-                    flex: 1,
-                    justifyContent: 'center',
+                style={[styles.backgroundStyle, {
+                    borderTopWidth: (this.props.index === 0) ? 1 : 0,
+                    justifyContent: 'space-around',
+                    flexDirection: 'row',
                     alignItems: 'center',
-                    backgroundColor: '#f2f3f8',
-                    borderColor: 'white',
-                    borderRightWidth: 1
-                }}
+                    backgroundColor: (this.props.selectedIndex === this.props.index) ? RECORD_SELECTED_COLOR : RECORD_COLOR
+                }]}
             >
-                <Icon
-                    name='pencil-alt'
-                    solid
-                    size={30}
-                    color='black'
-                />
+                <Text style={fontStyles.fieldValue}>Loading.....</Text>
+                <ActivityIndicator />
             </View>
-        ),
-        onPress: onEdit
-    },
-    {
-        component: (
-            <View
-                style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: '#f2f3f8'
-                }}
-            >
-                <Icon
-                    name='trash-alt'
-                    solid
-                    size={30}
-                    color='black'
-                />
-            </View>
-        ),
-        onPress: onDelete
-    }];
+        );
+    }
 
-    if (!isLoading) {
+    renderLine() {
+        let recordName = this.props.recordName;
+        let no_tittle_style = {};
+        if (recordName === '') {
+            recordName = '*empty title*';
+            no_tittle_style = commonStyles.no_tittle;
+        }
         return (
             <View>
                 <SwipeOut
-                    style={{
-                        backgroundColor: 'white'
-                    }}
+                    style={{ backgroundColor: 'white' }}
                     buttonWidth={70}
-                    right={swipeOutButtons}
+                    right={this.getActions()}
                     autoClose
                 >
                     <TouchableOpacity
-                        onPress={() => { onRecordSelect(item.id, index); }}
+                        onPress={() => {
+                            this.props.onRecordSelect(this.props.id, this.props.index);
+                        }}
                     >
                         <View
                             style={[styles.backgroundStyle, {
-                                borderTopWidth: (index === 0) ? 1 : 0,
-                                backgroundColor:
-                                    (selectedIndex === index) ?
-                                        RECORD_SELECTED_COLOR : RECORD_COLOR
+                                borderTopWidth: (this.props.index === 0) ? 1 : 0,
+                                backgroundColor: (this.props.selectedIndex === this.props.index) ? RECORD_SELECTED_COLOR : RECORD_COLOR
                             }]}
                         >
                             <Text
                                 key={1}
                                 numberOfLines={1}
-                                style={fontStyles.dashboardRecordLabelBig}
+                                style={[fontStyles.dashboardRecordLabelBig, no_tittle_style]}
                             >
                                 {recordName}
                             </Text>
-                            {labels ? renderLabels(labels) : null}
+                            {(this.props.labels) ? this.renderLabels(this.props.labels) : null}
                         </View>
                     </TouchableOpacity>
                 </SwipeOut>
@@ -154,24 +169,14 @@ export default function RecordItem(props) {
         );
     }
 
-    return (
-        <View
-            style={[styles.backgroundStyle, {
-                borderTopWidth: (index === 0) ? 1 : 0,
-                justifyContent: 'space-around',
-                flexDirection: 'row',
-                alignItems: 'center',
-                backgroundColor:
-                    (selectedIndex === index) ?
-                        RECORD_SELECTED_COLOR : RECORD_COLOR
-            }]}
-        >
-            <Text style={fontStyles.fieldValue}>Deleting.....</Text>
-
-            <ActivityIndicator />
-        </View>
-    );
+    render() {
+        return (
+            (this.state.loading) ? this.renderLoading() : this.renderLine()
+        );
+    }
 }
+
+export default connect(null)(RecordItem);
 
 const styles = StyleSheet.create({
     backgroundStyle: {

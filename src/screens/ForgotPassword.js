@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-    View, TextInput, Image, ActivityIndicator, Text, Animated, TouchableWithoutFeedback,
-    StyleSheet, TouchableOpacity, Platform
+    View, TextInput, Image, ActivityIndicator, Text, Animated,
+    StyleSheet, TouchableOpacity, Platform, Keyboard
 } from 'react-native';
 import IconButton from '../components/IconButton';
 import Icon from 'react-native-vector-icons/FontAwesome5Pro';
@@ -17,18 +17,14 @@ class ForgotPassword extends Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
             email: this.props.route.params.email || '',
-            buttonText: 'RESET PASWORD',
+            buttonText: 'RESET PASSWORD',
             loading: false
         };
 
         this.animatedValue = new Animated.Value(0);
         this.buttonAnimatedValue = new Animated.Value(1);
-
-        this.handlePressIn = this.handlePressIn.bind(this);
-        this.handlePressOut = this.handlePressOut.bind(this);
     }
 
     componentDidMount() {
@@ -44,31 +40,47 @@ class ForgotPassword extends Component {
     }
 
     onButtonPress() {
+        Keyboard.dismiss();
+
         const { email } = this.state;
         if (this.state.buttonText === 'BACK') {
             this.props.navigation.goBack(null);
         } else {
-            this.setState({ loading: true }, () => { resetPassword(email, this); });
+            this.setState({
+                loading: true
+            }, () => {
+                resetPassword(email, this);
+            });
         }
+
+        Animated.spring(this.buttonAnimatedValue, {
+            toValue: 0.7,
+            useNativeDriver: true
+        }).start(() => {
+            Animated.spring(this.buttonAnimatedValue, {
+                toValue: 1,
+                useNativeDriver: true
+            }).start();
+        });
+    }
+
+    getClearButton() {
+        let clear = null;
+        if (this.state.email.length !== 0) {
+            clear = (
+                <IconButton
+                    icon={'times-circle'}
+                    solid
+                    size={14}
+                    onPress={() => this.setState({ email: '' })}
+                />
+            );
+        }
+        return clear;
     }
 
     onBackPress() {
         this.props.navigation.goBack(null);
-    }
-
-    handlePressIn() {
-        Animated.spring(this.buttonAnimatedValue, {
-            toValue: 0.7,
-            useNativeDriver: true
-        }).start();
-    }
-
-    handlePressOut() {
-        Animated.spring(this.buttonAnimatedValue, {
-            toValue: 1,
-            useNativeDriver: true
-        }).start();
-        this.onButtonPress();
     }
 
     renderLoading() {
@@ -86,12 +98,10 @@ class ForgotPassword extends Component {
     }
 
     render() {
-        const animatedStyle = { opacity: this.animatedValue };
         const buttonAnimatedStyle = { transform: [{ scale: this.buttonAnimatedValue }] };
 
         return (
             <View style={{ width: '100%', height: '100%', backgroundColor: '#0085DE' }}>
-
                 { /*Logo*/}
                 <View style={styles.logoMainHolder}>
                     <View style={{ width: '100%', flex: 1, padding: 10, paddingTop: 40 }}>
@@ -106,14 +116,11 @@ class ForgotPassword extends Component {
                     <View style={styles.logoSubHolder}>
                         <Image source={require('../../assets/images/logo_new_white.png')} style={styles.logoStyle} />
                     </View>
-
                 </View>
 
                 { /*Input Component*/}
                 <View style={{ flex: 1.5 }} >
-
                     <View style={styles.inputMainHolder}>
-
                         <View style={styles.textInputWrapper}>
                             <Icon
                                 name='envelope'
@@ -122,13 +129,12 @@ class ForgotPassword extends Component {
                                 color='#92ADD1'
                                 style={{ width: 24 }}
                             />
-
                             <TextInput
                                 autoGrow={true}
                                 autoCorrect={false}
                                 spellCheck={false}
                                 underlineColorAndroid='rgba(0,0,0,0)'
-                                style={[fontStyles.loginInputFieldLabel, styles.inputFieldLabel, { marginBottom: Platform.OS === 'android' ? -5 : 0 }]}
+                                style={[fontStyles.loginInputFieldLabel, styles.inputFieldLabel, { marginBottom: (Platform.OS === 'android') ? -5 : 0 }]}
                                 placeholder='Enter your e-mail'
                                 placeholderTextColor='#ddd'
                                 ref='email'
@@ -137,36 +143,20 @@ class ForgotPassword extends Component {
                                 value={this.state.email}
                                 onChangeText={this.onEmailChanged.bind(this)}
                             />
-
-                            {this.state.email.length !== 0 ?
-                                <IconButton
-                                    icon={'times-circle'}
-                                    solid
-                                    size={14}
-                                    onPress={() => this.setState({ email: '' })}
-                                />
-                                :
-                                null
-                            }
+                            {this.getClearButton()}
                         </View>
-
-
                     </View>
                     <View style={styles.loginButtonHolder}>
-
-                        <TouchableWithoutFeedback
-                            onPressIn={this.handlePressIn}
-                            onPressOut={this.handlePressOut}
+                        <TouchableOpacity
+                            disabled={this.state.loading}
+                            onPress={this.onButtonPress.bind(this)}
                         >
                             <Animated.View style={[styles.loginButtonStyle, buttonAnimatedStyle]}>
                                 {(this.state.loading) ? this.renderLoading() : this.renderLoginButton()}
                             </Animated.View>
-                        </TouchableWithoutFeedback>
+                        </TouchableOpacity>
                     </View>
-
-
                 </View>
-
             </View>
         );
     }

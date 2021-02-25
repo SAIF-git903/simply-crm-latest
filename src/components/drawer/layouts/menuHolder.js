@@ -18,11 +18,11 @@ export default function MenuHolder(props) {
     const { module } = props;
 
     // Ephemeral state
-    const [iconName, setIconName] = useState('file-invoice-dollar')
+    const [iconName, setIconName] = useState('file-invoice-dollar');
 
     // Redux state
     const dispatch = useDispatch();
-    const selectedButton = useSelector(state => state.drawer.selectedButton)
+    const selectedButton = useSelector(state => state.drawer.selectedButton);
 
     const navigation = useNavigation();
 
@@ -126,12 +126,13 @@ export default function MenuHolder(props) {
                     <Icon
                         name={iconName}
                         size={20}
-                        color={(selectedButton !== module.name)
-                            ? DRAWER_SECTION_HEADER_IMAGE_COLOR
-                            : DRAWER_MODULE_BUTTON_TEXT_SELECTED_COLOR}
+                        color={
+                            (selectedButton !== module.name)
+                                ? DRAWER_SECTION_HEADER_IMAGE_COLOR
+                                : DRAWER_MODULE_BUTTON_TEXT_SELECTED_COLOR
+                        }
                     />
                 </View>
-
                 <Text
                     style={[
                         styles.text,

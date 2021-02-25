@@ -12,31 +12,36 @@ const verticalScale = size => height / guidelineBaseHeight * size;
 const moderateScale = (size, factor = 0.5) => size + (scale(size) - size) * factor;
 
 const renderBullets = (data) => data.map((item, index) => {
-    return <View style={{
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        paddingTop: index === 0 ? 0 : 12,
-        flexWrap: 'wrap',
-    }}>
-        <View style={{
-            flexDirection: 'row',
-            flexWrap: 'wrap'
-        }}>
-            <Icon
-                name='check-circle'
-                solid
-                size={moderateScale(18)}
-                color='#48CB53'
-                style={{
-                    paddingRight: 5,
-                    top: 4
-                }}
-            />
-            <Text style={styles.bullet}>
-                {item}
-            </Text>
+    return (
+        <View
+            key={index}
+            style={{
+                flexDirection: 'row',
+                alignItems: 'flex-start',
+                paddingTop: (index === 0) ? 0 : 12,
+                flexWrap: 'wrap',
+            }}
+        >
+            <View style={{
+                flexDirection: 'row',
+                flexWrap: 'wrap'
+            }}>
+                <Icon
+                    name='check-circle'
+                    solid
+                    size={moderateScale(18)}
+                    color='#48CB53'
+                    style={{
+                        paddingRight: 5,
+                        top: 4
+                    }}
+                />
+                <Text style={styles.bullet}>
+                    {item}
+                </Text>
+            </View>
         </View>
-    </View>
+    );
 })
 
 export default function IntroSlide({ image, subtitle, title, bullets }) {

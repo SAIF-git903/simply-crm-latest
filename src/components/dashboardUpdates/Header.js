@@ -80,7 +80,8 @@ class Header extends Component {
                                     color: '#707070',
                                     fontSize: 16
                                 }}
-                            >{dropdownText}
+                            >
+                                {dropdownText}
                             </Text>
                             <Icon
                                 name={'angle-right'}

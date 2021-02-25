@@ -6,6 +6,7 @@ import Viewer from '../../components/recordViewer/viewer';
 import Updates from './Updates';
 import Comments from './Comments/';
 import IconTabBar from '../../components/common/IconTabBar';
+import {backgroundColor} from "react-native-calendars/src/style";
 
 var ScrollableTabView = require('react-native-scrollable-tab-view');
 
@@ -20,33 +21,38 @@ export default function RecordDetails() {
 
         const viewer = {
             tabIcon: 'file-alt',
-            component: <Viewer
-                key={1}
-                tabLabel="Details"
-                navigation={navigation}
-                moduleName={moduleName}
-                recordId={recordId}
-            />
+            component: (
+                <Viewer
+                    key={1}
+                    tabLabel="Details"
+                    navigation={navigation}
+                    moduleName={moduleName}
+                    recordId={recordId}
+                />
+            )
         };
 
         const updates = {
             tabIcon: 'history',
-            component: <Updates
-                key={2}
-                tabLabel="Updates"
-                moduleName={moduleName}
-                recordId={recordId}
-            />
+            component: (
+                <Updates
+                    key={2}
+                    tabLabel="Updates"
+                    moduleName={moduleName}
+                    recordId={recordId}
+                />
+            )
         };
-
 
         const comments = {
             tabIcon: 'comment',
-            component: <Comments
-                key={3}
-                tabLabel="Comments"
-                recordId={recordId}
-            />
+            component: (
+                <Comments
+                    key={3}
+                    tabLabel="Comments"
+                    recordId={recordId}
+                />
+            )
         };
 
         tabs.push(viewer, updates);
@@ -71,7 +77,9 @@ export default function RecordDetails() {
                 <ScrollableTabView
                     prerenderingSiblingsNumber={Infinity}
                     style={{ backgroundColor: '#f2f3f8' }}
-                    renderTabBar={() => <IconTabBar tabIcons={tabIcons} />}
+                    renderTabBar={() => (
+                        <IconTabBar tabIcons={tabIcons} />
+                    )}
                     tabBarActiveTextColor={"#00BBF2"}
                     tabBarInactiveTextColor={"#707070"}
                     tabBarUnderlineStyle={{
@@ -88,7 +96,6 @@ export default function RecordDetails() {
                 >
                     {tabComponents}
                 </ScrollableTabView>
-
             </View>
         </View>
     );

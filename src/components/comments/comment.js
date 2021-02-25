@@ -58,51 +58,59 @@ export default function Comment(props) {
 
     function renderCommentButtons() {
         const getRepliesText = (length) => length === 1 ? 'reply' : 'replies';
-        return <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            {
-                item.children.length !== 0
-                    ? <Button
-                        onPress={() => toggleChildren()}
-                        text={`${item.children.length} ${getRepliesText(item.children.length)}`}
-                        style={{ paddingLeft: 0 }}
-                    />
-                    : <View />
-            }
-            {processFile(item)}
+        return (
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                {
+                    (item.children.length !== 0)
+                        ?
+                        <Button
+                            onPress={() => toggleChildren()}
+                            text={`${item.children.length} ${getRepliesText(item.children.length)}`}
+                            style={{ paddingLeft: 0 }}
+                        />
+                        :
+                        <View />
+                }
+                {processFile(item)}
 
-            <View style={{ flexDirection: 'row', }}>
-                <Button text={'Reply'} onPress={() => onReply()} />
-                {
-                    checkUserAbility(item.creator.value, userId, isAdmin)
-                        ? <Button text={'Edit'} onPress={() => onEdit()} />
-                        : null
-                }
-                {
-                    checkUserAbility(item.creator.value, userId, isAdmin)
-                        ? <Button text={'Delete'} onPress={() => {
-                            Alert.alert(
-                                "Delete Comment",
-                                "Are you sure you want to delete this comment?",
-                                [
-                                    {
-                                        text: "Cancel",
-                                        onPress: () => console.log("Cancel Pressed"),
-                                        style: "cancel"
-                                    },
-                                    {
-                                        text: "Delete", onPress: () => {
-                                            const commentIdClean = getCleanId(item.id);
-                                            dispatch(deleteComment(commentIdClean))
+                <View style={{ flexDirection: 'row', }}>
+                    <Button text={'Reply'} onPress={() => onReply()} />
+                    {
+                        (checkUserAbility(item.creator.value, userId, isAdmin))
+                            ?
+                            <Button text={'Edit'} onPress={() => onEdit()} />
+                            :
+                            null
+                    }
+                    {
+                        (checkUserAbility(item.creator.value, userId, isAdmin))
+                            ?
+                            <Button text={'Delete'} onPress={() => {
+                                Alert.alert(
+                                    "Delete Comment",
+                                    "Are you sure you want to delete this comment?",
+                                    [
+                                        {
+                                            text: "Cancel",
+                                            onPress: () => console.log("Cancel Pressed"),
+                                            style: "cancel"
+                                        },
+                                        {
+                                            text: "Delete", onPress: () => {
+                                                const commentIdClean = getCleanId(item.id);
+                                                dispatch(deleteComment(commentIdClean))
+                                            }
                                         }
-                                    }
-                                ],
-                                { cancelable: false }
-                            );
-                        }} />
-                        : null
-                }
+                                    ],
+                                    { cancelable: false }
+                                );
+                            }} />
+                            :
+                            null
+                    }
+                </View>
             </View>
-        </View>
+        );
     }
 
     function toggleChildren() {
@@ -113,7 +121,7 @@ export default function Comment(props) {
         LayoutAnimation.configureNext(CustomLayoutLinear);
         setChildrenVisible(visible);
         setTimeout(() => {
-            scrollToIndex(index)
+            scrollToIndex(index);
         }, 350);
     }
 
@@ -152,72 +160,86 @@ export default function Comment(props) {
     }
 
     function renderLoading() {
-        if (!isBeingDeleted) return;
+        if (!isBeingDeleted) {
+            return;
+        }
 
-        return <View style={{
-            position: 'absolute',
-            top: 0,
-            bottom: 0,
-            left: 0,
-            right: 0,
-            justifyContent: 'center'
-        }}>
-            <ActivityIndicator />
-        </View>
+        return (
+            <View style={{
+                position: 'absolute',
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
+                justifyContent: 'center'
+            }}>
+                <ActivityIndicator />
+            </View>
+        );
     }
 
     function renderEdited() {
-        if (item.createdtime === item.modifiedtime) return;
+        if (item.createdtime === item.modifiedtime) {
+            return;
+        }
 
-        return <View style={{ paddingTop: 5 }}>
-            {
-                item.reasontoedit.length !== 0
-                    ? <Text style={styles.editedText}>Edit: {item.reasontoedit}</Text>
-                    : null
-            }
-            <Text style={styles.editedText}>Comment modified {moment(moment.tz(item.modifiedtime, crmTz).format()).fromNow()}</Text>
-        </View>
+        return (
+            <View style={{ paddingTop: 5 }}>
+                {
+                    (item.reasontoedit.length !== 0)
+                        ?
+                        <Text style={styles.editedText}>Edit: {item.reasontoedit}</Text>
+                        :
+                        null
+                }
+                <Text style={styles.editedText}>Comment modified {moment(moment.tz(item.modifiedtime, crmTz).format()).fromNow()}</Text>
+            </View>
+        );
     }
 
     const isBeingDeleted = commentsLoading.includes(getCleanId(item.id));
 
     function renderCommentContent() {
-        return <View style={{ ...styles.commentBox, opacity: isBeingDeleted ? 0.45 : 1 }}>
-            <View style={styles.commentUserData}>
-                <View style={styles.userIconBackground}>
-                    <Icon
-                        name={'user'}
-                        solid
-                        size={28}
-                        color={'#CCCCCC'}
-                    />
+        return (
+            <View style={{ ...styles.commentBox, opacity: isBeingDeleted ? 0.45 : 1 }}>
+                <View style={styles.commentUserData}>
+                    <View style={styles.userIconBackground}>
+                        <Icon
+                            name={'user'}
+                            solid
+                            size={28}
+                            color={'#CCCCCC'}
+                        />
+                    </View>
+                    <View>
+                        <Text style={styles.nameText}>{item.creator.label}</Text>
+                        <Text style={styles.timeText}>{moment(moment.tz(item.createdtime, crmTz).format()).fromNow()}</Text>
+                    </View>
+                </View>
+                <View style={{ paddingTop: 5 }}>
+                    <Text style={styles.message}>{item.commentcontent}</Text>
+                    {renderEdited()}
                 </View>
                 <View>
-                    <Text style={styles.nameText}>{item.creator.label}</Text>
-                    <Text style={styles.timeText}>{moment(moment.tz(item.createdtime, crmTz).format()).fromNow()}</Text>
+                    {renderCommentButtons()}
                 </View>
             </View>
-            <View style={{ paddingTop: 5 }}>
-                <Text style={styles.message}>{item.commentcontent}</Text>
-                {renderEdited()}
-            </View>
-            <View>
-                {renderCommentButtons()}
-            </View>
-        </View>
+        );
     }
 
-    return <View
-        pointerEvents={isBeingDeleted ? 'none' : null}
-        style={{ marginBottom: 10 }}
-    >
-        {renderCommentContent()}
-        <ChildrenList
-            parentComment={item}
-            isChildRendered={isChildRendered}
-        />
-        {renderLoading()}
-    </View >
+    return (
+        <View
+            pointerEvents={isBeingDeleted ? 'none' : null}
+            style={{ marginBottom: 10 }}
+        >
+            {renderCommentContent()}
+            <ChildrenList
+                parentComment={item}
+                isChildRendered={isChildRendered}
+            />
+            {renderLoading()}
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({

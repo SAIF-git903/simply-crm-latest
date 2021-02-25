@@ -29,7 +29,7 @@ class Lister extends Component {
             selectedIndex: -1,
             statusText: '',
             statusTextColor: '#000000',
-            navigation: this.props.navigation
+            // navigation: this.props.navigation
         };
     }
 
@@ -38,16 +38,24 @@ class Lister extends Component {
     }
 
     UNSAFE_componentWillReceiveProps(newprops) {
-        this.setState({ loading: true, searching: false, searchLabel: null });
-        this.props = newprops;
-        if (this.props.saved !== 'not_saved') {
-            this.getRecords();
-        }
+        this.setState({
+            loading: true,
+            searching: false,
+            searchLabel: null
+        },() => {
+            this.props = newprops;
+            if (this.props.saved !== 'not_saved') {
+                this.getRecords();
+            }
+        });
     }
 
     onRecordSelect(id, index) {
-        this.setState({ selectedIndex: index });
-        this.props.dispatch(viewRecordAction(id, this));
+        this.setState({
+            selectedIndex: index
+        },() => {
+            this.props.dispatch(viewRecordAction(id, this));
+        });
     }
 
     onEndReached() {
@@ -81,7 +89,6 @@ class Lister extends Component {
             statusText: 'Fetching Record',
             statusTextColor: '#000000'
         }, () => {
-
             this.props.dispatch(fetchRecord(this, this.props.moduleName));
             if (this.props.saved === 'saved') {
                 this.refreshData();
@@ -100,7 +107,7 @@ class Lister extends Component {
             pageToTake: 1,
             selectedIndex: -1,
             statusText: 'Refreshing',
-            Color: '#000000'
+            statusTextColor: '#000000'
         }, () => {
             this.props.dispatch(refreshRecord(this, this.props.moduleName));
         });
@@ -117,18 +124,51 @@ class Lister extends Component {
             pageToTake: 1,
             selectedIndex: -1,
             statusText: 'Searching .....',
-            Color: '#000000'
+            statusTextColor: '#000000'
         }, () => {
             this.props.dispatch(fetchRecord(this, this.props.moduleName));
         });
     }
 
+    doRender() {
+        let view;
+        if (this.state.loading) {
+            view = (
+                <View style={{ width: '100%', height: 50, alignItems: 'center', marginTop: 20 }}>
+                    <ActivityIndicator color={'#000000'} />
+                </View>
+            );
+        } else {
+            view = (
+                <View style={{ flex: 1 }}>
+                    <View style={{
+                        padding: 15,
+                        paddingBottom: 5,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        paddingHorizontal: 40
+                    }}>
+                        <SearchBox
+                            searchText={this.state.searchText}
+                            disabled={this.state.searching}
+                            moduleName={this.props.moduleName}
+                            onChangeText={(searchText) => this.setState({ searchText: searchText })}
+                            doSearch={(searchText) => this.doSearch(searchText)}
+                        />
+                    </View>
+                    <View style={{ flex: 1 }}>
+                        {this.renderSearching()}
+                    </View>
+                </View>
+            );
+        }
+        return view;
+    }
+
     renderFooter() {
         if (this.state.nextPage) {
             return (
-                <View
-                    style={{ width: '100%', justifyContent: 'space-around', alignItems: 'center', height: 50, flexDirection: 'row' }}
-                >
+                <View style={{ width: '100%', justifyContent: 'space-around', alignItems: 'center', height: 50, flexDirection: 'row' }}>
                     <Text>Getting next page</Text>
                     <ActivityIndicator />
                 </View>
@@ -136,87 +176,52 @@ class Lister extends Component {
         }
     }
 
-    renderLoading() {
-        return (
-            <View style={{ width: '100%', height: 50, alignItems: 'center', marginTop: 20 }}>
-                <ActivityIndicator color={'#000000'} />
-            </View>
-        );
-    }
-
     renderSearching() {
-        return (
-            <View style={{ width: '100%', height: 50, alignItems: 'center', marginTop: 20 }}>
-                <Text style={[fontStyles.fieldLabel, { paddingBottom: 10, fontSize: 14 }]}>Searching...</Text>
-                <ActivityIndicator color={'#000000'} />
-            </View>
-        );
+        let view;
+        if (this.state.searching) {
+            view = (
+                <View style={{ width: '100%', height: 50, alignItems: 'center', marginTop: 20 }}>
+                    <Text style={[fontStyles.fieldLabel, { paddingBottom: 10, fontSize: 14 }]}>Searching...</Text>
+                    <ActivityIndicator color={'#000000'} />
+                </View>
+            );
+        } else {
+            view = (
+                <View style={{ flex: 1 }}>
+                    {this.renderSearchLabel()}
+                    {recordListRendererHelper(this)}
+                </View>
+            );
+        }
+        return view;
     }
 
-    renderRecordList() {
-        return (
-            <View style={{
-                flex: 1
-            }}>
-                <View style={{
-                    padding: 15,
-                    paddingBottom: 5,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    paddingHorizontal: 40
-                }}>
-                    <SearchBox
-                        searchText={this.state.searchText}
-                        disabled={this.state.searching}
-                        moduleName={this.props.moduleName}
-                        onChangeText={(searchText) => this.setState({ searchText: searchText })}
-                        doSearch={(searchText) => this.doSearch(searchText)}
-                    />
+    renderSearchLabel() {
+        let view;
+        if (this.state.searchLabel) {
+            view = (
+                <View style={{ paddingTop: 10, alignItems: 'center' }}>
+                    <Text style={fontStyles.fieldLabel}>
+                        {this.state.searchLabel}
+                    </Text>
+                    <Text
+                        onPress={() => this.getRecords()}
+                        style={[fontStyles.fieldLabel, { fontSize: 14, paddingTop: 5, color: '#007aff' }]}
+                    >
+                        Go Back
+                    </Text>
                 </View>
-                <View style={{
-                    flex: 1
-                }}>
-                    {
-                        this.state.searching
-                            ?
-                            this.renderSearching()
-                            :
-                            <View style={{ flex: 1 }}>
-                                {
-                                    this.state.searchLabel
-                                        ?
-                                        <View style={{ paddingTop: 10, alignItems: 'center' }}>
-                                            <Text style={fontStyles.fieldLabel}>
-                                                {this.state.searchLabel}
-                                            </Text>
-                                            <Text
-                                                onPress={() => {
-                                                    this.getRecords();
-                                                }}
-                                                style={[fontStyles.fieldLabel, { fontSize: 14, paddingTop: 5, color: '#007aff' }]}
-                                            >
-                                                Go Back
-                                            </Text>
-                                        </View>
-                                        :
-                                        null
-                                }
-                                {recordListRendererHelper(this)}
-                            </View>
-                    }
-                </View>
-            </View>
-        );
+            );
+        } else {
+            view = null;
+        }
+        return view;
     }
 
     render() {
         return (
             <View style={commonStyles.recordListerBackground} >
-                {
-                    (this.state.loading) ?
-                        this.renderLoading() :
-                        this.renderRecordList()
-                }
+                {this.doRender()}
             </View>
         );
     }
@@ -230,4 +235,3 @@ const mapStateToProps = ({ event, recordViewer, drawer }) => {
 };
 
 export default connect(mapStateToProps, null, null, { forwardRef: true })(Lister);
-

@@ -1,9 +1,10 @@
 import {
-    fetchComments,
-    deleteRecord,
-    saveComment,
-    describeModule
+    API_fetchComments,
+    API_deleteRecord,
+    API_saveRecord,
+    API_describe
 } from '../helper/api';
+import store from '../store';
 
 const GET_ENABLED_MODULES_FULFILLED = 'comments/GET_ENABLED_MODULES_FULFILLED';
 
@@ -161,7 +162,7 @@ export const getEnabledModules = () => async (dispatch) => {
     }
 
     try {
-        const describeResponse = await describeModule('ModComments');
+        const describeResponse = await API_describe('ModComments');
         if (!describeResponse.success) throw Error(`Failed to fetch enabled modules for ModComments`);
 
         let modules = null;
@@ -184,13 +185,13 @@ export const getComments = (recordId, keepState) => async (dispatch) => {
         return ({
             type: FETCH_COMMENTS_FULFILLED,
             payload
-        })
+        });
     };
 
     const fetchCommentsRejected = () => {
         return ({
             type: FETCH_COMMENTS_REJECTED
-        })
+        });
     };
 
     dispatch({
@@ -199,7 +200,7 @@ export const getComments = (recordId, keepState) => async (dispatch) => {
     });
 
     try {
-        const commentsResponse = await fetchComments(recordId);
+        const commentsResponse = await API_fetchComments(recordId);
         if (!commentsResponse.success) throw Error(`Failed to fetch comments for ${recordId}`);
 
         const new_comments = changeCommentStructure(commentsResponse.result.records);
@@ -233,14 +234,14 @@ export const deleteComment = (commentId) => async (dispatch) => {
         return ({
             type: DELETE_COMMENT_FULFILLED,
             payload: commentId
-        })
+        });
     }
 
     const deleteCommentRejected = () => {
         return ({
             type: DELETE_COMMENT_REJECTED,
             payload: commentId
-        })
+        });
     }
 
     dispatch({
@@ -249,7 +250,7 @@ export const deleteComment = (commentId) => async (dispatch) => {
     });
 
     try {
-        const deleteCommentResponse = await deleteRecord('ModComments', commentId);
+        const deleteCommentResponse = await API_deleteRecord('ModComments', commentId);
         if (!deleteCommentResponse.success) throw Error(`Failed to delete comment: ${recordId}`);
 
         dispatch(deleteCommentFulfilled());
@@ -263,26 +264,37 @@ export const addComment = (relatedTo, parentCommentId, recordId, content) => asy
     const addCommentFulfilled = () => {
         return ({
             type: ADD_COMMENT_FULFILLED,
-            payload: recordId ? recordId : undefined
-        })
+            payload: (recordId) ? recordId : undefined
+        });
     }
 
     const addCommentRejected = () => {
         return ({
             type: ADD_COMMENT_REJECTED,
-            payload: recordId ? recordId : undefined
-        })
+            payload: (recordId) ? recordId : undefined
+        });
     }
 
     dispatch({
         type: ADD_COMMENT,
-        payload: recordId ? recordId : undefined
+        payload: (recordId) ? recordId : undefined
     });
 
     try {
-        const saveCommentResponse = await saveComment(relatedTo, content, parentCommentId, recordId);
+        const { auth: { loginDetails: { userId } } } = store.getState();
+        const saveCommentResponse = await API_saveRecord(
+            'ModComments',
+            {
+                "related_to": relatedTo,
+                "commentcontent": content,
+                "is_private": 0,
+                "assigned_user_id": '19x'+userId,
+                "parent_comments": (parentCommentId) ? parentCommentId : undefined
+            },
+            recordId
+        );
         if (!saveCommentResponse.success) throw Error(`Failed to submit comment.`);
-        await dispatch(getComments(relatedTo, true))
+        await dispatch(getComments(relatedTo, true));
         dispatch(addCommentFulfilled());
     } catch (e) {
         console.log(e);

@@ -11,25 +11,27 @@ import Icon from 'react-native-vector-icons/FontAwesome5Pro';
 import { fontStyles } from '../../styles/common';
 
 const IconButton = ({ icon, title, style, onPress }) => {
-    return <TouchableOpacity
-        onPress={onPress}
-        style={[
-            style,
-            {
-                justifyContent: 'center',
-                alignItems: 'center',
-                minWidth: 60
-            }
-        ]}>
-        <Icon
-            name={icon}
-            size={36}
-            color={'#797f8b'}
-        />
-        <Text style={[fontStyles.iconButtonLabel, { paddingTop: 10 }]}>
-            {title}
-        </Text>
-    </TouchableOpacity >
+    return (
+        <TouchableOpacity
+            onPress={onPress}
+            style={[
+                style,
+                {
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    minWidth: 60
+                }
+            ]}>
+            <Icon
+                name={icon}
+                size={36}
+                color={'#797f8b'}
+            />
+            <Text style={[fontStyles.iconButtonLabel, { paddingTop: 10 }]}>
+                {title}
+            </Text>
+        </TouchableOpacity>
+    );
 };
 
 class UpdateWidget extends Component {
@@ -47,9 +49,7 @@ class UpdateWidget extends Component {
                         justifyContent: 'center'
                     }}
                 >
-                    <View
-                        style={styles.iconButtonContainer}
-                    >
+                    <View style={styles.iconButtonContainer}>
                         {/* buttons */}
                         <IconButton
                             icon={'building'}
@@ -69,10 +69,7 @@ class UpdateWidget extends Component {
                             }}
                         />
                     </View>
-
-                    <View
-                        style={styles.iconButtonContainer}
-                    >
+                    <View style={styles.iconButtonContainer}>
                         <IconButton
                             icon={'user'}
                             title={'Contacts'}
@@ -91,10 +88,7 @@ class UpdateWidget extends Component {
                             }}
                         />
                     </View>
-
-                    <View
-                        style={styles.iconButtonContainer}
-                    >
+                    <View style={styles.iconButtonContainer}>
                         <IconButton
                             icon={'calendar-alt'}
                             title={'Calendar'}
@@ -124,16 +118,12 @@ class UpdateWidget extends Component {
                         modules={this.props.loginDetails.modules}
                     />
                 </View>
-
                 <View style={{ flex: 1, padding: 10 }}>
-                    <Viewer navigation={this.props.navigation} />
+                    <Viewer navigation={navigation} />
                 </View>
-
             </View>
-
         );
     }
-
 }
 const styles = {
     container: {

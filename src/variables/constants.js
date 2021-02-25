@@ -47,7 +47,7 @@ export const CURRENCY = 'Currency';
 export const EMAILS = 'Emails';
 export const REPORTS = 'Reports';
 export const DOCUMENTFOLDERS = 'DocumentFolders';
-
+export const USERS = 'Users';
 
 export const HOME = 'Dashboard';
 export const PROFILE = 'profile';

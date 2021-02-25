@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
-
-
 import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import { commonStyles, fontStyles } from '../../styles/common';
 import { viewSearchAction, updateSearchModule } from '../../actions';
-import {
-    HEADER_TEXT_COLOR
-} from '../../variables/themeColors';
-
+import {HEADER_TEXT_COLOR} from '../../variables/themeColors';
 import Icon from 'react-native-vector-icons/FontAwesome5Pro';
 
 class Header extends Component {
@@ -55,9 +50,7 @@ class Header extends Component {
                     forceInset={{ top: 'always' }}
                 >
                     <View style={commonStyles.headerContentStyle}>
-                        {
-                            this.renderMenuButton()
-                        }
+                        {this.renderMenuButton()}
                         <View style={{ flex: 1 }}>
                             <Text style={fontStyles.navbarTitle}>{this.props.moduleLable}</Text>
                         </View>
@@ -85,15 +78,6 @@ class Header extends Component {
         );
     }
 }
-
-const styles = StyleSheet.create({
-    headerTextStyle: {
-        color: HEADER_TEXT_COLOR,
-        flex: 1,
-        fontSize: 15,
-        textAlign: 'center'
-    }
-});
 
 const mapStateToProp = ({ event, mgr }) => {
     const { isPortrait, width, height } = event;

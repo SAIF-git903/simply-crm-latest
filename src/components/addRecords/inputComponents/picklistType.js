@@ -1,89 +1,54 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, Picker, } from 'react-native';
-import { fontStyles } from '../../../styles/common';
+import {View} from 'react-native';
+import { Picker } from '@react-native-picker/picker';
+import {commonStyles} from '../../../styles/common';
 
 class PickListType extends Component {
     constructor(props) {
         super(props);
+        let val = (this.props.obj.lable === 'Company country') ? '' : this.props.obj.type.defaultValue;
+        val = (this.props.obj.currentValue !== undefined) ? this.props.obj.currentValue : val;
+// console.log('--component data--');
+// console.log(this.props.obj.currentValue);
+// console.log(val);
         this.state = {
-            saveValue: (this.props.obj.lable === 'Company country') ? '' : this.props.obj.type.defaultValue,
+            saveValue: val,
             fieldName: this.props.obj.name
         };
     }
+
     render() {
-        const mandatory = this.props.obj.mandatory;
-        let options = [];
-        options = this.props.obj.type.picklistValues;
+        let options = this.props.obj.type.picklistValues;
 
-        const amp = '&amp';
-
-        const validLable = (this.props.obj.lable.indexOf(amp) !== -1) ? this.props.obj.lable.replace('&amp;', '&') : this.props.obj.lable;
-
-        // console.log(validLable);
-        // if (validLable === 'Company country') {
-        //     this.setState({ saveValue: '' });
-        // }
-        // console.log(this.state.saveValue);
         return (
-            <View style={styles.inputHolder}>
-                <View style={{ flex: .5, justifyContent: 'flex-start' }}>
-                    <Text style={[styles.label, fontStyles.fieldLabel]}>{validLable}</Text>
-                    {
-                        (mandatory) ?
-                            <View style={styles.mandatory}>
-                                <Text style={[fontStyles.fieldLabel, { color: 'red', fontSize: 16 }]}>*</Text>
-                            </View>
-                            :
-                            // undefined
-                            <View style={styles.mandatory} />
-                    }
-                </View>
+            <View style={commonStyles.inputHolder}>
+                {this.props.fieldLabelView}
                 <View style={{ flex: 1 }}>
                     <Picker
                         mode='dropdown'
                         selectedValue={this.state.saveValue}
                         onValueChange={(itemValue) => {
-                            if (itemValue !== 0) {
+                            //disable save 'Please Select' value
+                            // if (itemValue !== 0) {
                                 this.setState({ saveValue: itemValue });
-                            }
-                        }
-                        }
+                            // }
+                        }}
                     >
                         <Picker.Item label='Please Select' value={0} />
                         {options.map((item, index) => {
-                            return (<Picker.Item label={item.label} value={item.value} key={index} />);
+                            return (
+                                <Picker.Item
+                                    label={item.label}
+                                    value={item.value}
+                                    key={index}
+                                />
+                            );
                         })}
                     </Picker>
                 </View>
-
             </View>
         );
     }
 }
-
-const styles = StyleSheet.create(
-    {
-        inputHolder: {
-            flex: 1,
-            flexDirection: 'row',
-            marginTop: 10,
-            marginRight: 2
-        },
-        label: {
-            fontSize: 16,
-            padding: 10,
-            paddingLeft: 20
-        },
-        mandatory: {
-            position: 'absolute',
-            marginTop: 10,
-            marginLeft: 5,
-            width: 10,
-            height: 25,
-            justifyContent: 'center',
-            alignItems: 'flex-end',
-        },
-    }
-);
 
 export default PickListType;

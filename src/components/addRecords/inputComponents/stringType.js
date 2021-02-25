@@ -1,21 +1,12 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { View, Text, TextInput, StyleSheet, Alert, TouchableOpacity, Image } from 'react-native';
-import { SinglePickerMaterialDialog } from 'react-native-material-dialog';
-import { DRAWER_SECTION_HEADER_BACKGROUND_COLOR } from '../../../variables/themeColors';
-import store from '../../../store';
-import { copyAddress } from '../../../helper';
-// import { connect } from 'react-redux';
-// import { saveData } from '../../../actions';
-import { fontStyles } from '../../../styles/common';
-
-
+import { View, Text, TextInput } from 'react-native';
+import { fontStyles, commonStyles } from '../../../styles/common';
 
 class StringType extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            saveValue: this.props.obj.default,
+            saveValue: (this.props.obj.currentValue !== undefined) ? this.props.obj.currentValue : this.props.obj.default,
             fieldName: this.props.obj.name,
             error: null,
             showError: false
@@ -23,18 +14,15 @@ class StringType extends Component {
     }
 
     onTextInputChange(text) {
-        const type = this.props.obj.type.name;
         let errorMsg = null;
 
-        switch (type) {
+        switch (this.props.obj.type.name) {
             case 'email':
-                errorMsg = this.validateEmail(text) ? null : 'Invalid e-mail address';
+                errorMsg = (this.validateEmail(text)) ? null : 'Invalid e-mail address';
                 break;
-
             case 'url':
-                errorMsg = this.validateUrl(text) ? null : 'Invalid website address';
+                errorMsg = (this.validateUrl(text)) ? null : 'Invalid website address';
                 break;
-
             default:
                 break;
         }
@@ -42,15 +30,13 @@ class StringType extends Component {
         this.setState({
             ...this.state,
             saveValue: text,
-            error: text.length !== 0
-                ? errorMsg
-                : null,
+            error: (text.length !== 0) ? errorMsg : null,
             showError: false
         });
     }
 
     validateEmail(text) {
-        return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(text)
+        return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(text);
     }
 
     validateUrl(text) {
@@ -58,132 +44,68 @@ class StringType extends Component {
         return regexp.test(text);
     }
 
-    render() {
-        const mandatory = this.props.obj.mandatory;
-        const type = this.props.obj.type.name;
-        const amp = '&amp;';
-        const validLable = (this.props.obj.lable.indexOf(amp) !== -1) ? this.props.obj.lable.replace('&amp;', '&') : this.props.obj.lable;
-
+    doRender() {
+        let keyboardType;
+        if (this.props.obj.type.name === 'email') {
+            keyboardType = 'email-address';
+        } else {
+            keyboardType = 'default';
+        }
         return (
-            <View style={styles.inputHolder}>
-                <View style={{ flex: .5, justifyContent: 'flex-start' }}>
-                    <Text style={[styles.label, fontStyles.fieldLabel]}>{validLable}</Text>
+            <View>
+                {this.getErrorView()}
+                <TextInput
+                    autoGrow={true}
+                    placeholder={this.props.validLabel}
+                    autoCorrect={false}
+                    autoCapitalize='none'
+                    style={[
+                        commonStyles.label,
+                        fontStyles.fieldValue,
+                        {
+                            paddingLeft: 0,
+                            color: (this.state.showError) ? 'red' : fontStyles.fieldValue.color,
+                        }
+                    ]}
+                    keyboardType={keyboardType}
+                    value={this.state.saveValue}
+                    onChangeText={this.onTextInputChange.bind(this)}
+                    placeholderTextColor={'#C5C5C5'}
+                />
+            </View>
+        );
+    }
+
+    getErrorView() {
+        let view = null;
+        if (this.state.showError) {
+            view = (
+                <Text style={[
+                    fontStyles.fieldValue,
                     {
-                        (mandatory) ?
-                            <View style={styles.mandatory}>
-                                <Text style={[fontStyles.fieldLabel, { color: 'red', fontSize: 16 }]}>*</Text>
-                            </View>
-                            :
-                            // undefined
-                            <View style={styles.mandatory} />
+                        fontSize: 12,
+                        position: 'absolute',
+                        top: -4,
+                        color: 'red'
                     }
-                </View>
+                ]}>
+                    {this.state.error}
+                </Text>
+            );
+        }
+        return view;
+    }
 
-
+    render() {
+        return (
+            <View style={commonStyles.inputHolder}>
+                {this.props.fieldLabelView}
                 <View style={{ flex: 1 }}>
-                    {
-
-                        (type === 'email') ?
-                            <View>
-                                {
-                                    this.state.showError
-                                        ? <Text style={[
-                                            fontStyles.fieldValue,
-                                            {
-                                                fontSize: 12,
-                                                position: 'absolute',
-                                                top: -4,
-                                                color: 'red'
-                                            }
-                                        ]}>
-                                            {this.state.error}
-                                        </Text>
-                                        : null
-                                }
-                                <TextInput
-                                    autoGrow={true}
-                                    placeholder={validLable}
-                                    autoCorrect={false}
-                                    autoCapitalize='none'
-                                    style={[
-                                        styles.label,
-                                        fontStyles.fieldValue,
-                                        {
-                                            paddingLeft: 0,
-                                            color: this.state.showError ? 'red' : fontStyles.fieldValue.color,
-                                        }]}
-                                    keyboardType='email-address'
-                                    value={this.state.saveValue}
-                                    onChangeText={this.onTextInputChange.bind(this)}
-                                    placeholderTextColor={'#C5C5C5'}
-                                />
-                            </View>
-                            :
-                            <View>
-                                {
-                                    this.state.showError
-                                        ? <Text style={[
-                                            fontStyles.fieldValue,
-                                            {
-                                                fontSize: 12,
-                                                position: 'absolute',
-                                                top: -4,
-                                                color: 'red'
-                                            }
-                                        ]}>
-                                            {this.state.error}
-                                        </Text>
-                                        : null
-                                }
-                                <TextInput
-                                    autoGrow={true}
-                                    placeholder={validLable}
-                                    autoCorrect={false}
-                                    autoCapitalize='none'
-                                    style={[
-                                        styles.label,
-                                        fontStyles.fieldValue,
-                                        {
-                                            paddingLeft: 0,
-                                            color: this.state.showError ? 'red' : fontStyles.fieldValue.color,
-                                        }]}
-                                    value={this.state.saveValue}
-                                    onChangeText={this.onTextInputChange.bind(this)}
-                                    placeholderTextColor={'#C5C5C5'}
-                                />
-                            </View>
-                    }
+                    {this.doRender()}
                 </View>
-
-
             </View>
         );
     }
 }
-
-const styles = StyleSheet.create(
-    {
-        inputHolder: {
-            flex: 1,
-            flexDirection: 'row',
-            marginTop: 10,
-            marginRight: 2
-        },
-        label: {
-            fontSize: 16,
-            padding: 10,
-            paddingLeft: 20
-        },
-        mandatory: {
-            position: 'absolute',
-            marginTop: 10,
-            marginLeft: 5,
-            width: 10,
-            height: 25,
-            justifyContent: 'center',
-            alignItems: 'flex-end',
-        },
-    }
-);
 
 export default StringType;

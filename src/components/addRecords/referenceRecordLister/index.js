@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import Header from './header';
-import Lister from './lister';
+import ReferenceHeader from './header';
+import ReferenceLister from './lister';
 
 class RecordLister extends Component {
     static navigationOptions = {
@@ -12,15 +12,15 @@ class RecordLister extends Component {
     render() {
         return (
             <View style={styles.backgroundStyle}>
-                <Header
-                    moduleName={this.props.route.params.selectedModule}
-                    moduleLable={this.props.moduleLable}
+                <ReferenceHeader
                     navigation={this.props.navigation}
+                    moduleName={this.props.route.params.selectedModule}
+                    moduleLable={this.props.route.params.moduleLable}
                 />
-                <Lister
+                <ReferenceLister
                     navigation={this.props.navigation}
                     moduleName={this.props.route.params.selectedModule}
-                    moduleLable={this.props.moduleLable}
+                    moduleLable={this.props.route.params.moduleLable}
                     moduleId={this.props.moduleId}
                     uniqueId={this.props.route.params.uniqueId}
                 />

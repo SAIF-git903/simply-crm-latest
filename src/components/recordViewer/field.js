@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {View, Text, Linking, Platform} from 'react-native';
 import { fontStyles } from '../../styles/common';
-import { trackCall } from '../../helper/api';
+import { API_trackCall } from '../../helper/api';
 
 export default class Field extends Component {
     onPressAction() {
@@ -9,7 +9,7 @@ export default class Field extends Component {
         switch (uiType) {
             case '11':
                 Linking.openURL(`tel:${value}`).then(() => {
-                    trackCall(this.props.recordId);
+                    API_trackCall(this.props.recordId);
                 });
                 break;
 
@@ -20,7 +20,9 @@ export default class Field extends Component {
             case '17':
                 let website = value;
                 const isHttp = website.includes('http://');
-                if (isHttp) website = website.replace('http://', 'https://');
+                if (isHttp) {
+                    website = website.replace('http://', 'https://');
+                }
                 const isHttps = website.includes('https://');
                 Linking.openURL(`${isHttps ? '' : 'https://'}${website}`);
                 break;
@@ -63,8 +65,10 @@ export default class Field extends Component {
                 <View style={{ flex: 1.4, paddingLeft: 10, alignItems: 'flex-start' }}>
                     {
                         (this.props.modal)
-                            ? this.props.modal
-                            : <Text
+                            ?
+                            this.props.modal
+                            :
+                            <Text
                                 onPress={() => this.onPressAction()}
                                 style={this.props.isLocation ? fontStyles.fieldValueLocation : fontStyles.fieldValue}
                                 numberOfLines={2}

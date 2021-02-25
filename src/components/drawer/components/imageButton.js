@@ -9,93 +9,31 @@ import {
 } from '../../../variables/themeColors';
 import { HOME, CALENDAR } from '../../../variables/constants';
 import { fontStyles } from '../../../styles/common';
-
 import Icon from 'react-native-vector-icons/FontAwesome5Pro';
 
-// class ImageButton extends Component {
-
-//     constructor(props) {
-//         super(props);
-//         // this.state = { iconName: faTachometerAlt };
-//     }
-
-//     UNSAFE_componentWillMount() {
-//         this.assignIcons();
-//     }
-
-//     onButtonPress() {
-//         console.log('TODO: replace navigation with hook')
-//         if (this.props.type === HOME) {
-//             this.props.dispatch(drawerButtonPress(this.props.type));
-//             this.props.navigation.jumpTo('Dashboard');
-//         } else {
-//             this.props.dispatch(drawerButtonPress(this.props.module.name,
-//                 this.props.module.label, this.props.module.id));
-//             this.props.navigation.jumpTo('Records', {
-//                 moduleName: this.props.module.name,
-//                 moduleLable: this.props.module.label,
-//                 moduleId: this.props.module.id
-//             });
-//         }
-//     }
-
-//     assignIcons() {
-//         switch (this.props.type) {
-//             case ACCOUNTS:
-//                 // this.setState({ iconName: faBuilding });
-//                 break;
-
-//             case CONTACTS:
-//                 // this.setState({ iconName: faUser });
-//                 break;
-
-//             default:
-
-
-//         }
-//     }
-
-
-//     render() {
-//         // console.log(this.props.selectedButton, this.props.type);
-//         return (
-
-
-//         );
-//     }
-// }
-
-// const mapStateToProps = ({ drawer }) => {
-//     const { selectedButton } = drawer;
-//     return { selectedButton };
-// };
-
-// export default connect(mapStateToProps)(ImageButton);
-
-export default function ImageButton({
-    icon,
-    type,
-    label,
-    module
-}) {
-
+export default function ImageButton({icon, type, label, module}) {
     const { selectedButton } = useSelector(state => state.drawer);
     const dispatch = useDispatch();
     const navigation = useNavigation();
 
     function onButtonPress() {
-
         switch (type) {
             case HOME:
                 dispatch(drawerButtonPress(type));
                 navigation.navigate('Dashboard');
                 break;
-
             case CALENDAR:
-                dispatch(drawerButtonPress(type));
-                navigation.navigate('Calendar');
+                dispatch(drawerButtonPress(
+                    module.name,
+                    module.label,
+                    module.id
+                ));
+                navigation.navigate('Calendar', {
+                    moduleName: module.name,
+                    moduleLable: module.label,
+                    moduleId: module.id
+                });
                 break;
-
             default:
                 dispatch(drawerButtonPress(
                     module.name,
@@ -121,12 +59,9 @@ export default function ImageButton({
                     flexDirection: 'row',
                     flex: 1,
                     alignItems: 'center',
-
                 }}
             >
-                <View
-                    style={{ paddingLeft: 15, width: 46 }}
-                >
+                <View style={{ paddingLeft: 15, width: 46 }}>
                     <Icon
                         name={icon}
                         size={20}

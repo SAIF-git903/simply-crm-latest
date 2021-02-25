@@ -6,9 +6,7 @@ import Header from '../components/common/Header';
 import { getEnabledModules } from '../ducks/comments';
 import { useDispatch } from 'react-redux';
 
-
 export default function Dashboard() {
-
     const navigation = useNavigation();
     const dispatch = useDispatch();
 
