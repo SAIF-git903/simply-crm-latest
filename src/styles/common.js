@@ -99,6 +99,12 @@ export const commonStyles = StyleSheet.create({
         borderWidth: 0,
         color: '#121212',
     },
+    no_tittle: {
+        marginLeft: 10,
+        paddingRight: 10,
+        fontStyle: 'italic',
+        color: 'gray'
+    },
 });
 
 export const fontStyles = StyleSheet.create({

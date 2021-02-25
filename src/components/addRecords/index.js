@@ -30,8 +30,11 @@ class AddRecords extends Component {
     }
 
     callViewer(headerInstance) {
-        headerInstance.setState({ loading: true });
-        saveRecordHelper(this.viewer, headerInstance, this.props.dispatch, this.state.lister);
+        headerInstance.setState({
+            loading: true
+        }, () => {
+            saveRecordHelper(this.viewer, headerInstance, this.props.dispatch, this.state.lister);
+        });
     }
 
     showCopyOptions(headerInstance) {
@@ -53,8 +56,7 @@ class AddRecords extends Component {
                     break;
                 case 9:
                 default:
-                    //TODO editRecord dont work for Calendar (Task)
-                    //moduleName = 'Task';
+                    //no need to change, it works fine
                     break;
             }
         }

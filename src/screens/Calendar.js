@@ -333,6 +333,7 @@ export default function Calendar() {
             <Header
                 title={'Calendar'}
                 customRightButton={renderAddRecordButton()}
+                //TODO there is only one 'Add new record' button, and it will create a Event, so there is no way to create new Task record
             />
             <View style={styles.wrapper}>
                 <CalendarProvider
@@ -340,6 +341,8 @@ export default function Calendar() {
                     disabledOpacity={0.6}
                     showTodayButton
                     onDateChanged={(date) => setCurrentDate(new moment(date))}
+                    //TODO set me ?? for prevent width: 100%
+                    // todayButtonStyle={}
                 >
                     {
                         (showCalendar)

@@ -56,7 +56,7 @@ class StringType extends Component {
                 {this.getErrorView()}
                 <TextInput
                     autoGrow={true}
-                    placeholder={this.props.validLable}
+                    placeholder={this.props.validLabel}
                     autoCorrect={false}
                     autoCapitalize='none'
                     style={[

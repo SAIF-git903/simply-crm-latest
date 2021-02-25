@@ -60,7 +60,6 @@ export const getUserName = async (referenceInstance) => {
     try {
         const { auth } = store.getState();
         const loginDetails = auth.loginDetails;
-        //TODO need to check 'listModuleRecords'
         const responseJson = await API_listModuleRecords('Users');
         if (responseJson.success) {
             const records = responseJson.result.records;

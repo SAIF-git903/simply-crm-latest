@@ -34,7 +34,6 @@ export const getRecordStructureHelper = async (currentInstance) => {
                 module: (vtigerSeven) ? currentInstance.props.moduleName : undefined,
             };
             dataResponseJson = await API_fetchRecord(param);
-console.log(dataResponseJson?.result?.record);
             if (!responseJson.success) {
                 throw new Error('Cant get data for record');
             }
@@ -162,8 +161,7 @@ console.log(dataResponseJson?.result?.record);
                         }
 
                         const amp = '&amp;';
-                        const validLable = (fieldObj.lable.indexOf(amp) !== -1) ? fieldObj.lable.replace(amp, '&') : fieldObj.lable;
-                        //TODO Check all types
+                        const validLabel = (fieldObj.lable.indexOf(amp) !== -1) ? fieldObj.lable.replace(amp, '&') : fieldObj.lable;
                         formArray.push(
                             <View
                                 sequence={fieldObj.sequence}
@@ -171,8 +169,8 @@ console.log(dataResponseJson?.result?.record);
                             >
                                 <ComponentName
                                     obj={fieldObj}
-                                    validLable={validLable}
-                                    fieldLabelView={getFieldLabelView(fieldObj.mandatory, validLable)}
+                                    validLabel={validLabel}
+                                    fieldLabelView={getFieldLabelView(fieldObj.mandatory, validLabel)}
                                     navigation={currentInstance.props.navigation}
                                     moduleName={currentInstance.props.moduleName}
                                     formId={i}
@@ -230,7 +228,7 @@ console.log(dataResponseJson?.result?.record);
     }
 };
 
-const getFieldLabelView = (mandatory, validLable) => {
+const getFieldLabelView = (mandatory, validLabel) => {
     let view = null;
     if (mandatory) {
         view = (
@@ -239,7 +237,7 @@ const getFieldLabelView = (mandatory, validLable) => {
     }
     return (
         <View style={{ flex: .5, justifyContent: 'flex-start' }}>
-            <Text style={[commonStyles.label, fontStyles.fieldLabel]}>{validLable}</Text>
+            <Text style={[commonStyles.label, fontStyles.fieldLabel]}>{validLabel}</Text>
             <View style={commonStyles.mandatory}>
                 {view}
             </View>
@@ -247,10 +245,10 @@ const getFieldLabelView = (mandatory, validLable) => {
     );
 }
 
-export const saveRecordHelper = (currentInstance, headerInstance, dispatch, listerInstance) => {
+export const saveRecordHelper = async (currentInstance, headerInstance, dispatch, listerInstance) => {
     const formInstance = currentInstance.state.inputInstance;
     const jsonObj = {};
-    const lineitemsObj = [];
+    const lineItemsObj = [];
     let productObj = null;
 
     for (let i = 0; i < formInstance.length; i++) {
@@ -277,14 +275,14 @@ export const saveRecordHelper = (currentInstance, headerInstance, dispatch, list
     }
 
     if (productObj) {
-        lineitemsObj.push(productObj);
+        lineItemsObj.push(productObj);
     }
 
     if (currentInstance.props.moduleName === 'Invoice' || currentInstance.props.moduleName === 'Quotes') {
-        jsonObj['LineItems'] = lineitemsObj;
+        jsonObj['LineItems'] = lineItemsObj;
     }
 
-    doSaveRecord(currentInstance, headerInstance, jsonObj, dispatch, listerInstance);
+    await doSaveRecord(currentInstance, headerInstance, jsonObj, dispatch, listerInstance);
 };
 
 const doSaveRecord = async (currentInstance, headerInstance, jsonObj, dispatch, listerInstance) => {
@@ -295,7 +293,16 @@ const doSaveRecord = async (currentInstance, headerInstance, jsonObj, dispatch, 
                 throw Error(`${field.state.error} at ${field.props.obj.lable}`);
             }
         }
-        //TODO check with recordId = '' (Contact good)
+        //TODO checked edit and add new records for all modules:
+        // checked only Contact, Account, Calendar, Invoices, SalesOrder, Opportunity, Product, Quote, Document modules
+        // cant change record image for Contact, Product. Hide it in mobileapp ??
+        // cant check Invoice record edit - currency, add new Invoice - good
+        // cant relink Product on edit SalesOrder record, add new SalesOrder - have error 'Mandatory Fields Missing..' from backend
+        // eco_layout field empty for Invoice, SalesOrder and Quotes ??
+        // cant edit Folder Name for Document record, add new Document - good
+        // also
+        // Event and Task records have trouble on saving 'Related To' block (in mobileapp it's string, but in mastercopy - Contact module records picklist)
+        // this also affects to String field 'contact_id', which will be object '{"label": "", "value": ""}' in saveValue instead of string
         const responseJson = await API_saveRecord(currentInstance.props.moduleName, JSON.stringify(jsonObj), currentInstance.state.recordId);
         if (responseJson.success) {
             headerInstance.setState({ loading: false });

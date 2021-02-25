@@ -24,7 +24,7 @@ class NumericType extends Component {
                     <TextInput
                         autoGrow={true}
                         placeholderTextColor={'#C5C5C5'}
-                        placeholder={this.props.validLable}
+                        placeholder={this.props.validLabel}
                         autoCorrect={false}
                         autoCapitalize='none'
                         style={[commonStyles.label, fontStyles.fieldValue, { paddingLeft: 0 }]}

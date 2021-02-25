@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, ActivityIndicator, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { RECORD_COLOR, RECORD_SELECTED_COLOR } from '../../../variables/themeColors';
-import { fontStyles } from '../../../styles/common';
+import {commonStyles, fontStyles} from '../../../styles/common';
 
 class ReferenceRecordItem extends Component {
     constructor(props) {
@@ -48,10 +48,16 @@ class ReferenceRecordItem extends Component {
     }
 
     renderLine() {
+        let recordName = this.props.recordName;
+        let no_tittle_style = {};
+        if (recordName === '') {
+            recordName = '*empty title*';
+            no_tittle_style = commonStyles.no_tittle;
+        }
         return (
             <TouchableOpacity
                 onPress={() => {
-                    this.props.onRecordSelect(this.props.item.id, this.props.recordName, this.props.index);
+                    this.props.onRecordSelect(this.props.id, recordName, this.props.index);
                 }}
             >
                 <View
@@ -63,15 +69,13 @@ class ReferenceRecordItem extends Component {
                     <Text
                         key={1}
                         numberOfLines={1}
-                        style={fontStyles.dashboardRecordLabelBig}
+                        style={[fontStyles.dashboardRecordLabelBig, no_tittle_style]}
                         //calendar, comment, faq, pbx, priceBooks, projectMilestone, projectTask, purchaseOrder, quotes, serviceContracts, SMSnotifier, tickets style
                         // style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10 }}
                         //document style
                         //style={{ fontWeight: 'bold', marginLeft: 10, paddingRight: 10, color: 'black' }}
-                        //TODO document, invoice no title style
-                        //style={{ marginLeft: 10, paddingRight: 10, fontStyle: 'italic', color: 'gray' }}
                     >
-                        {(this.props.recordName) ? this.props.recordName : '*no title*'}
+                        {recordName}
                     </Text>
                     {(this.props.labels) ? this.renderLabels(this.props.labels) : null}
                 </View>

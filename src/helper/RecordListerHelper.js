@@ -9,7 +9,7 @@ import {
     INVOICE, PRICEBOOKS, CALENDAR, LEADS, ACCOUNTS, CONTACTS, OPPORTUNITIES,
     PRODUCTS, DOCUMENTS, TICKETS, PBXMANAGER, SERVICECONTRACTS, SERVICES,
     ASSETS, SMS_NOTIFIER, PROJECT_MILESTONE, PROJECT_TASK, MODULE_PROJECT,
-    COMMENTS, CURRENCY, DOCUMENTFOLDERS
+    COMMENTS, CURRENCY, DOCUMENTFOLDERS, USERS
 } from '../variables/constants';
 import { addDatabaseKey } from '.';
 import { fontStyles } from '../styles/common';
@@ -172,6 +172,7 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
             );
             //TODO search will not work for vt6
         } else {
+            //TODO 'listModuleRecords' have 500 http error code on getting Currency list (for Invoice and SalesOrder)
             responseJson = await API_listModuleRecords(
                 listerInstance.props.moduleName,
                 listerInstance.state.pageToTake,
@@ -259,7 +260,8 @@ function getListerModifiedRecord(listerInstance, vtigerSeven, responseJson, reco
                 break;
             case LEADS:
             case CONTACTS:
-                modifiedRecord.contactsLable = (modifiedRecord.firstname)
+            case USERS:
+                modifiedRecord.label = (modifiedRecord.firstname)
                     ? `${modifiedRecord.firstname} ${modifiedRecord.lastname}`
                     : modifiedRecord.lastname;
                 delete modifiedRecord.firstname;
@@ -563,16 +565,16 @@ const getFieldsForModule = (moduleName) => {
             };
             break;
         }
-        //TODO add USERS ?? and in view bold 'first_name + last_name' with normal text 'user_name'
-
-        // case 'Users': {
-        //     fields = {
-        //         first_name: 'first_name',
-        //         last_name: 'last_name',
-        //         user_name: user_name,
-        //     };
-        //     break;
-        // }
+        case USERS: {
+            fields = {
+                firstname: 'first_name',
+                lastname: 'last_name',
+            };
+            specialFields = {
+                user_name: 'user_name',
+            }
+            break;
+        }
         default: {
             break;
         }
@@ -590,7 +592,8 @@ const getAllowedModules = () => {
         TICKETS,            PBXMANAGER,     SERVICECONTRACTS,
         SERVICES,           ASSETS,         SMS_NOTIFIER,
         PROJECT_MILESTONE,  PROJECT_TASK,   MODULE_PROJECT,
-        COMMENTS,           CURRENCY,       DOCUMENTFOLDERS
+        COMMENTS,           CURRENCY,       DOCUMENTFOLDERS,
+        USERS
     ];
 }
 
@@ -682,7 +685,7 @@ const getItem = (listerInstance, item, index, isDashboard, isRefRecord) => {
             break;
         }
         case CONTACTS: {
-            recordName = item.contactsLable;
+            recordName = item.label;
             labels = [
                 item.email
             ];
@@ -743,7 +746,7 @@ const getItem = (listerInstance, item, index, isDashboard, isRefRecord) => {
             break;
         }
         case LEADS: {
-            recordName = item.contactsLable;
+            recordName = item.label;
             labels = [
                 item.phone,
                 item.email
@@ -828,13 +831,17 @@ const getItem = (listerInstance, item, index, isDashboard, isRefRecord) => {
             break;
         }
         case DOCUMENTFOLDERS: {
-            //TODO check me in RecordLister and RefRecordLister
             recordName = item.foldername;
             break;
         }
+        case USERS: {
+            recordName = item.label;
+            labels = [
+                item.user_name
+            ];
+            break;
+        }
         default: {
-console.log('default case module');
-console.log(item);
             recordName = item.lable;
             break;
         }
@@ -851,7 +858,7 @@ console.log(item);
             index={index}
             selectedIndex={listerInstance.state.selectedIndex}
             listerInstance={listerInstance}
-            item={item}
+            id={item.id}
             recordName={recordName}
             labels={labels}
             isDashboard={isDashboard}

@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5Pro';
 import SwipeOut from 'react-native-swipeout';
 import { deleteRecord } from '../../actions';
 import { RECORD_COLOR, RECORD_SELECTED_COLOR } from '../../variables/themeColors';
-import { fontStyles } from '../../styles/common';
+import {commonStyles, fontStyles} from '../../styles/common';
 
 class RecordItem extends Component {
     constructor(props) {
@@ -65,7 +65,7 @@ class RecordItem extends Component {
     onEdit() {
         //TODO Non-serializable values were found in the navigation state. Use navigation.setOption() instead
         this.props.navigation.navigate('Edit Record', {
-            id: this.props.item.id,
+            id: this.props.id,
             lister: this.props.listerInstance,
             isDashboard: this.props.isDashboard
         });
@@ -80,7 +80,7 @@ class RecordItem extends Component {
                         this.props.listerInstance.setState({
                             isFlatListRefreshing: true
                         }, () => {
-                            this.props.dispatch(deleteRecord(this.props.listerInstance, this.props.item.id, this.props.index, () => {
+                            this.props.dispatch(deleteRecord(this.props.listerInstance, this.props.id, this.props.index, () => {
                                 this.props.listerInstance.setState({
                                     isFlatListRefreshing: false
                                 });
@@ -129,7 +129,12 @@ class RecordItem extends Component {
     }
 
     renderLine() {
-        //TODO take id from this.props.item and pass it like this.props.id and delete passing this.props.item
+        let recordName = this.props.recordName;
+        let no_tittle_style = {};
+        if (recordName === '') {
+            recordName = '*empty title*';
+            no_tittle_style = commonStyles.no_tittle;
+        }
         return (
             <View>
                 <SwipeOut
@@ -140,7 +145,7 @@ class RecordItem extends Component {
                 >
                     <TouchableOpacity
                         onPress={() => {
-                            this.props.onRecordSelect(this.props.item.id, this.props.index);
+                            this.props.onRecordSelect(this.props.id, this.props.index);
                         }}
                     >
                         <View
@@ -152,9 +157,9 @@ class RecordItem extends Component {
                             <Text
                                 key={1}
                                 numberOfLines={1}
-                                style={fontStyles.dashboardRecordLabelBig}
+                                style={[fontStyles.dashboardRecordLabelBig, no_tittle_style]}
                             >
-                                {(this.props.recordName) ? this.props.recordName : '*no title*'}
+                                {recordName}
                             </Text>
                             {(this.props.labels) ? this.renderLabels(this.props.labels) : null}
                         </View>

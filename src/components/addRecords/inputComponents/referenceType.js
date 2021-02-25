@@ -12,9 +12,6 @@ class ReferenceType extends Component {
         val = (this.props.obj.currentValue !== undefined) ? this.props.obj.currentValue : val;
         let refVal = (this.props.obj.defaultValue) ? this.props.obj.defaultValue.label : '';
         refVal = (this.props.obj.currentReferenceValue) ? this.props.obj.currentReferenceValue : refVal;
-// console.log('--component data--');
-// console.log(val);
-// console.log(refVal);
         this.state = {
             dialogueVisible: false,
             dialogueSelectedValue: undefined,
@@ -63,7 +60,7 @@ class ReferenceType extends Component {
             this.props.navigation.navigate('Reference Screen', {
                 selectedModule: 'Users',
                 uniqueId: this.state.formId,
-                moduleLable: this.props.validLable
+                moduleLable: this.props.validLabel
             });
         } else {
             if (type.refersTo.length < 1) {
@@ -78,7 +75,7 @@ class ReferenceType extends Component {
                         this.props.navigation.navigate('Reference Screen', {
                             selectedModule: type.refersTo[0],
                             uniqueId: this.state.formId,
-                            moduleLable: this.props.validLable
+                            moduleLable: this.props.validLabel
                         });
                     });
                 }
@@ -89,7 +86,8 @@ class ReferenceType extends Component {
     assignUserId() {
         //TODO disable for edit ??
         if (this.props.obj.name === 'assigned_user_id') {
-            getUserName(this);
+            //I comment this because I think it is not in use
+            // getUserName(this);
         }
     }
 
@@ -145,7 +143,7 @@ class ReferenceType extends Component {
                                 this.props.navigation.navigate('Reference Screen', {
                                     selectedModule: result.selectedItem.label,
                                     uniqueId: this.state.formId,
-                                    moduleLable: this.props.validLable
+                                    moduleLable: this.props.validLabel
                                 });
                             });
                         }
