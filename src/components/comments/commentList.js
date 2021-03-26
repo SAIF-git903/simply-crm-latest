@@ -37,15 +37,17 @@ const CommentList = (props) => {
             refreshing={isLoading}
             data={JSON.parse(JSON.stringify(comments)).reverse()}
             scrollEnabled={scrollEnabled}
-            renderItem={({ item, index }) => <Comment
-                item={item}
-                index={index}
-                crmTz={crmTz}
-                scrollToIndex={(index) => {
-                    if (!scrollEnabled) return;
-                    scrollViewRef?.current?.scrollToIndex({ index, animated: true })
-                }}
-            />}
+            renderItem={({ item, index }) =>
+                <Comment
+                    item={item}
+                    index={index}
+                    crmTz={crmTz}
+                    scrollToIndex={(index) => {
+                        if (!scrollEnabled) return;
+                        scrollViewRef?.current?.scrollToIndex({ index, animated: true });
+                    }}
+                />
+            }
         />
     );
 }

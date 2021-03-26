@@ -132,8 +132,8 @@ android {
         applicationId "com.simplycrm.mobileapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 9
-        versionName "1.009"
+        versionCode 10
+        versionName "1.110"
     }
     splits {
         abi {

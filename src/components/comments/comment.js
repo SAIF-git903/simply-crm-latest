@@ -98,7 +98,7 @@ export default function Comment(props) {
                                         {
                                             text: "Delete", onPress: () => {
                                                 const commentIdClean = getCleanId(item.id);
-                                                dispatch(deleteComment(commentIdClean))
+                                                dispatch(deleteComment(commentIdClean));
                                             }
                                         }
                                     ],
