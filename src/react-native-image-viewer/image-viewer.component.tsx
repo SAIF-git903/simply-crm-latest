@@ -1,20 +1,6 @@
 import * as React from 'react';
-
-import {
-  Animated,
-  CameraRoll,
-  Dimensions,
-  I18nManager,
-  Image,
-  PanResponder,
-  Platform,
-  Text,
-  TouchableHighlight,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-  ViewStyle
-} from 'react-native';
+import {Animated, CameraRoll, I18nManager, Image, Text,
+  TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, View} from 'react-native';
 import ImageZoom from 'react-native-image-pan-zoom';
 import styles from './image-viewer.style';
 import { IImageInfo, IImageSize, Props, State } from './image-viewer.type';
@@ -62,7 +48,8 @@ export default class ImageViewer extends React.Component<Props, State> {
   public componentDidUpdate(prevProps: Props, prevState: State) {
     if (prevProps.index !== this.props.index) {
       // 立刻预加载要看的图
-      this.loadImage(this.props.index || 0);
+      const loadIndex = this.props.index || 0;
+      this.loadImage(loadIndex);
 
       this.jumpToCurrentImage();
 
@@ -72,6 +59,17 @@ export default class ImageViewer extends React.Component<Props, State> {
         duration: 200,
         useNativeDriver: !!this.props.useNativeDriver
       }).start();
+    }
+
+    for (const [key, imageUrl] of Object.entries(this.props.imageUrls)) {
+      const keyInt = parseInt(key, 10);
+      const oldImageUrlStr = JSON.stringify(prevProps.imageUrls[keyInt]);
+      const newImageUrlStr = JSON.stringify(imageUrl);
+      //recalculate width and height for that imageUrl only if was changed
+      if (newImageUrlStr !== oldImageUrlStr) {
+        this.loadedIndex.set(keyInt, false);
+        this.loadImage(keyInt, true);
+      }
     }
   }
 
@@ -135,12 +133,12 @@ export default class ImageViewer extends React.Component<Props, State> {
   /**
    * 加载图片，主要是获取图片长与宽
    */
-  public loadImage(index: number) {
+  public loadImage(index: number, recalculateSize: boolean = false) {
     if (!this!.state!.imageSizes![index]) {
       return;
     }
 
-    if (this.loadedIndex.has(index)) {
+    if (!recalculateSize && this.loadedIndex.has(index) && this.loadedIndex.get(index)) {
       return;
     }
     this.loadedIndex.set(index, true);
@@ -150,15 +148,49 @@ export default class ImageViewer extends React.Component<Props, State> {
 
     // 保存 imageSize
     const saveImageSize = () => {
-      // 如果已经 success 了，就不做处理
-      if (this!.state!.imageSizes![index] && this!.state!.imageSizes![index].status !== 'loading') {
-        return;
-      }
+      // // 如果已经 success 了，就不做处理
+      // if (this!.state!.imageSizes![index] && this!.state!.imageSizes![index].status !== 'loading') {
+      //   return;
+      // }
 
       const imageSizes = this!.state!.imageSizes!.slice();
       imageSizes[index] = imageStatus;
       this.setState({ imageSizes });
     };
+
+    const getSize = () => {
+      Image.getSize(
+          image.url,
+          (width: number, height: number) => {
+            imageStatus.width = width;
+            imageStatus.height = height;
+            imageStatus.status = 'success';
+            saveImageSize();
+            return;
+          },
+          () => {
+            try {
+              const data = (Image as any).resolveAssetSource(image.props.source);
+              imageStatus.width = data.width;
+              imageStatus.height = data.height;
+              imageStatus.status = 'success';
+              saveImageSize();
+              return;
+            } catch (newError) {
+              // Give up..
+              imageStatus.status = 'fail';
+              saveImageSize();
+              return;
+            }
+          }
+      );
+    };
+
+    //recalculate width and height for image if image was changed
+    if (recalculateSize) {
+      getSize();
+      return;
+    }
 
     if (this!.state!.imageSizes![index].status === 'success') {
       // 已经加载过就不会加载了
@@ -194,28 +226,7 @@ export default class ImageViewer extends React.Component<Props, State> {
       return;
     }
 
-    Image.getSize(
-      image.url,
-      (width: number, height: number) => {
-        imageStatus.width = width;
-        imageStatus.height = height;
-        imageStatus.status = 'success';
-        saveImageSize();
-      },
-      () => {
-        try {
-          const data = (Image as any).resolveAssetSource(image.props.source);
-          imageStatus.width = data.width;
-          imageStatus.height = data.height;
-          imageStatus.status = 'success';
-          saveImageSize();
-        } catch (newError) {
-          // Give up..
-          imageStatus.status = 'fail';
-          saveImageSize();
-        }
-      }
-    );
+    getSize();
   }
 
   /**

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import RNFetchBlob from "react-native-fetch-blob";
-import {View, Modal, TouchableOpacity, Text, StyleSheet, Image} from 'react-native';
+import {View, Modal, TouchableOpacity, Text, StyleSheet, Image, Dimensions, ActivityIndicator} from 'react-native';
 import ImageViewer from '../react-native-image-viewer/index';
 import Icon from 'react-native-vector-icons/FontAwesome5Pro';
 import store from '../store';
+import loadImageImport from '../../assets/images/loading.gif';
 
 const Button = ({ text, onPress, style }) => (
     <TouchableOpacity
@@ -60,8 +61,7 @@ export function processFile(item) {
 class ShowImage extends Component {
     constructor(props) {
         super(props);
-        const loadGif = require('../../assets/images/loading.gif');
-        const { width, height } = Image.resolveAssetSource(loadGif);
+        const loadImage = Image.resolveAssetSource(loadImageImport);
         //array to object
         let downloadData = {};
         Object.assign(downloadData, this.props.downloadData);
@@ -74,14 +74,15 @@ class ShowImage extends Component {
         this.state = {
             modalEnabled: false,
             loadImageData: {
-                source: loadGif,
-                width: width,
-                height: height,
+                source: require('../../assets/images/loading.gif'),
+                width: loadImage.width,
+                height: loadImage.height,
+                uri: loadImage.uri
             },
             downloadData: downloadData,
             imageData: initImageData,
         };
-        //structure of 'imageData' will be like this { url, width, height, isExternal }
+        //structure of 'imageData' will be like this { url, isExternal }
         this.mounted = false;
     }
 
@@ -112,25 +113,17 @@ class ShowImage extends Component {
                     })
                 ).then(resp => {
                     // on success
-                    let imagePath = resp.path();
-                    Image.getSize(`file://${imagePath}`, (width, height) => {
-                        //on success
-                        if (this.mounted) {
-                            let imageData = this.state.imageData;
-                            imageData[key] = {
-                                url: imagePath,
-                                width: width,
-                                height: height,
-                                isExternal: false,
-                            };
-                            this.setState({
-                                imageData: imageData,
-                            });
-                        }
-                    }, err => {
-                        //on error
-                        console.log('Error getting image width and height: ' + err);
-                    });
+                    let imagePath = `file://${resp.path()}`;
+                    if (this.mounted) {
+                        let imageData = this.state.imageData;
+                        imageData[key] = {
+                            url: imagePath,
+                            isExternal: false,
+                        };
+                        this.setState({
+                            imageData: imageData,
+                        });
+                    }
                 }, resp => {
                     // on error
                     console.log('Error getting image path with RNFetchBlob');
@@ -140,8 +133,6 @@ class ShowImage extends Component {
                 let imageData = this.state.imageData;
                 imageData[key] = {
                     url: attachment.url,
-                    width: this.state.loadImageData.width,
-                    height: this.state.loadImageData.height,
                     isExternal: true,
                 };
                 this.setState({
@@ -167,26 +158,27 @@ class ShowImage extends Component {
         let imageUrls = [];
         for (const [key, image] of Object.entries(this.state.imageData)) {
             let source = {};
+            //at first all 'image.url' is empty and the 'loadImage' will be shown
+            //in the second, the user image will be fetched from the backend, and 'image.url' will be filled with the local path to the user image
+            //if the size of the user image is unknown, then the loaded image will be shown again
             if (image.url) {
                 if (image.isExternal) {
                     source = {
                         url: image.url,
                     };
+                    //TODO check again
                 } else {
                     source = {
-                        url: '',
-                        width: image.width,
-                        height: image.height,
+                        url: image.url,
                         props: {
                             source: {
-                                uri: `file://${image.url}`,
+                                uri: image.url,
                             },
                         },
                     };
                 }
             } else {
                 source = {
-                    url: '',
                     width: this.state.loadImageData.width,
                     height: this.state.loadImageData.height,
                     props: {
@@ -213,10 +205,17 @@ class ShowImage extends Component {
                 >
                     <ImageViewer
                         imageUrls={imageUrls}
+                        enableImageZoom={true}
                         saveToLocalByLongPress={false}
                         enableSwipeDown={false}
                         enablePreload={false}
                         useNativeDriver={true}
+                        //when image size not found
+                        failImageSource={{
+                            url: this.state.loadImageData.uri,
+                            width: this.state.loadImageData.width,
+                            height: this.state.loadImageData.height,
+                        }}
                     />
                     <View
                         style={{
