@@ -87,13 +87,13 @@ async function makeCall(body, request_url, headers, method = 'POST') {
 }
 
 async function doFetch(request_url, method, headers, body_data) {
+    console.log(`### ${method} API CALL ###: ${request_url}`);
+    console.log(body_data);
     const response = await fetch((request_url), {
         method: method,
         headers: headers,
         body: (method === 'POST') ? JSON.stringify(body_data) : null
     });
-    console.log(`### ${method} API CALL ###: ${request_url}`);
-    console.log(body_data);
     let responseJson = await response.json().catch(
         function (error) {
             console.log('JSON parse failed on:');

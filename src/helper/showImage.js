@@ -2,19 +2,21 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import RNFetchBlob from "react-native-fetch-blob";
 import {View, Modal, TouchableOpacity, Text, StyleSheet, Image} from 'react-native';
-import ImageViewer from 'react-native-image-zoom-viewer';
+import ImageViewer from '../react-native-image-viewer/index';
 import Icon from 'react-native-vector-icons/FontAwesome5Pro';
 import store from '../store';
 
-const Button = ({ text, onPress, style }) => <TouchableOpacity
-    style={[{
-        paddingTop: 5,
-        paddingLeft: 15
-    }, style]}
-    onPress={onPress}
->
-    <Text style={styles.actionText}>{text}</Text>
-</TouchableOpacity>;
+const Button = ({ text, onPress, style }) => (
+    <TouchableOpacity
+        style={[{
+            paddingTop: 5,
+            paddingLeft: 15
+        }, style]}
+        onPress={onPress}
+    >
+        <Text style={styles.actionText}>{text}</Text>
+    </TouchableOpacity>
+);
 
 export function processFile(item) {
     const imageTypeArray = ['image/bmp', 'image/gif', 'image/jpeg', 'image/png'];
@@ -177,9 +179,9 @@ class ShowImage extends Component {
                         height: image.height,
                         props: {
                             source: {
-                                uri: `file://${image.url}`
-                            }
-                        }
+                                uri: `file://${image.url}`,
+                            },
+                        },
                     };
                 }
             } else {
@@ -188,8 +190,8 @@ class ShowImage extends Component {
                     width: this.state.loadImageData.width,
                     height: this.state.loadImageData.height,
                     props: {
-                        source: this.state.loadImageData.source
-                    }
+                        source: this.state.loadImageData.source,
+                    },
                 };
             }
             imageUrls.push(source);
@@ -211,6 +213,10 @@ class ShowImage extends Component {
                 >
                     <ImageViewer
                         imageUrls={imageUrls}
+                        saveToLocalByLongPress={false}
+                        enableSwipeDown={false}
+                        enablePreload={false}
+                        useNativeDriver={true}
                     />
                     <View
                         style={{
