@@ -295,6 +295,7 @@ const doSaveRecord = async (currentInstance, headerInstance, jsonObj, dispatch, 
         }
         //TODO checked edit and add new records for all modules:
         // checked only Contact, Account, Calendar, Invoices, SalesOrder, Opportunity, Product, Quote, Document modules
+        // after new record save in Organization field Employee, Annual Revenue have value is "0undefined00"
         // cant change record image for Contact, Product. Hide it in mobileapp ??
         // cant check Invoice record edit - currency, add new Invoice - good
         // cant relink Product on edit SalesOrder record, add new SalesOrder - have error 'Mandatory Fields Missing..' from backend

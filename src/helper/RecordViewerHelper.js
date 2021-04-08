@@ -4,10 +4,7 @@ import store from '../store';
 import Section from '../components/common/section';
 import SectionBox from '../components/common/section/sectionBox';
 import Field from '../components/recordViewer/field';
-import {
-    DRAWER_SECTION_HEADER_IMAGE_SELECTED_COLOR,
-    DRAWER_SECTION_HEADER_IMAGE_COLOR
-} from '../variables/themeColors';
+import {DRAWER_SECTION_HEADER_IMAGE_SELECTED_COLOR, DRAWER_SECTION_HEADER_IMAGE_COLOR} from '../variables/themeColors';
 import { processFile } from './showImage';
 import { addDatabaseKey } from '.';
 import { API_fetchRecordWithGrouping } from "./api";
@@ -15,7 +12,7 @@ import { API_fetchRecordWithGrouping } from "./api";
 var numbro = require('numbro');
 const moment = require('moment-timezone');
 
-export const viewRecordRenderer = async (viewerInstance, dispatch) => {
+export const fetchRecordDataHelper = async (viewerInstance, dispatch) => {
     //First check data is on database based on vtiger version
     const { auth } = store.getState();
     const loginDetails = auth.loginDetails;
@@ -38,51 +35,19 @@ export const viewRecordRenderer = async (viewerInstance, dispatch) => {
             if (durationMinutes < 1) {
                 await getAndSaveData(recordOfflineData.record, viewerInstance, true, 'Loading complete - Recently updated Pull to refresh');
             } else {
-                await getDataFromInternet(viewerInstance, true, recordOfflineData, dispatch);
+                await getRecordDataFromInternet(viewerInstance, true, recordOfflineData, dispatch);
             }
         } else {
             //Offline data is not available
-            await getDataFromInternet(viewerInstance, false, {}, dispatch);
+            await getRecordDataFromInternet(viewerInstance, false, {}, dispatch);
         }
     } catch (error) {
         //Offline data is not available
-        await getDataFromInternet(viewerInstance, false, {}, dispatch);
+        await getRecordDataFromInternet(viewerInstance, false, {}, dispatch);
     }
 };
 
-export const refreshRecordDataHelper = async (viewerInstance, dispatch) => {
-    try {
-        //TODO combine with getDataFromInternet()
-        const responseJson = await API_fetchRecordWithGrouping(viewerInstance.props.moduleName, viewerInstance.props.recordId);
-        if (responseJson.success) {
-            await getAndSaveData(responseJson, viewerInstance, false, '');
-        } else {
-            if (responseJson.error.code === 1) {
-                viewerInstance.setState({
-                    isScrollViewRefreshing: false,
-                    statusText: 'Loading...',
-                    recordId: viewerInstance.props.recordId
-                }, async () => {
-                    await refreshRecordDataHelper(viewerInstance, dispatch);
-                });
-            } else {
-                viewerInstance.setState({
-                    isScrollViewRefreshing: false,
-                    statusText: 'Something went wrong',
-                    statusTextColor: 'red'
-                });
-            }
-        }
-    } catch (error) {
-        viewerInstance.setState({
-            isScrollViewRefreshing: false,
-            statusText: 'Looks like no network connection',
-            statusTextColor: 'red'
-        });
-    }
-};
-
-const getDataFromInternet = async (viewerInstance, offlineAvailable, offlineData, dispatch) => {
+const getRecordDataFromInternet = async (viewerInstance, offlineAvailable, offlineData, dispatch) => {
     try {
         const responseJson = await API_fetchRecordWithGrouping(viewerInstance.props.moduleName, viewerInstance.props.recordId);
         if (responseJson.success) {
@@ -94,7 +59,7 @@ const getDataFromInternet = async (viewerInstance, offlineAvailable, offlineData
                     statusText: 'Loading...',
                     recordId: viewerInstance.props.recordId
                 }, async () => {
-                    await getDataFromInternet(viewerInstance, false, {}, dispatch);
+                    await getRecordDataFromInternet(viewerInstance, false, {}, dispatch);
                 });
             } else {
                 if (offlineAvailable) {

@@ -52,7 +52,7 @@ const renderEmpty = () => {
     );
 }
 
-export const fetchRecordHelper = async (listerInstance, dispatch, refresh, addExisting, moduleName, isDashboard = false) => {
+export const fetchRecordHelper = async (listerInstance, dispatch, addExisting, moduleName, isDashboard = false) => {
     //First checking if any data in offline.
     try {
         // const offlineData = JSON.parse(await AsyncStorage.getItem(listerInstance.props.moduleName));
@@ -79,11 +79,11 @@ export const fetchRecordHelper = async (listerInstance, dispatch, refresh, addEx
         //     }
         // } else {
             //Offline data is not available
-            await getDataFromInternet(listerInstance, false, {}, dispatch, refresh, addExisting, isDashboard, moduleName);
+            await getDataFromInternet(listerInstance, false, {}, dispatch, addExisting, isDashboard, moduleName);
         // }
     } catch (error) {
         //Offline data is not available
-        await getDataFromInternet(listerInstance, false, {}, dispatch, refresh, addExisting, isDashboard);
+        await getDataFromInternet(listerInstance, false, {}, dispatch, addExisting, isDashboard);
     }
 };
 
@@ -141,7 +141,7 @@ export const viewRecord = async (recordId, listerInstance, dispatch) => {
     }
 };
 
-const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData, dispatch, refresh, addExisting, isDashboard, moduleName) => {
+const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData, dispatch, addExisting, isDashboard, moduleName) => {
     //Getting data from internet
     try {
         const { auth } = store.getState();
@@ -182,7 +182,7 @@ const getDataFromInternet = async (listerInstance, offlineAvailable, offlineData
             );
         }
         if (responseJson.success) {
-            await getAndSaveDataVtiger(responseJson, listerInstance, vtigerSeven, refresh, addExisting, moduleName);
+            await getAndSaveDataVtiger(responseJson, listerInstance, vtigerSeven, addExisting, moduleName);
         } else {
             console.log('getDataFromInternet unsuccess response');
             console.log(responseJson);
@@ -225,7 +225,7 @@ const processError = (listerInstance, offlineData, offlineAvailable, addExisting
     listerInstance.setState(updState);
 }
 
-const getAndSaveDataVtiger = async (responseJson, listerInstance, vtigerSeven, refresh, addExisting, moduleName) => {
+const getAndSaveDataVtiger = async (responseJson, listerInstance, vtigerSeven, addExisting, moduleName) => {
     let data;
     if (addExisting) {
         data = listerInstance.state.data;
@@ -240,7 +240,7 @@ const getAndSaveDataVtiger = async (responseJson, listerInstance, vtigerSeven, r
     for (const record of records) {
         data.push(getListerModifiedRecord(listerInstance, vtigerSeven, responseJson, record));
     }
-    await saveDataToState(data, vtigerSeven, responseJson, addExisting, listerInstance.state.data.length, listerInstance, refresh, moduleName);
+    await saveDataToState(data, vtigerSeven, responseJson, addExisting, listerInstance.state.data.length, listerInstance, moduleName);
 };
 
 function getListerModifiedRecord(listerInstance, vtigerSeven, responseJson, record) {
@@ -295,7 +295,7 @@ function getListerModifiedRecord(listerInstance, vtigerSeven, responseJson, reco
     return modifiedRecord;
 }
 
-const saveDataToState = async (data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, refresh, moduleName) => {
+const saveDataToState = async (data, vtigerSeven, responseJson, addExisting, previousDataLength, listerInstance, moduleName) => {
     try {
         let offlineData;
         let statusText;
