@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "module": "commonjs",
+    "strict": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "jsx": "react-native",
+    "lib": ["dom", "es5", "es6", "es2020", "scripthost"],
+    "target": "es2020",
+    "outDir": "built",
+    "sourceMap": true,
+    "skipLibCheck": true
+  },
+  "exclude": ["node_modules", "demo"]
+}

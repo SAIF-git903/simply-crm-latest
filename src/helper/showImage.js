@@ -166,7 +166,6 @@ class ShowImage extends Component {
                     source = {
                         url: image.url,
                     };
-                    //TODO check again
                 } else {
                     source = {
                         url: image.url,

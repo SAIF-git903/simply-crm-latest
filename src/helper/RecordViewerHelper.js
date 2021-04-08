@@ -52,6 +52,7 @@ export const viewRecordRenderer = async (viewerInstance, dispatch) => {
 
 export const refreshRecordDataHelper = async (viewerInstance, dispatch) => {
     try {
+        //TODO combine with getDataFromInternet()
         const responseJson = await API_fetchRecordWithGrouping(viewerInstance.props.moduleName, viewerInstance.props.recordId);
         if (responseJson.success) {
             await getAndSaveData(responseJson, viewerInstance, false, '');
@@ -178,14 +179,16 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
         }
         for (let i = 0; i < blocks.length; i++) {
             const block = blocks[i];
+            //block.label - label from database
+            //block.translatedLabel - translated label
             const fieldViews = [];
             const fields = block.fields;
 
             if (viewerInstance.props.moduleName === 'Emails') {
                 if (block.label === 'Emails_Block1') {
-                    block.label = 'Created Time';
+                    block.translatedLabel = 'Created Time';
                 } else if (block.label === 'Emails_Block2') {
-                    block.label = 'Subject';
+                    block.translatedLabel = 'Subject';
                 } else if (block.label === 'Emails_Block3') {
                     break;
                 }
@@ -216,10 +219,12 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
                                 value = field.value;
                             }
 
-                            if (uiType === 7
+                            if (
+                                uiType === 7
                                 || uiType === 72
-                                || uiType === 71) {
-                                value = formatNumber(field.value)
+                                || uiType === 71
+                            ) {
+                                value = formatNumber(field.value);
                             }
 
                         } catch (error) {
@@ -257,7 +262,7 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
                         recordId={viewerInstance.props.recordId}
                         isLocation={
                             (
-                                field.label === 'Location'
+                                field.name === 'location'
                                 && (
                                     viewerInstance.props.moduleName === 'Calendar'
                                     || viewerInstance.props.moduleName === 'Events'
@@ -270,7 +275,7 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
             //add "Show Image" line
             if (
                 viewerInstance.props.moduleName === 'Documents'
-                && block.label === 'File Details'
+                && block.label === 'LBL_FILE_INFORMATION'
             ) {
                 const div = processFile(records);
                 if (div) {
@@ -296,7 +301,7 @@ const getAndSaveData = async (responseJson, viewerInstance, offline, message) =>
                     sectionHeaderBackground={'#f2f3f8'}
                     sectionHeaderImageColor={DRAWER_SECTION_HEADER_IMAGE_COLOR}
                     sectionHeaderImageSelectedColor={DRAWER_SECTION_HEADER_IMAGE_SELECTED_COLOR}
-                    headerName={block.label}
+                    headerName={block.translatedLabel}
                     content={<SectionBox style={{ padding: 5 }}>{fieldViews}</SectionBox>}
                     contentHeight={fieldViews.length * 60 + 5}
                 />
