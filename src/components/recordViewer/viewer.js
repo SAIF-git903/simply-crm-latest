@@ -4,7 +4,7 @@ import { View, ScrollView, ActivityIndicator, RefreshControl } from 'react-nativ
 import store from '../../store';
 import StatusView from './statusView';
 import { commonStyles } from '../../styles/common';
-import { viewRecordRendererActions, refreshRecordData } from '../../actions';
+import { fetchRecordData, refreshRecordData } from '../../actions';
 
 class Viewer extends Component {
     constructor(props) {
@@ -31,7 +31,7 @@ class Viewer extends Component {
             statusTextColor: '#000000',
             recordId: this.props.recordId
         }, () => {
-            this.props.dispatch(viewRecordRendererActions(this));
+            this.props.dispatch(fetchRecordData(this));
         });
     }
 

@@ -7,8 +7,7 @@ import {
 } from './types';
 import { HOME_MAIN, RECORD_VIEWER } from '../variables/constants';
 import {
-  getInstancesList, renderDrawerView, fetchRecordHelper, viewRecord,
-  viewRecordRenderer, deleteRecordHelper, refreshRecordDataHelper, getAddressDetails
+  getInstancesList, renderDrawerView, fetchRecordHelper, viewRecord, fetchRecordDataHelper, deleteRecordHelper, getAddressDetails
 } from '../helper';
 
 export const dimensionChanged = (isPortrait, width, height) => ({
@@ -56,36 +55,32 @@ export const getDrawerViews = (loginDetails, drawerInstance) => {
 
 //RecordLister
 export const fetchRecord = (recordListerInstance, moduleName) => (dispatch) => {
-  fetchRecordHelper(recordListerInstance, dispatch, false, false, moduleName);
+  fetchRecordHelper(recordListerInstance, dispatch, false, moduleName);
 };
 export const refreshRecord = (recordListerInstance, moduleName) => (dispatch) => {
-  fetchRecordHelper(recordListerInstance, dispatch, true, false, moduleName);
+  fetchRecordHelper(recordListerInstance, dispatch, false, moduleName);
 };
 export const getNextPageRecord = (recordListerInstance, moduleName) => (dispatch) => {
-  fetchRecordHelper(recordListerInstance, dispatch, false, true, moduleName);
+  fetchRecordHelper(recordListerInstance, dispatch, true, moduleName);
 };
 
 //RefRecordLister
 export const fetchRefRecord = (recordListerInstance, moduleName) => (dispatch) => {
-  fetchRecordHelper(recordListerInstance, dispatch, false, false, moduleName);
+  fetchRecordHelper(recordListerInstance, dispatch, false, moduleName);
 };
 export const refreshRefRecord = (recordListerInstance, moduleName) => (dispatch) => {
-  fetchRecordHelper(recordListerInstance, dispatch, true, false, moduleName);
+  fetchRecordHelper(recordListerInstance, dispatch, false, moduleName);
 };
 export const getNextRefPageRecord = (recordListerInstance, moduleName) => (dispatch) => {
-  fetchRecordHelper(recordListerInstance, dispatch, false, true, moduleName);
+  fetchRecordHelper(recordListerInstance, dispatch, true, moduleName);
 };
 
 //dashboardLister
 export const dashboardFetchRecord = (viewerInstance, moduleName) => (dispatch) => {
-  fetchRecordHelper(viewerInstance, dispatch, false, false, moduleName, true);
+  fetchRecordHelper(viewerInstance, dispatch, false, moduleName, true);
 };
 export const dashboardRefreshRecord = (viewerInstance, moduleName) => (dispatch) => {
-  fetchRecordHelper(viewerInstance, dispatch, true, false, moduleName, true);
-};
-
-export const refreshRecordData = (recordViewerInstance) => (dispatch) => {
-  refreshRecordDataHelper(recordViewerInstance, dispatch);
+  fetchRecordHelper(viewerInstance, dispatch, false, moduleName, true);
 };
 
 export const viewRecordAction = (recordId, listerInstance) => (dispatch) => {
@@ -103,8 +98,12 @@ export const updateSearchModule = (moduleName) => ({
   payload: moduleName
 });
 
-export const viewRecordRendererActions = (viewerInstance) => (dispatch) => {
-  viewRecordRenderer(viewerInstance, dispatch);
+export const fetchRecordData = (viewerInstance) => (dispatch) => {
+  fetchRecordDataHelper(viewerInstance, dispatch);
+};
+
+export const refreshRecordData = (recordViewerInstance) => (dispatch) => {
+  fetchRecordDataHelper(recordViewerInstance, dispatch);
 };
 
 export const deleteRecord = (listerInstance, recordId, index, callback) => (dispatch) => {

@@ -65,8 +65,6 @@ class LoginForm extends Component {
         Keyboard.dismiss();
 
         const { email, password, url, username } = this.state;
-        console.log('url: ' + url);
-        console.log('this.state.showUrlList: ' + this.state.showUrlList);
         if (url) {
             this.setState({
                 loading: true

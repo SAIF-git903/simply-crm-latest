@@ -2,42 +2,56 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import RNFetchBlob from "react-native-fetch-blob";
 import {View, Modal, TouchableOpacity, Text, StyleSheet, Image} from 'react-native';
-import ImageViewer from 'react-native-image-zoom-viewer';
+import ImageViewer from '../react-native-image-viewer/index';
 import Icon from 'react-native-vector-icons/FontAwesome5Pro';
 import store from '../store';
+import loadImageImport from '../../assets/images/loading.gif';
 
-const Button = ({ text, onPress, style }) => <TouchableOpacity
-    style={[{
-        paddingTop: 5,
-        paddingLeft: 15
-    }, style]}
-    onPress={onPress}
->
-    <Text style={styles.actionText}>{text}</Text>
-</TouchableOpacity>;
+const Button = ({ text, onPress, style }) => (
+    <TouchableOpacity
+        style={[{
+            paddingTop: 5,
+            paddingLeft: 15
+        }, style]}
+        onPress={onPress}
+    >
+        <Text style={styles.actionText}>{text}</Text>
+    </TouchableOpacity>
+);
 
 export function processFile(item) {
     const imageTypeArray = ['image/bmp', 'image/gif', 'image/jpeg', 'image/png'];
     const urlSuffix = ['bmp', 'gif', 'jpg', 'jpeg', 'png'];
     let fileButton = null;
-    if (item.downloadData) {
-        let suffix_exist = false;
-        urlSuffix.forEach(function(suffix) {
-            if (item.downloadData.url && item.downloadData.url.endsWith(suffix)) {
-                suffix_exist = true;
+    const downloadData = item.downloadData;
+    if (downloadData) {
+        let downloadDataChanged = [];
+        for (const [key, attachment] of Object.entries(downloadData)) {
+            let url = attachment.url;
+            let type = attachment.type;
+            let suffix_exist = false;
+            urlSuffix.forEach(function(suffix) {
+                if (url && url.endsWith(suffix)) {
+                    suffix_exist = true;
+                }
+            });
+            if (
+                type && imageTypeArray.includes(type)
+                || suffix_exist
+            ) {
+                //this attachment picture and can be showed
+                downloadDataChanged.push(attachment);
             }
-        });
-        if (
-            item.downloadData.type && imageTypeArray.includes(item.downloadData.type)
-            || suffix_exist
-        ) {
+        }
+        if (downloadDataChanged.length > 0) {
             fileButton = (
                 <ShowImage
-                    downloadData={item.downloadData}
+                    downloadData={downloadDataChanged}
                 >
                 </ShowImage>
             );
         } else {
+            //process not image attachments
             //download file or something else
         }
     }
@@ -47,61 +61,105 @@ export function processFile(item) {
 class ShowImage extends Component {
     constructor(props) {
         super(props);
-        const { width, height } = Image.resolveAssetSource(require('../../assets/images/loading.gif'));
+        const loadImage = Image.resolveAssetSource(loadImageImport);
+        //array to object
+        let downloadData = {};
+        Object.assign(downloadData, this.props.downloadData);
+        let initImageData = {};
+        //add empty objects to render loading gif in it
+        for (let i = 0; i < Object.keys(downloadData).length; i++) {
+            initImageData[i] = {};
+        }
+
         this.state = {
             modalEnabled: false,
-            loadWidth: width,
-            loadHeight: height,
-            downloadData: this.props.downloadData,
-            imagePath: null,
-            imageWidth: 200,
-            imageHeight: 200,
+            loadImageData: {
+                source: require('../../assets/images/loading.gif'),
+                width: loadImage.width,
+                height: loadImage.height,
+                uri: loadImage.uri
+            },
+            downloadData: downloadData,
+            imageData: initImageData,
         };
+        //structure of 'imageData' will be like this { url, isExternal }
+        this.mounted = false;
     }
 
     componentDidMount() {
-        if (this.state.downloadData.location !== 'external') {
-            const {auth: {loginDetails: {session, url}}} = store.getState();
-            const ext = this.state.downloadData.type.split('/');
-            RNFetchBlob.config({
-                fileCache: true,
-                appendExt: ext[1],
-            }).fetch(
-                "POST",
-                `${url}/modules/Mobile/api.php`,
-                {
+        this.mounted = true;
+        for (const [key, attachment] of Object.entries(this.state.downloadData)) {
+            let appendExt, fetchMethod, fetchUrl, fetchHeaders, fetchBody, isExternal;
+            if (attachment.location !== 'external') {
+                const {auth: {loginDetails: {session, url}}} = store.getState();
+                const ext = attachment.type.split('/');
+                if (ext.length <= 1) {
+                    console.log('Cant get external type of image for type:');
+                    console.log(attachment.type);
+                    continue;
+                }
+
+                appendExt = ext[1];
+                fetchMethod = "POST";
+                fetchUrl = `${url}/modules/Mobile/api.php`;
+                fetchHeaders = {
                     'cache-control': 'no-cache',
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
-                },
-                JSON.stringify({
+                };
+                fetchBody = JSON.stringify({
                     _session: session,
-                    _operation: this.state.downloadData._operation,
-                    module: this.state.downloadData.module,
-                    record: this.state.downloadData.record,
-                    fileid: this.state.downloadData.fileid,
+                    _operation: attachment._operation,
+                    module: attachment.module,
+                    record: attachment.record,
+                    fileid: attachment.fileid,
                     display: 1,
-                })
+                });
+            } else {
+                const explode = attachment.url.split('.');
+                if (explode.length <= 1) {
+                    console.log('Cant get external type of image for url:');
+                    console.log(attachment.url);
+                    continue;
+                }
+
+                appendExt = explode[explode.length - 1];
+                fetchMethod = "GET";
+                fetchUrl = attachment.url;
+                fetchHeaders = undefined;
+                fetchBody = undefined;
+                isExternal = true;
+            }
+            RNFetchBlob.config({
+                fileCache: true,
+                appendExt: appendExt,
+            }).fetch(
+                fetchMethod,
+                fetchUrl,
+                fetchHeaders,
+                fetchBody
             ).then(resp => {
                 // on success
-                let imagePath = resp.path();
-                Image.getSize(`file://${imagePath}`, (width, height) => {
-                    //on success
+                if (this.mounted) {
+                    let imageData = this.state.imageData;
+                    imageData[key] = {
+                        url: `file://${resp.path()}`,
+                        isExternal: isExternal,
+                    };
                     this.setState({
-                        imagePath: imagePath,
-                        imageWidth: width,
-                        imageHeight: height,
+                        imageData: imageData,
                     });
-                }, err => {
-                    //on error
-                    console.log('Error getting image width and height: ' + err);
-                });
+                }
             }, resp => {
                 // on error
                 console.log('Error getting image path with RNFetchBlob');
                 console.log(resp);
             });
         }
+    }
+
+    componentWillUnmount() {
+        this.mounted = false;
     }
 
     enableModal(state) {
@@ -113,42 +171,46 @@ class ShowImage extends Component {
     }
 
     render() {
-        let source;
-        if (this.state.downloadData.location === 'external') {
-            source = {
-                uri: this.state.downloadData.url
-            };
-            //TODO test me
-        } else {
-            if (this.state.imagePath) {
-                source = {
-                    url: '',
-                    width: this.state.imageWidth,
-                    height: this.state.imageHeight,
-                    props: {
-                        source: {
-                            uri: `file://${this.state.imagePath}`
-                        }
-                    }
-                };
+        let imageUrls = [];
+        for (const [key, image] of Object.entries(this.state.imageData)) {
+            let source = {};
+            //at first all 'image.url' is empty and the 'loadImage' will be shown
+            //in the second, the user image will be fetched from the backend, and 'image.url' will be filled with the local path to the user image
+            //if the size of the user image is unknown, then the loaded image will be shown again
+            if (image.url) {
+                if (image.isExternal) {
+                    source = {
+                        url: image.url,
+                    };
+                } else {
+                    source = {
+                        url: image.url,
+                        props: {
+                            source: {
+                                uri: image.url,
+                            },
+                        },
+                    };
+                }
             } else {
                 source = {
-                    url: '',
-                    width: this.state.loadWidth,
-                    height: this.state.loadHeight,
+                    width: this.state.loadImageData.width,
+                    height: this.state.loadImageData.height,
                     props: {
-                        source: require('../../assets/images/loading.gif')
-                    }
+                        source: this.state.loadImageData.source,
+                    },
                 };
             }
+            imageUrls.push(source);
         }
+        let buttonName = Object.keys(this.state.imageData).length > 1 ? 'Show images' : 'Show image';
 
         return (
             <View>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <Button
                         onPress={() => this.enableModal(this.state)}
-                        text={'Show image'}
+                        text={buttonName}
                     />
                 </View>
                 <Modal
@@ -157,9 +219,24 @@ class ShowImage extends Component {
                     onRequestClose={() => this.setState({ modalEnabled: false })}
                 >
                     <ImageViewer
-                        imageUrls={[
-                            source,
-                        ]}
+                        imageUrls={imageUrls}
+                        enableImageZoom={true}
+                        saveToLocalByLongPress={false}
+                        enableSwipeDown={false}
+                        enablePreload={false}
+                        useNativeDriver={true}
+                        //when in downloading external image
+                        loadingRender={() => (
+                            <Image
+                                source={this.state.loadImageData.source}>
+                            </Image>
+                        )}
+                        //when image size not found
+                        failImageSource={{
+                            url: this.state.loadImageData.uri,
+                            width: this.state.loadImageData.width,
+                            height: this.state.loadImageData.height,
+                        }}
                     />
                     <View
                         style={{
@@ -191,4 +268,3 @@ const styles = StyleSheet.create({
 });
 
 export default connect(null, { processFile })(ShowImage);
-
