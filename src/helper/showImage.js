@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import RNFetchBlob from "react-native-fetch-blob";
-import {View, Modal, TouchableOpacity, Text, StyleSheet, Image, Dimensions, ActivityIndicator} from 'react-native';
+import {View, Modal, TouchableOpacity, Text, StyleSheet, Image} from 'react-native';
 import ImageViewer from '../react-native-image-viewer/index';
 import Icon from 'react-native-vector-icons/FontAwesome5Pro';
 import store from '../store';
@@ -209,6 +209,12 @@ class ShowImage extends Component {
                         enableSwipeDown={false}
                         enablePreload={false}
                         useNativeDriver={true}
+                        //when in downloading external image
+                        loadingRender={() => (
+                            <Image
+                                source={this.state.loadImageData.source}>
+                            </Image>
+                        )}
                         //when image size not found
                         failImageSource={{
                             url: this.state.loadImageData.uri,

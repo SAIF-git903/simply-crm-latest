@@ -94,13 +94,13 @@ async function doFetch(request_url, method, headers, body_data) {
         headers: headers,
         body: (method === 'POST') ? JSON.stringify(body_data) : null
     });
-    let responseJson = await response.json().catch(
-        function (error) {
-            console.log('JSON parse failed on:');
-            console.log(response);
-            throw error;
-        }
-    );
+    //if fetch() will rejected, then error will thrown
+    //if fetch() will resolved, then 'response' will be filled with response data
+    let responseJson = await response.json().catch(function (error) {
+        console.log('JSON parse failed on:');
+        console.log(response);
+        throw error;
+    });
     console.log(responseJson);
     return responseJson;
 }

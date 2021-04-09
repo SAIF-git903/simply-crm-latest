@@ -502,6 +502,19 @@ export default class ImageViewer extends React.Component<Props, State> {
 
       switch (imageInfo.status) {
         case 'loading':
+          return (
+              <Wrapper
+                  key={index}
+                  style={{
+                    ...this.styles.modalContainer,
+                    ...this.styles.loadingContainer
+                  }}
+                  imageWidth={screenWidth}
+                  imageHeight={screenHeight}
+              >
+                <View style={this.styles.loadingContainer}>{this!.props!.loadingRender!()}</View>
+              </Wrapper>
+          );
         case 'success':
           if (!image.props) {
             image.props = {};
