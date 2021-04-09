@@ -89,56 +89,72 @@ class ShowImage extends Component {
     componentDidMount() {
         this.mounted = true;
         for (const [key, attachment] of Object.entries(this.state.downloadData)) {
+            let appendExt, fetchMethod, fetchUrl, fetchHeaders, fetchBody, isExternal;
             if (attachment.location !== 'external') {
                 const {auth: {loginDetails: {session, url}}} = store.getState();
                 const ext = attachment.type.split('/');
-                RNFetchBlob.config({
-                    fileCache: true,
-                    appendExt: ext[1],
-                }).fetch(
-                    "POST",
-                    `${url}/modules/Mobile/api.php`,
-                    {
-                        'cache-control': 'no-cache',
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    JSON.stringify({
-                        _session: session,
-                        _operation: attachment._operation,
-                        module: attachment.module,
-                        record: attachment.record,
-                        fileid: attachment.fileid,
-                        display: 1,
-                    })
-                ).then(resp => {
-                    // on success
-                    let imagePath = `file://${resp.path()}`;
-                    if (this.mounted) {
-                        let imageData = this.state.imageData;
-                        imageData[key] = {
-                            url: imagePath,
-                            isExternal: false,
-                        };
-                        this.setState({
-                            imageData: imageData,
-                        });
-                    }
-                }, resp => {
-                    // on error
-                    console.log('Error getting image path with RNFetchBlob');
-                    console.log(resp);
+                if (ext.length <= 1) {
+                    console.log('Cant get external type of image for type:');
+                    console.log(attachment.type);
+                    continue;
+                }
+
+                appendExt = ext[1];
+                fetchMethod = "POST";
+                fetchUrl = `${url}/modules/Mobile/api.php`;
+                fetchHeaders = {
+                    'cache-control': 'no-cache',
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                };
+                fetchBody = JSON.stringify({
+                    _session: session,
+                    _operation: attachment._operation,
+                    module: attachment.module,
+                    record: attachment.record,
+                    fileid: attachment.fileid,
+                    display: 1,
                 });
             } else {
-                let imageData = this.state.imageData;
-                imageData[key] = {
-                    url: attachment.url,
-                    isExternal: true,
-                };
-                this.setState({
-                    imageData: imageData,
-                });
+                const explode = attachment.url.split('.');
+                if (explode.length <= 1) {
+                    console.log('Cant get external type of image for url:');
+                    console.log(attachment.url);
+                    continue;
+                }
+
+                appendExt = explode[explode.length - 1];
+                fetchMethod = "GET";
+                fetchUrl = attachment.url;
+                fetchHeaders = undefined;
+                fetchBody = undefined;
+                isExternal = true;
             }
+            RNFetchBlob.config({
+                fileCache: true,
+                appendExt: appendExt,
+            }).fetch(
+                fetchMethod,
+                fetchUrl,
+                fetchHeaders,
+                fetchBody
+            ).then(resp => {
+                // on success
+                if (this.mounted) {
+                    let imageData = this.state.imageData;
+                    imageData[key] = {
+                        url: `file://${resp.path()}`,
+                        isExternal: isExternal,
+                    };
+                    this.setState({
+                        imageData: imageData,
+                    });
+                }
+            }, resp => {
+                // on error
+                console.log('Error getting image path with RNFetchBlob');
+                console.log(resp);
+            });
         }
     }
 
