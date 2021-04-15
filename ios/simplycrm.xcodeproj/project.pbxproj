@@ -862,7 +862,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 40;
+				CURRENT_PROJECT_VERSION = 41;
 				DEVELOPMENT_TEAM = 6JWQQD5699;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
@@ -872,7 +872,7 @@
 				);
 				INFOPLIST_FILE = simplycrm/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.110;
+				MARKETING_VERSION = 1.111;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -895,13 +895,13 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 40;
+				CURRENT_PROJECT_VERSION = 41;
 				DEVELOPMENT_TEAM = 6JWQQD5699;
 				ENABLE_BITCODE = YES;
 				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = simplycrm/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.110;
+				MARKETING_VERSION = 1.111;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
