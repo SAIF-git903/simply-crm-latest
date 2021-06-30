@@ -1,0 +1,6 @@
+module Pods_simplycrm {
+  umbrella header "Pods-simplycrm-umbrella.h"
+
+  export *
+  module * { export * }
+}

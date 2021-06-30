@@ -15,12 +15,7 @@ export default class Section extends Component {
         this.sectionHeight = this.props.contentHeight;
     }
 
-    componentWillMount() {
-        this.init();
-    }
-
-    componentWillReceiveProps(newProps) {
-        this.props = newProps;
+    UNSAFE_componentWillMount() {
         this.init();
     }
 
@@ -52,11 +47,13 @@ export default class Section extends Component {
         const scaleAnimation = Animated.timing(this.animatedScale, {
             toValue: scaleToValue,
             duration: (open) ? 10 : 1000,
+            useNativeDriver: true
         });
 
         const heightAnimation = Animated.timing(this.animatedHeight, {
             toValue: heightToValue,
-            duration: 1000,
+            duration: 225,
+            useNativeDriver: false
         });
 
         // let sequenceAnimation;
@@ -70,6 +67,7 @@ export default class Section extends Component {
             Animated.timing(this.arrowDegree, {
                 toValue: degreeToValue,
                 duration: 1000,
+                useNativeDriver: true
             }),
             heightAnimation
         ]).start();
@@ -77,25 +75,33 @@ export default class Section extends Component {
 
     render() {
         return (
-            <View 
-            style={{ backgroundColor: this.props.sectionBackgroundColor }}
+            <View
+                style={[{
+                    backgroundColor: this.props.sectionBackgroundColor
+                },
+                this.props.style
+                ]}
             >
-                <SectionHeader 
-                backgroundColor={this.props.sectionHeaderBackground}
-                imageColor={this.props.sectionHeaderImageColor}
-                selected={this.props.open}
-                imageSelectedColor={this.props.sectionHeaderImageSelectedColor}
-                textColor={this.props.sectionHeaderTextColor} 
-                name={this.props.headerName} imageName={this.props.imageName} 
-                headerImage={this.props.headerImage} 
-                openSection={this.onOpenSection.bind(this)}
-                closeSection={this.onCloseSection.bind(this)}
-                arrowDegree={this.arrowDegree}
+                <SectionHeader
+                    drawerMenu={this.props.drawerMenu}
+                    style={this.props.headerStyle}
+                    hideBorder={true}
+                    backgroundColor={this.props.sectionHeaderBackground}
+                    imageColor={this.props.sectionHeaderImageColor}
+                    selected={this.props.open}
+                    imageSelectedColor={this.props.sectionHeaderImageSelectedColor}
+                    textColor={this.props.sectionHeaderTextColor}
+                    name={this.props.headerName} imageName={this.props.imageName}
+                    headerImage={this.props.headerImage}
+                    openSection={this.onOpenSection.bind(this)}
+                    closeSection={this.onCloseSection.bind(this)}
+                    arrowDegree={this.arrowDegree}
                 />
                 <SectionContent
-                content={this.props.content} 
-                animatedScale={this.animatedScale}
-                animatedHeight={this.animatedHeight}
+                    style={{ flex: 1 }}
+                    content={this.props.content}
+                    animatedScale={this.animatedScale}
+                    animatedHeight={this.animatedHeight}
                 />
             </View>
         );

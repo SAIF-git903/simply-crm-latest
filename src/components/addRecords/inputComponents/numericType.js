@@ -1,76 +1,41 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, TextInput } from 'react-native';
+import {View, TextInput} from 'react-native';
+import { fontStyles, commonStyles } from '../../../styles/common';
 
 class NumericType extends Component {
     constructor(props) {
         super(props);
-        this.state = { saveValue: (this.props.obj.type.name === 'double') ? Number(this.props.obj.default).toFixed(2) : this.props.obj.default,
-                       fieldName: this.props.obj.name };
+        let val = (this.props.obj.currentValue !== undefined) ? this.props.obj.currentValue : this.props.obj.default;
+        this.state = {
+            saveValue: (this.props.obj.type.name === 'double') ? Number(val).toFixed(2) : val,
+            fieldName: this.props.obj.name
+        };
     }
+
     onTextInputChange(text) {
-        //console.log(text);
         this.setState({ ...this.state, saveValue: text });
     }
+
     render() {
-        const mandatory = this.props.obj.mandatory;
-        const amp = '&amp;';
-
-        const validLable = (this.props.obj.lable.indexOf(amp) !== -1) ? this.props.obj.lable.replace('&amp;', '&') : this.props.obj.lable; 
-
-        
         return (
-            <View style={styles.inputHolder}>
-            {
-                (mandatory) ? 
-                <View style={styles.mandatory}>
-                    <Text style={{ color: 'red', fontSize: 16 }}>*</Text>
-                </View>
-                :
-                // undefined
-                <View style={styles.mandatory} />
-            } 
-            
-                <View style={{ flex: 1, justifyContent: 'center' }}>
-                    <Text style={styles.label}>{validLable}</Text>    
-                </View>
+            <View style={commonStyles.inputHolder}>
+                {this.props.fieldLabelView}
                 <View style={{ flex: 1 }}>
                     <TextInput
-                        placeholder={validLable}
+                        autoGrow={true}
+                        placeholderTextColor={'#C5C5C5'}
+                        placeholder={this.props.validLabel}
                         autoCorrect={false}
-                        autoCapitalize='none' 
-                        style={styles.label}
+                        autoCapitalize='none'
+                        style={[commonStyles.label, fontStyles.fieldValue, { paddingLeft: 0 }]}
                         keyboardType='numeric'
                         value={this.state.saveValue}
                         onChangeText={this.onTextInputChange.bind(this)}
                     />
-
-                </View>  
+                </View>
             </View>
         );
     }
 }
-
-const styles = StyleSheet.create(
-    {
-        inputHolder: {
-            flex: 1, 
-            flexDirection: 'row', 
-            marginTop: 10, 
-            marginRight: 2
-        },
-        label: {
-            fontSize: 16,
-            padding: 10
-        },
-        mandatory: {
-            width: 10, 
-            height: 25, 
-            justifyContent: 'center', 
-            alignItems: 'center', 
-            marginTop: 5,
-        },
-
-    }
-);
 
 export default NumericType;

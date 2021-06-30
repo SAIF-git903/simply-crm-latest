@@ -1,55 +1,55 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import { SinglePickerMaterialDialog } from 'react-native-material-dialog';
 import { connect } from 'react-redux';
-import { COPY_CONTACT_ADDRESS } from '../../../actions/types';
+import { fontStyles, commonStyles } from '../../../styles/common';
 import { getUserName, getAddressDetails, getPriceDetails } from '../../../helper';
-
-
-const mapStateToProps = ({ recordViewer }) => {
-    const { label, recordId, uniqueId } = recordViewer;
-    return { label, recordId, uniqueId };
-};
 
 class ReferenceType extends Component {
     constructor(props) {
         super(props);
-        this.state = { 
-                        dialogueVisible: false,
-                        dialogueSelectedValue: undefined,
-                        referenceValue: '', 
-                        formId: 0,
-                        saveValue: this.props.obj.default,
-                        fieldName: this.props.obj.name,
-                        selectedRefModule: ''
-                     };
+        let val = (this.props.obj.defaultValue) ? this.props.obj.defaultValue.value : this.props.obj.default;
+        val = (this.props.obj.currentValue !== undefined) ? this.props.obj.currentValue : val;
+        let refVal = (this.props.obj.defaultValue) ? this.props.obj.defaultValue.label : '';
+        refVal = (this.props.obj.currentReferenceValue) ? this.props.obj.currentReferenceValue : refVal;
+        this.state = {
+            dialogueVisible: false,
+            dialogueSelectedValue: undefined,
+            referenceValue: refVal,
+            formId: 0,
+            saveValue: val,
+            fieldName: this.props.obj.name,
+            selectedRefModule: '',
+            reference: true
+        };
     }
 
-    componentWillMount() {
-        this.setState({ 
+    UNSAFE_componentWillMount() {
+        this.setState({
             formId: this.props.formId,
-            referenceValue: this.props.label
+            // referenceValue: (this.props.obj.defaultValue) ? this.props.obj.defaultValue.label : this.props.label
             //referenceValue: label
+        }, () => {
+            this.assignUserId();
         });
-        this.assignUserId();
     }
 
-    componentWillReceiveProps(newProps) {
+    UNSAFE_componentWillReceiveProps(newProps) {
         this.props = newProps;
-        
+
         if (this.state.formId === this.props.uniqueId) {
-            this.setState({ 
-                referenceValue: this.props.label, 
+            this.setState({
+                referenceValue: this.props.label,
                 saveValue: this.props.recordId,
                 uniqueId: this.props.uniqueId
-            }, () => { 
+            }, () => {
                 if (this.props.moduleName === 'Invoice') {
                     if (this.state.selectedRefModule === 'Contacts' || this.state.selectedRefModule === 'Accounts') {
-                        this.assignAddress(); 
+                        this.assignAddress();
                     }
-                    if (this.state.selectedRefModule === 'Products' || this.state.selectedRefModule === 'Services' ) {
+                    if (this.state.selectedRefModule === 'Products' || this.state.selectedRefModule === 'Services') {
                         this.assignPriceDetails();
-                    }  
+                    }
                 }
             });
         }
@@ -57,8 +57,11 @@ class ReferenceType extends Component {
 
     onReferencePress(type) {
         if (type.name === 'owner') {
-            const { navigate } = this.props.navigate;
-            navigate('ReferenceScreen', { selectedModule: 'Users', uniqueId: this.state.formId });
+            this.props.navigation.navigate('Reference Screen', {
+                selectedModule: 'Users',
+                uniqueId: this.state.formId,
+                moduleLable: this.props.validLabel
+            });
         } else {
             if (type.refersTo.length < 1) {
                 Alert.alert('Empty', 'No references');
@@ -66,32 +69,40 @@ class ReferenceType extends Component {
                 if (type.refersTo.length > 1) {
                     this.setState({ dialogueVisible: true });
                 } else {
-                    const { navigate } = this.props.navigate;
-                    this.setState({ selectedRefModule: type.refersTo[0] });
-                    navigate('ReferenceScreen', { selectedModule: type.refersTo[0], uniqueId: this.state.formId });
-                }       
-            } 
-        }     
+                    this.setState({
+                        selectedRefModule: type.refersTo[0]
+                    }, () => {
+                        this.props.navigation.navigate('Reference Screen', {
+                            selectedModule: type.refersTo[0],
+                            uniqueId: this.state.formId,
+                            moduleLable: this.props.validLabel
+                        });
+                    });
+                }
+            }
+        }
     }
- 
+
     assignUserId() {
+        //TODO disable for edit ??
         if (this.props.obj.name === 'assigned_user_id') {
-            getUserName(this);
+            //I comment this because I think it is not in use
+            // getUserName(this);
         }
     }
 
     assignAddress() {
+        //TODO disable for edit ??
         getAddressDetails(this, this.props.dispatch);
     }
 
     assignPriceDetails() {
+        //TODO disable for edit ??
         getPriceDetails(this);
     }
 
     render() {
-        const mandatory = this.props.obj.mandatory;
         const type = this.props.obj.type;
-        const { navigate } = this.props.navigate;
         const items = [];
         if (type.name !== 'owner') {
             const refersTo = type.refersTo;
@@ -99,104 +110,54 @@ class ReferenceType extends Component {
                 items.push({ label: row, value: index });
             });
         }
-        const amp = '&amp;';
 
-        const validLable = (this.props.obj.lable.indexOf(amp) !== -1) ? this.props.obj.lable.replace('&amp;', '&') : this.props.obj.lable; 
-
-        // if (this.props.obj.name === 'assigned_user_id') {
-        //     this.se
-        // }
         return (
-            <View style={styles.inputHolder}>
-            {
-                (mandatory) ? 
-                <View style={styles.mandatory}>
-                    <Text style={{ color: 'red', fontSize: 16 }}>*</Text>
-                </View>
-                :
-                // undefined
-                <View style={styles.mandatory} />
-            } 
-            
-                <View style={{ flex: 1, justifyContent: 'center' }}>
-                    <Text style={styles.label}>{validLable}</Text>
-                </View>
+            <View style={commonStyles.inputHolder}>
+                {this.props.fieldLabelView}
                 <View style={{ flex: 1 }}>
-                <TouchableOpacity onPress={this.onReferencePress.bind(this, type)} >
-                    <View style={styles.textbox}>
-                        <Text style={styles.text}>{this.state.referenceValue}</Text>
-                    </View>
-                </TouchableOpacity>
-                 
-                </View>  
-                
-            
+                    <TouchableOpacity onPress={this.onReferencePress.bind(this, type)}>
+                        <View style={commonStyles.textbox}>
+                            <Text numberOfLines={1} style={[commonStyles.text, fontStyles.fieldValue]}>
+                                {this.state.referenceValue}
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
                 <SinglePickerMaterialDialog
-                title={'Choose one'}
-                items={items}
-                visible={this.state.dialogueVisible}
-                selectedItem={this.state.dialogueSelectedValue}
-                onCancel={() => this.setState({ dialogueVisible: false })}
-                onOk={(result) => {
-                    //console.log(result);
-                    if (result.selectedItem === undefined) {
-                        //console.log('undefined');
+                    title={'Choose one'}
+                    items={items}
+                    visible={this.state.dialogueVisible}
+                    selectedItem={this.state.dialogueSelectedValue}
+                    onCancel={() => {
                         this.setState({ dialogueVisible: false });
-                    } else {
-                        navigate('ReferenceScreen', { selectedModule: result.selectedItem.label, uniqueId: this.state.formId });
-                        this.setState({ dialogueSelectedValue: result.selectedItem, selectedRefModule: result.selectedItem.label });
-                        this.setState({ dialogueVisible: false });
-                    }
-                }}
-                scrolled    
+                    }}
+                    onOk={(result) => {
+                        if (result.selectedItem === undefined) {
+                            this.setState({ dialogueVisible: false });
+                        } else {
+                            this.setState({
+                                dialogueSelectedValue: result.selectedItem,
+                                selectedRefModule: result.selectedItem.label,
+                                dialogueVisible: false
+                            }, () => {
+                                this.props.navigation.navigate('Reference Screen', {
+                                    selectedModule: result.selectedItem.label,
+                                    uniqueId: this.state.formId,
+                                    moduleLable: this.props.validLabel
+                                });
+                            });
+                        }
+                    }}
+                    scrolled
                 />
-                                    
             </View>
         );
     }
 }
 
-const styles = StyleSheet.create(
-    {
-        inputHolder: {
-            flex: 1, 
-            flexDirection: 'row', 
-            marginTop: 10, 
-            marginRight: 2
-        },
-        label: {
-            fontSize: 16,
-            padding: 10
-        },
-        mandatory: {
-            width: 10, 
-            height: 25, 
-            justifyContent: 'center', 
-            alignItems: 'center', 
-            marginTop: 5,
-        },
-        textbox: {
-            //paddingTop: 9,
-            borderColor: '#ABABAB',
-            borderWidth: 0.5,
-            padding: 0,
-            borderTopLeftRadius: 4,
-            borderTopRightRadius: 4,
-            borderBottomLeftRadius: 4,
-            borderBottomRightRadius: 4,
-            height: 38,
-            justifyContent: 'center'
-          },
-        text: {
-            fontSize: 14,
-            marginLeft: 5,
-            borderWidth: 0,
-            color: '#121212',
-        },
-    }
-);
+const mapStateToProps = ({ recordViewer }) => {
+    const { label, recordId, uniqueId } = recordViewer;
+    return { label, recordId, uniqueId };
+};
 
-
-export default connect(mapStateToProps, null, null, { withRef: true })(ReferenceType);
-// export default connect(mapStateToProps, null, null, { withRef: true })(ReferenceType);
-//export default ReferenceType;
+export default connect(mapStateToProps, null, null, { forwardRef: true })(ReferenceType);

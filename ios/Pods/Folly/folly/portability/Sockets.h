@@ -1,11 +1,11 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,60 +16,7 @@
 
 #pragma once
 
-#ifndef _WIN32
-#include <netdb.h>
-#include <poll.h>
-
-#include <arpa/inet.h>
-#include <netinet/in.h>
-#include <netinet/tcp.h>
-#include <sys/socket.h>
-#include <sys/un.h>
-#else
-#include <folly/portability/IOVec.h>
-#include <folly/portability/SysTypes.h>
-#include <folly/portability/Windows.h>
-
-#include <WS2tcpip.h>
-
-using nfds_t = int;
-using sa_family_t = ADDRESS_FAMILY;
-
-// We don't actually support either of these flags
-// currently.
-#define MSG_DONTWAIT 0x1000
-#define MSG_EOR 0
-struct msghdr {
-  void* msg_name;
-  socklen_t msg_namelen;
-  struct iovec* msg_iov;
-  size_t msg_iovlen;
-  void* msg_control;
-  size_t msg_controllen;
-  int msg_flags;
-};
-
-struct sockaddr_un {
-  sa_family_t sun_family;
-  char sun_path[108];
-};
-
-#define SHUT_RD SD_RECEIVE
-#define SHUT_WR SD_SEND
-#define SHUT_RDWR SD_BOTH
-
-// These are the same, but PF_LOCAL
-// isn't defined by WinSock.
-#define PF_LOCAL PF_UNIX
-
-// This isn't defined by Windows, and we need to
-// distinguish it from SO_REUSEADDR
-#define SO_REUSEPORT 0x7001
-
-// Someone thought it would be a good idea
-// to define a field via a macro...
-#undef s_host
-#endif
+#include <folly/net/NetOps.h>
 
 namespace folly {
 namespace portability {
@@ -87,8 +34,8 @@ using ::poll;
 using ::recv;
 using ::recvfrom;
 using ::send;
-using ::sendto;
 using ::sendmsg;
+using ::sendto;
 using ::setsockopt;
 using ::shutdown;
 using ::socket;
@@ -191,11 +138,12 @@ int setsockopt(
     const char* optval,
     socklen_t optlen);
 #endif
-}
-}
-}
+} // namespace sockets
+} // namespace portability
+} // namespace folly
 
 #ifdef _WIN32
 // Add our helpers to the overload set.
-/* using override */ using namespace folly::portability::sockets;
+/* using override */
+using namespace folly::portability::sockets;
 #endif

@@ -1,92 +1,55 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, } from 'react-native';
+import {View} from 'react-native';
 import DatePicker from 'react-native-datepicker';
+import { fontStyles, commonStyles } from '../../../styles/common';
 
 class TimeType extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { saveValue: '',
-                   fieldName: this.props.obj.name
-                 };
-  }
-
-  render() {
-    const mandatory = this.props.obj.mandatory;
-    const amp = '&amp;';
-
-    const validLable = (this.props.obj.lable.indexOf(amp) !== -1) ? this.props.obj.lable.replace('&amp;', '&') : this.props.obj.lable; 
-
-    return (
-        <View style={styles.inputHolder}>
-        {
-            (mandatory) ? 
-            <View style={styles.mandatory}>
-                <Text style={{ color: 'red', fontSize: 16 }}>*</Text>
-            </View>
-            :
-            // undefined
-            <View style={styles.mandatory} />
-        } 
-        
-            <View style={{ flex: 1, justifyContent: 'center' }}>
-                <Text style={styles.label}>{validLable}</Text>
-            </View>
-            <View style={{ flex: 1 }}>
-            <DatePicker
-                style={{ width: 200 }}
-                date={this.state.saveValue}
-                mode="time"
-                format="HH:mm"
-                confirmBtnText="Confirm"
-                cancelBtnText="Cancel"
-                minuteInterval={10}
-                placeholder=" "
-                customStyles={{
-                                dateText: {
-                                    alignSelf: 'flex-start',
-                                    color: '#121212',
-                                },
-                                dateInput: {
-                                    //paddingTop: 9,
-                                    borderColor: '#ABABAB',
-                                    borderWidth: 0.5,
-                                    padding: 0,
-                                    borderTopLeftRadius: 4,
-                                    borderTopRightRadius: 4,
-                                    borderBottomLeftRadius: 4,
-                                    borderBottomRightRadius: 4,
-                                    height: 38,
-                                    justifyContent: 'center'
-
-                                }
-                            }}
-                onDateChange={(time) => { this.setState({ saveValue: time }); }}
-            />
-            </View>  
-        </View>
-    );
-  }
-}
-const styles = StyleSheet.create(
-    {
-        inputHolder: {
-            flex: 1, 
-            flexDirection: 'row', 
-            marginTop: 10, 
-            marginRight: 2
-        },
-        label: {
-            fontSize: 16,
-            padding: 10
-        },
-        mandatory: {
-            width: 10, 
-            height: 25, 
-            justifyContent: 'center', 
-            alignItems: 'center', 
-            marginTop: 5,
-        },
+    constructor(props) {
+        super(props);
+        this.state = {
+            saveValue: (this.props.obj.currentValue !== undefined) ? this.props.obj.currentValue : '',
+            fieldName: this.props.obj.name
+        };
     }
-);
+
+    render() {
+        return (
+            <View style={commonStyles.inputHolder}>
+                {this.props.fieldLabelView}
+                <View style={{ flex: 1 }}>
+                    <DatePicker
+                        style={{ width: '100%' }}
+                        // style={{ width: 200 }}
+                        date={this.state.saveValue}
+                        mode="time"
+                        format="HH:mm"
+                        confirmBtnText="Confirm"
+                        cancelBtnText="Cancel"
+                        minuteInterval={10}
+                        placeholder=" "
+                        customStyles={{
+                            dateText: [fontStyles.fieldValue, { alignSelf: 'flex-start', paddingLeft: 10 }],
+                            dateInput: {
+                                //paddingTop: 9,
+                                borderColor: '#ABABAB',
+                                borderWidth: 0.5,
+                                padding: 0,
+                                borderTopLeftRadius: 4,
+                                borderTopRightRadius: 4,
+                                borderBottomLeftRadius: 4,
+                                borderBottomRightRadius: 4,
+                                height: 38,
+                                justifyContent: 'center'
+                            }
+                        }}
+                        onDateChange={(time) => {
+                            this.setState({ saveValue: time });
+                        }}
+                    />
+                </View>
+            </View>
+        );
+    }
+}
 
 export default TimeType;

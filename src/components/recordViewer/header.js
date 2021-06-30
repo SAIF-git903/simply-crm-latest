@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { commonStyles } from '../../styles/common';
-import { HEADER_TEXT_COLOR, HEADER_IMAGE_COLOR,
-HEADER_IMAGE_SELECTED_COLOR } from '../../variables/themeColors';
+import { View, Image, Text, TouchableOpacity } from 'react-native';
+import SafeAreaView from 'react-native-safe-area-view';
+import Icon from 'react-native-vector-icons/FontAwesome5Pro';
+
+import { commonStyles, fontStyles } from '../../styles/common';
+import {
+    HEADER_IMAGE_COLOR,
+} from '../../variables/themeColors';
 
 class Header extends Component {
     componentDidMount() {
@@ -22,13 +26,14 @@ class Header extends Component {
             if (this.props.isPortrait) {
                 return (
                     <TouchableOpacity onPress={this.onBackButtonPress.bind(this)}>
-                        <Image 
-                        source={{ uri: 'leftarrow' }}
-                        style={{ 
-                            width: 30,
-                            resizeMode: 'contain',  
-                            tintColor: HEADER_IMAGE_COLOR,
-                            height: 40 }}
+                        <Image
+                            source={{ uri: 'leftarrow' }}
+                            style={{
+                                width: 30,
+                                resizeMode: 'contain',
+                                tintColor: HEADER_IMAGE_COLOR,
+                                height: 40
+                            }}
                         />
                     </TouchableOpacity>
                 );
@@ -37,14 +42,13 @@ class Header extends Component {
         } else {
             //This is phone
             return (
-                <TouchableOpacity onPress={this.onBackButtonPress.bind(this)}>
-                    <Image 
-                    source={{ uri: 'leftarrow' }}
-                    style={{ 
-                        width: 30,
-                        resizeMode: 'contain',  
-                        tintColor: HEADER_IMAGE_COLOR,
-                        height: 40 }}
+                <TouchableOpacity
+                    onPress={this.onBackButtonPress.bind(this)}
+                >
+                    <Icon
+                        name='angle-left'
+                        size={28}
+                        color='white'
                     />
                 </TouchableOpacity>
             );
@@ -54,23 +58,29 @@ class Header extends Component {
     render() {
         return (
             <View style={commonStyles.headerBackground}>
-                {
-                    this.renderBackButton()
-                }
-                <Text style={styles.headerTextStyle}>Record Details</Text>
+                <SafeAreaView
+                    forceInset={{ top: 'always', bottom: 'never' }}
+                >
+                    <View style={commonStyles.headerContentStyle}>
+                        <View style={{ width: 40 }}>
+                            {
+                                this.renderBackButton()
+                            }
+                        </View>
+                        <View style={{ flex: 1, marginRight: 40 }} >
+                            <Text
+                                style={fontStyles.navbarTitle}
+                                pointerEvents={'none'}
+                            >
+                                Record Details
+                    </Text>
+                        </View>
+                    </View>
+                </SafeAreaView>
             </View>
         );
     }
 }
-
-const styles = StyleSheet.create({
-    headerTextStyle: {
-        color: HEADER_TEXT_COLOR,
-        flex: 1,
-        fontSize: 15,
-        textAlign: 'center'
-    }
-});
 
 const mapStateToProp = ({ event }) => {
     const { isPortrait, width, height } = event;

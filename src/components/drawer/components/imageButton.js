@@ -1,109 +1,77 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { View, StyleSheet, TouchableOpacity, Text, Platform, Image } from 'react-native';
-// import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-// import { faBuilding, faUser, faTachometerAlt } from '@fortawesome/pro-regular-svg-icons';
-import { drawerButtonPress } from '../../../actions'; 
-import { DRAWER_MODULE_BUTTON_TEXT_SELECTED_COLOR, DRAWER_SECTION_HEADER_TEXT_COLOR,
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+import { View, TouchableOpacity, Text } from 'react-native';
+import { drawerButtonPress } from '../../../actions';
+import {
+    DRAWER_MODULE_BUTTON_TEXT_SELECTED_COLOR, DRAWER_SECTION_HEADER_TEXT_COLOR,
     DRAWER_SECTION_HEADER_IMAGE_COLOR
-} from '../../../variables/themeColors';   
-import { ACCOUNTS, CONTACTS, HOME } from '../../../variables/constants';
+} from '../../../variables/themeColors';
+import { HOME, CALENDAR } from '../../../variables/constants';
+import { fontStyles } from '../../../styles/common';
+import Icon from 'react-native-vector-icons/FontAwesome5Pro';
 
-class ImageButton extends Component {
-    
-    constructor(props) {
-        super(props);
-        // this.state = { iconName: faTachometerAlt };
-    }
+export default function ImageButton({icon, type, label, module}) {
+    const { selectedButton } = useSelector(state => state.drawer);
+    const dispatch = useDispatch();
+    const navigation = useNavigation();
 
-    componentWillMount() {
-        this.assignIcons();
-    }
-
-    onButtonPress() {
-        if (this.props.type === HOME) {
-            this.props.dispatch(drawerButtonPress(this.props.type));
-        } else {
-            this.props.dispatch(drawerButtonPress(this.props.module.name, 
-                this.props.module.label, this.props.module.id));
-        }   
-    }
-
-    assignIcons() {
-        switch (this.props.type) {
-            case ACCOUNTS:
-                // this.setState({ iconName: faBuilding });
+    function onButtonPress() {
+        switch (type) {
+            case HOME:
+                dispatch(drawerButtonPress(type));
+                navigation.navigate('Dashboard');
                 break;
-           
-            case CONTACTS: 
-                // this.setState({ iconName: faUser });
+            case CALENDAR:
+                dispatch(drawerButtonPress(
+                    module.name,
+                    module.label,
+                    module.id
+                ));
+                navigation.navigate('Calendar', {
+                    moduleName: module.name,
+                    moduleLable: module.label,
+                    moduleId: module.id
+                });
                 break;
-           
             default:
-
-
-        } 
+                dispatch(drawerButtonPress(
+                    module.name,
+                    module.label,
+                    module.id
+                ));
+                navigation.navigate('Records', {
+                    moduleName: module.name,
+                    moduleLable: module.label,
+                    moduleId: module.id
+                });
+                break;
+        }
     }
 
-
-    render() {
-        // console.log(this.props.selectedButton, this.props.type);
-        return (
-            <TouchableOpacity 
-                style={{ flex: 1, marginTop: (Platform.OS === 'ios' && this.props.type === HOME) ? 30 : 0, paddingBottom: (Platform.OS === 'ios' && this.props.type === HOME) ? 15 : 0 }} 
-                onPress={this.onButtonPress.bind(this)}
-            >
-                <View 
-                style={{ 
+    return (
+        <TouchableOpacity
+            style={{ flex: 1 }}
+            onPress={() => onButtonPress()}
+        >
+            <View
+                style={{
                     flexDirection: 'row',
                     flex: 1,
                     alignItems: 'center',
-                  
-                    }}
-                >
-{/*             
-                    <View style={styles.imageStyle}>
-                        <FontAwesomeIcon icon={this.state.iconName} size={23} color={(this.props.selectedButton !== this.props.type) ? DRAWER_SECTION_HEADER_TEXT_COLOR : DRAWER_MODULE_BUTTON_TEXT_SELECTED_COLOR} />
-                    </View> */}
-                    
-                    
-                    <Image 
-                    source={{ uri: this.props.type.toLowerCase() }} 
-                    style={[styles.imageStyle, { tintColor: (this.props.selectedButton !== this.props.type) ? DRAWER_SECTION_HEADER_TEXT_COLOR : DRAWER_MODULE_BUTTON_TEXT_SELECTED_COLOR }]}
-                     
+                }}
+            >
+                <View style={{ paddingLeft: 15, width: 46 }}>
+                    <Icon
+                        name={icon}
+                        size={20}
+                        color={(selectedButton !== type) ? DRAWER_SECTION_HEADER_TEXT_COLOR : DRAWER_MODULE_BUTTON_TEXT_SELECTED_COLOR}
                     />
-                
-                
-                    <Text style={(this.props.selectedButton === this.props.type) ? styles.textSelectedStyle : styles.textStyle}>{this.props.label}</Text>
                 </View>
-            </ TouchableOpacity>
-
-        );  
-    }
+                <Text style={[fontStyles.drawerMenuButtonText, { color: selectedButton === type ? DRAWER_MODULE_BUTTON_TEXT_SELECTED_COLOR : DRAWER_SECTION_HEADER_IMAGE_COLOR }]}>
+                    {label}
+                </Text>
+            </View>
+        </ TouchableOpacity>
+    );
 }
-
-const styles = StyleSheet.create({
-    imageStyle: {
-        height: 20,
-        width: 20,
-        marginRight: 10,
-        marginLeft: 10
-    },
-    
-    textStyle: {
-        color: DRAWER_SECTION_HEADER_IMAGE_COLOR,
-        fontSize: 16,
-
-    },
-    textSelectedStyle: {
-        color: DRAWER_MODULE_BUTTON_TEXT_SELECTED_COLOR,
-        fontSize: 16
-    }
-});
-
-const mapStateToProps = ({ drawer }) => {
-    const { selectedButton } = drawer;
-    return { selectedButton };    
-};
-
-export default connect(mapStateToProps)(ImageButton);

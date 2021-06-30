@@ -1,11 +1,11 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,10 +17,15 @@
 #pragma once
 
 #ifndef _WIN32
+
 #include <unistd.h>
+
 #else
+
 #include <cstdint>
-#include <sys/locking.h>
+
+#include <sys/locking.h> // @manual
+
 #include <folly/portability/SysTypes.h>
 
 // This is different from the normal headers because there are a few cases,
@@ -68,24 +73,23 @@ pid_t getppid();
 int getuid();
 int isatty(int fh);
 int lockf(int fd, int cmd, off_t len);
-long lseek(int fh, long off, int orig);
-int read(int fh, void* buf, unsigned int mcc);
+off_t lseek(int fh, off_t off, int orig);
+ssize_t read(int fh, void* buf, size_t mcc);
 int rmdir(const char* path);
 int pipe(int pth[2]);
-int pread(int fd, void* buf, size_t count, off_t offset);
-int pwrite(int fd, const void* buf, size_t count, off_t offset);
+ssize_t pread(int fd, void* buf, size_t count, off_t offset);
+ssize_t pwrite(int fd, const void* buf, size_t count, off_t offset);
 ssize_t readlink(const char* path, char* buf, size_t buflen);
-int setmode(int fh, int md);
 void* sbrk(intptr_t i);
 unsigned int sleep(unsigned int seconds);
-size_t sysconf(int tp);
-long tell(int fh);
+long sysconf(int tp);
 int truncate(const char* path, off_t len);
 int usleep(unsigned int ms);
-int write(int fh, void const* buf, unsigned int mcc);
-}
-}
-}
+ssize_t write(int fh, void const* buf, size_t count);
+} // namespace unistd
+} // namespace portability
+} // namespace folly
 
 /* using override */ using namespace folly::portability::unistd;
+
 #endif

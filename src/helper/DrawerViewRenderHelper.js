@@ -1,57 +1,85 @@
 import React from 'react';
-import { HOME, LOGOUT, MARKETING, SALES, INVENTORY, TOOLS,
-SUPPORT, PROJECT, CUSTOM, CALENDAR, MARKETING_IMAGE, SALES_IMAGE, INVENTORY_IMAGE,
-SUPPORT_IMAGE, PROJECT_IMAGE, CUSTOM_IMAGE,
-DRAWER_COLUMN_TOTAL_HEIGHT, ACCOUNTS, LEADS, CAMPAIGNS, CONTACTS, QUOTES, PRODUCTS, 
-SERVICES, ASSETS, SMS_NOTIFIER, OPPORTUNITIES, SALESORDER, 
-INVOICE, VENDORS, PRICEBOOKS, PURCHASEORDER, TICKETS, 
-FAQ, SERVICECONTRACTS, MODULE_PROJECT, PROJECT_TASK, PROJECT_MILESTONE,
-PBXMANAGER, 
-DOCUMENTS, REPORTS, EMAILS, TOOLS_IMAGE } from '../variables/constants';
+import {
+    HOME, LOGOUT, MARKETING, SALES, INVENTORY, TOOLS,
+    SUPPORT, PROJECT, CUSTOM, CALENDAR, MARKETING_IMAGE, SALES_IMAGE, INVENTORY_IMAGE,
+    SUPPORT_IMAGE, PROJECT_IMAGE, CUSTOM_IMAGE,
+    DRAWER_COLUMN_TOTAL_HEIGHT, ACCOUNTS, LEADS, CAMPAIGNS, CONTACTS, QUOTES, PRODUCTS,
+    SERVICES, ASSETS, SMS_NOTIFIER, OPPORTUNITIES, SALESORDER,
+    INVOICE, VENDORS, PRICEBOOKS, PURCHASEORDER, TICKETS,
+    FAQ, SERVICECONTRACTS, MODULE_PROJECT, PROJECT_TASK, PROJECT_MILESTONE,
+    PBXMANAGER,
+    DOCUMENTS, REPORTS, EMAILS, TOOLS_IMAGE
+} from '../variables/constants';
 import ImageButton from '../components/drawer/components/imageButton';
 import Menu from '../components/drawer/components/menu';
 import Section from '../components/common/section';
 import SectionHolder from '../components/drawer/components/sectionHolder';
-import { DRAWER_SECTION_BACKGROUND_COLOR, DRAWER_SECTION_HEADER_BACKGROUND_COLOR,
+import {
+    DRAWER_SECTION_BACKGROUND_COLOR, DRAWER_SECTION_HEADER_BACKGROUND_COLOR,
     DRAWER_SECTION_HEADER_IMAGE_SELECTED_COLOR, DRAWER_SECTION_HEADER_IMAGE_COLOR,
-    DRAWER_SECTION_HEADER_TEXT_COLOR } from '../variables/themeColors';
+    DRAWER_SECTION_HEADER_TEXT_COLOR
+} from '../variables/themeColors';
 import MenuHolder from '../components/drawer/layouts/menuHolder';
-// import { faTools } from '@fortawesome/pro-regular-svg-icons';
-
 
 export const renderDrawerView = async (loginDetails, drawerInstance) => {
     const drawerViews = [];
-    
 
-    //.................................................................................
-
-    let homeButton = <ImageButton type={HOME} label={HOME} key='home_menu' />;
-    
+    let homeButton = (
+        <ImageButton
+            navigation={drawerInstance.props.navigation}
+            type={HOME}
+            label={HOME}
+            key='home_menu'
+            icon={'home'}
+        />
+    );
     let menuButtons = [homeButton];
-    
-    let menu = <Menu key='menu1'>{menuButtons}</Menu>;
-
+    let menu = (
+        <Menu key='menu1'>
+            {menuButtons}
+        </Menu>
+    );
     drawerViews.push(menu);
 
     // console.log(loginDetails);
     for (const module of loginDetails.modules) {
         if (module.name === CONTACTS) {
-            homeButton = <ImageButton type={CONTACTS} label={module.label} module={module} key='contact_menu' />;
-        
+            homeButton = (
+                <ImageButton
+                    navigation={drawerInstance.props.navigation}
+                    type={CONTACTS}
+                    label={module.label}
+                    module={module}
+                    key='contact_menu'
+                    icon={'user'}
+                />
+            );
             menuButtons = [homeButton];
-        
-            menu = <Menu key='menu2'>{menuButtons}</Menu>;
-
+            menu = (
+                <Menu key='menu2'>
+                    {menuButtons}
+                </Menu>
+            );
             drawerViews.push(menu);
         }
 
         if (module.name === ACCOUNTS) {
-            homeButton = <ImageButton type={ACCOUNTS} label={module.label} module={module} key='account_menu' />;
-        
+            homeButton = (
+                <ImageButton
+                    navigation={drawerInstance.props.navigation}
+                    type={ACCOUNTS}
+                    label={module.label}
+                    module={module}
+                    key='account_menu'
+                    icon={'building'}
+                />
+            );
             menuButtons = [homeButton];
-        
-            menu = <Menu key='menu3'>{menuButtons}</Menu>;
-
+            menu = (
+                <Menu key='menu3'>
+                    {menuButtons}
+                </Menu>
+            );
             drawerViews.push(menu);
         }
     }
@@ -68,115 +96,128 @@ export const renderDrawerView = async (loginDetails, drawerInstance) => {
 
     // console.log('Modules', loginDetails.modules);
 
-    getSectionContent(marketSectionContent, salesSectionContent, inventorySectionContent, 
-    supportSectionContent, projectSectionContent, toolsSectionContent, customSectionContent, loginDetails.modules);
+    getSectionContent(marketSectionContent, salesSectionContent, inventorySectionContent,
+        supportSectionContent, projectSectionContent, toolsSectionContent, customSectionContent, loginDetails.modules);
 
     const marketingSection = (<Section
-    sectionBackgroundColor={DRAWER_SECTION_BACKGROUND_COLOR}
-    sectionHeaderBackground={DRAWER_SECTION_HEADER_BACKGROUND_COLOR}
-    sectionHeaderTextColor={DRAWER_SECTION_HEADER_TEXT_COLOR}
-    sectionHeaderImageColor={DRAWER_SECTION_HEADER_IMAGE_COLOR}
-    sectionHeaderImageSelectedColor={DRAWER_SECTION_HEADER_IMAGE_SELECTED_COLOR}  
-    headerName={MARKETING} imageName={MARKETING_IMAGE}
-    headerImage content={marketSectionContent} 
-    contentHeight={marketSectionContent[0].length * DRAWER_COLUMN_TOTAL_HEIGHT}
-    />);
-
-    const salesSection = (<Section
+        drawerMenu={true}
         sectionBackgroundColor={DRAWER_SECTION_BACKGROUND_COLOR}
         sectionHeaderBackground={DRAWER_SECTION_HEADER_BACKGROUND_COLOR}
         sectionHeaderTextColor={DRAWER_SECTION_HEADER_TEXT_COLOR}
         sectionHeaderImageColor={DRAWER_SECTION_HEADER_IMAGE_COLOR}
-        sectionHeaderImageSelectedColor={DRAWER_SECTION_HEADER_IMAGE_SELECTED_COLOR}  
+        sectionHeaderImageSelectedColor={DRAWER_SECTION_HEADER_IMAGE_SELECTED_COLOR}
+        headerName={MARKETING} imageName={MARKETING_IMAGE}
+        headerImage content={marketSectionContent}
+        contentHeight={marketSectionContent[0].length * DRAWER_COLUMN_TOTAL_HEIGHT}
+        key='marketing_section'
+    />);
+
+    const salesSection = (<Section
+        drawerMenu={true}
+        sectionBackgroundColor={DRAWER_SECTION_BACKGROUND_COLOR}
+        sectionHeaderBackground={DRAWER_SECTION_HEADER_BACKGROUND_COLOR}
+        sectionHeaderTextColor={DRAWER_SECTION_HEADER_TEXT_COLOR}
+        sectionHeaderImageColor={DRAWER_SECTION_HEADER_IMAGE_COLOR}
+        sectionHeaderImageSelectedColor={DRAWER_SECTION_HEADER_IMAGE_SELECTED_COLOR}
         headerName={SALES} imageName={SALES_IMAGE}
-        headerImage content={salesSectionContent} 
+        headerImage content={salesSectionContent}
         contentHeight={salesSectionContent[0].length * DRAWER_COLUMN_TOTAL_HEIGHT}
         key='sales_section'
     />);
 
-    const inventorySection = (<Section 
+    const inventorySection = (<Section
+        drawerMenu={true}
         sectionBackgroundColor={DRAWER_SECTION_BACKGROUND_COLOR}
         sectionHeaderBackground={DRAWER_SECTION_HEADER_BACKGROUND_COLOR}
         sectionHeaderTextColor={DRAWER_SECTION_HEADER_TEXT_COLOR}
         sectionHeaderImageColor={DRAWER_SECTION_HEADER_IMAGE_COLOR}
-        sectionHeaderImageSelectedColor={DRAWER_SECTION_HEADER_IMAGE_SELECTED_COLOR} 
-        headerName={INVENTORY} imageName={INVENTORY_IMAGE} 
-        headerImage content={inventorySectionContent} 
+        sectionHeaderImageSelectedColor={DRAWER_SECTION_HEADER_IMAGE_SELECTED_COLOR}
+        headerName={INVENTORY} imageName={INVENTORY_IMAGE}
+        headerImage content={inventorySectionContent}
         contentHeight={inventorySectionContent[0].length * DRAWER_COLUMN_TOTAL_HEIGHT}
+        key='inventory_section'
     />);
 
     const supportSection = (<Section
+        drawerMenu={true}
         sectionBackgroundColor={DRAWER_SECTION_BACKGROUND_COLOR}
         sectionHeaderBackground={DRAWER_SECTION_HEADER_BACKGROUND_COLOR}
         sectionHeaderTextColor={DRAWER_SECTION_HEADER_TEXT_COLOR}
         sectionHeaderImageColor={DRAWER_SECTION_HEADER_IMAGE_COLOR}
-        sectionHeaderImageSelectedColor={DRAWER_SECTION_HEADER_IMAGE_SELECTED_COLOR} 
+        sectionHeaderImageSelectedColor={DRAWER_SECTION_HEADER_IMAGE_SELECTED_COLOR}
         headerName={SUPPORT} imageName={SUPPORT_IMAGE}
-        headerImage content={supportSectionContent} 
+        headerImage content={supportSectionContent}
         contentHeight={supportSectionContent[0].length * DRAWER_COLUMN_TOTAL_HEIGHT}
+        key='support_section'
     />);
 
-    const projectSection = (<Section 
+    const projectSection = (<Section
+        drawerMenu={true}
         sectionBackgroundColor={DRAWER_SECTION_BACKGROUND_COLOR}
-        sectionHeaderBackground={DRAWER_SECTION_HEADER_BACKGROUND_COLOR} 
+        sectionHeaderBackground={DRAWER_SECTION_HEADER_BACKGROUND_COLOR}
         sectionHeaderTextColor={DRAWER_SECTION_HEADER_TEXT_COLOR}
         sectionHeaderImageColor={DRAWER_SECTION_HEADER_IMAGE_COLOR}
         sectionHeaderImageSelectedColor={DRAWER_SECTION_HEADER_IMAGE_SELECTED_COLOR}
         headerName={PROJECT} imageName={PROJECT_IMAGE}
         headerImage content={projectSectionContent}
-        contentHeight={projectSectionContent.length * DRAWER_COLUMN_TOTAL_HEIGHT} 
+        contentHeight={projectSectionContent[0].length * DRAWER_COLUMN_TOTAL_HEIGHT}
+        key='project_section'
     />);
 
-    const toolsSection = (<Section 
+    const toolsSection = (<Section
+        drawerMenu={true}
         sectionBackgroundColor={DRAWER_SECTION_BACKGROUND_COLOR}
-        sectionHeaderBackground={DRAWER_SECTION_HEADER_BACKGROUND_COLOR} 
+        sectionHeaderBackground={DRAWER_SECTION_HEADER_BACKGROUND_COLOR}
         sectionHeaderTextColor={DRAWER_SECTION_HEADER_TEXT_COLOR}
         sectionHeaderImageColor={DRAWER_SECTION_HEADER_IMAGE_COLOR}
         sectionHeaderImageSelectedColor={DRAWER_SECTION_HEADER_IMAGE_SELECTED_COLOR}
         headerName={TOOLS} imageName={TOOLS_IMAGE}
         headerImage content={toolsSectionContent}
-        contentHeight={toolsSectionContent[0].length * DRAWER_COLUMN_TOTAL_HEIGHT} 
+        contentHeight={toolsSectionContent[0].length * DRAWER_COLUMN_TOTAL_HEIGHT}
         key='tools_section'
     />);
 
-    const customSection = (<Section 
+    const customSection = (<Section
+        drawerMenu={true}
         sectionBackgroundColor={DRAWER_SECTION_BACKGROUND_COLOR}
         sectionHeaderBackground={DRAWER_SECTION_HEADER_BACKGROUND_COLOR}
         sectionHeaderTextColor={DRAWER_SECTION_HEADER_TEXT_COLOR}
         sectionHeaderImageColor={DRAWER_SECTION_HEADER_IMAGE_COLOR}
-        sectionHeaderImageSelectedColor={DRAWER_SECTION_HEADER_IMAGE_SELECTED_COLOR} 
+        sectionHeaderImageSelectedColor={DRAWER_SECTION_HEADER_IMAGE_SELECTED_COLOR}
         headerName={CUSTOM} imageName={CUSTOM_IMAGE}
-        headerImage content={customSectionContent} 
+        headerImage content={customSectionContent}
         contentHeight={customSectionContent[0].length * DRAWER_COLUMN_TOTAL_HEIGHT}
+        key='custom_section'
     />);
-    
+
     // console.log('len', marketSectionContent.length);
     const section = [];
-    if (marketSectionContent.length > 0) {
-        //section.push(marketingSection);
+
+    if (marketSectionContent[0].length > 0) {
+        section.push(marketingSection);
     }
 
-    if (salesSectionContent.length > 0) {
+    if (salesSectionContent[0].length > 0) {
         section.push(salesSection);
     }
 
-    if (inventorySectionContent.length > 0) {
-        //section.push(inventorySection);
+    if (inventorySectionContent[0].length > 0) {
+        section.push(inventorySection);
     }
 
-    if (supportSectionContent.length > 0) {
-        //section.push(supportSection);
+    if (supportSectionContent[0].length > 0) {
+        section.push(supportSection);
     }
 
-    if (projectSectionContent.length > 0) {
-        //section.push(projectSection);
+    if (projectSectionContent[0].length > 0) {
+        section.push(projectSection);
     }
 
-    if (toolsSectionContent.length > 0) {
+    if (toolsSectionContent[0].length > 0) {
         section.push(toolsSection);
     }
 
-    if (customSectionContent.length > 0) {
+    if (customSectionContent[0].length > 0) {
         //section.push(customSection);
     }
 
@@ -188,7 +229,7 @@ export const renderDrawerView = async (loginDetails, drawerInstance) => {
 };
 
 const getSectionContent = (marketingSectionContent, salesSectionContent, inventorySectionContent,
-supportSectionContent, projectSectionContent, toolsSectionContent, customSectionContent, modules) => {
+    supportSectionContent, projectSectionContent, toolsSectionContent, customSectionContent, modules) => {
     const marketModulesButtons = [];
     const salesModulesButtons = [];
     const inventoryModulesButtons = [];
@@ -200,85 +241,119 @@ supportSectionContent, projectSectionContent, toolsSectionContent, customSection
     for (const module of modules) {
         if (module.name !== CONTACTS && module.name !== ACCOUNTS) {
             const moduleSectionType = drawerButtonArrangeHelper(module.name);
-     
+
             switch (moduleSectionType) {
                 case MARKETING:
-                    //fillSection(marketModulesButtons, module, false);
+                    fillSection(marketModulesButtons, module, false);
                     break;
                 case SALES:
                     fillSection(salesModulesButtons, module, false);
                     break;
                 case INVENTORY:
-                    //fillSection(inventoryModulesButtons, module, false);
+                    fillSection(inventoryModulesButtons, module, false);
                     break;
                 case SUPPORT:
-                    //fillSection(supportModulesButtons, module, false);
+                    fillSection(supportModulesButtons, module, false);
                     break;
                 case PROJECT:
-                    //fillSection(projectModulesButtons, module, false);
+                    fillSection(projectModulesButtons, module, false);
                     break;
                 case TOOLS:
                     fillSection(toolsModulesButtons, module, false);
                     break;
                 case CUSTOM:
-                    //fillSection(customModulesButtons, module, true);
+                    // fillSection(customModulesButtons, module, true);
                     break;
                 default:
-                    //fillSection(customModulesButtons, module, true);
-                    
-            }   
+                //fillSection(customModulesButtons, module, true);
+
+            }
         }
     }
 
-    marketingSectionContent.push(marketModulesButtons); 
-    salesSectionContent.push(salesModulesButtons);  
+    marketingSectionContent.push(marketModulesButtons);
+    salesSectionContent.push(salesModulesButtons);
     inventorySectionContent.push(inventoryModulesButtons);
-    supportSectionContent.push(supportModulesButtons);  
-    projectSectionContent.push(projectModulesButtons); 
-    toolsSectionContent.push(toolsModulesButtons); 
+    supportSectionContent.push(supportModulesButtons);
+    projectSectionContent.push(projectModulesButtons);
+    toolsSectionContent.push(toolsModulesButtons);
     customSectionContent.push(customModulesButtons);
 };
 
 const fillSection = (moduleButtons, module, custom) => {
-    moduleButtons.push(getMenuHolder(module, custom)); 
+    moduleButtons.push(getMenuHolder(module, custom));
 };
 
-const getMenuHolder = (module, custom) => <MenuHolder module={module} custom={custom} />;
+const getMenuHolder = (module, custom) => <MenuHolder key={module.name} module={module} custom={custom} />;
 const drawerButtonArrangeHelper = (name) => {
     switch (name) {
         // case ACCOUNTS:
-        // case LEADS:
-        // case CAMPAIGNS:
+        case LEADS:
+            return INVENTORY;
+        case CAMPAIGNS:
+            {
+                return MARKETING;
+            }
         // case CONTACTS:
-        // case CALENDAR:
-        //     return MARKETING;
-        //case QUOTES:
+        case CALENDAR:
+            {
+                return SALES;
+            }
+        case QUOTES:
+            {
+                return INVENTORY;
+            }
         case PRODUCTS:
+        case SERVICES:
         case INVOICE:
         case OPPORTUNITIES:
-        //case SERVICES:
-        //case SMS_NOTIFIER:
-            return SALES;
-        // case SALESORDER:
-        // case VENDORS:
-        // case PRICEBOOKS:
-        // case PURCHASEORDER:
+            //case SMS_NOTIFIER:
+            {
+                return SALES;
+            }
+        case SALESORDER:
+            {
+                return INVENTORY;
+            }
+        case VENDORS:
+        case PRICEBOOKS:
+            {
+                return INVENTORY;
+            }
+        case PURCHASEORDER:
+            {
+                return INVENTORY;
+            }
         //     return INVENTORY;
-        // case TICKETS:
-        // case FAQ:
-        // case SERVICECONTRACTS:
-        // case ASSETS:
+        case TICKETS:
+            { return SUPPORT; }
+        case FAQ:
+            { return SUPPORT; }
+        case SERVICECONTRACTS:
+            { return SUPPORT; }
+
+        case ASSETS:
+            { return SUPPORT; }
         //     return SUPPORT;
-        // case MODULE_PROJECT:
-        // case PROJECT_TASK:
-        // case PROJECT_MILESTONE:
+        case MODULE_PROJECT:
+            {
+                return PROJECT;
+            }
+        case PROJECT_TASK:
+            {
+                return PROJECT;
+            }
+        case PROJECT_MILESTONE:
+            {
+                return PROJECT;
+            }
         // case PBXMANAGER:
         //     return PROJECT;
         case DOCUMENTS:
-        // case EMAILS:
+        case EMAILS:
         case REPORTS:
             return TOOLS;
         default:
-            //return CUSTOM;
+        //return CUSTOM;
     }
 };

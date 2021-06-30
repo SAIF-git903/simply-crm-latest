@@ -45,9 +45,9 @@ export const MODULE_PROJECT = 'Project';
 export const COMMENTS = 'ModComments';
 export const CURRENCY = 'Currency';
 export const EMAILS = 'Emails';
-export const REPORT = 'Reports';
+export const REPORTS = 'Reports';
 export const DOCUMENTFOLDERS = 'DocumentFolders';
-
+export const USERS = 'Users';
 
 export const HOME = 'Dashboard';
 export const PROFILE = 'profile';

@@ -1,122 +1,77 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { DatePickerDialog } from 'react-native-datepicker-dialog';
 import moment from 'moment';
+import { fontStyles, commonStyles } from '../../../styles/common';
 
 class DateType extends Component {
     constructor(props) {
         super(props);
-        this.state = { 
-                       pickDate: null,
-                       saveValue: this.props.obj.default,
-                       fieldName: this.props.obj.name 
-                     };
+// console.log('--component data--');
+// console.log(this.props.obj.type.format);
+// console.log(this.props.obj.currentValue);
+        const formatDate = this.props.obj.type.format.toUpperCase();
+        let val = (this.props.obj.currentValue !== undefined) ? this.props.obj.currentValue : this.props.obj.default;
+        this.state = {
+            pickDate: null,
+            saveValue: (val) ? moment(val).format(formatDate) : '',
+            fieldName: this.props.obj.name,
+            formatDate: formatDate
+        };
     }
+
     onDatePress = () => {
         let pickedDate = this.state.pickDate;
         const dob = this.props.obj.name;
-        
-        if (!pickedDate || pickedDate == null) {
-          pickedDate = new Date();
-          this.setState({
-            pickDate: pickedDate
-          });
+
+        if (!pickedDate) {
+            pickedDate = new Date();
+            this.setState({
+                pickDate: pickedDate
+            });
         }
         if (dob === 'birthday') {
-             //To open the dialog
+            //To open the dialog
             this.refs.dateDialog.open({
-            date: pickedDate,
-            maxDate: new Date() //To restirct future date
-          });
+                date: pickedDate,
+                maxDate: new Date() //To restrict future date
+            });
         } else {
             //To open the dialog
             this.refs.dateDialog.open({
                 date: pickedDate,
-              });
-        } 
+            });
+        }
     }
 
     onDatePicked = (date) => {
         //Here you will get the selected date
-        const formatDate = this.props.obj.type.format.toUpperCase();
         this.setState({
-          pickDate: date,
-          saveValue: moment(date).format(formatDate)
+            pickDate: date,
+            saveValue: moment(date).format(this.state.formatDate)
         });
     }
+
     render() {
-        const mandatory = this.props.obj.mandatory;
-        const amp = '&amp;';
-
-        const validLable = (this.props.obj.lable.indexOf(amp) !== -1) ? this.props.obj.lable.replace('&amp;', '&') : this.props.obj.lable; 
-
         return (
-            <View style={styles.inputHolder}>
-            {
-                (mandatory) ? 
-                <View style={styles.mandatory}>
-                    <Text style={{ color: 'red', fontSize: 16 }}>*</Text>
-                </View>
-                :
-                // undefined
-                <View style={styles.mandatory} />
-            } 
-            
-                <View style={{ flex: 1, justifyContent: 'center' }}>
-                    <Text style={styles.label}>{validLable}</Text>
-                </View>
+            <View style={commonStyles.inputHolder}>
+                {this.props.fieldLabelView}
                 <View style={{ flex: 1 }}>
-                <TouchableOpacity onPress={this.onDatePress.bind(this)} >
-                    <View style={styles.textbox}>
-                        <Text style={styles.text}>{this.state.saveValue}</Text>
-                    </View>
-                </TouchableOpacity>
-               
-                </View>  
-                <DatePickerDialog ref="dateDialog" okLabel="ok" cancelLabel="cancel" onDatePicked={this.onDatePicked.bind(this)} />
+                    <TouchableOpacity onPress={this.onDatePress.bind(this)} >
+                        <View style={commonStyles.textbox}>
+                            <Text style={[commonStyles.text, fontStyles.fieldValue]}>{this.state.saveValue}</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+                <DatePickerDialog
+                    ref="dateDialog"
+                    okLabel="ok"
+                    cancelLabel="cancel"
+                    onDatePicked={this.onDatePicked.bind(this)}
+                />
             </View>
         );
     }
 }
-
-const styles = StyleSheet.create(
-    {
-        inputHolder: {
-            flex: 1, 
-            flexDirection: 'row', 
-            marginTop: 10, 
-            marginRight: 2
-        },
-        label: {
-            fontSize: 16,
-            padding: 10
-        },
-        mandatory: {
-            width: 10, 
-            height: 25, 
-            justifyContent: 'center', 
-            alignItems: 'center', 
-            marginTop: 5,
-        },
-        textbox: {
-            //paddingTop: 9,
-            borderColor: '#ABABAB',
-            borderWidth: 0.5,
-            padding: 0,
-            borderTopLeftRadius: 4,
-            borderTopRightRadius: 4,
-            borderBottomLeftRadius: 4,
-            borderBottomRightRadius: 4,
-            height: 38,
-            justifyContent: 'center'
-          },
-        text: {
-            fontSize: 14,
-            marginLeft: 5,
-            borderWidth: 0,
-            color: '#121212',
-        },
-    }
-);
 
 export default DateType;

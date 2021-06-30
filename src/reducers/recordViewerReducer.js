@@ -1,19 +1,20 @@
 import { UPDATE_RECORD_VIEWER, REFERENCE_LABEL, SAVE_SUCCESS, COPY_CONTACT_ADDRESS, COPY_ORGANISATION_ADDRESS } from '../actions/types';
 
 const INITIAL_STATE = 
-{ navigation: {}, 
-  moduleName: '', 
-  showBackButton: false,
-  moduleLable: '', 
-  recordId: '',
-  label: '',
-  uniqueId: '',
-  saved: '',
-  contactAddress: [],
-  organisationAddress: [] };
+{
+    navigation: {},
+    moduleName: '',
+    showBackButton: false,
+    moduleLable: '',
+    recordId: '',
+    label: '',
+    uniqueId: '',
+    saved: '',
+    contactAddress: [],
+    organisationAddress: []
+};
 
 export default (state = INITIAL_STATE, action) => {
-    // console.log(action);
     switch (action.type) {
         case UPDATE_RECORD_VIEWER:
             return { 
@@ -22,13 +23,15 @@ export default (state = INITIAL_STATE, action) => {
                 moduleName: action.payload.moduleName,
                 showBackButton: action.payload.showBackButton,
                 moduleLable: action.payload.moduleLable,
-                recordId: action.payload.recordId };
+                recordId: action.payload.recordId
+            };
         case REFERENCE_LABEL:
             return { 
                 ...state, 
                 label: action.payload.label,
                 recordId: action.payload.recordId,
-                uniqueId: action.payload.uniqueId };
+                uniqueId: action.payload.uniqueId
+            };
         case SAVE_SUCCESS:
             return { 
                 ...state, 
@@ -37,7 +40,8 @@ export default (state = INITIAL_STATE, action) => {
                 uniqueId: '',
                 saved: action.payload,
                 contactAddress: [],
-                organisationAddress: [] };
+                organisationAddress: []
+            };
         case COPY_CONTACT_ADDRESS:
             return {
                 ...state,

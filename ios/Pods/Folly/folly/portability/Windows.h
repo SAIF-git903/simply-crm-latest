@@ -1,11 +1,11 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,24 +29,37 @@
 #ifndef __STDC__
 /* nolint */
 #define __STDC__ 1
-#include <io.h> // nolint
-#include <direct.h> // nolint
+#pragma push_macro("_CRT_DECLARE_NONSTDC_NAMES")
+#ifdef _CRT_DECLARE_NONSTDC_NAMES
+#undef _CRT_DECLARE_NONSTDC_NAMES
+#endif
+#define _CRT_DECLARE_NONSTDC_NAMES 0
+#include <direct.h> // @manual nolint
+#include <io.h> // @manual nolint
 #undef __STDC__
+#pragma pop_macro("_CRT_DECLARE_NONSTDC_NAMES")
 #else
-#include <io.h> // nolint
-#include <direct.h> // nolint
+#include <direct.h> // @manual nolint
+#include <io.h> // @manual nolint
 #endif
 
-#include <WinSock2.h>
-#include <Windows.h>
+#if defined(min) || defined(max)
+#error Windows.h needs to be included by this header, or else NOMINMAX needs \
+ to be defined before including it yourself.
+#endif
+
+// This is needed because, for some absurd reason, one of the windows headers
+// tries to define "min" and "max" as macros, which messes up most uses of
+// std::numeric_limits.
+#ifndef NOMINMAX
+#define NOMINMAX 1
+#endif
+
+#include <WinSock2.h> // @manual
+#include <Windows.h> // @manual
 
 #ifdef CAL_GREGORIAN
 #undef CAL_GREGORIAN
-#endif
-
-// Defined in winnt.h
-#ifdef DELETE
-#undef DELETE
 #endif
 
 // Defined in the GDI interface.
