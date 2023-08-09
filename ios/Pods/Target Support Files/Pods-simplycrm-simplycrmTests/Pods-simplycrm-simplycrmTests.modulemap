@@ -1,6 +1,0 @@
-module Pods_simplycrm_simplycrmTests {
-  umbrella header "Pods-simplycrm-simplycrmTests-umbrella.h"
-
-  export *
-  module * { export * }
-}
