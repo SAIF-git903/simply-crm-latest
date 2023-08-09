@@ -315,6 +315,7 @@
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
 				35E43869FA8578A41AEA1E8C /* [CP] Copy Pods Resources */,
+				E0F8F9650878261B468CA467 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -337,6 +338,7 @@
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				5B1F1C8AE448662243C5C65C /* [CP] Copy Pods Resources */,
+				80A64A39A86D41A083E01F96 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -662,6 +664,42 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-simplycrm/Pods-simplycrm-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		80A64A39A86D41A083E01F96 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-simplycrm/Pods-simplycrm-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-simplycrm/Pods-simplycrm-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E0F8F9650878261B468CA467 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-simplycrm-simplycrmTests/Pods-simplycrm-simplycrmTests-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-simplycrm-simplycrmTests/Pods-simplycrm-simplycrmTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		ED6D9D5EC671F7C465ABDEB2 /* [CP] Check Pods Manifest.lock */ = {
