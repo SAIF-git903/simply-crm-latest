@@ -12,7 +12,6 @@
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		1A6D8E935598FEA8B9F83974 /* libPods-simplycrm-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3AF735B6CC06EE58322ADAF /* libPods-simplycrm-tvOSTests.a */; };
 		23B5957F720E412CA809D445 /* Poppins-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7292F34582B04F0FAC692BFA /* Poppins-BoldItalic.ttf */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -24,23 +23,24 @@
 		444F808C25EB4031856DDCD9 /* Poppins-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8ED6C08FDF0349A0A22F223F /* Poppins-ExtraLight.ttf */; };
 		483B5A7A22944F21811D65B9 /* FontAwesome5_Pro_Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9140A1F53CEA4A2191421698 /* FontAwesome5_Pro_Light.ttf */; };
 		4BD36F456F5A4F118E74ED28 /* Poppins-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0368BDFB357A4400B956175D /* Poppins-Italic.ttf */; };
-		54115DC4EC7C5BB174141017 /* libPods-simplycrm-simplycrmTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 090F5FA12944907016373747 /* libPods-simplycrm-simplycrmTests.a */; };
-		63EDB1FD9CED1BCDFB8C7153 /* libPods-simplycrm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BA1793DB2DB758598CE8A3B5 /* libPods-simplycrm.a */; };
 		644C65F6DB5F4967A22A9F7A /* FontAwesome5_Pro_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F50665C6273C48F1934F6682 /* FontAwesome5_Pro_Solid.ttf */; };
 		72AB4266FE5C4AF8B4D48F41 /* FontAwesome5_Pro_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9E7A73413D5E49748D74324F /* FontAwesome5_Pro_Brands.ttf */; };
+		853FD2252E804E0D6A2FBAFA /* libPods-simplycrm-simplycrmTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03A04D60E3F69F0B1E61A382 /* libPods-simplycrm-simplycrmTests.a */; };
 		8672ABA343114444B9323D03 /* Poppins-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83987C59D5544A0CA2B39601 /* Poppins-BlackItalic.ttf */; };
 		9273C2BB15D34046B4B3F4FA /* Poppins-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 593CBD53000E47B1BD6C9C57 /* Poppins-ExtraBold.ttf */; };
 		92F0012A8B994EE9ABE96041 /* Poppins-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1496D9E1B6854E44846BB0F3 /* Poppins-ExtraBoldItalic.ttf */; };
 		AECBCB163220430A9899FA3C /* Poppins-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7214F6EF281743969BFF4CB5 /* Poppins-SemiBoldItalic.ttf */; };
+		AFD5611AD078A3DB4C5F4893 /* libPods-simplycrm-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63AB2BA9B0BC92E5795D78B4 /* libPods-simplycrm-tvOS.a */; };
 		BB043EDCBCA441DDA6D5F0DC /* Poppins-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 494D1F67099F4EC0A4BD3E90 /* Poppins-Light.ttf */; };
 		C3EFD1D61B0A48BF86C877E0 /* Poppins-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C63C696DF5334787BD708AD4 /* Poppins-MediumItalic.ttf */; };
 		C6A97970C2C244FF8CF42BC3 /* FontAwesome5_Pro_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0F386797CF1B40799BA51C91 /* FontAwesome5_Pro_Regular.ttf */; };
 		C7B55A35BC044527A14BA79E /* Poppins-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6E53427E9FA24C0B95B8E05E /* Poppins-ThinItalic.ttf */; };
 		D36A325F86D54DA8A525CC14 /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB9696C0476B4BE193017BFF /* Poppins-SemiBold.ttf */; };
+		D5050E96E530420D27590981 /* libPods-simplycrm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B153931283C61173B74A6018 /* libPods-simplycrm.a */; };
 		D527DB91BF8646AAB0A1D4E3 /* Poppins-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6390E16BC93A4262B68A1D0C /* Poppins-Black.ttf */; };
 		D854C96CD09244D7B4AE02D5 /* Poppins-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F09ABC43CF2749C2BAF409EB /* Poppins-ExtraLightItalic.ttf */; };
 		DF31173DE16D46DD9DF12F73 /* Poppins-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9BB58820D57A4A7EBDFA7F25 /* Poppins-LightItalic.ttf */; };
-		E2CA56A6120DC5D15EF55CCF /* libPods-simplycrm-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 60914219BB8CF93E08B46971 /* libPods-simplycrm-tvOS.a */; };
+		E4F8D725336947E5C7D99917 /* libPods-simplycrm-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FB1EDB62DFE8E0A91895372F /* libPods-simplycrm-tvOSTests.a */; };
 		FC25AC6FC66A4BCBAE61DA1F /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9AEA0EA5E8F47909E7B120A /* Poppins-Bold.ttf */; };
 /* End PBXBuildFile section */
 
@@ -67,9 +67,9 @@
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* simplycrmTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = simplycrmTests.m; sourceTree = "<group>"; };
 		0368BDFB357A4400B956175D /* Poppins-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Italic.ttf"; path = "../assets/fonts/Poppins-Italic.ttf"; sourceTree = "<group>"; };
+		03A04D60E3F69F0B1E61A382 /* libPods-simplycrm-simplycrmTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-simplycrm-simplycrmTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		051B9AA3DD7448AE8DEFB6AA /* Poppins-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Regular.ttf"; path = "../assets/fonts/Poppins-Regular.ttf"; sourceTree = "<group>"; };
 		051F05F53CC84760AFBB9237 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = ../assets/fonts/EvilIcons.ttf; sourceTree = "<group>"; };
-		090F5FA12944907016373747 /* libPods-simplycrm-simplycrmTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-simplycrm-simplycrmTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0932E40776EB4B9BB6D45604 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = ../assets/fonts/Foundation.ttf; sourceTree = "<group>"; };
 		0F386797CF1B40799BA51C91 /* FontAwesome5_Pro_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Pro_Regular.ttf; path = ../assets/fonts/FontAwesome5_Pro_Regular.ttf; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* Simply CRM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Simply CRM.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -80,21 +80,20 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = simplycrm/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = simplycrm/main.m; sourceTree = "<group>"; };
 		1496D9E1B6854E44846BB0F3 /* Poppins-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraBoldItalic.ttf"; path = "../assets/fonts/Poppins-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
+		1E7A4FC9CCF9163FAFA6451A /* Pods-simplycrm-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simplycrm-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-simplycrm-tvOSTests/Pods-simplycrm-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* simplycrm-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "simplycrm-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* simplycrm-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "simplycrm-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2EAE6ACAACA99D8363A71317 /* Pods-simplycrm-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simplycrm-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-simplycrm-tvOSTests/Pods-simplycrm-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		323554F514704DF98DEF24BD /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = ../assets/fonts/Octicons.ttf; sourceTree = "<group>"; };
+		3A9D9E674B4D2C568B7E43F7 /* Pods-simplycrm.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simplycrm.debug.xcconfig"; path = "Target Support Files/Pods-simplycrm/Pods-simplycrm.debug.xcconfig"; sourceTree = "<group>"; };
 		3E909210A7BF4FFB9504B69F /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = ../assets/fonts/Feather.ttf; sourceTree = "<group>"; };
 		446B3606E1DE4E04A4BAB09C /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = ../assets/fonts/Ionicons.ttf; sourceTree = "<group>"; };
-		46198B490AC17F13326F48EB /* Pods-simplycrm-simplycrmTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simplycrm-simplycrmTests.release.xcconfig"; path = "Target Support Files/Pods-simplycrm-simplycrmTests/Pods-simplycrm-simplycrmTests.release.xcconfig"; sourceTree = "<group>"; };
 		494D1F67099F4EC0A4BD3E90 /* Poppins-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Light.ttf"; path = "../assets/fonts/Poppins-Light.ttf"; sourceTree = "<group>"; };
 		49EB35630AB04FC4B11CB2A2 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = ../assets/fonts/FontAwesome5_Solid.ttf; sourceTree = "<group>"; };
 		560FB4AA36B74C4FBE0E3B15 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = ../assets/fonts/Entypo.ttf; sourceTree = "<group>"; };
 		593CBD53000E47B1BD6C9C57 /* Poppins-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraBold.ttf"; path = "../assets/fonts/Poppins-ExtraBold.ttf"; sourceTree = "<group>"; };
-		5C8174435FDE57BB46F71AA4 /* Pods-simplycrm.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simplycrm.debug.xcconfig"; path = "Target Support Files/Pods-simplycrm/Pods-simplycrm.debug.xcconfig"; sourceTree = "<group>"; };
 		5F8CEB4FD2E44FDDAFA4542F /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = ../assets/fonts/AntDesign.ttf; sourceTree = "<group>"; };
-		60914219BB8CF93E08B46971 /* libPods-simplycrm-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-simplycrm-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6390E16BC93A4262B68A1D0C /* Poppins-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Black.ttf"; path = "../assets/fonts/Poppins-Black.ttf"; sourceTree = "<group>"; };
+		63AB2BA9B0BC92E5795D78B4 /* libPods-simplycrm-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-simplycrm-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6701A033424A4F128412BA87 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = ../assets/fonts/SimpleLineIcons.ttf; sourceTree = "<group>"; };
 		6E53427E9FA24C0B95B8E05E /* Poppins-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ThinItalic.ttf"; path = "../assets/fonts/Poppins-ThinItalic.ttf"; sourceTree = "<group>"; };
 		6FCAF17F424446B7BF6A3F73 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = ../assets/fonts/FontAwesome5_Regular.ttf; sourceTree = "<group>"; };
@@ -103,30 +102,31 @@
 		75B99D2F808341C39BC89AF4 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Medium.ttf"; path = "../assets/fonts/Poppins-Medium.ttf"; sourceTree = "<group>"; };
 		83987C59D5544A0CA2B39601 /* Poppins-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-BlackItalic.ttf"; path = "../assets/fonts/Poppins-BlackItalic.ttf"; sourceTree = "<group>"; };
 		84101E0536B544F1BB0AD090 /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = ../assets/fonts/Fontisto.ttf; sourceTree = "<group>"; };
-		891C9B030AF6A1231EE146D4 /* Pods-simplycrm-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simplycrm-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-simplycrm-tvOS/Pods-simplycrm-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
-		8D88BF31A36BC3CD1349A405 /* Pods-simplycrm-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simplycrm-tvOS.release.xcconfig"; path = "Target Support Files/Pods-simplycrm-tvOS/Pods-simplycrm-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		8A3E1CE9154C64AE4DD26597 /* Pods-simplycrm-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simplycrm-tvOS.release.xcconfig"; path = "Target Support Files/Pods-simplycrm-tvOS/Pods-simplycrm-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		8ED6C08FDF0349A0A22F223F /* Poppins-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraLight.ttf"; path = "../assets/fonts/Poppins-ExtraLight.ttf"; sourceTree = "<group>"; };
 		9140A1F53CEA4A2191421698 /* FontAwesome5_Pro_Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Pro_Light.ttf; path = ../assets/fonts/FontAwesome5_Pro_Light.ttf; sourceTree = "<group>"; };
 		9660607F66094DE7A1DCB977 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = ../assets/fonts/FontAwesome5_Brands.ttf; sourceTree = "<group>"; };
 		9BB58820D57A4A7EBDFA7F25 /* Poppins-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-LightItalic.ttf"; path = "../assets/fonts/Poppins-LightItalic.ttf"; sourceTree = "<group>"; };
 		9E7A73413D5E49748D74324F /* FontAwesome5_Pro_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Pro_Brands.ttf; path = ../assets/fonts/FontAwesome5_Pro_Brands.ttf; sourceTree = "<group>"; };
-		A3AF735B6CC06EE58322ADAF /* libPods-simplycrm-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-simplycrm-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A835ECC1635F1CF322BA4795 /* Pods-simplycrm-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simplycrm-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-simplycrm-tvOS/Pods-simplycrm-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		AEAAE88DDA42436F86E81DFF /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = ../assets/fonts/MaterialCommunityIcons.ttf; sourceTree = "<group>"; };
-		B628DCEEAC18E0C47EBD781A /* Pods-simplycrm-simplycrmTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simplycrm-simplycrmTests.debug.xcconfig"; path = "Target Support Files/Pods-simplycrm-simplycrmTests/Pods-simplycrm-simplycrmTests.debug.xcconfig"; sourceTree = "<group>"; };
-		BA1793DB2DB758598CE8A3B5 /* libPods-simplycrm.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-simplycrm.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B153931283C61173B74A6018 /* libPods-simplycrm.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-simplycrm.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B6B50F6A4942B11BF68057E8 /* Pods-simplycrm-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simplycrm-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-simplycrm-tvOSTests/Pods-simplycrm-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		BD63BFE685CD057FB0E136AD /* Pods-simplycrm-simplycrmTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simplycrm-simplycrmTests.release.xcconfig"; path = "Target Support Files/Pods-simplycrm-simplycrmTests/Pods-simplycrm-simplycrmTests.release.xcconfig"; sourceTree = "<group>"; };
 		BE596336F53D4DDEAB6BFDAE /* Poppins-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Thin.ttf"; path = "../assets/fonts/Poppins-Thin.ttf"; sourceTree = "<group>"; };
 		C63C696DF5334787BD708AD4 /* Poppins-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-MediumItalic.ttf"; path = "../assets/fonts/Poppins-MediumItalic.ttf"; sourceTree = "<group>"; };
-		CD1C376A29CC6A784A0FFB8E /* Pods-simplycrm.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simplycrm.release.xcconfig"; path = "Target Support Files/Pods-simplycrm/Pods-simplycrm.release.xcconfig"; sourceTree = "<group>"; };
 		CF2F3ABC252C46D1BCEB5A35 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = ../assets/fonts/FontAwesome.ttf; sourceTree = "<group>"; };
 		D5673E109AC940169AA75FF8 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = ../assets/fonts/Zocial.ttf; sourceTree = "<group>"; };
 		DB9696C0476B4BE193017BFF /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-SemiBold.ttf"; path = "../assets/fonts/Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
-		DC6FC1F87DA5AF83B0B8183C /* Pods-simplycrm-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simplycrm-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-simplycrm-tvOSTests/Pods-simplycrm-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		DE2B4822926957E9F472B952 /* Pods-simplycrm-simplycrmTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simplycrm-simplycrmTests.debug.xcconfig"; path = "Target Support Files/Pods-simplycrm-simplycrmTests/Pods-simplycrm-simplycrmTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E9AEA0EA5E8F47909E7B120A /* Poppins-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Bold.ttf"; path = "../assets/fonts/Poppins-Bold.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		F09ABC43CF2749C2BAF409EB /* Poppins-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraLightItalic.ttf"; path = "../assets/fonts/Poppins-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
+		F12F7A3DA898827A457D73CF /* Pods-simplycrm.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simplycrm.release.xcconfig"; path = "Target Support Files/Pods-simplycrm/Pods-simplycrm.release.xcconfig"; sourceTree = "<group>"; };
 		F50665C6273C48F1934F6682 /* FontAwesome5_Pro_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Pro_Solid.ttf; path = ../assets/fonts/FontAwesome5_Pro_Solid.ttf; sourceTree = "<group>"; };
 		F674FDDD0F4D4572807BAC86 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = ../assets/fonts/MaterialIcons.ttf; sourceTree = "<group>"; };
+		FB1EDB62DFE8E0A91895372F /* libPods-simplycrm-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-simplycrm-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,7 +134,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				54115DC4EC7C5BB174141017 /* libPods-simplycrm-simplycrmTests.a in Frameworks */,
+				853FD2252E804E0D6A2FBAFA /* libPods-simplycrm-simplycrmTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -142,7 +142,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				63EDB1FD9CED1BCDFB8C7153 /* libPods-simplycrm.a in Frameworks */,
+				D5050E96E530420D27590981 /* libPods-simplycrm.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -150,7 +150,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E2CA56A6120DC5D15EF55CCF /* libPods-simplycrm-tvOS.a in Frameworks */,
+				AFD5611AD078A3DB4C5F4893 /* libPods-simplycrm-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,7 +158,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1A6D8E935598FEA8B9F83974 /* libPods-simplycrm-tvOSTests.a in Frameworks */,
+				E4F8D725336947E5C7D99917 /* libPods-simplycrm-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -185,14 +185,14 @@
 		0DD7927D6E2863F0D7F15056 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				5C8174435FDE57BB46F71AA4 /* Pods-simplycrm.debug.xcconfig */,
-				CD1C376A29CC6A784A0FFB8E /* Pods-simplycrm.release.xcconfig */,
-				B628DCEEAC18E0C47EBD781A /* Pods-simplycrm-simplycrmTests.debug.xcconfig */,
-				46198B490AC17F13326F48EB /* Pods-simplycrm-simplycrmTests.release.xcconfig */,
-				891C9B030AF6A1231EE146D4 /* Pods-simplycrm-tvOS.debug.xcconfig */,
-				8D88BF31A36BC3CD1349A405 /* Pods-simplycrm-tvOS.release.xcconfig */,
-				DC6FC1F87DA5AF83B0B8183C /* Pods-simplycrm-tvOSTests.debug.xcconfig */,
-				2EAE6ACAACA99D8363A71317 /* Pods-simplycrm-tvOSTests.release.xcconfig */,
+				3A9D9E674B4D2C568B7E43F7 /* Pods-simplycrm.debug.xcconfig */,
+				F12F7A3DA898827A457D73CF /* Pods-simplycrm.release.xcconfig */,
+				DE2B4822926957E9F472B952 /* Pods-simplycrm-simplycrmTests.debug.xcconfig */,
+				BD63BFE685CD057FB0E136AD /* Pods-simplycrm-simplycrmTests.release.xcconfig */,
+				A835ECC1635F1CF322BA4795 /* Pods-simplycrm-tvOS.debug.xcconfig */,
+				8A3E1CE9154C64AE4DD26597 /* Pods-simplycrm-tvOS.release.xcconfig */,
+				1E7A4FC9CCF9163FAFA6451A /* Pods-simplycrm-tvOSTests.debug.xcconfig */,
+				B6B50F6A4942B11BF68057E8 /* Pods-simplycrm-tvOSTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -216,10 +216,10 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				BA1793DB2DB758598CE8A3B5 /* libPods-simplycrm.a */,
-				090F5FA12944907016373747 /* libPods-simplycrm-simplycrmTests.a */,
-				60914219BB8CF93E08B46971 /* libPods-simplycrm-tvOS.a */,
-				A3AF735B6CC06EE58322ADAF /* libPods-simplycrm-tvOSTests.a */,
+				B153931283C61173B74A6018 /* libPods-simplycrm.a */,
+				03A04D60E3F69F0B1E61A382 /* libPods-simplycrm-simplycrmTests.a */,
+				63AB2BA9B0BC92E5795D78B4 /* libPods-simplycrm-tvOS.a */,
+				FB1EDB62DFE8E0A91895372F /* libPods-simplycrm-tvOSTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -310,11 +310,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "simplycrmTests" */;
 			buildPhases = (
-				64C119ACEAD6312ED8CBE972 /* [CP] Check Pods Manifest.lock */,
+				42D5A9B94867006DE4ACA27B /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				21010F8B9BC8765A95D1E266 /* [CP] Copy Pods Resources */,
+				35E43869FA8578A41AEA1E8C /* [CP] Copy Pods Resources */,
+				E0F8F9650878261B468CA467 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -330,13 +331,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "simplycrm" */;
 			buildPhases = (
-				EA19C915BBB647380BA02F6D /* [CP] Check Pods Manifest.lock */,
+				F6A1E6AEF7B45D06AD39EFAB /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				2888108ECB6F16438D6CAF41 /* [CP] Copy Pods Resources */,
+				5B1F1C8AE448662243C5C65C /* [CP] Copy Pods Resources */,
+				80A64A39A86D41A083E01F96 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -351,7 +353,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "simplycrm-tvOS" */;
 			buildPhases = (
-				5BBDC624BDAB98AC78F010C1 /* [CP] Check Pods Manifest.lock */,
+				462B348BF7DD2097F3850531 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F122414F3F0027D42C /* Start Packager */,
 				2D02E4771E0B4A5D006451C7 /* Sources */,
 				2D02E4781E0B4A5D006451C7 /* Frameworks */,
@@ -371,7 +373,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "simplycrm-tvOSTests" */;
 			buildPhases = (
-				21DD7DC7CF77CF9932094B95 /* [CP] Check Pods Manifest.lock */,
+				ED6D9D5EC671F7C465ABDEB2 /* [CP] Check Pods Manifest.lock */,
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
 				2D02E48D1E0B4A5D006451C7 /* Frameworks */,
 				2D02E48E1E0B4A5D006451C7 /* Resources */,
@@ -506,7 +508,21 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
-		21010F8B9BC8765A95D1E266 /* [CP] Copy Pods Resources */ = {
+		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Bundle React Native Code And Images";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+		};
+		35E43869FA8578A41AEA1E8C /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -556,7 +572,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-simplycrm-simplycrmTests/Pods-simplycrm-simplycrmTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		21DD7DC7CF77CF9932094B95 /* [CP] Check Pods Manifest.lock */ = {
+		42D5A9B94867006DE4ACA27B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -571,14 +587,36 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-simplycrm-tvOSTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-simplycrm-simplycrmTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		2888108ECB6F16438D6CAF41 /* [CP] Copy Pods Resources */ = {
+		462B348BF7DD2097F3850531 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-simplycrm-tvOS-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5B1F1C8AE448662243C5C65C /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -628,21 +666,43 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-simplycrm/Pods-simplycrm-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
+		80A64A39A86D41A083E01F96 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-simplycrm/Pods-simplycrm-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
 			);
-			name = "Bundle React Native Code And Images";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-simplycrm/Pods-simplycrm-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
-		5BBDC624BDAB98AC78F010C1 /* [CP] Check Pods Manifest.lock */ = {
+		E0F8F9650878261B468CA467 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-simplycrm-simplycrmTests/Pods-simplycrm-simplycrmTests-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-simplycrm-simplycrmTests/Pods-simplycrm-simplycrmTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		ED6D9D5EC671F7C465ABDEB2 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -657,36 +717,14 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-simplycrm-tvOS-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-simplycrm-tvOSTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		64C119ACEAD6312ED8CBE972 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-simplycrm-simplycrmTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		EA19C915BBB647380BA02F6D /* [CP] Check Pods Manifest.lock */ = {
+		F6A1E6AEF7B45D06AD39EFAB /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -813,7 +851,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B628DCEEAC18E0C47EBD781A /* Pods-simplycrm-simplycrmTests.debug.xcconfig */;
+			baseConfigurationReference = DE2B4822926957E9F472B952 /* Pods-simplycrm-simplycrmTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -836,7 +874,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 46198B490AC17F13326F48EB /* Pods-simplycrm-simplycrmTests.release.xcconfig */;
+			baseConfigurationReference = BD63BFE685CD057FB0E136AD /* Pods-simplycrm-simplycrmTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -856,7 +894,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5C8174435FDE57BB46F71AA4 /* Pods-simplycrm.debug.xcconfig */;
+			baseConfigurationReference = 3A9D9E674B4D2C568B7E43F7 /* Pods-simplycrm.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -871,8 +909,9 @@
 					"FB_SONARKIT_ENABLED=1",
 				);
 				INFOPLIST_FILE = simplycrm/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.111;
+				MARKETING_VERSION = 1.112;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -889,7 +928,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CD1C376A29CC6A784A0FFB8E /* Pods-simplycrm.release.xcconfig */;
+			baseConfigurationReference = F12F7A3DA898827A457D73CF /* Pods-simplycrm.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -897,11 +936,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 41;
 				DEVELOPMENT_TEAM = 6JWQQD5699;
-				ENABLE_BITCODE = YES;
+				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = simplycrm/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.111;
+				MARKETING_VERSION = 1.112;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -917,7 +957,7 @@
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 891C9B030AF6A1231EE146D4 /* Pods-simplycrm-tvOS.debug.xcconfig */;
+			baseConfigurationReference = A835ECC1635F1CF322BA4795 /* Pods-simplycrm-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -945,7 +985,7 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8D88BF31A36BC3CD1349A405 /* Pods-simplycrm-tvOS.release.xcconfig */;
+			baseConfigurationReference = 8A3E1CE9154C64AE4DD26597 /* Pods-simplycrm-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -973,7 +1013,7 @@
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DC6FC1F87DA5AF83B0B8183C /* Pods-simplycrm-tvOSTests.debug.xcconfig */;
+			baseConfigurationReference = 1E7A4FC9CCF9163FAFA6451A /* Pods-simplycrm-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1000,7 +1040,7 @@
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2EAE6ACAACA99D8363A71317 /* Pods-simplycrm-tvOSTests.release.xcconfig */;
+			baseConfigurationReference = B6B50F6A4942B11BF68057E8 /* Pods-simplycrm-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
