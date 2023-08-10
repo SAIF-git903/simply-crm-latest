@@ -12,12 +12,13 @@ import {
   Platform,
   Keyboard,
 } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Picker} from '@react-native-picker/picker';
 import ModalDropdown from 'react-native-modal-dropdown';
 import SafeAreaView from 'react-native-safe-area-view';
 import IconButton from '../components/IconButton';
-import Icon from 'react-native-vector-icons/FontAwesome5Pro';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 import {URLDETAILSKEY, LOGINDETAILSKEY} from '../variables/strings';
 import {loginUser} from '../actions/';
 import {assignUrl} from '../helper';
@@ -32,8 +33,8 @@ class LoginForm extends Component {
     super(props);
     this.state = {
       url: '',
-      email: '',
-      password: '',
+      email: 'kim@simply-crm.com',
+      password: 'kimkim',
       showUrlList: false,
       urlList: [],
       username: '',
@@ -91,7 +92,6 @@ class LoginForm extends Component {
         },
       );
     } else {
-      console.log('login--------');
       this.setState(
         {
           showUrlList: false,
@@ -319,8 +319,8 @@ class LoginForm extends Component {
 
             {/* password field */}
             <View style={styles.textInputWrapper}>
-              <Icon
-                name="lock-alt"
+              <Fontisto
+                name="locked"
                 solid
                 size={23}
                 color="#92ADD1"
@@ -436,7 +436,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(
-  undefined,
-  {loginUser},
-)(LoginForm);
+export default connect(undefined, {loginUser})(LoginForm);

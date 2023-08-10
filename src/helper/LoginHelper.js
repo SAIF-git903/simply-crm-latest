@@ -1,5 +1,5 @@
 import {Alert} from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // import { NavigationActions } from 'react-navigation';
 import Toast from 'react-native-simple-toast';
 import {LOGINDETAILSKEY, LOGINFORM, URLDETAILSKEY} from '../variables/strings';

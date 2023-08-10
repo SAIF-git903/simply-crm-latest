@@ -1,188 +1,200 @@
-import React, { Component } from 'react';
-import { View, ActivityIndicator, Alert, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { connect } from 'react-redux';
-import Icon from 'react-native-vector-icons/FontAwesome5Pro';
+import React, {Component} from 'react';
+import {
+  View,
+  ActivityIndicator,
+  Alert,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
+import {connect} from 'react-redux';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import SwipeOut from 'react-native-swipeout';
-import { deleteRecord } from '../../actions';
-import { RECORD_COLOR, RECORD_SELECTED_COLOR } from '../../variables/themeColors';
+import {deleteRecord} from '../../actions';
+import {RECORD_COLOR, RECORD_SELECTED_COLOR} from '../../variables/themeColors';
 import {commonStyles, fontStyles} from '../../styles/common';
 
 class RecordItem extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            loading: false
-        };
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: false,
+    };
+  }
+
+  getActions() {
+    return [
+      {
+        component: (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: '#f2f3f8',
+              borderColor: 'white',
+              borderRightWidth: 1,
+            }}>
+            <Icon name="pencil-alt" solid size={30} color="black" />
+          </View>
+        ),
+        onPress: this.onEdit.bind(this),
+      },
+      {
+        component: (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: '#f2f3f8',
+            }}>
+            <Icon name="trash-alt" solid size={30} color="black" />
+          </View>
+        ),
+        onPress: this.onDelete.bind(this),
+      },
+    ];
+  }
+
+  onEdit() {
+    //TODO Non-serializable values were found in the navigation state. Use navigation.setOption() instead
+    this.props.navigation.navigate('Edit Record', {
+      id: this.props.id,
+      lister: this.props.listerInstance,
+      isDashboard: this.props.isDashboard,
+    });
+  }
+
+  onDelete() {
+    Alert.alert(
+      'Are you sure want to delete this record ?',
+      this.props.recordName,
+      [
+        {text: 'Cancel', onPress: () => {}, style: 'cancel'},
+        {
+          text: 'Yes',
+          onPress: () => {
+            this.props.listerInstance.setState(
+              {
+                isFlatListRefreshing: true,
+              },
+              () => {
+                this.props.dispatch(
+                  deleteRecord(
+                    this.props.listerInstance,
+                    this.props.id,
+                    this.props.index,
+                    () => {
+                      this.props.listerInstance.setState({
+                        isFlatListRefreshing: false,
+                      });
+                    },
+                  ),
+                );
+              },
+            );
+          },
+        },
+      ],
+      {cancelable: true},
+    );
+  }
+
+  renderLabel(label, index) {
+    if (!label || label.length === 0) return null;
+
+    return (
+      <Text
+        key={index + 2}
+        numberOfLines={1}
+        style={fontStyles.dashboardRecordLabel}>
+        {label}
+      </Text>
+    );
+  }
+
+  renderLabels(labels) {
+    return labels.map(this.renderLabel);
+  }
+
+  renderLoading() {
+    return (
+      <View
+        style={[
+          styles.backgroundStyle,
+          {
+            borderTopWidth: this.props.index === 0 ? 1 : 0,
+            justifyContent: 'space-around',
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor:
+              this.props.selectedIndex === this.props.index
+                ? RECORD_SELECTED_COLOR
+                : RECORD_COLOR,
+          },
+        ]}>
+        <Text style={fontStyles.fieldValue}>Loading.....</Text>
+        <ActivityIndicator />
+      </View>
+    );
+  }
+
+  renderLine() {
+    let recordName = this.props.recordName;
+    let no_tittle_style = {};
+    if (recordName === '') {
+      recordName = '*empty title*';
+      no_tittle_style = commonStyles.no_tittle;
     }
-
-    getActions() {
-        return [
-            {
-                component: (
-                    <View
-                        style={{
-                            flex: 1,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            backgroundColor: '#f2f3f8',
-                            borderColor: 'white',
-                            borderRightWidth: 1
-                        }}
-                    >
-                        <Icon
-                            name='pencil-alt'
-                            solid
-                            size={30}
-                            color='black'
-                        />
-                    </View>
-                ),
-                onPress: this.onEdit.bind(this)
-            },
-            {
-                component: (
-                    <View
-                        style={{
-                            flex: 1,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            backgroundColor: '#f2f3f8'
-                        }}
-                    >
-                        <Icon
-                            name='trash-alt'
-                            solid
-                            size={30}
-                            color='black'
-                        />
-                    </View>
-                ),
-                onPress: this.onDelete.bind(this)
-            }
-        ];
-    }
-
-    onEdit() {
-        //TODO Non-serializable values were found in the navigation state. Use navigation.setOption() instead
-        this.props.navigation.navigate('Edit Record', {
-            id: this.props.id,
-            lister: this.props.listerInstance,
-            isDashboard: this.props.isDashboard
-        });
-    }
-
-    onDelete() {
-        Alert.alert('Are you sure want to delete this record ?', this.props.recordName,
-            [
-                { text: 'Cancel', onPress: () => { }, style: 'cancel' },
-                {
-                    text: 'Yes', onPress: () => {
-                        this.props.listerInstance.setState({
-                            isFlatListRefreshing: true
-                        }, () => {
-                            this.props.dispatch(deleteRecord(this.props.listerInstance, this.props.id, this.props.index, () => {
-                                this.props.listerInstance.setState({
-                                    isFlatListRefreshing: false
-                                });
-                            }));
-                        });
-                    }
-                }
-            ],
-            { cancelable: true }
-        );
-    }
-
-    renderLabel(label, index) {
-        if (!label || label.length === 0) return null;
-
-        return (
-            <Text
-                key={index+2}
-                numberOfLines={1}
-                style={fontStyles.dashboardRecordLabel}
-            >
-                {label}
-            </Text>
-        );
-    }
-
-    renderLabels(labels) {
-        return labels.map(this.renderLabel);
-    }
-
-    renderLoading() {
-        return (
+    return (
+      <View>
+        <SwipeOut
+          style={{backgroundColor: 'white'}}
+          buttonWidth={70}
+          right={this.getActions()}
+          autoClose>
+          <TouchableOpacity
+            onPress={() => {
+              this.props.onRecordSelect(this.props.id, this.props.index);
+            }}>
             <View
-                style={[styles.backgroundStyle, {
-                    borderTopWidth: (this.props.index === 0) ? 1 : 0,
-                    justifyContent: 'space-around',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    backgroundColor: (this.props.selectedIndex === this.props.index) ? RECORD_SELECTED_COLOR : RECORD_COLOR
-                }]}
-            >
-                <Text style={fontStyles.fieldValue}>Loading.....</Text>
-                <ActivityIndicator />
+              style={[
+                styles.backgroundStyle,
+                {
+                  borderTopWidth: this.props.index === 0 ? 1 : 0,
+                  backgroundColor:
+                    this.props.selectedIndex === this.props.index
+                      ? RECORD_SELECTED_COLOR
+                      : RECORD_COLOR,
+                },
+              ]}>
+              <Text
+                key={1}
+                numberOfLines={1}
+                style={[fontStyles.dashboardRecordLabelBig, no_tittle_style]}>
+                {recordName}
+              </Text>
+              {this.props.labels ? this.renderLabels(this.props.labels) : null}
             </View>
-        );
-    }
+          </TouchableOpacity>
+        </SwipeOut>
+      </View>
+    );
+  }
 
-    renderLine() {
-        let recordName = this.props.recordName;
-        let no_tittle_style = {};
-        if (recordName === '') {
-            recordName = '*empty title*';
-            no_tittle_style = commonStyles.no_tittle;
-        }
-        return (
-            <View>
-                <SwipeOut
-                    style={{ backgroundColor: 'white' }}
-                    buttonWidth={70}
-                    right={this.getActions()}
-                    autoClose
-                >
-                    <TouchableOpacity
-                        onPress={() => {
-                            this.props.onRecordSelect(this.props.id, this.props.index);
-                        }}
-                    >
-                        <View
-                            style={[styles.backgroundStyle, {
-                                borderTopWidth: (this.props.index === 0) ? 1 : 0,
-                                backgroundColor: (this.props.selectedIndex === this.props.index) ? RECORD_SELECTED_COLOR : RECORD_COLOR
-                            }]}
-                        >
-                            <Text
-                                key={1}
-                                numberOfLines={1}
-                                style={[fontStyles.dashboardRecordLabelBig, no_tittle_style]}
-                            >
-                                {recordName}
-                            </Text>
-                            {(this.props.labels) ? this.renderLabels(this.props.labels) : null}
-                        </View>
-                    </TouchableOpacity>
-                </SwipeOut>
-            </View>
-        );
-    }
-
-    render() {
-        return (
-            (this.state.loading) ? this.renderLoading() : this.renderLine()
-        );
-    }
+  render() {
+    return this.state.loading ? this.renderLoading() : this.renderLine();
+  }
 }
 
 export default connect(null)(RecordItem);
 
 const styles = StyleSheet.create({
-    backgroundStyle: {
-        flex: 1,
-        borderColor: '#f2f3f8',
-        borderBottomWidth: 1,
-        padding: 15
-    }
+  backgroundStyle: {
+    flex: 1,
+    borderColor: '#f2f3f8',
+    borderBottomWidth: 1,
+    padding: 15,
+  },
 });

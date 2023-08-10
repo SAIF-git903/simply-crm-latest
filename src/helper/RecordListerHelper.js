@@ -1,7 +1,7 @@
 import React from 'react';
 import Toast from 'react-native-simple-toast';
 import {FlatList, StyleSheet, View, Text} from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import store from '../store';
 import {UPDATE_RECORD_VIEWER} from '../actions/types';
 import {
@@ -221,9 +221,7 @@ const getDataFromInternet = async (
 
       let offset = (listerInstance.state.pageToTake - 1) * limit;
       responseJson = await API_query(
-        `SELECT ${joinedFields} FROM ${
-          listerInstance.props.moduleName
-        } ORDER BY modifiedtime DESC LIMIT ${offset},${limit}`,
+        `SELECT ${joinedFields} FROM ${listerInstance.props.moduleName} ORDER BY modifiedtime DESC LIMIT ${offset},${limit}`,
         searchText,
       );
       //TODO search will not work for vt6
