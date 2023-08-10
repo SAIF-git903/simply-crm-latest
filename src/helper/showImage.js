@@ -10,7 +10,7 @@ import {
   Image,
 } from 'react-native';
 import ImageViewer from '../react-native-image-viewer/index';
-import Icon from 'react-native-vector-icons/FontAwesome5Pro';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import store from '../store';
 import loadImageImport from '../../assets/images/loading.gif';
 
@@ -39,7 +39,7 @@ export function processFile(item) {
       let url = attachment.url;
       let type = attachment.type;
       let suffix_exist = false;
-      urlSuffix.forEach(function(suffix) {
+      urlSuffix.forEach(function (suffix) {
         if (url && url.endsWith(suffix)) {
           suffix_exist = true;
         }
@@ -267,7 +267,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(
-  null,
-  {processFile},
-)(ShowImage);
+export default connect(null, {processFile})(ShowImage);

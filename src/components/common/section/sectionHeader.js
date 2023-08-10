@@ -1,145 +1,166 @@
-import React, { Component } from 'react';
-import { View, Image, Text, StyleSheet, TouchableWithoutFeedback, Platform } from 'react-native';
+import React, {Component} from 'react';
+import {
+  View,
+  Image,
+  Text,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  Platform,
+} from 'react-native';
 
-import Icon from 'react-native-vector-icons/FontAwesome5Pro';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
-import { DRAWER_BORDER_COLOR } from '../../../variables/themeColors';
-import { TOOLS, SALES } from '../../../variables/constants';
-import { fontStyles } from '../../../styles/common';
+import {DRAWER_BORDER_COLOR} from '../../../variables/themeColors';
+import {TOOLS, SALES} from '../../../variables/constants';
+import {fontStyles} from '../../../styles/common';
 
 export default class SectionHeader extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            selected: false
-        };
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      selected: false,
+    };
+  }
 
-    componentDidMount() {
+  componentDidMount() {
+    this.props.openSection();
+    this.setState({selected: true});
+  }
+
+  onToggleSection() {
+    this.setState({selected: !this.state.selected}, () => {
+      if (this.state.selected) {
         this.props.openSection();
-        this.setState({ selected: true });
+      } else {
+        this.props.closeSection();
+      }
+    });
+  }
+
+  getIcon() {
+    switch (this.props.imageName.toLowerCase()) {
+      case 'marketing':
+        return 'bullhorn';
+
+      case 'sales':
+        return 'dot-circle';
+
+      case 'inventory':
+        return 'dolly-flatbed';
+
+      case 'support':
+        return 'life-ring';
+
+      case 'project':
+        return 'project-diagram';
+
+      case 'tools':
+        return 'wrench';
+
+      default:
+        return 'folder';
     }
+  }
 
-    onToggleSection() {
-        this.setState({ selected: !this.state.selected }, () => {
-            if (this.state.selected) {
-                this.props.openSection();
-            } else {
-                this.props.closeSection();
-            }
+  render() {
+    let arrowIcon = this.state.selected ? 'angle-right' : 'angle-down';
+    return (
+      <TouchableWithoutFeedback onPress={this.onToggleSection.bind(this)}>
+        <View
+          style={[
+            styles.headerBackground,
+            {
+              backgroundColor: this.props.backgroundColor,
+              borderBottomWidth: this.props.hideBorder ? 0 : 0.5,
+            },
+            this.props.style,
+            this.props.drawerMenu ? styles.drawerMenuStyle : null,
+          ]}>
+          {this.props.headerImage ? (
+            <View style={{width: 40}}>
+              <Icon
+                name={this.getIcon()}
+                size={20}
+                color={this.props.imageColor}
+                style={{
+                  marginLeft: 10,
+                }}
+              />
+            </View>
+          ) : undefined}
+          <Text
+            style={[
+              this.props.drawerMenu
+                ? fontStyles.drawerMenuButtonText
+                : fontStyles.sectionTitle,
+              {paddingLeft: this.props.drawerMenu ? 0 : 5},
+            ]}>
+            {this.props.name}
+          </Text>
 
-        })
-    }
-
-    getIcon() {
-        switch (this.props.imageName.toLowerCase()) {
-            case 'marketing':
-                return 'bullhorn';
-
-            case 'sales':
-                return 'dot-circle';
-
-            case 'inventory':
-                return 'dolly-flatbed';
-
-            case 'support':
-                return 'life-ring';
-
-            case 'project':
-                return 'project-diagram';
-
-            case 'tools':
-                return 'wrench';
-
-            default:
-                return 'folder';
-        }
-
-    }
-
-    render() {
-        let arrowIcon = this.state.selected ? 'angle-right' : 'angle-down';
-        return (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'flex-end',
+              alignItems: 'flex-end',
+            }}>
             <TouchableWithoutFeedback onPress={this.onToggleSection.bind(this)}>
-                <View style={[styles.headerBackground,
-                {
-                    backgroundColor: this.props.backgroundColor,
-                    borderBottomWidth: this.props.hideBorder ? 0 : .5
-                }, this.props.style, (this.props.drawerMenu ? styles.drawerMenuStyle : null)]}>
-                    {(this.props.headerImage) ?
-                        <View
-                            style={{ width: 40 }}
-                        >
-                            <Icon
-                                name={this.getIcon()}
-                                size={20}
-                                color={this.props.imageColor}
-                                style={{
-                                    marginLeft: 10
-                                }}
-                            />
-                        </View>
-                        :
-                        undefined
-                    }
-                    <Text style={[(this.props.drawerMenu ? fontStyles.drawerMenuButtonText : fontStyles.sectionTitle), { paddingLeft: this.props.drawerMenu ? 0 : 5 }]}>{this.props.name}</Text>
-
-                    <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end' }}>
-                        <TouchableWithoutFeedback onPress={this.onToggleSection.bind(this)}>
-                            <View style={{ width: 40, height: 40, alignItems: 'flex-end', justifyContent: 'center', paddingRight: 6 }}>
-                                <Icon
-                                    name={arrowIcon}
-                                    size={16}
-                                    color={'#707070'}
-                                    style={{
-                                        marginLeft: 10
-                                    }}
-                                />
-                            </View>
-
-                        </TouchableWithoutFeedback>
-
-                    </View>
-                </View>
+              <View
+                style={{
+                  width: 40,
+                  height: 40,
+                  alignItems: 'flex-end',
+                  justifyContent: 'center',
+                  paddingRight: 6,
+                }}>
+                <Icon
+                  name={arrowIcon}
+                  size={16}
+                  color={'#707070'}
+                  style={{
+                    marginLeft: 10,
+                  }}
+                />
+              </View>
             </TouchableWithoutFeedback>
-        );
-    }
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
-    drawerMenuStyle: {
-        borderBottomWidth: 0.5,
-        borderColor: '#868d98',
-    },
-    headerBackground: {
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        borderColor: DRAWER_BORDER_COLOR,
-        padding: 5
-    },
-    imageStyle: {
-        height: 20,
-        width: 20,
-        marginRight: 10,
-        marginLeft: 5,
-
-    },
-    imageStyleSelected: {
-        height: 25,
-        width: 25,
-    },
-    arrowImageStyle: {
-        width: 15,
-        height: 15,
-
-    },
-    arrowImageStyleSelected: {
-        width: 15,
-        height: 15
-
-    },
-    arrowAnimatedViewStyle: {
-        flex: 1,
-    }
+  drawerMenuStyle: {
+    borderBottomWidth: 0.5,
+    borderColor: '#868d98',
+  },
+  headerBackground: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderColor: DRAWER_BORDER_COLOR,
+    padding: 5,
+  },
+  imageStyle: {
+    height: 20,
+    width: 20,
+    marginRight: 10,
+    marginLeft: 5,
+  },
+  imageStyleSelected: {
+    height: 25,
+    width: 25,
+  },
+  arrowImageStyle: {
+    width: 15,
+    height: 15,
+  },
+  arrowImageStyleSelected: {
+    width: 15,
+    height: 15,
+  },
+  arrowAnimatedViewStyle: {
+    flex: 1,
+  },
 });
