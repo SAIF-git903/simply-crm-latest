@@ -124,12 +124,12 @@ export const fontStyles = StyleSheet.create({
   fieldLabel: {
     fontFamily: 'Poppins-Regular',
     color: '#707070',
-    fontSize: 16,
+    fontSize: 14,
   },
   fieldValue: {
     fontFamily: 'Poppins-Regular',
     color: 'black',
-    fontSize: 12,
+    fontSize: 15,
   },
   fieldValueLocation: {
     fontFamily: 'Poppins-Regular',
