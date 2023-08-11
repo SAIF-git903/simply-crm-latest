@@ -56,6 +56,7 @@ class ReferenceRecordItem extends Component {
         }
         return (
             <TouchableOpacity
+           
                 onPress={() => {
                     this.props.onRecordSelect(this.props.id, recordName, this.props.index);
                 }}
