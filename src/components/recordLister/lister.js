@@ -140,13 +140,14 @@ class Lister extends Component {
             );
         } else {
             view = (
-                <View style={{ flex: 1 }}>
+                <View style={{ flex: 1, }}>
                     <View style={{
                         padding: 15,
                         paddingBottom: 5,
                         justifyContent: 'center',
                         alignItems: 'center',
-                        paddingHorizontal: 40
+                        paddingHorizontal: 40,
+                        
                     }}>
                         <SearchBox
                             searchText={this.state.searchText}
@@ -156,7 +157,7 @@ class Lister extends Component {
                             doSearch={(searchText) => this.doSearch(searchText)}
                         />
                     </View>
-                    <View style={{ flex: 1 }}>
+                    <View style={{ flex: 1 ,}}>
                         {this.renderSearching()}
                     </View>
                 </View>
