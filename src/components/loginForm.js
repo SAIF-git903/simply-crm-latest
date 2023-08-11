@@ -384,14 +384,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#0085DE',
   },
   logoSection: {
-    flex: 1,
+    flex: 0.45,
     justifyContent: 'center',
     alignItems: 'center',
   },
   formSection: {
     justifyContent: 'flex-start',
     alignItems: 'center',
-    marginHorizontal: 15,
+    marginHorizontal: 30,
   },
   signupSection: {
     flex: 0.2,
@@ -424,7 +424,7 @@ const styles = StyleSheet.create({
   loginButtonHolder: {
     width: '100%',
     justifyContent: 'center',
-    paddingTop: 40,
+    paddingTop: 35,
   },
   loginButtonStyle: {
     width: '100%',
