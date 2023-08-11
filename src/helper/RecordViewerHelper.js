@@ -137,7 +137,7 @@ const getRecordDataFromInternet = async (
   }
 };
 
-const formatNumber = numberString => {
+const formatNumber = (numberString) => {
   try {
     const {
       no_of_currency_decimals,
@@ -287,6 +287,7 @@ const getAndSaveData = async (
             key={k}
             label={field.label}
             value={value}
+            index={k}
             uiType={field.uitype}
             recordId={viewerInstance.props.recordId}
             isLocation={
