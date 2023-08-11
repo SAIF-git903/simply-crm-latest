@@ -33,8 +33,8 @@ class LoginForm extends Component {
     super(props);
     this.state = {
       url: '',
-      email: 'kim@simply-crm.com',
-      password: 'kimkim',
+      email: '',
+      password: '',
       showUrlList: false,
       urlList: [],
       username: '',
@@ -138,7 +138,7 @@ class LoginForm extends Component {
   }
 
   onUrlSelected(url) {
-    const selectedUrlDetails = this.state.urlList.find(x => x.url === url);
+    const selectedUrlDetails = this.state.urlList.find((x) => x.url === url);
 
     this.setState({
       url: selectedUrlDetails?.url ? selectedUrlDetails.url : '',
@@ -178,7 +178,7 @@ class LoginForm extends Component {
           ]}
           mode={'dropdown'}
           selectedValue={this.state.url}
-          onValueChange={itemValue => {
+          onValueChange={(itemValue) => {
             this.onUrlSelected(itemValue);
           }}>
           <Picker.Item label="Please Select Url" value={0} />
@@ -265,7 +265,7 @@ class LoginForm extends Component {
 
     const options = this.state.urlList;
     const optionsForiOS = [];
-    options.map(item => {
+    options.map((item) => {
       optionsForiOS.push(item.url);
     });
 

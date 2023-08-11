@@ -16,7 +16,6 @@ export const commonStyles = StyleSheet.create({
   },
   recordListerBackground: {
     flex: 1,
-    backgroundColor: '#f2f3f8',
   },
   recordViewerBackground: {
     flex: 1,
