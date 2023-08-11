@@ -149,7 +149,7 @@ class LoginForm extends Component {
   }
 
   getUrlList(options, optionsForiOS) {
-    let view = <View style={{height: 30, padding: 10}} />;
+    let view = <View style={{height: 0, padding: 0}} />;
     if (this.state.showUrlList) {
       view = (
         <View style={styles.textInputWrapper}>
@@ -403,6 +403,8 @@ const styles = StyleSheet.create({
   logo: {
     height: 80,
     width: 180,
+
+    // alignSelf: 'center',
     resizeMode: 'contain',
   },
   textInputWrapper: {
