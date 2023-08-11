@@ -69,17 +69,7 @@ export default class Field extends Component {
               style={
                 this.props.isLocation
                   ? fontStyles.fieldValueLocation
-                  : [
-                      fontStyles.fieldValue,
-                      {
-                        textAlign:
-                          this.props.label === 'Organization Name'
-                            ? this.props.value.length < 74
-                              ? 'center'
-                              : 'left'
-                            : 'left',
-                      },
-                    ]
+                  : [fontStyles.fieldValue]
               }
               selectable={true}
               numberOfLines={3}>
