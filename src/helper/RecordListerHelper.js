@@ -481,7 +481,7 @@ const saveDataToState = async (
   }
 };
 
-const getFieldsForModule = moduleName => {
+const getFieldsForModule = (moduleName) => {
   let fields = {};
   let specialFields = {};
   //fields = { key: value }

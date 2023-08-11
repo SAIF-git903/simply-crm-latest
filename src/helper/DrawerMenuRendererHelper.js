@@ -21,7 +21,7 @@ import MenuHolder from '../components/drawer/layouts/menuHolder';
 
 const hiddenModules = ['RecycleBin', 'EmailTemplates', 'Reports'];
 
-export const renderDrawerContent = menu => {
+export const renderDrawerContent = (menu) => {
   return [...createFixedMenu(), ...createDynamicMenu(menu)];
 };
 
@@ -88,7 +88,8 @@ const createFixedMenu = () => {
   ];
 };
 
-const createDynamicMenu = menu => {
+const createDynamicMenu = (menu) => {
+  console.log('menu', menu);
   const sectionViews = [];
   for (const section of menu) {
     const moduleButtonViews = createModuleButtonViews(section);
@@ -121,7 +122,7 @@ const createDynamicMenu = menu => {
   return sectionViews;
 };
 
-const createModuleButtonViews = section => {
+const createModuleButtonViews = (section) => {
   const moduleButtonViews = [];
   for (let module of section.modules) {
     if (hiddenModules.includes(module.name)) continue;

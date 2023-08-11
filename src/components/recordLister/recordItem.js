@@ -149,12 +149,8 @@ class RecordItem extends Component {
     }
     return (
       <View>
-        <SwipeOut
-          buttonWidth={70}
-          right={this.getActions()}
-          autoClose>
+        <SwipeOut buttonWidth={70} right={this.getActions()} autoClose>
           <TouchableOpacity
-          
             onPress={() => {
               this.props.onRecordSelect(this.props.id, this.props.index);
             }}>
@@ -172,10 +168,8 @@ class RecordItem extends Component {
               <Text
                 key={1}
                 numberOfLines={1}
-                
-                style={[fontStyles.dashboardRecordLabelBig, no_tittle_style,]}>
+                style={[fontStyles.dashboardRecordLabelBig, no_tittle_style]}>
                 {recordName}
-              
               </Text>
               {this.props.labels ? this.renderLabels(this.props.labels) : null}
             </View>
