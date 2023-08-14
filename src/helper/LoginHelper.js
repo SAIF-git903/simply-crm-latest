@@ -141,8 +141,12 @@ export const doUserLogin = async (
         session: responseJson.result.login.session,
         userTz: responseJson.result.login.user_tz,
         crmTz: responseJson.result.login.crm_tz,
+        // vtigerVersion: parseInt(
+        //   responseJson.result.login.vtiger_version.charAt(0),
+        //   10,
+        // ),
         vtigerVersion: parseInt(
-          responseJson.result.login.vtiger_version.charAt(0),
+          responseJson.result.login.simply_version.charAt(0),
           10,
         ),
         dateFormat: responseJson.result.login.date_format,
@@ -159,7 +163,7 @@ export const doUserLogin = async (
           await addDatabaseKey(LOGINDETAILSKEY);
           loginUserSuccess(dispatch, loginDetails, navigation);
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
           loginInstance.setState({
             loading: false,
@@ -200,7 +204,7 @@ export const doUserLogin = async (
   }
 };
 
-const showNetworkError = loginInstance => {
+const showNetworkError = (loginInstance) => {
   loginInstance.setState({loading: false, showUrlList: false});
   Alert.alert(
     'Wrong url or Network error',
