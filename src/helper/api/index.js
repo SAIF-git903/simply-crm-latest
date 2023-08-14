@@ -70,8 +70,12 @@ async function makeCall(body, request_url, headers, method = 'POST') {
         session: newResponseJson.result.login.session,
         userTz: newResponseJson.result.login.user_tz,
         crmTz: newResponseJson.result.login.crm_tz,
+        // vtigerVersion: parseInt(
+        //   newResponseJson.result.login.vtiger_version.charAt(0),
+        //   10,
+        // ),
         vtigerVersion: parseInt(
-          newResponseJson.result.login.vtiger_version.charAt(0),
+          newResponseJson.result.login.simply_version.charAt(0),
           10,
         ),
         dateFormat: newResponseJson.result.login.date_format,
