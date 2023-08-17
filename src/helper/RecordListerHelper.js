@@ -355,6 +355,9 @@ function getListerModifiedRecord(
         break;
       case LEADS:
       case CONTACTS:
+        modifiedRecord.firstname = modifiedRecord.firstname;
+        modifiedRecord.lastname = modifiedRecord.lastname;
+        break;
       case USERS:
         modifiedRecord.label = modifiedRecord.firstname
           ? `${modifiedRecord.firstname} ${modifiedRecord.lastname}`
@@ -805,7 +808,6 @@ export const recordListRendererHelper = (
   isDashboard = false,
   isRefRecord = false,
 ) => {
-  console.log('listerInstance.state.data', listerInstance.state.data);
   return (
     <FlatList
       ListEmptyComponent={renderEmpty()}
@@ -843,7 +845,7 @@ const getItem = (listerInstance, item, index, isDashboard, isRefRecord) => {
       break;
     }
     case CONTACTS: {
-      recordName = item.label;
+      recordName = [item.firstname, ' ', item.lastname];
       labels = [item.email];
       break;
     }

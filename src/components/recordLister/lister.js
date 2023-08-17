@@ -1,6 +1,15 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {View, ActivityIndicator, Text} from 'react-native';
+import {
+  View,
+  ActivityIndicator,
+  Text,
+  Touchable,
+  TouchableOpacity,
+  FlatList,
+} from 'react-native';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
+
 import SearchBox from '../common/searchBox';
 import {commonStyles, fontStyles} from '../../styles/common';
 import {
@@ -10,6 +19,9 @@ import {
   getNextPageRecord,
 } from '../../actions';
 import {recordListRendererHelper} from '../../helper';
+import {API_fetchFilters} from '../../helper/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {LOGINDETAILSKEY, URLDETAILSKEY} from '../../variables/strings';
 
 class Lister extends Component {
   constructor(props) {
@@ -18,12 +30,12 @@ class Lister extends Component {
     this.state = {
       //label when search is active
       searchLabel: null,
-
+      sortBy: 'asc',
       //progressbars
       searching: false, //onSearch
       loading: false, //onGetRecords and onRefresh
       isFlatListRefreshing: false, //onGetNextPage
-
+      visibleFilter: false,
       nextPage: false, //is the next page of the list of records available
 
       //request params
@@ -35,12 +47,37 @@ class Lister extends Component {
       statusText: '',
       statusTextColor: '#000000',
       // navigation: this.props.navigation
+      filters: [],
+      visible: false,
     };
   }
 
   componentDidMount() {
+    this.getFilters();
     this.getRecords();
   }
+
+  getFilters = async () => {
+    try {
+      const URLDetails = JSON.parse(await AsyncStorage.getItem(URLDETAILSKEY));
+      let url = URLDetails.url;
+      let trimmedUrl = url.replace(/ /g, '').replace(/\/$/, '');
+      trimmedUrl =
+        trimmedUrl.indexOf('://') === -1 ? 'https://' + trimmedUrl : trimmedUrl;
+      if (url.includes('www.')) {
+        trimmedUrl = trimmedUrl.replace('www.', '');
+      }
+      if (url.includes('http://')) {
+        trimmedUrl = trimmedUrl.replace('http://', 'https://');
+      }
+
+      let res = await API_fetchFilters(trimmedUrl, this.props.moduleName);
+      let allfilters = res?.result;
+      this.setState({filters: allfilters});
+    } catch (error) {
+      console.log('err', error);
+    }
+  };
 
   UNSAFE_componentWillReceiveProps(newprops) {
     this.setState(
@@ -69,6 +106,13 @@ class Lister extends Component {
     );
   }
 
+  sortByName = (sortKey) => {
+    const sortedData = [...this.state.data].sort((a, b) =>
+      a[sortKey].localeCompare(b[sortKey]),
+    );
+    this.setState({data: sortedData});
+  };
+
   onEndReached() {
     if (!this.onEndReachedCalledDuringMomentum) {
       if (this.state.nextPage) {
@@ -83,6 +127,24 @@ class Lister extends Component {
       }
     }
   }
+  renderFilteredList = (filterType) => {
+    const items = this.state.filters.filters[filterType] || [];
+
+    return (
+      <FlatList
+        data={items}
+        renderItem={({item}) => (
+          <TouchableOpacity
+            onPress={() => this.setState({visibleFilter: false})}>
+            <Text style={{paddingVertical: 10, paddingHorizontal: 10}}>
+              {item.name}
+            </Text>
+          </TouchableOpacity>
+        )}
+        keyExtractor={(item) => item.id}
+      />
+    );
+  };
 
   // onAddButtonPress() {
   //     const { navigate } = this.props.navigation;
@@ -188,6 +250,147 @@ class Lister extends Component {
               doSearch={(searchText) => this.doSearch(searchText)}
             />
           </View>
+          {this.props.moduleName === 'Contacts' && (
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-evenly',
+                width: '100%',
+                marginTop: 10,
+              }}>
+              <TouchableOpacity
+                style={{
+                  borderWidth: 1,
+                  borderRadius: 5,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  // paddingHorizontal: 10,
+                  paddingVertical: 5,
+                  width: '45%',
+                }}
+                onPress={() => {
+                  this.setState({visible: false});
+                  if (this.state.visibleFilter === false) {
+                    this.setState({visibleFilter: true});
+                  } else {
+                    this.setState({visibleFilter: false});
+                  }
+                }}>
+                <Text>My filter</Text>
+                <EvilIcons name="chevron-down" size={20} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  this.setState({visibleFilter: false});
+                  if (this.state.visible === false) {
+                    this.setState({visible: true});
+                  } else {
+                    this.setState({visible: false});
+                  }
+                }}
+                style={{
+                  borderWidth: 1,
+                  borderRadius: 5,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  // paddingHorizontal: 10,
+                  paddingVertical: 5,
+                  width: '45%',
+                }}>
+                <Text>Sorted by name</Text>
+                <EvilIcons name="chevron-down" size={20} />
+              </TouchableOpacity>
+            </View>
+          )}
+          {this.state.visible === true && (
+            <View
+              style={{
+                position: 'absolute',
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: '#fff',
+                paddingHorizontal: 10,
+                top: 105,
+                zIndex: 1,
+                right: 10,
+                borderRadius: 5,
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+
+                elevation: 5,
+                width: '45%',
+              }}>
+              <TouchableOpacity
+                style={{marginTop: 10}}
+                onPress={() => {
+                  this.sortByName('firstname'), this.setState({visible: false});
+                }}>
+                <Text>First Name</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{marginTop: 10}}
+                onPress={() => {
+                  this.sortByName('lastname'), this.setState({visible: false});
+                }}>
+                <Text>Last Name</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{marginVertical: 10}}
+                onPress={() => this.setState({visible: false})}>
+                <Text>Organization Name</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+          {this.state.visibleFilter === true && (
+            // <FlatList
+            //   data={this.state.filters}
+            //   renderItem={this.renderFiltersItem}
+            // />
+            <View
+              style={{
+                backgroundColor: '#fff',
+                position: 'absolute',
+                top: 105,
+                zIndex: 1,
+                left: 10,
+                borderRadius: 5,
+                width: '45%',
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+
+                elevation: 5,
+              }}>
+              {Object.keys(this.state.filters.filters).map((filterType) => (
+                <View key={filterType}>
+                  <View style={{backgroundColor: '#eeeeee'}}>
+                    <Text
+                      style={{
+                        paddingVertical: 10,
+                        paddingHorizontal: 10,
+                        fontWeight: '700',
+                        fontSize: 16,
+                      }}>
+                      {filterType}
+                    </Text>
+                  </View>
+                  {this.renderFilteredList(filterType)}
+                </View>
+              ))}
+            </View>
+          )}
           <View style={{flex: 1}}>{this.renderSearching()}</View>
         </View>
       );

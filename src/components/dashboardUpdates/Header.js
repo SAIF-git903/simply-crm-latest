@@ -19,6 +19,7 @@ class Header extends Component {
 
   render() {
     const {moduleName} = this.props;
+
     let dropdownText = moduleName;
 
     if (moduleName === 'Accounts') {

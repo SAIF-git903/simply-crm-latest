@@ -117,10 +117,10 @@ async function doFetch(request_url, method, headers, body_data) {
   //if fetch() will resolved, then 'response' will be filled with response data
   let responseJson = await response.json().catch(function (error) {
     console.log('JSON parse failed on:');
-    console.log(response);
+    console.log('response', response);
     throw error;
   });
-  console.log(responseJson);
+  console.log('responseJson-->', responseJson);
   return responseJson;
 }
 
@@ -269,4 +269,14 @@ export async function API_trackCall(record) {
   } catch (e) {
     console.log(e);
   }
+}
+
+export async function API_fetchFilters(trimmedUrl, module) {
+  return makeCall(
+    {
+      _operation: 'fetchModuleFilters',
+      module,
+    },
+    `${trimmedUrl}/modules/Mobile/api.php`,
+  );
 }
