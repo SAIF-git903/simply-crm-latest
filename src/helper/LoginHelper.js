@@ -134,6 +134,19 @@ export const doUserLogin = async (
       password,
     );
     if (responseJson.success) {
+      let vtiger_version = responseJson.result.login.vtiger_version.charAt(0);
+      let simply_version = responseJson.result.login.simply_version.charAt(0);
+      let new_version = null;
+      if (
+        (vtiger_version != null && vtiger_version !== undefined) ||
+        (simply_version !== null && simply_version !== undefined)
+      ) {
+        if (vtiger_version) {
+          new_version = vtiger_version;
+        } else {
+          new_version = simply_version;
+        }
+      }
       const loginDetails = {
         username,
         password,
@@ -141,14 +154,7 @@ export const doUserLogin = async (
         session: responseJson.result.login.session,
         userTz: responseJson.result.login.user_tz,
         crmTz: responseJson.result.login.crm_tz,
-        // vtigerVersion: parseInt(
-        //   responseJson.result.login.vtiger_version.charAt(0),
-        //   10,
-        // ),
-        vtigerVersion: parseInt(
-          responseJson.result.login.simply_version.charAt(0),
-          10,
-        ),
+        vtigerVersion: new_version,
         dateFormat: responseJson.result.login.date_format,
         modules: responseJson.result.modules,
         menu: responseJson.result.menu,

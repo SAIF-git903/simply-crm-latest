@@ -20,6 +20,7 @@ async function makeCall(body, request_url, headers, method = 'POST') {
       'Content-Type': 'application/json',
     };
   }
+
   const body_data = {
     _session: body._session ? body._session : session,
     _operation: body._operation,
@@ -38,7 +39,11 @@ async function makeCall(body, request_url, headers, method = 'POST') {
         : undefined,
     limit: body.limit,
     searchText: body.searchText !== '' ? body.searchText : undefined,
+    filterid: body.filterid !== '' ? body.filterid : undefined,
+    orderBy: body.orderBy !== '' ? body.orderBy : undefined,
+    sortOrder: body.sortOrder !== '' ? body.sortOrder : undefined,
   };
+  console.log('body_data', body_data);
   //clear undefined
   for (const [key, value] of Object.entries(body_data)) {
     if (value === undefined) {
@@ -62,6 +67,22 @@ async function makeCall(body, request_url, headers, method = 'POST') {
       loginDetails.password,
     );
     if (newResponseJson.success) {
+      let vtiger_version =
+        newResponseJson.result.login.vtiger_version.charAt(0);
+      let simply_version =
+        newResponseJson.result.login.simply_version.charAt(0);
+      let new_version = null;
+      if (
+        (vtiger_version != null && vtiger_version !== undefined) ||
+        (simply_version !== null && simply_version !== undefined)
+      ) {
+        if (vtiger_version) {
+          new_version = vtiger_version;
+        } else {
+          new_version = simply_version;
+        }
+      }
+
       //TODO combine with LoginHelper.js ??
       const newLoginDetails = {
         username: loginDetails.username,
@@ -70,14 +91,7 @@ async function makeCall(body, request_url, headers, method = 'POST') {
         session: newResponseJson.result.login.session,
         userTz: newResponseJson.result.login.user_tz,
         crmTz: newResponseJson.result.login.crm_tz,
-        // vtigerVersion: parseInt(
-        //   newResponseJson.result.login.vtiger_version.charAt(0),
-        //   10,
-        // ),
-        vtigerVersion: parseInt(
-          newResponseJson.result.login.simply_version.charAt(0),
-          10,
-        ),
+        vtigerVersion: new_version,
         dateFormat: newResponseJson.result.login.date_format,
         modules: newResponseJson.result.modules,
         menu: newResponseJson.result.menu,
@@ -165,6 +179,9 @@ export function API_listModuleRecords(
   specialFields,
   limit,
   searchText,
+  filterid,
+  orderBy,
+  sortOrder,
 ) {
   return makeCall({
     _operation: 'listModuleRecords',
@@ -173,6 +190,9 @@ export function API_listModuleRecords(
     limit: limit ? limit : 25,
     specialFields,
     searchText,
+    filterid,
+    orderBy,
+    sortOrder,
   });
 }
 

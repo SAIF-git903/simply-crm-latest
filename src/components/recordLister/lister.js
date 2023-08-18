@@ -19,7 +19,11 @@ import {
   getNextPageRecord,
 } from '../../actions';
 import {recordListRendererHelper} from '../../helper';
-import {API_fetchFilters} from '../../helper/api';
+import {
+  API_fetchFilters,
+  API_listModuleRecords,
+  API_query,
+} from '../../helper/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {LOGINDETAILSKEY, URLDETAILSKEY} from '../../variables/strings';
 
@@ -30,6 +34,7 @@ class Lister extends Component {
     this.state = {
       //label when search is active
       searchLabel: null,
+
       sortBy: 'asc',
       //progressbars
       searching: false, //onSearch
@@ -42,7 +47,6 @@ class Lister extends Component {
       data: [], //current records on page
       pageToTake: 1, //current page
       searchText: '', //text for search
-
       selectedIndex: -1,
       statusText: '',
       statusTextColor: '#000000',
@@ -106,13 +110,6 @@ class Lister extends Component {
     );
   }
 
-  sortByName = (sortKey) => {
-    const sortedData = [...this.state.data].sort((a, b) =>
-      a[sortKey].localeCompare(b[sortKey]),
-    );
-    this.setState({data: sortedData});
-  };
-
   onEndReached() {
     if (!this.onEndReachedCalledDuringMomentum) {
       if (this.state.nextPage) {
@@ -127,6 +124,7 @@ class Lister extends Component {
       }
     }
   }
+
   renderFilteredList = (filterType) => {
     const items = this.state.filters.filters[filterType] || [];
 
@@ -135,7 +133,9 @@ class Lister extends Component {
         data={items}
         renderItem={({item}) => (
           <TouchableOpacity
-            onPress={() => this.setState({visibleFilter: false})}>
+            onPress={() => {
+              this.setState({visibleFilter: false}), this.dofilter(item.id);
+            }}>
             <Text style={{paddingVertical: 10, paddingHorizontal: 10}}>
               {item.name}
             </Text>
@@ -162,6 +162,7 @@ class Lister extends Component {
         data: [],
         pageToTake: 1,
         searchText: '',
+        selectedFilter: '',
         selectedIndex: -1,
         statusText: 'Fetching Record',
         statusTextColor: '#000000',
@@ -214,6 +215,50 @@ class Lister extends Component {
       },
     );
   }
+
+  dofilter = (selectedFilter) => {
+    this.setState(
+      {
+        searchLabel: null,
+        searching: true,
+        loading: false,
+        isFlatListRefreshing: false,
+        nextPage: false,
+        // data: [],
+        pageToTake: 1,
+        selectedIndex: -1,
+        statusText: 'Searching .....',
+        statusTextColor: '#000000',
+        selectedFilter,
+      },
+      () => {
+        this.props.dispatch(fetchRecord(this, this.props.moduleName));
+      },
+    );
+  };
+
+  sortByName = (orderBy) => {
+    let sortOrder = 'asc';
+    this.setState(
+      {
+        searchLabel: null,
+        searching: true,
+        loading: false,
+        isFlatListRefreshing: false,
+        nextPage: false,
+        // data: [],
+        pageToTake: 1,
+        selectedIndex: -1,
+        statusText: 'Searching .....',
+        statusTextColor: '#000000',
+        orderBy,
+        sortOrder,
+      },
+      () => {
+        this.props.dispatch(fetchRecord(this, this.props.moduleName));
+      },
+    );
+  };
 
   doRender() {
     let view;
@@ -344,7 +389,10 @@ class Lister extends Component {
               </TouchableOpacity>
               <TouchableOpacity
                 style={{marginVertical: 10}}
-                onPress={() => this.setState({visible: false})}>
+                onPress={() => {
+                  this.sortByName('organization'),
+                    this.setState({visible: false});
+                }}>
                 <Text>Organization Name</Text>
               </TouchableOpacity>
             </View>
