@@ -352,7 +352,7 @@ class Lister extends Component {
                   paddingVertical: 5,
                   width: '45%',
                 }}>
-                <Text>Sorted by name</Text>
+                <Text>Sorted by</Text>
                 <EvilIcons name="chevron-down" size={20} />
               </TouchableOpacity>
             </View>
