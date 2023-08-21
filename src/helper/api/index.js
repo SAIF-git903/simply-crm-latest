@@ -300,3 +300,13 @@ export async function API_fetchFilters(trimmedUrl, module) {
     `${trimmedUrl}/modules/Mobile/api.php`,
   );
 }
+
+export async function API_fetchButtons(trimmedUrl, module) {
+  return makeCall(
+    {
+      _operation: 'fetchButtons',
+      module,
+    },
+    `${trimmedUrl}/modules/Mobile/api.php`,
+  );
+}
