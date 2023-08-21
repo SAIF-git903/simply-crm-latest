@@ -53,6 +53,13 @@ class Lister extends Component {
       // navigation: this.props.navigation
       filters: [],
       visible: false,
+      fieldLabel: [
+        {nameFields: 'firstname'},
+        {nameFields: 'lastname'},
+        {nameFields: 'organization'},
+        {nameFields: 'phone'},
+        {nameFields: 'email'},
+      ],
     };
   }
 
@@ -373,28 +380,31 @@ class Lister extends Component {
                 elevation: 5,
                 width: '45%',
               }}>
-              <TouchableOpacity
-                style={{marginTop: 10}}
-                onPress={() => {
-                  this.sortByName('firstname'), this.setState({visible: false});
-                }}>
-                <Text>First Name</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{marginTop: 10}}
-                onPress={() => {
-                  this.sortByName('lastname'), this.setState({visible: false});
-                }}>
-                <Text>Last Name</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{marginVertical: 10}}
-                onPress={() => {
-                  this.sortByName('organization'),
-                    this.setState({visible: false});
-                }}>
-                <Text>Organization Name</Text>
-              </TouchableOpacity>
+              <FlatList
+                data={this.state.fieldLabel}
+                renderItem={({item, index}) => {
+                  return (
+                    <TouchableOpacity
+                      style={{
+                        marginVertical: 10,
+                        marginTop: index === 0 ? 10 : 0,
+                      }}
+                      onPress={() => {
+                        this.sortByName(item.nameFields),
+                          this.setState({visible: false});
+                      }}>
+                      <Text
+                        style={{
+                          fontStyle: 'normal',
+                          textTransform: 'capitalize',
+                          fontWeight: '600',
+                        }}>
+                        {item.nameFields}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                }}
+              />
             </View>
           )}
           {this.state.visibleFilter === true && (
