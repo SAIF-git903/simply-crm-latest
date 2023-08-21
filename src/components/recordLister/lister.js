@@ -302,61 +302,61 @@ class Lister extends Component {
               doSearch={(searchText) => this.doSearch(searchText)}
             />
           </View>
-          {this.props.moduleName === 'Contacts' && (
-            <View
+
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-evenly',
+              width: '100%',
+              marginTop: 10,
+            }}>
+            <TouchableOpacity
               style={{
+                borderWidth: 1,
+                borderRadius: 5,
                 flexDirection: 'row',
                 alignItems: 'center',
-                justifyContent: 'space-evenly',
-                width: '100%',
-                marginTop: 10,
-              }}>
-              <TouchableOpacity
-                style={{
-                  borderWidth: 1,
-                  borderRadius: 5,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  // paddingHorizontal: 10,
-                  paddingVertical: 5,
-                  width: '45%',
-                }}
-                onPress={() => {
-                  this.setState({visible: false});
-                  if (this.state.visibleFilter === false) {
-                    this.setState({visibleFilter: true});
-                  } else {
-                    this.setState({visibleFilter: false});
-                  }
-                }}>
-                <Text>My filter</Text>
-                <EvilIcons name="chevron-down" size={20} />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
+                justifyContent: 'center',
+                // paddingHorizontal: 10,
+                paddingVertical: 5,
+                width: '45%',
+              }}
+              onPress={() => {
+                this.setState({visible: false});
+                if (this.state.visibleFilter === false) {
+                  this.setState({visibleFilter: true});
+                } else {
                   this.setState({visibleFilter: false});
-                  if (this.state.visible === false) {
-                    this.setState({visible: true});
-                  } else {
-                    this.setState({visible: false});
-                  }
-                }}
-                style={{
-                  borderWidth: 1,
-                  borderRadius: 5,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  // paddingHorizontal: 10,
-                  paddingVertical: 5,
-                  width: '45%',
-                }}>
-                <Text>Sorted by name</Text>
-                <EvilIcons name="chevron-down" size={20} />
-              </TouchableOpacity>
-            </View>
-          )}
+                }
+              }}>
+              <Text>My filter</Text>
+              <EvilIcons name="chevron-down" size={20} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                this.setState({visibleFilter: false});
+                if (this.state.visible === false) {
+                  this.setState({visible: true});
+                } else {
+                  this.setState({visible: false});
+                }
+              }}
+              style={{
+                borderWidth: 1,
+                borderRadius: 5,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                // paddingHorizontal: 10,
+                paddingVertical: 5,
+                width: '45%',
+              }}>
+              <Text>Sorted by</Text>
+              <EvilIcons name="chevron-down" size={20} />
+            </TouchableOpacity>
+          </View>
+
           {this.state.visible === true && (
             <View
               style={{
