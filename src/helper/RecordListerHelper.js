@@ -36,7 +36,12 @@ import {
 } from '../variables/constants';
 import {addDatabaseKey} from '.';
 import {fontStyles} from '../styles/common';
-import {API_deleteRecord, API_listModuleRecords, API_query} from './api';
+import {
+  API_deleteRecord,
+  API_listModuleRecords,
+  API_listModuleRecordsbyFilter,
+  API_query,
+} from './api';
 import RecordItem from '../components/recordLister/recordItem';
 import ReferenceRecordItem from '../components/addRecords/referenceRecordLister/referenceRecordItem';
 
@@ -196,6 +201,7 @@ const getDataFromInternet = async (
 ) => {
   //Getting data from internet
   try {
+    console.log('listerInstance', listerInstance.state);
     const {auth} = store.getState();
     const loginDetails = auth.loginDetails;
     const vtigerSeven = loginDetails.vtigerVersion > 6;
@@ -206,6 +212,9 @@ const getDataFromInternet = async (
     );
     let specialFields_values = Object.values(specialFields);
     let searchText = listerInstance.state.searchText;
+    let filterid = listerInstance.state.selectedFilter;
+    let orderBy = listerInstance.state.orderBy;
+    let sortOrder = listerInstance.state.sortOrder;
     let limit = isDashboard ? 5 : 25;
 
     let responseJson;
@@ -233,8 +242,12 @@ const getDataFromInternet = async (
         specialFields_values,
         limit,
         searchText,
+        filterid,
+        orderBy,
+        sortOrder,
       );
     }
+
     if (responseJson.success) {
       await getAndSaveDataVtiger(
         responseJson,
@@ -355,6 +368,10 @@ function getListerModifiedRecord(
         break;
       case LEADS:
       case CONTACTS:
+      // case CONTACTS:
+      //   modifiedRecord.firstname = modifiedRecord.firstname;
+      //   modifiedRecord.lastname = modifiedRecord.lastname;
+      //   break;
       case USERS:
         modifiedRecord.label = modifiedRecord.firstname
           ? `${modifiedRecord.firstname} ${modifiedRecord.lastname}`
@@ -805,7 +822,6 @@ export const recordListRendererHelper = (
   isDashboard = false,
   isRefRecord = false,
 ) => {
-  console.log('listerInstance.state.data', listerInstance.state.data);
   return (
     <FlatList
       ListEmptyComponent={renderEmpty()}
@@ -844,6 +860,7 @@ const getItem = (listerInstance, item, index, isDashboard, isRefRecord) => {
     }
     case CONTACTS: {
       recordName = item.label;
+      // recordName = [item.firstname, ' ', item.lastname];
       labels = [item.email];
       break;
     }

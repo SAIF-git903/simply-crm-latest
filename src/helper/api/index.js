@@ -20,6 +20,7 @@ async function makeCall(body, request_url, headers, method = 'POST') {
       'Content-Type': 'application/json',
     };
   }
+
   const body_data = {
     _session: body._session ? body._session : session,
     _operation: body._operation,
@@ -38,7 +39,11 @@ async function makeCall(body, request_url, headers, method = 'POST') {
         : undefined,
     limit: body.limit,
     searchText: body.searchText !== '' ? body.searchText : undefined,
+    filterid: body.filterid !== '' ? body.filterid : undefined,
+    orderBy: body.orderBy !== '' ? body.orderBy : undefined,
+    sortOrder: body.sortOrder !== '' ? body.sortOrder : undefined,
   };
+  console.log('body_data', body_data);
   //clear undefined
   for (const [key, value] of Object.entries(body_data)) {
     if (value === undefined) {
@@ -126,10 +131,10 @@ async function doFetch(request_url, method, headers, body_data) {
   //if fetch() will resolved, then 'response' will be filled with response data
   let responseJson = await response.json().catch(function (error) {
     console.log('JSON parse failed on:');
-    console.log(response);
+    console.log('response', response);
     throw error;
   });
-  console.log(responseJson);
+  console.log('responseJson-->', responseJson);
   return responseJson;
 }
 
@@ -174,6 +179,9 @@ export function API_listModuleRecords(
   specialFields,
   limit,
   searchText,
+  filterid,
+  orderBy,
+  sortOrder,
 ) {
   return makeCall({
     _operation: 'listModuleRecords',
@@ -182,6 +190,9 @@ export function API_listModuleRecords(
     limit: limit ? limit : 25,
     specialFields,
     searchText,
+    filterid,
+    orderBy,
+    sortOrder,
   });
 }
 
@@ -278,4 +289,14 @@ export async function API_trackCall(record) {
   } catch (e) {
     console.log(e);
   }
+}
+
+export async function API_fetchFilters(trimmedUrl, module) {
+  return makeCall(
+    {
+      _operation: 'fetchModuleFilters',
+      module,
+    },
+    `${trimmedUrl}/modules/Mobile/api.php`,
+  );
 }

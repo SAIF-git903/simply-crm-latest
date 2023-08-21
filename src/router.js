@@ -66,7 +66,7 @@ export default class Router extends Component {
     <Drawer.Navigator
       screenOptions={{headerShown: false}}
       drawerType={'front'}
-      drawerContent={props => <DrawerContent {...props} />}>
+      drawerContent={(props) => <DrawerContent {...props} />}>
       <Drawer.Screen name="Dashboard" component={Dashboard} />
       <Drawer.Screen name="Records" component={Records} />
       <Drawer.Screen name="Calendar" component={Calendar} />
