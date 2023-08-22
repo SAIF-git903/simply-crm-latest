@@ -52,23 +52,32 @@ class Lister extends Component {
       statusTextColor: '#000000',
       // navigation: this.props.navigation
       filters: [],
+      loadingFilter: false,
+      moduleName: '',
       visible: false,
-      fieldLabel: [
-        {nameFields: 'firstname'},
-        {nameFields: 'lastname'},
-        {nameFields: 'organization'},
-        {nameFields: 'phone'},
-        {nameFields: 'email'},
-      ],
+      fieldLabel: [],
     };
   }
 
   componentDidMount() {
+    this.getFields();
     this.getFilters();
     this.getRecords();
   }
 
-  getFilters = async () => {
+  getFields = async () => {
+    try {
+      let res = await AsyncStorage.getItem('fields');
+      let newArray = JSON.parse(res);
+      this.setState({fieldLabel: newArray});
+    } catch (error) {
+      console.log('err', error);
+    }
+  };
+
+  getFilters = async (module) => {
+    this.setState({loadingFilter: true});
+
     try {
       const URLDetails = JSON.parse(await AsyncStorage.getItem(URLDETAILSKEY));
       let url = URLDetails.url;
@@ -82,9 +91,22 @@ class Lister extends Component {
         trimmedUrl = trimmedUrl.replace('http://', 'https://');
       }
 
-      let res = await API_fetchFilters(trimmedUrl, this.props.moduleName);
-      let allfilters = res?.result;
-      this.setState({filters: allfilters});
+      if (module) {
+        this.setState({loadingFilter: true});
+        let res = await API_fetchFilters(trimmedUrl, module);
+        if (res?.success === true) {
+          this.setState({loadingFilter: false});
+          let allfilters = res?.result;
+          this.setState({filters: allfilters});
+        }
+      } else {
+        let res = await API_fetchFilters(trimmedUrl, this.props.moduleName);
+        if (res?.success === true) {
+          this.setState({loadingFilter: false});
+          let allfilters = res?.result;
+          this.setState({filters: allfilters});
+        }
+      }
     } catch (error) {
       console.log('err', error);
     }
@@ -175,6 +197,11 @@ class Lister extends Component {
         statusTextColor: '#000000',
       },
       () => {
+        setTimeout(() => {
+          this.getFields();
+        }, 1000);
+        this.setState({visibleFilter: false});
+        this.setState({visible: false});
         this.props.dispatch(fetchRecord(this, this.props.moduleName));
         if (this.props.saved === 'saved') {
           this.refreshData();
@@ -325,6 +352,7 @@ class Lister extends Component {
               onPress={() => {
                 this.setState({visible: false});
                 if (this.state.visibleFilter === false) {
+                  this.getFilters(this.props.moduleName);
                   this.setState({visibleFilter: true});
                 } else {
                   this.setState({visibleFilter: false});
@@ -390,7 +418,7 @@ class Lister extends Component {
                         marginTop: index === 0 ? 10 : 0,
                       }}
                       onPress={() => {
-                        this.sortByName(item.nameFields),
+                        this.sortByName(item.name),
                           this.setState({visible: false});
                       }}>
                       <Text
@@ -399,7 +427,7 @@ class Lister extends Component {
                           textTransform: 'capitalize',
                           fontWeight: '600',
                         }}>
-                        {item.nameFields}
+                        {item.label}
                       </Text>
                     </TouchableOpacity>
                   );
@@ -431,22 +459,31 @@ class Lister extends Component {
 
                 elevation: 5,
               }}>
-              {Object.keys(this.state.filters.filters).map((filterType) => (
-                <View key={filterType}>
-                  <View style={{backgroundColor: '#eeeeee'}}>
-                    <Text
-                      style={{
-                        paddingVertical: 10,
-                        paddingHorizontal: 10,
-                        fontWeight: '700',
-                        fontSize: 16,
-                      }}>
-                      {filterType}
-                    </Text>
-                  </View>
-                  {this.renderFilteredList(filterType)}
+              {this.state.loadingFilter === true ? (
+                <ActivityIndicator
+                  animating={this.state.loadingFilter}
+                  style={{padding: 10}}
+                />
+              ) : (
+                <View>
+                  {Object.keys(this.state.filters.filters).map((filterType) => (
+                    <View key={filterType}>
+                      <View style={{backgroundColor: '#eeeeee'}}>
+                        <Text
+                          style={{
+                            paddingVertical: 10,
+                            paddingHorizontal: 10,
+                            fontWeight: '700',
+                            fontSize: 16,
+                          }}>
+                          {filterType}
+                        </Text>
+                      </View>
+                      {this.renderFilteredList(filterType)}
+                    </View>
+                  ))}
                 </View>
-              ))}
+              )}
             </View>
           )}
           <View style={{flex: 1}}>{this.renderSearching()}</View>
