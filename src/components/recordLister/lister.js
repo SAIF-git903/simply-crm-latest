@@ -55,25 +55,24 @@ class Lister extends Component {
       loadingFilter: false,
       moduleName: '',
       visible: false,
-      fieldLabel: [
-        {nameFields: 'firstname'},
-        {nameFields: 'lastname'},
-        {nameFields: 'organization'},
-        {nameFields: 'phone'},
-        {nameFields: 'email'},
-      ],
+      fieldLabel: [],
     };
   }
 
   componentDidMount() {
-    console.log('hi---->');
+    this.getFields();
     this.getFilters();
     this.getRecords();
   }
 
-  handleDrawerOpen = () => {
-    // Close the popup when the drawer is opened
-    this.setState({visibleFilter: false});
+  getFields = async () => {
+    try {
+      let res = await AsyncStorage.getItem('fields');
+      let newArray = JSON.parse(res);
+      this.setState({fieldLabel: newArray});
+    } catch (error) {
+      console.log('err', error);
+    }
   };
 
   getFilters = async (module) => {
@@ -198,6 +197,9 @@ class Lister extends Component {
         statusTextColor: '#000000',
       },
       () => {
+        setTimeout(() => {
+          this.getFields();
+        }, 1000);
         this.setState({visibleFilter: false});
         this.setState({visible: false});
         this.props.dispatch(fetchRecord(this, this.props.moduleName));
@@ -416,7 +418,7 @@ class Lister extends Component {
                         marginTop: index === 0 ? 10 : 0,
                       }}
                       onPress={() => {
-                        this.sortByName(item.nameFields),
+                        this.sortByName(item.name),
                           this.setState({visible: false});
                       }}>
                       <Text
@@ -425,7 +427,7 @@ class Lister extends Component {
                           textTransform: 'capitalize',
                           fontWeight: '600',
                         }}>
-                        {item.nameFields}
+                        {item.label}
                       </Text>
                     </TouchableOpacity>
                   );

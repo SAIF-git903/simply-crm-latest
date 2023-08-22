@@ -135,6 +135,15 @@ async function doFetch(request_url, method, headers, body_data) {
     throw error;
   });
   console.log('responseJson-->', responseJson);
+
+  if (responseJson?.result?.headers) {
+    try {
+      const jsonValue = JSON.stringify(responseJson?.result?.headers);
+      await AsyncStorage.setItem('fields', jsonValue);
+    } catch (error) {
+      console.log('err', error);
+    }
+  }
   return responseJson;
 }
 
