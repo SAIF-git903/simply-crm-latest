@@ -60,7 +60,7 @@ class Lister extends Component {
   }
 
   componentDidMount() {
-    this.getFields();
+    // this.getFields();
     this.getFilters();
     this.getRecords();
   }
@@ -197,7 +197,7 @@ class Lister extends Component {
         statusTextColor: '#000000',
       },
       () => {
-        setTimeout(() => {
+        setInterval(() => {
           this.getFields();
         }, 1000);
         this.setState({visibleFilter: false});

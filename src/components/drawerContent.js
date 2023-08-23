@@ -28,6 +28,7 @@ import {
 } from '../variables/themeColors';
 import {fontStyles} from '../styles/common';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class DrawerContent extends Component {
   constructor(props) {
@@ -80,9 +81,14 @@ class DrawerContent extends Component {
     );
   }
 
-  logout() {
+  logout = async () => {
+    try {
+      await AsyncStorage.removeItem('fields');
+    } catch (error) {
+      console.log('err', error);
+    }
     removeAllDatabase(this.navigateToSplash.bind(this));
-  }
+  };
 
   navigateToSplash() {
     this.props.navigation.reset({
