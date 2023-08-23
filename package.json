@@ -31,6 +31,7 @@
     "react-native-date-picker": "^4.2.13",
     "react-native-datepicker": "^1.7.2",
     "react-native-datepicker-dialog": "^0.0.9",
+    "react-native-device-info": "^10.8.0",
     "react-native-gesture-handler": "^2.12.1",
     "react-native-image-pan-zoom": "^2.1.12",
     "react-native-material-dialog": "^0.7.7",

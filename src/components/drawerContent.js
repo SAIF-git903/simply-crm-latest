@@ -29,6 +29,7 @@ import {
 import {fontStyles} from '../styles/common';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import DeviceInfo from 'react-native-device-info';
 
 class DrawerContent extends Component {
   constructor(props) {
@@ -38,10 +39,16 @@ class DrawerContent extends Component {
       drawerViews: [],
       drawerLoadComplete: false,
       signOut: [],
+      buildNumber: '',
+      versionNumber: '',
     };
   }
 
   componentDidMount() {
+    let build = DeviceInfo.getBuildNumber();
+    let version = DeviceInfo.getVersion();
+    this.setState({versionNumber: version});
+    this.setState({buildNumber: build});
     if (!this.state.drawerLoadComplete) {
       this.setState({loading: true});
       renderDrawerView(this.props.loginDetails, this);
@@ -65,17 +72,33 @@ class DrawerContent extends Component {
       <TouchableOpacity
         style={styles.singOutWrapper}
         onPress={this.onSignOutPress.bind(this)}>
-        <View style={styles.signOut}>
-          <View style={styles.imageStyle}>
-            <Icon
-              name="power-off"
-              size={20}
-              color={DRAWER_SECTION_HEADER_IMAGE_COLOR}
-            />
+        <View
+          style={{
+            flexDirection: 'row',
+            flex: 1,
+          }}>
+          <View style={styles.signOut}>
+            <View style={styles.imageStyle}>
+              <Icon
+                name="power-off"
+                size={20}
+                color={DRAWER_SECTION_HEADER_IMAGE_COLOR}
+              />
+            </View>
+            <Text style={[styles.textStyle, fontStyles.drawerMenuButtonText]}>
+              Sign Out
+            </Text>
           </View>
-          <Text style={[styles.textStyle, fontStyles.drawerMenuButtonText]}>
-            Sign Out
-          </Text>
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingRight: 20,
+            }}>
+            <Text style={{color: '#d3d3d3'}}>
+              V {this.state.versionNumber} ({this.state.buildNumber})
+            </Text>
+          </View>
         </View>
       </TouchableOpacity>
     );
