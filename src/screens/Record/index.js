@@ -9,14 +9,7 @@ import {
   Image,
   Platform,
 } from 'react-native';
-import Popover from 'react-native-popover-view';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import Feather from 'react-native-vector-icons/Feather';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import React, {useState} from 'react';
-import {View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
-import {useSelector} from 'react-redux';
-import Entypo from 'react-native-vector-icons/Entypo';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useSelector} from 'react-redux';
 import FontAwesome, {
@@ -467,7 +460,6 @@ export default function RecordDetails() {
   };
 
   return (
-
     <View style={{flex: 1}}>
       <Header title={'Record Details'} showBackButton />
 
