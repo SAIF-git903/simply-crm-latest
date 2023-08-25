@@ -288,6 +288,7 @@ export default function RecordDetails() {
   const [visible, setVisible] = useState(false);
   const [firstname, setFirstName] = useState('');
   const [lastname, setLastName] = useState('');
+  const [fullName, setFullName] = useState('');
   const [orgname, setOrgName] = useState('');
   const [fields, setFields] = useState([]);
   const [itemFields, setItemFields] = useState([]);
@@ -299,7 +300,7 @@ export default function RecordDetails() {
   };
 
   useEffect(() => {
-    if (moduleName === 'Contacts') {
+    if (moduleName === 'Contacts' || moduleName === 'Accounts') {
       getRecords();
       getButtons();
     }
@@ -309,15 +310,20 @@ export default function RecordDetails() {
     const filteredFields = itemFields.map((val) => {
       return fields.find((itm) => val === itm.name);
     });
-
     if (filteredFields != null && filteredFields != undefined) {
       setNewArr(filteredFields);
     }
   }, [itemFields]);
 
   useEffect(() => {
+    setFullName(`${firstname} ${lastname}`);
+  }, [firstname, lastname]);
+
+  useEffect(() => {
     if (visible === false) {
-      ongenericFunction(state.fun, state.value);
+      if ((state.fun, state.value)) {
+        ongenericFunction(state.fun, state.value);
+      }
     }
   }, [visible]);
 
@@ -331,8 +337,11 @@ export default function RecordDetails() {
         if (val.name === 'lastname') {
           setLastName(val?.value);
         }
-        if (val.name === 'account_id') {
+        if (moduleName === 'Contacts' && val.label === 'Organization Name') {
           setOrgName(val?.value?.label);
+        }
+        if (moduleName === 'Accounts' && val.label === 'Organization Name') {
+          setOrgName(val?.value);
         }
       });
 
@@ -454,64 +463,71 @@ export default function RecordDetails() {
 
   return (
     <View style={{flex: 1, justifyContent: 'center'}}>
-      {/* {moduleName === 'Contacts' ? ( */}
-      {/*  <Header title={'Record Details'} showBackButton showDetailButton /> */}
-      {/*    <Header title={'Record Details'} showBackButton /> */}
-      {/*  ) : ( */}
       <Header title={'Record Details'} showBackButton />
-      {/*  )} */}
 
-      {moduleName === 'Contacts' ? (
-        <View style={{width: '100%'}}>
-          <View style={{backgroundColor: '#fff'}}>
+      {/* {moduleName === 'Contacts' ? ( */}
+      {moduleName === 'Contacts' || moduleName === 'Accounts' ? (
+        <View>
+          <View style={{paddingTop: 8, width: '100%', backgroundColor: '#fff'}}>
             <View
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                justifyContent: 'space-between',
-                marginHorizontal: 10,
-                // marginVertical: 5,
-                marginTop: 5,
+                width: '100%',
               }}>
               <View
                 style={{
-                  flexDirection: 'row',
+                  width: '25%',
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>
-                <View style={{height: 65, width: 65}}>
+                <View
+                  style={{
+                    height: 65,
+                    width: 65,
+                    borderRadius: 60,
+                    overflow: 'hidden',
+                  }}>
                   <Image
                     source={require('../../../assets/images/user.png')}
                     style={{height: '100%', width: '100%'}}
                   />
                 </View>
-                <View
-                  style={{
-                    justifyContent: 'center',
-                    marginLeft: 10,
-                  }}>
+              </View>
+              <View style={{width: '70%'}}>
+                {moduleName === 'Contacts' ? (
+                  <>
+                    <Text
+                      numberOfLines={1}
+                      style={{
+                        fontSize: 20,
+                        color: fullName ? '#000' : '#9a9a9c',
+                        fontFamily: 'Poppins-SemiBold',
+                      }}>
+                      {fullName ? fullName : 'Full Name'}
+                    </Text>
+
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: orgname ? '#000' : '#9a9a9c',
+                        fontFamily: orgname
+                          ? 'Poppins-Regular'
+                          : 'Poppins-SemiBold',
+                      }}>
+                      {orgname ? orgname : 'Organization Name'}
+                    </Text>
+                  </>
+                ) : (
                   <Text
                     style={{
                       fontSize: 20,
-                      color: firstname || lastname ? '#000' : '#9a9a9c',
+                      color: orgname ? '#000' : '#9a9a9c',
                       fontFamily: 'Poppins-SemiBold',
                     }}>
-                    {firstname || lastname
-                      ? `${firstname} ${lastname}`
-                      : 'Full Name'}
+                    {orgname ? orgname : 'Full Name'}
                   </Text>
-
-                  <Text
-                    style={{
-                      fontSize: 15,
-                      color: orgname ? '#000' : '#9a9a9c',
-                      fontFamily: orgname
-                        ? 'Poppins-Regular'
-                        : 'Poppins-SemiBold',
-                    }}>
-                    {orgname ? orgname : 'Organization Name'}
-                  </Text>
-                </View>
+                )}
               </View>
               {/* <TouchableOpacity>
                 <Entypo name="edit" size={28} color="#9a9a9c" />
@@ -531,13 +547,18 @@ export default function RecordDetails() {
               keyExtractor={(item) => item.id}
               contentContainerStyle={{
                 flexGrow: 1,
-                marginHorizontal: 15,
+                marginHorizontal: 10,
               }}
               // scrollEnabled={false}
               renderItem={({item, index}) => {
                 const parsedIcon = parseIconFromClassName(item.icon);
                 return (
-                  <View style={{paddingHorizontal: 5}}>
+                  <View
+                    style={{
+                      paddingHorizontal: 5,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
                     {parsedIcon ? (
                       <TouchableOpacity
                         activeOpacity={0.5}
@@ -562,7 +583,6 @@ export default function RecordDetails() {
                           backgroundColor: item.color,
                           paddingHorizontal: 20,
                           paddingVertical: 5,
-                          marginHorizontal: 5,
                         }}
                         onPress={() => {
                           setState({
@@ -590,7 +610,6 @@ export default function RecordDetails() {
         style={{
           height: '7%',
           backgroundColor: '#fff',
-          // marginTop: 20,
           shadowColor: '#000',
           shadowOffset: {
             width: 0,
@@ -667,77 +686,91 @@ export default function RecordDetails() {
         <View
           style={{
             position: 'absolute',
-            zIndex: 1,
-            width: '80%',
-            alignSelf: 'center',
-            backgroundColor: '#fff',
-            shadowColor: '#000',
-            borderRadius: 10,
-            paddingHorizontal: 10,
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
-
-            elevation: 5,
+            height: '100%',
+            width: '100%',
+            backgroundColor: 'rgba(100, 100, 100, 0.3)',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}>
-          {newArr.map((val, index) => {
-            return (
-              <View
-                style={{
-                  flexDirection: 'row',
-
-                  marginHorizontal: 10,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  backgroundColor: '#fff',
-                  marginTop: 10,
-                  borderBottomWidth: 0.5,
-                  borderBottomColor: '#9a9a9c',
-                  paddingBottom: 5,
-                }}>
-                <View style={{width: '50%'}}>
-                  <Text
-                    style={{
-                      fontFamily: 'Poppins-Medium',
-                    }}>
-                    {val.label}:
-                  </Text>
-                </View>
-                <View style={{width: '50%'}}>
-                  <Text
-                    style={{
-                      fontFamily: 'Poppins-Regular',
-                    }}>
-                    {val.value}
-                  </Text>
-                </View>
-              </View>
-            );
-          })}
-          <TouchableOpacity
+          <View
             style={{
-              alignSelf: 'flex-end',
-              alignItems: 'center',
-              justifyContent: 'center',
-              // marginVertical: 10,
-              marginTop: 20,
-              marginBottom: 10,
-              backgroundColor: '#75C2F6',
+              position: 'absolute',
+              zIndex: 1,
+              width: '80%',
+              alignSelf: 'center',
+              backgroundColor: '#fff',
+              shadowColor: '#000',
               borderRadius: 5,
-            }}
-            onPress={() => setVisible(false)}>
-            <Text
+              paddingHorizontal: 10,
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+
+              elevation: 5,
+            }}>
+            {newArr.map((val, index) => {
+              return (
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    marginHorizontal: 10,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: '#fff',
+                    marginTop: 10,
+                    borderBottomWidth: 0.5,
+                    borderBottomColor: '#9a9a9c',
+                    paddingBottom: 5,
+                  }}>
+                  <View style={{width: '50%'}}>
+                    <Text
+                      style={{
+                        fontFamily: 'Poppins-Medium',
+                      }}>
+                      {val?.label} :
+                    </Text>
+                  </View>
+                  <View style={{width: '50%'}}>
+                    <Text
+                      style={{
+                        color: val?.value ? '#000' : '#9a9a9c',
+                        fontFamily: 'Poppins-Regular',
+                      }}>
+                      {val?.value ? val?.value : 'No detail'}
+                    </Text>
+                  </View>
+                </View>
+              );
+            })}
+            <TouchableOpacity
               style={{
-                paddingVertical: 8,
-                paddingHorizontal: 18,
-                fontFamily: 'Poppins-Medium',
-              }}>
-              Save
-            </Text>
-          </TouchableOpacity>
+                alignSelf: 'flex-end',
+                alignItems: 'center',
+                justifyContent: 'center',
+                // marginVertical: 10,
+                marginTop: 20,
+                marginBottom: 10,
+                // backgroundColor: '#75C2F6',
+                borderColor: '#75C2F6',
+                borderWidth: 2.5,
+                borderRadius: 5,
+              }}
+              onPress={() => setVisible(false)}>
+              <Text
+                style={{
+                  paddingVertical: 3,
+                  color: '#75C2F6',
+                  fontWeight: 'bold',
+                  paddingHorizontal: 20,
+                  fontFamily: 'Poppins-SemiBold',
+                }}>
+                Save
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       )}
     </View>
