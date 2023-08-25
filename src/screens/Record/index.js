@@ -13,6 +13,9 @@ import Popover from 'react-native-popover-view';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import React, {useState} from 'react';
+import {View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
+import {useSelector} from 'react-redux';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useSelector} from 'react-redux';
@@ -29,10 +32,12 @@ import Updates from './Updates';
 import Comments from './Comments/';
 import IconTabBar from '../../components/common/IconTabBar';
 import {backgroundColor} from 'react-native-calendars/src/style';
-
 import Summery from '../../components/recordViewer/Summery';
 import {URLDETAILSKEY} from '../../variables/strings';
 import {API_fetchButtons, API_fetchRecordWithGrouping} from '../../helper/api';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import Feather from 'react-native-vector-icons/Feather';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 var ScrollableTabView = require('react-native-scrollable-tab-view');
 
@@ -462,7 +467,8 @@ export default function RecordDetails() {
   };
 
   return (
-    <View style={{flex: 1, justifyContent: 'center'}}>
+
+    <View style={{flex: 1}}>
       <Header title={'Record Details'} showBackButton />
 
       {/* {moduleName === 'Contacts' ? ( */}
