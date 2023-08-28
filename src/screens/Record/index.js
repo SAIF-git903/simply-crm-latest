@@ -523,7 +523,7 @@ export default function RecordDetails() {
                       color: orgname ? '#000' : '#9a9a9c',
                       fontFamily: 'Poppins-SemiBold',
                     }}>
-                    {orgname ? orgname : 'Full Name'}
+                    {orgname ? orgname : 'Organization Name'}
                   </Text>
                 )}
               </View>
