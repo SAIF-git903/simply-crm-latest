@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -28,21 +28,81 @@ const moment = require('moment-timezone');
 export default function Calendar() {
   const [currentDate, setCurrentDate] = useState(new moment());
   const [showCalendar, setShowCalendar] = useState(false);
+  const [page, setPage] = useState(1);
+  const [data, setData] = useState([]);
+  const [newData, setNewData] = useState([]);
 
   const dispatch = useDispatch();
   const {records, isLoading, isRefreshing, recordsLoading} = useSelector(
-    state => state.calendar,
+    (state) => state.calendar,
   );
 
   const navigation = useNavigation();
 
-  const dates = mapItemsToAgendaList(records);
+  const new_Data = mapItemsToAgendaList(data);
+
+  let modifyData = [];
+
+  let date = moment(new Date()).format('YYYY-MM-DD');
+  modifyData = new_Data.filter((val) => val.title >= date);
+
+  const dates = modifyData.sort((a, b) => {
+    const dateA = new Date(b.title);
+    const dateB = new Date(a.title);
+    return dateA - dateB;
+  });
 
   useFocusEffect(
     React.useCallback(() => {
       fetchData();
     }, []),
   );
+
+  useEffect(() => {
+    if (records.length >= 0) {
+      if (data != null && data != undefined) {
+        setData([...data, ...records]);
+      } else {
+        setData(records);
+      }
+    }
+  }, [records]);
+
+  useEffect(() => {
+    if (isRefreshing === true) {
+      setPage(page + 1);
+    }
+  }, [isRefreshing]);
+
+  const loadmoredata = () => {
+    if (dates.length > 0) {
+      fetchData(true, page);
+    }
+  };
+
+  const renderFooter = () => {
+    if (dates.length > 0 && records?.length > 0) {
+      return (
+        <View style={{alignItems: 'center', padding: 10}}>
+          <ActivityIndicator size="small" animating={isRefreshing} />
+          <Text style={{color: 'gray'}}>
+            {isRefreshing ? 'Loading records...' : null}
+          </Text>
+        </View>
+      );
+    }
+    if (dates.length === 0 && isLoading) {
+      return (
+        <View style={{alignItems: 'center', padding: 10}}>
+          <ActivityIndicator
+            size="small"
+            animating={dates.length === 0 ? true : false}
+          />
+          <Text style={{color: 'gray'}}>{'Loading...'}</Text>
+        </View>
+      );
+    }
+  };
 
   function renderAddRecordButton() {
     return (
@@ -111,8 +171,10 @@ export default function Calendar() {
 
   function renderItem(props) {
     const {item} = props;
+
     let timeFrame =
-      item.time_start + (item.time_end.length !== 0 ? '-' + item.time_end : '');
+      item.time_start +
+      (item.time_end?.length !== 0 ? '-' + item.time_end : '');
 
     const swipeOutButtons = [
       {
@@ -192,12 +254,52 @@ export default function Calendar() {
     );
   }
 
-  function fetchData(isRefreshing) {
-    dispatch(getCalendarRecords(isRefreshing));
+  function fetchData(isRefreshing, page) {
+    dispatch(getCalendarRecords(isRefreshing, page));
   }
+
+  // function mapItemsToAgendaList(items) {
+  //   let mappedItems = [];
+
+  //   const sortedItems = items.sort((a, b) => {
+  //     let aNumber = a.date_start.replace(/-/g, '');
+  //     let bNumber = b.date_start.replace(/-/g, '');
+  //     return aNumber - bNumber;
+  //   });
+
+  //   for (const item of sortedItems) {
+  //     const {date_start, subject, type, time_start, time_end, id} = item;
+
+  //     const itemData = {
+  //       title: date_start,
+  //       subject,
+  //       type,
+  //       time_start,
+  //       time_end,
+  //       id,
+  //     };
+
+  //     const existingDate = mappedItems.find((x) => x.title === itemData.title);
+
+  //     if (existingDate) {
+  //       existingDate.data.push(itemData);
+  //     } else {
+  //       const date = {
+  //         title: item.date_start,
+  //         data: [itemData],
+  //       };
+  //       mappedItems.push(date);
+  //     }
+  //   }
+
+  //   return mappedItems;
+  // }
 
   function mapItemsToAgendaList(items) {
     let mappedItems = [];
+
+    // Create a Set to keep track of unique dates
+    const uniqueDates = new Set();
 
     const sortedItems = items.sort((a, b) => {
       let aNumber = a.date_start.replace(/-/g, '');
@@ -217,16 +319,28 @@ export default function Calendar() {
         id,
       };
 
-      const existingDate = mappedItems.find(x => x.title === itemData.title);
+      // Check if the date is already in uniqueDates
 
-      if (existingDate) {
-        existingDate.data.push(itemData);
-      } else {
-        const date = {
-          title: item.date_start,
-          data: [itemData],
-        };
-        mappedItems.push(date);
+      if (!uniqueDates.has(itemData.id)) {
+        // Add the date to uniqueDates
+        uniqueDates.add(itemData.id);
+
+        // Find if there's an existing date in mappedItems
+        const existingDateIndex = mappedItems.findIndex(
+          (x) => x.title === itemData.title,
+        );
+
+        if (existingDateIndex !== -1) {
+          // If the date exists, push the itemData into its data array
+          mappedItems[existingDateIndex].data.push(itemData);
+        } else {
+          // If the date doesn't exist, create a new entry
+          const date = {
+            title: item.date_start,
+            data: [itemData],
+          };
+          mappedItems.push(date);
+        }
       }
     }
 
@@ -235,7 +349,7 @@ export default function Calendar() {
 
   function getMarkedDates() {
     const marked = {};
-    dates.forEach(item => {
+    dates.forEach((item) => {
       // NOTE: only mark dates with data
       if (item.data && item.data.length > 0) {
         marked[item.title] = {marked: true};
@@ -263,9 +377,11 @@ export default function Calendar() {
           padding: 20,
           justifyContent: 'center',
           alignItems: 'center',
-          backgroundColor: 'white',
+          // backgroundColor: 'white',
         }}>
-        <Text style={fontStyles.fieldLabel}>No records found.</Text>
+        <Text style={[fontStyles.fieldLabel, {fontSize: 15}]}>
+          No upcoming Events or Tasks
+        </Text>
       </View>
     );
   }
@@ -311,6 +427,43 @@ export default function Calendar() {
     );
   }
 
+  // const renderlistHeader = () => {
+  //   const existingDates = dates.map((item) => item.title);
+
+  //   const currentDate = moment(new Date()).format('YYYY-MM-DD');
+
+  //   const futureDatesAvailable = existingDates.some((date) => {
+  //     const dateObj = date;
+  //     return dateObj > currentDate;
+  //   });
+  //   const currentDatesAvailable = existingDates.some((date) => {
+  //     const dateObj = date;
+
+  //     return dateObj === currentDate;
+  //   });
+
+  //   if (dates.length > 0) {
+  //     // if (futureDatesAvailable === false && currentDatesAvailable === false) {
+  //     return (
+  //       <View
+  //         style={{
+  //           alignItems: 'center',
+  //           justifyContent: 'center',
+  //           marginVertical: 10,
+  //         }}>
+  //         <Text style={{color: 'gray', fontFamily: 'Poppins-Regular'}}>
+  //           {futureDatesAvailable === false
+  //             ? 'No upcoming event and Task'
+  //             : currentDatesAvailable === false
+  //             ? 'No Today records found'
+  //             : null}
+  //         </Text>
+  //       </View>
+  //     );
+  //     // }
+  //   }
+  // };
+
   return (
     <View style={styles.backgroundStyle}>
       <Header
@@ -323,7 +476,7 @@ export default function Calendar() {
           date={currentDate.format('YYYY-MM-DD')}
           disabledOpacity={0.6}
           showTodayButton
-          onDateChanged={date => setCurrentDate(new moment(date))}
+          onDateChanged={(date) => setCurrentDate(new moment(date))}
           //TODO set me ?? for prevent width: 100%
           // todayButtonStyle={}
         >
@@ -332,7 +485,7 @@ export default function Calendar() {
               current={currentDate.format('YYYY-MM-DD')}
               firstDay={1}
               markedDates={getMarkedDates()}
-              onDayPress={date => {
+              onDayPress={(date) => {
                 setCurrentDate(new moment(date.dateString));
                 setShowCalendar(false);
               }}
@@ -343,6 +496,7 @@ export default function Calendar() {
               <WeekCalendar firstDay={1} markedDates={getMarkedDates()} />
             </View>
           )}
+
           <AgendaList
             sections={dates}
             renderItem={renderItem}
@@ -357,15 +511,18 @@ export default function Calendar() {
               textTransform: 'uppercase',
             }}
             ListEmptyComponent={renderEmpty()}
-            refreshControl={
-              <RefreshControl
-                refreshing={
-                  (isLoading && isRefreshing) ||
-                  (isLoading && records.length === 0)
-                }
-                onRefresh={() => fetchData(true)}
-              />
-            }
+            // refreshControl={
+            //   <RefreshControl
+            //     refreshing={records.length > 0 ? false : true}
+            //     title={'Getting records'}
+            //     titleColor={'gray'}
+            //     // onRefresh={() => fetchData()}
+            //   />
+            // }
+            // ListHeaderComponent={renderlistHeader}
+            onEndReached={loadmoredata}
+            onEndReachedThreshold={0.1}
+            ListFooterComponent={renderFooter}
           />
         </CalendarProvider>
       </View>
