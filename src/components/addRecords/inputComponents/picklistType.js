@@ -6,14 +6,14 @@ import {commonStyles} from '../../../styles/common';
 class PickListType extends Component {
   constructor(props) {
     super(props);
-    let val =
-      this.props.obj.lable === 'Company country'
-        ? ''
-        : this.props.obj.type.defaultValue;
-    val =
-      this.props.obj.currentValue !== undefined
-        ? this.props.obj.currentValue
-        : val;
+    let val = '';
+    //   this.props.obj.lable === 'Company country'
+    //     ? ''
+    //     : this.props.obj.type.defaultValue;
+    // val =
+    //   this.props.obj.currentValue !== undefined
+    //     ? this.props.obj.currentValue
+    //     : val;
     // console.log('--component data--');
     // console.log(this.props.obj.currentValue);
     // console.log(val);
@@ -39,12 +39,7 @@ class PickListType extends Component {
               this.setState({saveValue: itemValue});
               // }
             }}>
-            <Picker.Item
-              label={
-                this.state.saveValue ? 'Select an option' : 'Please Select'
-              }
-              value={0}
-            />
+            <Picker.Item label={'Select an option'} value={0} />
             {options.map((item, index) => {
               return (
                 <Picker.Item
