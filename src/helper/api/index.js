@@ -224,6 +224,7 @@ export function API_fetchRecord(body, request_url) {
   //TODO get only editable fields (displaytype = 2) for module on backend in fetchRecord function
   body.page = body.page ? body.page : 1;
   body.limit = body.limit ? body.limit : 25;
+  body._session = body.session;
   return makeCall(body, request_url);
 }
 
