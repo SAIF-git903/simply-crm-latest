@@ -317,13 +317,13 @@ export default function RecordDetails() {
     setFullName(`${firstname} ${lastname}`);
   }, [firstname, lastname]);
 
-  useEffect(() => {
-    if (visible === false) {
-      if ((state.fun, state.value)) {
-        ongenericFunction(state.fun, state.value);
-      }
-    }
-  }, [visible]);
+  // useEffect(() => {
+  //   if (visible === false) {
+  //     if ((state.fun, state.value)) {
+
+  //     }
+  //   }
+  // }, [visible]);
 
   const getRecords = async () => {
     try {
@@ -743,31 +743,66 @@ export default function RecordDetails() {
                 </View>
               );
             })}
-            <TouchableOpacity
+            <View
               style={{
-                alignSelf: 'flex-end',
                 alignItems: 'center',
-                justifyContent: 'center',
-                // marginVertical: 10,
-                marginTop: 20,
-                marginBottom: 10,
-                // backgroundColor: '#75C2F6',
-                borderColor: '#75C2F6',
-                borderWidth: 2.5,
-                borderRadius: 5,
-              }}
-              onPress={() => setVisible(false)}>
-              <Text
+                justifyContent: 'flex-end',
+                flexDirection: 'row',
+              }}>
+              <TouchableOpacity
                 style={{
-                  paddingVertical: 3,
-                  color: '#75C2F6',
-                  fontWeight: 'bold',
-                  paddingHorizontal: 20,
-                  fontFamily: 'Poppins-SemiBold',
+                  // alignSelf: 'flex-end',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  // marginVertical: 10,
+                  marginTop: 20,
+                  marginBottom: 10,
+                  // backgroundColor: '#EE4B2B',
+                  borderColor: '#EE4B2B',
+                  borderWidth: 2.5,
+                  borderRadius: 5,
+                  marginRight: 10,
+                }}
+                onPress={() => setVisible(false)}>
+                <Text
+                  style={{
+                    paddingVertical: 3,
+                    color: '#EE4B2B',
+                    fontWeight: 'bold',
+                    paddingHorizontal: 20,
+                    fontFamily: 'Poppins-SemiBold',
+                  }}>
+                  Cancel
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  // alignSelf: 'flex-end',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  // marginVertical: 10,
+                  marginTop: 20,
+                  marginBottom: 10,
+                  // backgroundColor: '#75C2F6',
+                  borderColor: '#75C2F6',
+                  borderWidth: 2.5,
+                  borderRadius: 5,
+                }}
+                onPress={() => {
+                  setVisible(false), ongenericFunction(state.fun, state.value);
                 }}>
-                Save
-              </Text>
-            </TouchableOpacity>
+                <Text
+                  style={{
+                    paddingVertical: 3,
+                    color: '#75C2F6',
+                    fontWeight: 'bold',
+                    paddingHorizontal: 20,
+                    fontFamily: 'Poppins-SemiBold',
+                  }}>
+                  Save
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       )}
