@@ -165,3 +165,6 @@ export const saveSuccess = (saved) => (dispatch) => {
 // export const copyOrganisationAddress = (organisationAddress) => (dispatch) => {
 //   dispatch({ type: COPY_ORGANISATION_ADDRESS, payload: organisationAddress });
 // };
+export const passValue = (data) => (dispatch) => {
+  dispatch({type: 'PASS_VALUE', payload: data});
+};

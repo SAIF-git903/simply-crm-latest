@@ -18,6 +18,8 @@ import {
   CalendarList,
 } from 'react-native-calendars';
 import SwipeOut from 'react-native-swipeout';
+import Popover from 'react-native-popover-view';
+
 import {UPDATE_RECORD_VIEWER} from '../actions/types';
 import {getCalendarRecords, deleteCalendarRecord} from '../ducks/calendar';
 import Header from '../components/common/Header';
@@ -31,6 +33,7 @@ export default function Calendar() {
   const [page, setPage] = useState(1);
   const [data, setData] = useState([]);
   const [newData, setNewData] = useState([]);
+  const [visible, setVisible] = useState(false);
 
   const dispatch = useDispatch();
   const {records, isLoading, isRefreshing, recordsLoading} = useSelector(
@@ -106,26 +109,118 @@ export default function Calendar() {
 
   function renderAddRecordButton() {
     return (
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate('Add Record', {
-            lister: {
-              refreshData: () => fetchData(),
-            },
-          })
+      // <View
+      //   style={{
+      //     alignItems: 'center',
+      //     flexDirection: 'row',
+      //     justifyContent: 'center',
+
+      //     // backgroundColor: 'red',
+      //   }}>
+      <Popover
+        isVisible={visible}
+        onRequestClose={() => setVisible(false)}
+        from={
+          <TouchableOpacity
+            // style={{marginRight: 10}}
+            onPress={() => setVisible(true)}>
+            <View
+              style={{
+                backgroundColor: 'rgba(255,255,255,.2)',
+                width: 27,
+                height: 27,
+                borderRadius: 3,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Icon name="plus" size={18} color="white" />
+            </View>
+          </TouchableOpacity>
         }>
         <View
           style={{
-            backgroundColor: 'rgba(255,255,255,.2)',
-            width: 27,
-            height: 27,
-            borderRadius: 3,
-            justifyContent: 'center',
             alignItems: 'center',
+            justifyContent: 'center',
+            width: 110,
+            height: 70,
           }}>
-          <Icon name="plus" size={18} color="white" />
+          <TouchableOpacity
+            style={{
+              height: 35,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            onPress={() => {
+              setVisible(false);
+              navigation.navigate('Add Record', {
+                lister: {
+                  refreshData: () => fetchData(),
+                },
+                submodule: 'events',
+              });
+            }}>
+            <Text
+              style={{
+                textAlign: 'center',
+                color: '#EE4B2B',
+                fontWeight: '700',
+                fontFamily: 'Poppins-SemiBold',
+              }}>
+              Add Event
+            </Text>
+          </TouchableOpacity>
+          <View
+            style={{borderWidth: 0.5, width: '70%', borderColor: '#707070'}}
+          />
+          <TouchableOpacity
+            style={{
+              height: 35,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() => {
+              setVisible(false);
+              navigation.navigate('Add Record', {
+                lister: {
+                  refreshData: () => fetchData(),
+                },
+                submodule: 'tasks',
+              });
+            }}>
+            <Text
+              style={{
+                textAlign: 'center',
+                color: '#5699E6',
+                fontWeight: 'bold',
+                fontFamily: 'Poppins-SemiBold',
+              }}>
+              Add Task
+            </Text>
+          </TouchableOpacity>
         </View>
-      </TouchableOpacity>
+      </Popover>
+
+      // <TouchableOpacity
+      //   onPress={() =>
+      //     navigation.navigate('Add Record', {
+      //       lister: {
+      //         refreshData: () => fetchData(),
+      //       },
+      //     })
+      //   }>
+      //   <View
+      //     style={{
+      //       backgroundColor: 'rgba(255,255,255,.2)',
+      //       width: 27,
+      //       height: 27,
+      //       borderRadius: 3,
+      //       justifyContent: 'center',
+      //       alignItems: 'center',
+      //     }}>
+      //     <Icon name="plus" size={18} color="white" />
+      //   </View>
+      // </TouchableOpacity>
+      // </View>
     );
   }
 

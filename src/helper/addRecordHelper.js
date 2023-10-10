@@ -16,7 +16,11 @@ import {saveSuccess} from '../actions';
 import {API_structure, API_fetchRecord, API_saveRecord} from './api';
 import {fontStyles, commonStyles} from '../styles/common';
 
-export const getRecordStructureHelper = async currentInstance => {
+export const getRecordStructureHelper = async (currentInstance) => {
+  const calanderType = currentInstance.props.subModule;
+
+  // const calanderType = currentInstance.props
+
   const {auth} = store.getState();
   const loginDetails = auth.loginDetails;
   const vtigerSeven = loginDetails.vtigerVersion > 6;
@@ -65,6 +69,12 @@ export const getRecordStructureHelper = async currentInstance => {
             'starred',
             'tags',
             'modifiedby',
+            calanderType === 'events' && 'taskstatus',
+            calanderType === 'events' && 'location',
+            calanderType === 'events' && 'modifiedtimebyworkflow',
+            calanderType === 'tasks' && 'eventstatus',
+            calanderType === 'events' && 'recurringtype',
+            calanderType === 'events' && 'record_visibility',
           ];
 
           if (hiddenFields.includes(fArr.name)) {
@@ -81,7 +91,11 @@ export const getRecordStructureHelper = async currentInstance => {
             default: fArr.default,
             sequence: fArr.sequence,
           };
+
+          // console.log('fieldObj', fieldObj);
+
           const dataField = dataResponseJson?.result?.record[fArr.name];
+
           // console.log('----line----');
           // console.log('fArr.name');
           // console.log(fArr.name);
@@ -176,9 +190,10 @@ export const getRecordStructureHelper = async currentInstance => {
                   )}
                   navigation={currentInstance.props.navigation}
                   moduleName={currentInstance.props.moduleName}
+                  submodule={currentInstance.props.subModule}
                   formId={i}
                   key={i}
-                  ref={ref => {
+                  ref={(ref) => {
                     if (ref !== null) {
                       let arr = currentInstance.state.inputInstance;
                       arr.push(ref);
@@ -448,7 +463,7 @@ export const copyAddress = (currentInstance, headerInstance) => {
       if (targetAddress !== undefined) {
         if (checkValue !== '' && targetAddress.length > 0) {
           targetAddress = targetAddress
-            .filter(item => item.name === checkValue)
+            .filter((item) => item.name === checkValue)
             .map(({value}) => ({value}));
           if (targetAddress.length > 0) {
             formInstance[i].setState({
@@ -488,7 +503,7 @@ export const copyPriceDetails = (currentInstance, priceFields, stockFields) => {
     for (let i = 0; i < formInstance.length; i++) {
       if (formInstance[i].state.fieldName === 'listprice') {
         pfields = pfields
-          .filter(item => item.name === 'unit_price')
+          .filter((item) => item.name === 'unit_price')
           .map(({value}) => ({value}));
         let val;
         if (vtigerSeven) {
@@ -501,7 +516,7 @@ export const copyPriceDetails = (currentInstance, priceFields, stockFields) => {
       }
       if (formInstance[i].state.fieldName === 'quantity') {
         sfields = sfields
-          .filter(item => item.name === 'qty_per_unit')
+          .filter((item) => item.name === 'qty_per_unit')
           .map(({value}) => ({value}));
         const qunatity = vtigerSeven
           ? sfields[0].value

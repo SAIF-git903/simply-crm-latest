@@ -31,7 +31,7 @@ async function makeCall(body, request_url, headers, method = 'POST') {
     record: body.record,
     ids: JSON.stringify(body.ids),
     query: body.query,
-    values: body.values,
+    values: body.values && JSON.parse(body.values),
     page: body.page,
     specialFields:
       body.specialFields !== undefined && body.specialFields.length > 0
@@ -192,17 +192,31 @@ export function API_listModuleRecords(
   orderBy,
   sortOrder,
 ) {
-  return makeCall({
-    _operation: 'listModuleRecords',
-    module,
-    page: page ? page : 1,
-    limit: limit ? limit : 25,
-    specialFields,
-    searchText,
-    filterid,
-    orderBy,
-    sortOrder,
-  });
+  if (module === 'Users') {
+    return makeCall({
+      _operation: 'listModuleRecords',
+      module,
+      // page: page ? page : 1,
+      // limit: limit ? limit : 25,
+      specialFields,
+      // searchText,
+      // filterid,
+      orderBy,
+      sortOrder,
+    });
+  } else {
+    return makeCall({
+      _operation: 'listModuleRecords',
+      module,
+      page: page ? page : 1,
+      limit: limit ? limit : 25,
+      specialFields,
+      searchText,
+      filterid,
+      orderBy,
+      sortOrder,
+    });
+  }
 }
 
 export function API_describe(module) {

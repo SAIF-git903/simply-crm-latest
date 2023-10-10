@@ -625,7 +625,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 43;
+				CURRENT_PROJECT_VERSION = 53;
 				DEVELOPMENT_TEAM = 6JWQQD5699;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = simplycrm/Info.plist;
@@ -633,7 +633,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.112;
+				MARKETING_VERSION = 1.114;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -653,14 +653,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 43;
+				CURRENT_PROJECT_VERSION = 53;
 				DEVELOPMENT_TEAM = 6JWQQD5699;
 				INFOPLIST_FILE = simplycrm/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.112;
+				MARKETING_VERSION = 1.114;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

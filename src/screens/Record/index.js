@@ -335,10 +335,10 @@ export default function RecordDetails() {
         if (val.name === 'lastname') {
           setLastName(val?.value);
         }
-        if (moduleName === 'Contacts' && val.label === 'Organization Name') {
+        if (moduleName === 'Contacts' && val.name === 'account_id') {
           setOrgName(val?.value?.label);
         }
-        if (moduleName === 'Accounts' && val.label === 'Organization Name') {
+        if (moduleName === 'Accounts' && val.name === 'accountname') {
           setOrgName(val?.value);
         }
       });

@@ -18,7 +18,7 @@ class DateType extends Component {
         : this.props.obj.default;
     this.state = {
       pickDate: null,
-      saveValue: val ? moment(val).format(formatDate) : '',
+      saveValue: val ? moment(val).format(formatDate) : new Date(),
       fieldName: this.props.obj.name,
       formatDate: formatDate,
       visible: false,
@@ -50,7 +50,7 @@ class DateType extends Component {
     }
   };
 
-  onDatePicked = date => {
+  onDatePicked = (date) => {
     //Here you will get the selected date
     this.setState({
       pickDate: date,
@@ -86,7 +86,7 @@ class DateType extends Component {
           open={this.state.visible}
           mode="date"
           date={this.state.saveValue ? this.state.saveValue : new Date()}
-          onConfirm={date => {
+          onConfirm={(date) => {
             this.setState({visible: false});
             this.setState({saveValue: date});
           }}
