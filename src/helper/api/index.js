@@ -31,7 +31,7 @@ async function makeCall(body, request_url, headers, method = 'POST') {
     record: body.record,
     ids: JSON.stringify(body.ids),
     query: body.query,
-    values: body.values && JSON.parse(body.values),
+    values: body.values,
     page: body.page,
     specialFields:
       body.specialFields !== undefined && body.specialFields.length > 0
