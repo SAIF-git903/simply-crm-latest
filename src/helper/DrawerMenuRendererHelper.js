@@ -28,7 +28,7 @@ export const renderDrawerContent = (menu) => {
 const createFixedMenu = () => {
   // Create Home button
   let homeButtonView = wrapButtonInMenuComponent(
-    <ImageButton type={HOME} label={HOME} key="home_menu" icon={'home'} />,
+    <ImageButton type={HOME} label={'Home'} key="home_menu" icon={'home'} />,
     'menu1',
   );
 
