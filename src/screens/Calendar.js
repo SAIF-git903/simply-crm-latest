@@ -615,8 +615,8 @@ export default function Calendar() {
             //   />
             // }
             // ListHeaderComponent={renderlistHeader}
-            onEndReached={loadmoredata}
-            onEndReachedThreshold={0.1}
+            // onEndReached={loadmoredata}
+            // onEndReachedThreshold={0.1}
             ListFooterComponent={renderFooter}
           />
         </CalendarProvider>
