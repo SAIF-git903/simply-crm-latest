@@ -2,10 +2,12 @@ import React, {Component} from 'react';
 import {View} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import {commonStyles} from '../../../styles/common';
+import {connect} from 'react-redux';
 
 class PickListType extends Component {
   constructor(props) {
     super(props);
+
     let val = '';
     //   this.props.obj.lable === 'Company country'
     //     ? ''
@@ -14,11 +16,12 @@ class PickListType extends Component {
     //   this.props.obj.currentValue !== undefined
     //     ? this.props.obj.currentValue
     //     : val;
-    // console.log('--component data--');
-    // console.log(this.props.obj.currentValue);
-    // console.log(val);
+
     this.state = {
-      saveValue: val,
+      saveValue:
+        this.props.obj.name === 'cf_test_drop_down'
+          ? this.props.obj.type.defaultValue
+          : null,
       fieldName: this.props.obj.name,
     };
   }
@@ -28,32 +31,42 @@ class PickListType extends Component {
 
     return (
       <View style={commonStyles.inputHolder}>
-        {this.props.fieldLabelView}
-        <View style={{flex: 1}}>
-          <Picker
-            mode="dropdown"
-            selectedValue={this.state.saveValue}
-            onValueChange={(itemValue) => {
-              //disable save 'Please Select' value
-              // if (itemValue !== 0) {
-              this.setState({saveValue: itemValue});
-              // }
-            }}>
-            <Picker.Item label={'Select an option'} value={0} />
-            {options.map((item, index) => {
-              return (
-                <Picker.Item
-                  label={item.label}
-                  value={item.value}
-                  key={index}
-                />
-              );
-            })}
-          </Picker>
-        </View>
+        {this.state.fieldName === 'duration_minutes'
+          ? null
+          : this.props.fieldLabelView}
+        {this.state.fieldName === 'duration_minutes' ? null : (
+          <View style={{flex: 1}}>
+            <Picker
+              mode="dropdown"
+              selectedValue={this.state.saveValue}
+              onValueChange={(itemValue) => {
+                this.setState({saveValue: itemValue});
+              }}>
+              {/* {this.props.obj.name === 'cf_test_drop_down' ? null : ( */}
+              <Picker.Item label={'Select an option'} value={0} />
+              {/* )} */}
+              {options.map((item, index) => {
+                return (
+                  <Picker.Item
+                    label={item.label}
+                    value={item.value}
+                    key={index}
+                  />
+                );
+              })}
+            </Picker>
+          </View>
+        )}
       </View>
     );
   }
 }
 
+// const mapStateToProps = (state) => {
+//   return {
+//     passedValue: state.durationreducer.passedValue,
+//   };
+// };
+
 export default PickListType;
+// export default connect(mapStateToProps)(PickListType);
