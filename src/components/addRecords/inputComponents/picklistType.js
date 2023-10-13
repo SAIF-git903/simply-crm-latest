@@ -18,7 +18,10 @@ class PickListType extends Component {
     //     : val;
 
     this.state = {
-      saveValue: null,
+      saveValue:
+        this.props.obj.name === 'cf_test_drop_down'
+          ? this.props.obj.type.defaultValue
+          : null,
       fieldName: this.props.obj.name,
     };
   }
@@ -39,7 +42,9 @@ class PickListType extends Component {
               onValueChange={(itemValue) => {
                 this.setState({saveValue: itemValue});
               }}>
+              {/* {this.props.obj.name === 'cf_test_drop_down' ? null : ( */}
               <Picker.Item label={'Select an option'} value={0} />
+              {/* )} */}
               {options.map((item, index) => {
                 return (
                   <Picker.Item
