@@ -46,7 +46,7 @@ export default class Records extends Component {
           moduleName={moduleName}
           moduleLable={moduleLable}
           moduleId={moduleId}
-          ref={ref => (this.lister = ref)}
+          ref={(ref) => (this.lister = ref)}
         />
       </View>
     );

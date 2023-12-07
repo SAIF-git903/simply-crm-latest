@@ -134,7 +134,7 @@ class Lister extends Component {
         selectedIndex: index,
       },
       () => {
-        this.props.dispatch(viewRecordAction(id, this));
+        this.props.dispatch(viewRecordAction(id, index, this));
       },
     );
   }

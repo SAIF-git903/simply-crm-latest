@@ -89,6 +89,7 @@
 		7B7A1C7BBA0649B28664AA05 /* FontAwesome5_Pro_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Pro_Regular.ttf; path = ../assets/fonts/FontAwesome5_Pro_Regular.ttf; sourceTree = "<group>"; };
 		7D8C6160738345EB9D674E3D /* Poppins-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-SemiBoldItalic.ttf"; path = "../assets/fonts/Poppins-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = simplycrm/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		88AF0C202B1A047600D9916F /* simplycrm.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = simplycrm.entitlements; path = simplycrm/simplycrm.entitlements; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-simplycrm-simplycrmTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simplycrm-simplycrmTests.release.xcconfig"; path = "Target Support Files/Pods-simplycrm-simplycrmTests/Pods-simplycrm-simplycrmTests.release.xcconfig"; sourceTree = "<group>"; };
 		8A1292CDB40C4B528A425CFA /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = ../assets/fonts/FontAwesome5_Regular.ttf; sourceTree = "<group>"; };
 		90B6815C95554B2CA7917FE9 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = ../assets/fonts/SimpleLineIcons.ttf; sourceTree = "<group>"; };
@@ -152,6 +153,7 @@
 		13B07FAE1A68108700A75B9A /* simplycrm */ = {
 			isa = PBXGroup;
 			children = (
+				88AF0C202B1A047600D9916F /* simplycrm.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -625,7 +627,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 53;
+				CODE_SIGN_ENTITLEMENTS = simplycrm/simplycrm.entitlements;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6JWQQD5699;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = simplycrm/Info.plist;
@@ -633,7 +636,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.114;
+				MARKETING_VERSION = 1.119;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -653,14 +656,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 53;
+				CODE_SIGN_ENTITLEMENTS = simplycrm/simplycrm.entitlements;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6JWQQD5699;
 				INFOPLIST_FILE = simplycrm/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.114;
+				MARKETING_VERSION = 1.119;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

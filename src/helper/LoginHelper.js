@@ -134,8 +134,10 @@ export const doUserLogin = async (
       password,
     );
     if (responseJson.success) {
-      let vtiger_version = responseJson.result.login.vtiger_version.charAt(0);
-      let simply_version = responseJson.result.login.simply_version.charAt(0);
+      let vtiger_version =
+        responseJson?.result?.login?.vtiger_version?.charAt(0);
+      let simply_version =
+        responseJson?.result?.login?.simply_version?.charAt(0);
       let new_version = null;
       if (
         (vtiger_version != null && vtiger_version !== undefined) ||

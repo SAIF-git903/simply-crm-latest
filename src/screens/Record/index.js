@@ -8,16 +8,27 @@ import {
   Linking,
   Image,
   Platform,
+  Alert,
+  Modal,
+  ActivityIndicator,
 } from 'react-native';
+import {useIsFocused, CommonActions} from '@react-navigation/native';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import FontAwesome, {
   SolidIcons,
   RegularIcons,
   BrandIcons,
   parseIconFromClassName,
 } from 'react-native-fontawesome';
+import ImageCropPicker from 'react-native-image-crop-picker';
+import DocumentPicker from 'react-native-document-picker';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Feather from 'react-native-vector-icons/Feather';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import Header from '../../components/common/Header';
 import Viewer from '../../components/recordViewer/viewer';
@@ -26,24 +37,38 @@ import Comments from './Comments/';
 import IconTabBar from '../../components/common/IconTabBar';
 import {backgroundColor} from 'react-native-calendars/src/style';
 import Summery from '../../components/recordViewer/Summery';
-import {URLDETAILSKEY} from '../../variables/strings';
-import {API_fetchButtons, API_fetchRecordWithGrouping} from '../../helper/api';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import Feather from 'react-native-vector-icons/Feather';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {LOGINDETAILSKEY, URLDETAILSKEY} from '../../variables/strings';
+import {
+  API_deleteRecord,
+  API_fetchButtons,
+  API_fetchRecordWithGrouping,
+  API_saveFile,
+} from '../../helper/api';
+import store from '../../store';
+import moment from 'moment';
+import {deleteRecord} from '../../actions';
+import {deleteCalendarRecord} from '../../ducks/calendar';
 
 var ScrollableTabView = require('react-native-scrollable-tab-view');
 
-export default function RecordDetails() {
+export default function RecordDetails({route}) {
+  const isFocused = useIsFocused();
+
+  const listerInstance = route?.params?.listerInstance;
+  const index = route?.params?.index;
+
   const recordViewerState = useSelector((state) => state.recordViewer);
+  console.log('recordViewerState', recordViewerState);
+
   const {enabledModules} = useSelector(
     (state) => state.comments,
     (p, n) => p.enabledModules === n.enabledModules,
   );
 
-  console.log('recordViewerState', recordViewerState);
-  console.log('enabledModules', enabledModules);
+  const dispatch = useDispatch();
+
   const {navigation, moduleName, recordId} = recordViewerState;
+
   function createTabs() {
     const tabs = [];
 
@@ -284,29 +309,55 @@ export default function RecordDetails() {
   const [btnTop, setBtnTop] = useState([]);
   const [id, setId] = useState();
   const [visible, setVisible] = useState(false);
+  const [loading, setloading] = useState(false);
+  const [documentModal, setdocumentModal] = useState(false);
   const [firstname, setFirstName] = useState('');
   const [lastname, setLastName] = useState('');
   const [fullName, setFullName] = useState('');
   const [orgname, setOrgName] = useState('');
+  const [subject, setSubject] = useState('');
   const [fields, setFields] = useState([]);
   const [itemFields, setItemFields] = useState([]);
   const [newArr, setNewArr] = useState([]);
   const [state, setState] = useState({value: '', fun: ''});
+
+  let data = [
+    {
+      id: 1,
+      lbl: 'Edit',
+      icon: (
+        <MaterialIcons name="mode-edit-outline" size={25} color="#757575" />
+      ),
+    },
+    {
+      id: 2,
+      lbl: 'Delete',
+      icon: <MaterialIcons name="delete" size={25} color="#757575" />,
+    },
+    {
+      id: 3,
+      lbl: 'Add Document (From Camera)',
+      icon: <Icon name="camera" size={25} color="#757575" />,
+    },
+    {
+      id: 4,
+      lbl: 'Add Document (From Gallery)',
+      icon: <IconFontAwesome name="photo" size={25} color="#757575" />,
+    },
+    // {
+    //   id: 5,
+    //   lbl: 'Create New Document',
+    //   icon: <Ionicons name="document-text-outline" size={30} color="#757575" />,
+    // },
+  ];
 
   const loadMore = () => {
     setItemsToShow(itemsToShow + 5); // Load more items
   };
 
   useEffect(() => {
-    if (moduleName === 'Contacts' || moduleName === 'Accounts') {
-      getRecords();
-      getButtons();
-    }
-  }, []);
-
-  useEffect(() => {
-    const filteredFields = itemFields.map((val) => {
-      return fields.find((itm) => val === itm.name);
+    const filteredFields = itemFields?.map((val) => {
+      return fields?.find((itm) => val === itm?.name);
     });
     if (filteredFields != null && filteredFields != undefined) {
       setNewArr(filteredFields);
@@ -314,9 +365,19 @@ export default function RecordDetails() {
   }, [itemFields]);
 
   useEffect(() => {
-    setFullName(`${firstname} ${lastname}`);
+    if (firstname || lastname) {
+      setFullName(`${firstname} ${lastname}`);
+    }
   }, [firstname, lastname]);
 
+  useEffect(() => {
+    if (isFocused) {
+      getRecords();
+      if (moduleName === 'Contacts' || moduleName === 'Accounts') {
+        getButtons();
+      }
+    }
+  }, [isFocused]);
   // useEffect(() => {
   //   if (visible === false) {
   //     if ((state.fun, state.value)) {
@@ -325,8 +386,26 @@ export default function RecordDetails() {
   //   }
   // }, [visible]);
 
+  const get_Url = async () => {
+    const URLDetails = await AsyncStorage.getItem(URLDETAILSKEY);
+    let urlDetail = JSON.parse(URLDetails);
+    let url = urlDetail.url;
+    let trimmedUrl = url.replace(/ /g, '')?.replace(/\/$/, '');
+    trimmedUrl =
+      trimmedUrl.indexOf('://') === -1 ? 'https://' + trimmedUrl : trimmedUrl;
+    if (url.includes('www.')) {
+      trimmedUrl = trimmedUrl?.replace('www.', '');
+    }
+    if (url.includes('http://')) {
+      trimmedUrl = trimmedUrl?.replace('http://', 'https://');
+    }
+
+    return trimmedUrl;
+  };
+
   const getRecords = async () => {
     try {
+      setloading(true);
       let res = await API_fetchRecordWithGrouping(moduleName, recordId);
       res?.result?.record?.blocks[0]?.fields.map((val) => {
         if (val.name === 'firstname') {
@@ -341,10 +420,16 @@ export default function RecordDetails() {
         if (moduleName === 'Accounts' && val.name === 'accountname') {
           setOrgName(val?.value);
         }
+        if (moduleName === 'Calendar' && val.name === 'subject') {
+          setSubject(val?.value);
+        }
       });
 
       setFields(res?.result?.record?.blocks[0]?.fields);
+      setloading(false);
     } catch (error) {
+      setloading(false);
+
       console.log('err', error);
     }
   };
@@ -353,28 +438,20 @@ export default function RecordDetails() {
     let modulename = moduleName;
 
     try {
-      const URLDetails = JSON.parse(await AsyncStorage.getItem(URLDETAILSKEY));
-      let url = URLDetails.url;
-      let trimmedUrl = url.replace(/ /g, '').replace(/\/$/, '');
-      trimmedUrl =
-        trimmedUrl.indexOf('://') === -1 ? 'https://' + trimmedUrl : trimmedUrl;
-      if (url.includes('www.')) {
-        trimmedUrl = trimmedUrl.replace('www.', '');
-      }
-      if (url.includes('http://')) {
-        trimmedUrl = trimmedUrl.replace('http://', 'https://');
-      }
+      setloading(true);
 
+      let trimmedUrl = await get_Url();
       let res = await API_fetchButtons(trimmedUrl, modulename);
-      console.log('res', res);
       if (res?.result?.buttons !== null) {
         res?.result?.buttons.map((val) => {
           // if (val.location === 'top') {
           setBtnTop(res?.result?.buttons);
           // }
         });
+        setloading(false);
       }
     } catch (error) {
+      setloading(false);
       console.log('err', error);
     }
   };
@@ -405,6 +482,198 @@ export default function RecordDetails() {
           .catch((err) => console.log('err', err));
       }
     }
+  };
+
+  const saveFile = async (filedata) => {
+    filedata.fileName = filedata.name;
+    try {
+      setloading(true);
+      const {auth} = store.getState();
+      const loginDetails = auth.loginDetails;
+      let modulename = 'Documents';
+      let parentRecord = recordId;
+      let parentModule = moduleName;
+      let val = {
+        notes_title: filedata?.name,
+        assigned_user_id: '19x' + loginDetails?.userId,
+        filename: filedata?.name,
+      };
+
+      let trimmedUrl = await get_Url();
+      let res = await API_saveFile(
+        trimmedUrl,
+        modulename,
+        val,
+        filedata,
+        parentRecord,
+        parentModule,
+      );
+      if (res.success === true) {
+        Alert.alert('Document added successfully.');
+        setloading(false);
+      } else {
+        Alert.alert('Document could not be added.');
+        setloading(false);
+      }
+    } catch (error) {
+      console.log('err', error);
+      setloading(false);
+    }
+  };
+
+  const opencamera = async () => {
+    ImageCropPicker.openCamera({
+      width: 300,
+      height: 400,
+      mediaType: 'photo',
+      includeBase64: true,
+      useFrontCamera: true,
+      cropping: true,
+    })
+      .then((image) => {
+        const getFileName = (filePath) => {
+          // Use react-native-fs to extract filename from path
+          const pathArray = filePath.split('/');
+          const filename = pathArray[pathArray.length - 1];
+          return filename;
+        };
+        let fileName = getFileName(image.path);
+
+        let file = {
+          uri: image.path,
+          name: fileName,
+          filename: fileName,
+          type: image.mime,
+        };
+
+        saveFile(file, true);
+      })
+      .catch((err) => console.log('err', err));
+  };
+
+  const openimagelib = async () => {
+    try {
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.allFiles],
+      });
+
+      saveFile(res[0], true);
+    } catch (err) {
+      console.log('err', err);
+    }
+  };
+
+  const onEdit = () => {
+    navigation.navigate('Edit Record', {
+      id: recordId,
+      lister: listerInstance,
+      isDashboard: false,
+    });
+  };
+
+  function onEditForCalender() {
+    navigation.navigate('Edit Record', {
+      id: recordId,
+    });
+  }
+  const onDelete = () => {
+    Alert.alert(
+      'Are you sure want to delete this record ?',
+      fullName,
+      [
+        {text: 'Cancel', onPress: () => {}, style: 'cancel'},
+        {
+          text: 'Yes',
+          onPress: () => {
+            listerInstance.setState({selectedIndex: -1});
+            listerInstance.setState(
+              {
+                isFlatListRefreshing: true,
+              },
+              () => {
+                dispatch(
+                  deleteRecord(listerInstance, recordId, index, () => {
+                    listerInstance.setState({
+                      isFlatListRefreshing: false,
+                    });
+                  }),
+                );
+                navigation.dispatch(
+                  CommonActions.reset({
+                    index: 0,
+                    routes: [
+                      {name: 'Drawer'}, // Navigate to the top-level navigator
+                    ],
+                  }),
+                );
+              },
+            );
+          },
+        },
+      ],
+      {cancelable: true},
+    );
+  };
+  function onDeleteForCalender() {
+    Alert.alert(
+      'Are you sure want to delete this record ?',
+      subject,
+      [
+        {text: 'Cancel', onPress: () => {}, style: 'cancel'},
+        {
+          text: 'Yes',
+          onPress: () => {
+            dispatch(deleteCalendarRecord(recordId));
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 0,
+                routes: [
+                  {name: 'Drawer'}, // Navigate to the top-level navigator
+                ],
+              }),
+            );
+          },
+        },
+      ],
+      {cancelable: true},
+    );
+  }
+
+  const handlePress = (itemId) => {
+    switch (itemId) {
+      case 1:
+        moduleName === 'Calendar' ? onEditForCalender() : onEdit();
+
+        break;
+      case 2:
+        moduleName === 'Calendar' ? onDeleteForCalender() : onDelete();
+
+        break;
+      case 3:
+        if (Platform.OS === 'ios') {
+          setTimeout(() => {
+            opencamera();
+          }, 1000);
+        } else {
+          opencamera();
+        }
+        break;
+      case 4:
+        if (Platform.OS === 'ios') {
+          setTimeout(() => {
+            openimagelib();
+          }, 1000);
+        } else {
+          openimagelib();
+        }
+        break;
+      case 5:
+        console.log('Create New Document selected');
+        break;
+      default:
+        break;
+    }
+    setdocumentModal(false);
   };
 
   const renderItem = ({item, index}) => {
@@ -461,7 +730,121 @@ export default function RecordDetails() {
 
   return (
     <View style={{flex: 1}}>
-      <Header title={'Record Details'} showBackButton />
+      <Header
+        title={'Record Details'}
+        showBackButton
+        showDetailButton
+        onPress={() => {
+          setdocumentModal(!documentModal);
+        }}
+      />
+      {loading && (
+        <View
+          style={{
+            position: 'absolute',
+            height: '100%',
+            width: '100%',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          }}>
+          <ActivityIndicator
+            animating={loading}
+            size={'large'}
+            color={'#fff'}
+          />
+        </View>
+      )}
+
+      {documentModal && (
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={documentModal}
+          onRequestClose={() => {
+            setdocumentModal(!documentModal);
+          }}>
+          <TouchableOpacity
+            onPress={() => setdocumentModal(false)}
+            activeOpacity={1}
+            style={{
+              flex: 1,
+              justifyContent: 'flex-end',
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            }}>
+            <View
+              style={{
+                backgroundColor: '#fff',
+                borderTopLeftRadius: 10,
+                marginHorizontal: 1,
+                borderTopRightRadius: 10,
+                paddingBottom: 50,
+              }}>
+              <View
+                style={{
+                  borderRadius: 50,
+                  width: '15%',
+                  backgroundColor: '#000',
+                  height: '3%',
+                  marginTop: 3,
+                  alignSelf: 'center',
+                }}
+              />
+
+              <View style={{paddingLeft: 20, paddingVertical: 15}}>
+                <Text
+                  style={{
+                    // color: '#757575',
+                    fontSize: 20,
+                    fontFamily: 'Poppins-SemiBold',
+                    fontWeight: '700',
+                    color: '#000',
+                  }}>
+                  Select option:
+                </Text>
+              </View>
+              {data.map((value, index) => {
+                return (
+                  <TouchableOpacity
+                    key={index}
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+
+                      borderBottomWidth: 3,
+                      borderRadius: 3,
+                      marginHorizontal: 20,
+                      borderBottomColor: '#efefef',
+                    }}
+                    onPress={() => handlePress(value.id)}>
+                    <View
+                      style={{
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}>
+                      {value.icon}
+                    </View>
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        fontWeight: '700',
+                        fontFamily: 'Poppins-SemiBold',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        paddingVertical: 10,
+                        paddingLeft: 15,
+                        color: '#000000',
+                      }}>
+                      {value.lbl}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          </TouchableOpacity>
+        </Modal>
+      )}
 
       {/* {moduleName === 'Contacts' ? ( */}
       {moduleName === 'Contacts' || moduleName === 'Accounts' ? (

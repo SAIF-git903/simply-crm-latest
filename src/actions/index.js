@@ -112,10 +112,11 @@ export const dashboardRefreshRecord =
     fetchRecordHelper(viewerInstance, dispatch, false, moduleName, true);
   };
 
-export const viewRecordAction = (recordId, listerInstance) => (dispatch) => {
-  dispatch({type: UPDATE_MGR, payload: RECORD_VIEWER});
-  viewRecord(recordId, listerInstance, dispatch);
-};
+export const viewRecordAction =
+  (recordId, selectedIndex, listerInstance) => (dispatch) => {
+    dispatch({type: UPDATE_MGR, payload: RECORD_VIEWER});
+    viewRecord(recordId, selectedIndex, listerInstance, dispatch);
+  };
 
 export const viewSearchAction = (moduleName) => ({
   type: SHOW_SEARCH,
@@ -149,8 +150,8 @@ export const markReferenceLabel = (recordId, label, uniqueId) => (dispatch) => {
   dispatch({type: REFERENCE_LABEL, payload: {recordId, label, uniqueId}});
 };
 
-export const saveSuccess = (saved) => (dispatch) => {
-  dispatch({type: SAVE_SUCCESS, payload: saved});
+export const saveSuccess = (saved, recordId) => (dispatch) => {
+  dispatch({type: SAVE_SUCCESS, payload: {saved, recordId}});
 };
 
 // export const copyAddressAction = (referenceInstance) => (dispatch) => {

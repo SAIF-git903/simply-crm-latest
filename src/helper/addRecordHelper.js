@@ -1,6 +1,8 @@
 import React from 'react';
 import {Alert, StyleSheet, Text, View} from 'react-native';
 import Toast from 'react-native-simple-toast';
+import {CommonActions} from '@react-navigation/native';
+
 // import { NavigationActions } from 'react-navigation';
 import store from '../store';
 import FormSection from '../components/common/FormSection';
@@ -15,6 +17,7 @@ import ReferenceForm from '../components/addRecords/inputComponents/referenceTyp
 import {saveSuccess} from '../actions';
 import {API_structure, API_fetchRecord, API_saveRecord} from './api';
 import {fontStyles, commonStyles} from '../styles/common';
+import moment from 'moment';
 
 export const getRecordStructureHelper = async (currentInstance) => {
   const calanderType = currentInstance.props.subModule;
@@ -27,7 +30,9 @@ export const getRecordStructureHelper = async (currentInstance) => {
 
   try {
     //get empty inputs
-    const responseJson = await API_structure(currentInstance.props.moduleName);
+    const responseJson = await API_structure(
+      calanderType === 'Events' ? 'Events' : currentInstance.props.moduleName,
+    );
     let dataResponseJson;
 
     //edit record - request data for inputs
@@ -35,7 +40,11 @@ export const getRecordStructureHelper = async (currentInstance) => {
       //get data for inputs
       const param = {
         record: currentInstance.state.recordId,
-        module: vtigerSeven ? currentInstance.props.moduleName : undefined,
+        module: vtigerSeven
+          ? calanderType === 'Events'
+            ? 'Events'
+            : currentInstance.props.moduleName
+          : undefined,
       };
       dataResponseJson = await API_fetchRecord(param);
       if (!responseJson.success) {
@@ -69,12 +78,8 @@ export const getRecordStructureHelper = async (currentInstance) => {
             'starred',
             'tags',
             'modifiedby',
-            calanderType === 'events' && 'taskstatus',
-            calanderType === 'events' && 'location',
-            calanderType === 'events' && 'modifiedtimebyworkflow',
-            calanderType === 'tasks' && 'eventstatus',
-            calanderType === 'events' && 'recurringtype',
-            calanderType === 'events' && 'record_visibility',
+            calanderType === 'Tasks' && 'eventstatus',
+            'duration_minutes',
           ];
 
           if (hiddenFields.includes(fArr.name)) {
@@ -120,6 +125,7 @@ export const getRecordStructureHelper = async (currentInstance) => {
           // }
 
           let type = fieldObj.type.name;
+
           // if (fieldObj.editable) {
           if (
             fieldObj.editable &&
@@ -151,6 +157,9 @@ export const getRecordStructureHelper = async (currentInstance) => {
               case 'date':
                 ComponentName = DateForm;
                 break;
+              case 'datetime':
+                ComponentName = DateForm;
+                break;
               case 'multipicklist':
                 ComponentName = MultiPickerForm;
                 break;
@@ -163,7 +172,8 @@ export const getRecordStructureHelper = async (currentInstance) => {
                 ComponentName = ReferenceForm;
                 break;
               case 'time':
-                ComponentName = TimeForm;
+                // ComponentName = TimeForm;
+                ComponentName = DateForm;
                 break;
               case 'string':
               case 'text':
@@ -173,6 +183,7 @@ export const getRecordStructureHelper = async (currentInstance) => {
                 ComponentName = StringForm;
                 break;
             }
+            const randomId = Math.random().toString(36).substr(2, 9);
 
             const amp = '&amp;';
             const validLabel =
@@ -191,7 +202,7 @@ export const getRecordStructureHelper = async (currentInstance) => {
                   navigation={currentInstance.props.navigation}
                   moduleName={currentInstance.props.moduleName}
                   submodule={currentInstance.props.subModule}
-                  formId={i}
+                  formId={randomId}
                   key={i}
                   ref={(ref) => {
                     if (ref !== null) {
@@ -336,6 +347,98 @@ const doSaveRecord = async (
   dispatch,
   listerInstance,
 ) => {
+  const calanderType = currentInstance.props.subModule;
+
+  let newobj = jsonObj;
+
+  if (
+    calanderType === 'Events' ||
+    currentInstance.props.moduleName === 'Calendar'
+  ) {
+    const roundTimeToNearestDuration = (currentTime) => {
+      const date = new Date(currentTime);
+      const minutes = date.getMinutes();
+
+      let dynamicDuration;
+      if (minutes == 0) {
+        dynamicDuration = 60;
+      } else if (minutes > 0 && minutes <= 5) {
+        dynamicDuration = 5;
+      } else if (minutes <= 15) {
+        dynamicDuration = 15;
+      } else if (minutes <= 30) {
+        dynamicDuration = 30;
+      } else if (minutes <= 45) {
+        dynamicDuration = 45;
+      } else {
+        dynamicDuration = 60;
+      }
+
+      const endTime1 = addMinutesToDate(date, dynamicDuration);
+
+      return {endTime1};
+    };
+
+    const addMinutesToDate = (date, minutes) => {
+      return new Date(date.getTime() + minutes * 60000); // 1 minute = 60000 milliseconds
+    };
+
+    if (newobj?.time_start) {
+      let new_endTime = roundTimeToNearestDuration(newobj.time_start);
+
+      newobj.time_end = new_endTime.endTime1;
+    }
+
+    newobj.date_start = moment(newobj.date_start).format('YYYY-MM-DD');
+    newobj.due_date = moment(newobj.due_date).format('YYYY-MM-DD');
+    newobj.time_end = newobj?.time_end
+      ? moment(newobj.time_end).format('HH:mm')
+      : null;
+    newobj.time_start = newobj?.time_end
+      ? moment(newobj.time_start).format('HH:mm')
+      : null;
+
+    function calculateDuration(startDate, startTime, endDate, endTime) {
+      const startDateTime = new Date(`${startDate} ${startTime}`);
+      const endDateTime = new Date(`${endDate} ${endTime}`);
+
+      // Calculate the time difference in milliseconds
+      const timeDiff = endDateTime - startDateTime;
+
+      // Convert the time difference to hours and minutes
+      const hours = Math.floor(timeDiff / 3600000); // 1 hour = 3600000 milliseconds
+      const minutes = Math.round((timeDiff % 3600000) / 60000); // 1 minute = 60000 milliseconds
+
+      return {hours, minutes};
+    }
+
+    const duration = calculateDuration(
+      newobj.date_start,
+      newobj.time_start,
+      newobj.due_date,
+      newobj.time_end,
+    );
+
+    if (duration.hours >= 0 && duration.minutes >= 0) {
+      newobj.duration_hours = duration.hours;
+      newobj.duration_minutes = duration.minutes;
+      headerInstance.setState({loading: false});
+    }
+    // else {
+
+    // if (calanderType === 'Events') {
+    //   Alert.alert(
+    //     'Please ensure the End Date or End Time is later than the Start Date or Time Start.',
+    //   );
+    // } else {
+    //   Alert.alert(
+    //     'Please ensure the Due Date or End Time is later than the Start Date or Time Start.',
+    //   );
+    // }
+    //   return;
+    // }
+  }
+
   try {
     for (const field of currentInstance.state.inputInstance) {
       if (field.state.error) {
@@ -355,7 +458,7 @@ const doSaveRecord = async (
     // Event and Task records have trouble on saving 'Related To' block (in mobileapp it's string, but in mastercopy - Contact module records picklist)
     // this also affects to String field 'contact_id', which will be object '{"label": "", "value": ""}' in saveValue instead of string
     const responseJson = await API_saveRecord(
-      currentInstance.props.moduleName,
+      calanderType === 'Events' ? 'Events' : currentInstance.props.moduleName,
       JSON.stringify(jsonObj),
       currentInstance.state.recordId,
     );
@@ -368,17 +471,23 @@ const doSaveRecord = async (
         message = 'Successfully added';
       }
       Toast.show(message);
-      dispatch(saveSuccess('saved'));
-      // const resetAction = NavigationActions.reset({
-      //     index: 0,
-      //     actions: [
-      //         NavigationActions.navigate({ routeName: 'HomeScreen' })
-      //     ]
+      dispatch(saveSuccess('saved', currentInstance?.props?.recordId));
+      // NavigationActions.reset({
+      //   index: 0,
+      //   actions: [NavigationActions.navigate({routeName: 'HomeScreen'})],
       // });
+      // Make sure to use the correct navigation reference
+      currentInstance.props.navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [
+            {name: 'Drawer'}, // Navigate to the top-level navigator
+          ],
+        }),
+      );
 
-      currentInstance.props.navigation.pop();
+      //currentInstance.props.navigation.pop();
       listerInstance.refreshData();
-      //currentInstance.props.navigation.goBack(null);
     } else {
       headerInstance.setState({loading: false});
       if (responseJson.error.message === '') {

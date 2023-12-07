@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {LOGINDETAILSKEY} from '../../variables/strings';
 import {addDatabaseKey} from '../DatabaseKeyHelper';
 import {LOGIN_USER_SUCCESS} from '../../actions/types';
+import moment from 'moment';
 
 async function makeCall(body, request_url, headers, method = 'POST') {
   const {
@@ -31,7 +32,11 @@ async function makeCall(body, request_url, headers, method = 'POST') {
     record: body.record,
     ids: JSON.stringify(body.ids),
     query: body.query,
+    // values: body.values && JSON.parse(body.values),
     values: body.values,
+    parentRecord: body.parentRecord,
+    parentModule: body.parentModule,
+    files: body.files,
     page: body.page,
     specialFields:
       body.specialFields !== undefined && body.specialFields.length > 0
@@ -68,9 +73,9 @@ async function makeCall(body, request_url, headers, method = 'POST') {
     );
     if (newResponseJson.success) {
       let vtiger_version =
-        newResponseJson.result.login.vtiger_version.charAt(0);
+        newResponseJson.result.login?.vtiger_version?.charAt(0);
       let simply_version =
-        newResponseJson.result.login.simply_version.charAt(0);
+        newResponseJson.result.login?.simply_version?.charAt(0);
       let new_version = null;
       if (
         (vtiger_version != null && vtiger_version !== undefined) ||
@@ -116,6 +121,176 @@ async function makeCall(body, request_url, headers, method = 'POST') {
     }
   }
 
+  return responseJson;
+}
+
+async function makeCallforFileUpload(
+  body,
+  request_url,
+  headers,
+  method = 'POST',
+) {
+  const {
+    auth: {loginDetails: loginDetails},
+  } = store.getState();
+  const {session, url} = loginDetails;
+
+  if (request_url === undefined) {
+    request_url = `${url}/modules/Mobile/api.php`;
+  }
+  if (headers === undefined) {
+    headers = {
+      'cache-control': 'no-cache',
+      Accept: 'application/json',
+      'Content-Type': 'multipart/form-data',
+    };
+  }
+
+  const body_data = {
+    _session: body._session ? body._session : session,
+    _operation: body._operation,
+    username: body.username,
+    password: body.password,
+    module: body.module,
+    relatedmodule: body.relatedModule,
+    record: body.record,
+    ids: JSON.stringify(body.ids),
+    query: body.query,
+    values: JSON.stringify(body.values),
+    parentRecord: body.parentRecord,
+    parentModule: body.parentModule,
+    files: body.files,
+    page: body.page,
+    specialFields:
+      body.specialFields !== undefined && body.specialFields.length > 0
+        ? JSON.stringify(body.specialFields)
+        : undefined,
+    limit: body.limit,
+    searchText: body.searchText !== '' ? body.searchText : undefined,
+    filterid: body.filterid !== '' ? body.filterid : undefined,
+    orderBy: body.orderBy !== '' ? body.orderBy : undefined,
+    sortOrder: body.sortOrder !== '' ? body.sortOrder : undefined,
+  };
+
+  //clear undefined
+  for (const [key, value] of Object.entries(body_data)) {
+    if (value === undefined) {
+      delete body_data[key];
+    }
+  }
+
+  const convertJsonToFormData = (json) => {
+    const formData = new FormData();
+
+    for (const key in json) {
+      if (json.hasOwnProperty(key)) {
+        formData.append(key, json[key]);
+      }
+    }
+
+    return formData;
+  };
+
+  const formData = convertJsonToFormData(body_data);
+
+  let responseJson = await doFetchForFileUpload(
+    request_url,
+    method,
+    headers,
+    formData,
+  );
+
+  // console.log('responseJson.error.code');
+  // console.log(responseJson?.error?.code);
+  //TODO check me
+  if (
+    responseJson.error !== undefined &&
+    responseJson.error.code !== undefined &&
+    parseInt(responseJson.error.code, 10) === 1501
+  ) {
+    const newResponseJson = await API_loginAndFetchModules(
+      loginDetails.url,
+      loginDetails.username,
+      loginDetails.password,
+    );
+    if (newResponseJson.success) {
+      let vtiger_version =
+        newResponseJson.result.login?.vtiger_version?.charAt(0);
+      let simply_version =
+        newResponseJson.result.login?.simply_version?.charAt(0);
+      let new_version = null;
+      if (
+        (vtiger_version != null && vtiger_version !== undefined) ||
+        (simply_version !== null && simply_version !== undefined)
+      ) {
+        if (vtiger_version) {
+          new_version = vtiger_version;
+        } else {
+          new_version = simply_version;
+        }
+      }
+
+      //TODO combine with LoginHelper.js ??
+      const newLoginDetails = {
+        username: loginDetails.username,
+        password: loginDetails.password,
+        url: loginDetails.url,
+        session: newResponseJson.result.login.session,
+        userTz: newResponseJson.result.login.user_tz,
+        crmTz: newResponseJson.result.login.crm_tz,
+        vtigerVersion: new_version,
+        dateFormat: newResponseJson.result.login.date_format,
+        modules: newResponseJson.result.modules,
+        menu: newResponseJson.result.menu,
+        userId: newResponseJson.result.login.userid,
+        isAdmin: newResponseJson.result.login.isAdmin,
+      };
+      //TODO check me
+      console.log('before update session');
+      AsyncStorage.setItem(LOGINDETAILSKEY, JSON.stringify(newLoginDetails));
+      await addDatabaseKey(LOGINDETAILSKEY);
+      await store.dispatch({
+        type: LOGIN_USER_SUCCESS,
+        payload: newLoginDetails,
+      });
+      console.log('after update session');
+
+      body_data._session = newLoginDetails.session;
+      responseJson = await doFetch(request_url, method, headers, body_data);
+    } else {
+      //TODO check me
+      throw new Error('Cant get new session. Please re login');
+    }
+  }
+
+  return responseJson;
+}
+
+async function doFetchForFileUpload(request_url, method, headers, body_data) {
+  console.log(`### ${method} API CALL ###: ${request_url}`);
+  console.log('-->', body_data);
+  const response = await fetch(request_url, {
+    method: method,
+    headers: headers,
+    body: method === 'POST' ? body_data : null,
+  });
+  //if fetch() will rejected, then error will thrown
+  //if fetch() will resolved, then 'response' will be filled with response data
+  let responseJson = await response.json().catch(function (error) {
+    console.log('JSON parse failed on:');
+    console.log('response', response);
+    throw error;
+  });
+  console.log('responseJson-->', responseJson);
+
+  if (responseJson?.result?.headers) {
+    try {
+      const jsonValue = JSON.stringify(responseJson?.result?.headers);
+      await AsyncStorage.setItem('fields', jsonValue);
+    } catch (error) {
+      console.log('err', error);
+    }
+  }
   return responseJson;
 }
 
@@ -330,6 +505,26 @@ export async function API_fetchButtons(trimmedUrl, module) {
     {
       _operation: 'fetchButtons',
       module,
+    },
+    `${trimmedUrl}/modules/Mobile/api.php`,
+  );
+}
+export async function API_saveFile(
+  trimmedUrl,
+  module,
+  values,
+  files,
+  parentRecord,
+  parentModule,
+) {
+  return makeCallforFileUpload(
+    {
+      _operation: 'saveFile',
+      parentRecord,
+      parentModule,
+      module,
+      values,
+      files,
     },
     `${trimmedUrl}/modules/Mobile/api.php`,
   );

@@ -7,6 +7,8 @@ import {
   RefreshControl,
   Alert,
   ActivityIndicator,
+  Platform,
+  StatusBar,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
@@ -50,8 +52,8 @@ export default function Calendar() {
   modifyData = new_Data.filter((val) => val.title >= date);
 
   const dates = modifyData.sort((a, b) => {
-    const dateA = new Date(b.title);
-    const dateB = new Date(a.title);
+    const dateA = new Date(a.title);
+    const dateB = new Date(b.title);
     return dateA - dateB;
   });
 
@@ -71,35 +73,30 @@ export default function Calendar() {
     }
   }, [records]);
 
-  useEffect(() => {
-    if (isRefreshing === true) {
-      setPage(page + 1);
-    }
-  }, [isRefreshing]);
-
-  const loadmoredata = () => {
-    if (dates.length > 0) {
-      fetchData(true, page);
-    }
-  };
+  // const loadmoredata = () => {
+  //   if (dates.length > 0) {
+  //     fetchData(true, page);
+  //   }
+  // };
 
   const renderFooter = () => {
-    if (dates.length > 0 && records?.length > 0) {
-      return (
-        <View style={{alignItems: 'center', padding: 10}}>
-          <ActivityIndicator size="small" animating={isRefreshing} />
-          <Text style={{color: 'gray'}}>
-            {isRefreshing ? 'Loading records...' : null}
-          </Text>
-        </View>
-      );
-    }
-    if (dates.length === 0 && isLoading) {
+    // if (dates.length > 0 && records?.length > 0) {
+    //   return (
+    //     <View style={{alignItems: 'center', padding: 10}}>
+    //       <ActivityIndicator size="small" animating={isRefreshing} />
+    //       <Text style={{color: 'gray'}}>
+    //         {isRefreshing ? 'Loading records...' : null}
+    //       </Text>
+    //     </View>
+    //   );
+    // }
+    if (isLoading) {
       return (
         <View style={{alignItems: 'center', padding: 10}}>
           <ActivityIndicator
             size="small"
-            animating={dates.length === 0 ? true : false}
+            animating={isLoading}
+            color={'#00BBF2'}
           />
           <Text style={{color: 'gray'}}>{'Loading...'}</Text>
         </View>
@@ -119,6 +116,9 @@ export default function Calendar() {
       //   }}>
       <Popover
         isVisible={visible}
+        verticalOffset={
+          Platform.OS === 'android' ? -StatusBar.currentHeight : 0
+        }
         onRequestClose={() => setVisible(false)}
         from={
           <TouchableOpacity
@@ -137,67 +137,67 @@ export default function Calendar() {
             </View>
           </TouchableOpacity>
         }>
-        <View
+        <TouchableOpacity
           style={{
+            height: 35,
+            width: 110,
             alignItems: 'center',
             justifyContent: 'center',
-            width: 110,
-            height: 70,
+          }}
+          onPress={() => {
+            setVisible(false);
+            navigation.navigate('Add Record', {
+              lister: {
+                refreshData: () => fetchData(),
+              },
+              submodule: 'Events',
+            });
           }}>
-          <TouchableOpacity
+          <Text
             style={{
-              height: 35,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-            onPress={() => {
-              setVisible(false);
-              navigation.navigate('Add Record', {
-                lister: {
-                  refreshData: () => fetchData(),
-                },
-                submodule: 'events',
-              });
+              textAlign: 'center',
+              color: '#EE4B2B',
+              fontWeight: '700',
+              fontFamily: 'Poppins-SemiBold',
             }}>
-            <Text
-              style={{
-                textAlign: 'center',
-                color: '#EE4B2B',
-                fontWeight: '700',
-                fontFamily: 'Poppins-SemiBold',
-              }}>
-              Add Event
-            </Text>
-          </TouchableOpacity>
-          <View
-            style={{borderWidth: 0.5, width: '70%', borderColor: '#707070'}}
-          />
-          <TouchableOpacity
+            Add Event
+          </Text>
+        </TouchableOpacity>
+        <View
+          style={{
+            borderWidth: 0.5,
+            width: '70%',
+            borderColor: '#707070',
+            alignSelf: 'center',
+          }}
+        />
+        <TouchableOpacity
+          style={{
+            width: 110,
+
+            height: 35,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          onPress={() => {
+            setVisible(false);
+            navigation.navigate('Add Record', {
+              lister: {
+                refreshData: () => fetchData(),
+              },
+              submodule: 'Tasks',
+            });
+          }}>
+          <Text
             style={{
-              height: 35,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-            onPress={() => {
-              setVisible(false);
-              navigation.navigate('Add Record', {
-                lister: {
-                  refreshData: () => fetchData(),
-                },
-                submodule: 'tasks',
-              });
+              textAlign: 'center',
+              color: '#5699E6',
+              fontWeight: 'bold',
+              fontFamily: 'Poppins-SemiBold',
             }}>
-            <Text
-              style={{
-                textAlign: 'center',
-                color: '#5699E6',
-                fontWeight: 'bold',
-                fontFamily: 'Poppins-SemiBold',
-              }}>
-              Add Task
-            </Text>
-          </TouchableOpacity>
-        </View>
+            Add Task
+          </Text>
+        </TouchableOpacity>
       </Popover>
 
       // <TouchableOpacity
@@ -257,6 +257,9 @@ export default function Calendar() {
           text: 'Yes',
           onPress: () => {
             dispatch(deleteCalendarRecord(item.id));
+            let newdatas = dates.filter((val) => val.id !== item.Id);
+            setData(newdatas);
+            fetchData(true);
           },
         },
       ],
@@ -611,7 +614,7 @@ export default function Calendar() {
             //     refreshing={records.length > 0 ? false : true}
             //     title={'Getting records'}
             //     titleColor={'gray'}
-            //     // onRefresh={() => fetchData()}
+            //     onRefresh={() => fetchData()}
             //   />
             // }
             // ListHeaderComponent={renderlistHeader}

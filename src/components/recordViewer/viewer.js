@@ -74,6 +74,7 @@ class Viewer extends Component {
   renderRecordView() {
     return (
       <ScrollView
+        showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl
             refreshing={this.state.isScrollViewRefreshing}

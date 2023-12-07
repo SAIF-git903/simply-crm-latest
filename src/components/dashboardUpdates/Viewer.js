@@ -45,7 +45,7 @@ class Viewer extends Component {
     this.setState({
       selectedIndex: index,
     });
-    this.props.viewRecordAction(id, this);
+    this.props.viewRecordAction(id, index, this);
   }
 
   fetchRecord() {
