@@ -80,6 +80,9 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 2
         versionName "1.2"
+        manifestPlaceholders = [
+      appAuthRedirectScheme: 'login.live.com'
+    ]
     }
     signingConfigs {
         debug {

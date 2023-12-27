@@ -29,7 +29,8 @@ import {fontStyles} from '../styles/common';
 
 const moment = require('moment-timezone');
 
-export default function Calendar() {
+export default function Calendar(props) {
+  let moduleTitle = props?.route?.params?.moduleLable;
   const [currentDate, setCurrentDate] = useState(new moment());
   const [showCalendar, setShowCalendar] = useState(false);
   const [page, setPage] = useState(1);
@@ -126,7 +127,7 @@ export default function Calendar() {
             onPress={() => setVisible(true)}>
             <View
               style={{
-                backgroundColor: 'rgba(255,255,255,.2)',
+                backgroundColor: 'rgba(255,255,255,0.2)',
                 width: 27,
                 height: 27,
                 borderRadius: 3,
@@ -565,7 +566,7 @@ export default function Calendar() {
   return (
     <View style={styles.backgroundStyle}>
       <Header
-        title={'Calendar'}
+        title={moduleTitle}
         customRightButton={renderAddRecordButton()}
         //TODO there is only one 'Add new record' button, and it will create a Event, so there is no way to create new Task record
       />

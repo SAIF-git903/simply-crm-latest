@@ -27,6 +27,7 @@
     "postinstall-postinstall": "^2.1.0",
     "react": "18.2.0",
     "react-native": "0.72.3",
+    "react-native-app-auth": "^7.1.0",
     "react-native-app-intro-slider": "3.0.0",
     "react-native-calendars": "^1.1300.0",
     "react-native-date-picker": "^4.2.13",

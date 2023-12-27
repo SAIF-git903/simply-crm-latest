@@ -307,7 +307,7 @@ const getAndSaveData = async (
           if (div) {
             fieldViews.push(
               <Field
-                key={k + 1}
+                key={Math.random()}
                 label={'Click to show image'}
                 modal={div}
                 uiType={1}

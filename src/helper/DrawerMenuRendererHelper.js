@@ -22,18 +22,35 @@ import MenuHolder from '../components/drawer/layouts/menuHolder';
 const hiddenModules = ['RecycleBin', 'EmailTemplates', 'Reports'];
 
 export const renderDrawerContent = (data) => {
+  // console.log(
+  //   'data',
+  //   data?.mobileapp_settings?.visibility?.visibility?.defaultMenuNames,
+  // );
   let menu = data?.menu;
 
   let homeTitle = data?.homeTitle;
 
   let itemNew = [];
 
-  const moduleNames = ['Contacts', 'Accounts', 'Calendar'];
+  const module_Names = ['Contacts', 'Accounts', 'Calendar'];
 
-  for (let moduleName of moduleNames) {
-    const module = data?.modules.find((module) => module?.name === moduleName);
-    if (module) {
-      itemNew.push(module);
+  // const module = data?.modules
+  // .find((module) => module?.name === module_Names);
+  // console.log('module', module);
+
+  const moduleNames = data?.mobileapp_settings?.visibility?.visibility
+    ?.defaultMenuNames
+    ? data?.mobileapp_settings?.visibility?.visibility?.defaultMenuNames
+    : module_Names;
+
+  if (moduleNames) {
+    for (let moduleName of moduleNames) {
+      const module = data?.modules.find(
+        (module) => module?.name === moduleName,
+      );
+      if (module) {
+        itemNew.push(module);
+      }
     }
   }
 
@@ -41,6 +58,18 @@ export const renderDrawerContent = (data) => {
 };
 
 const createFixedMenu = (itemNew, homeTitle) => {
+  let iconNames = [
+    'user',
+    'building',
+    'calendar-alt',
+    'handshake',
+    'shield-alt',
+  ];
+  const newArray = itemNew?.map((item, index) => ({
+    ...item,
+    iconName: iconNames[index] || '', // Use an empty string as a default value
+  }));
+
   let homeButtonView = wrapButtonInMenuComponent(
     <ImageButton
       type={HOME}
@@ -51,7 +80,7 @@ const createFixedMenu = (itemNew, homeTitle) => {
     'menu1',
   );
 
-  let mainMenu = itemNew.map((val) => {
+  let mainMenu = newArray.map((val) => {
     return wrapButtonInMenuComponent(
       <ImageButton
         type={val?.name}
@@ -61,92 +90,13 @@ const createFixedMenu = (itemNew, homeTitle) => {
           label: val?.label,
           id: val?.id,
         }}
-        key={
-          val?.name === 'Contacts'
-            ? 'contact_menu'
-            : val?.name === 'Accounts'
-            ? 'account_menu'
-            : val?.name === 'Calendar'
-            ? 'calendar'
-            : null
-        }
-        icon={
-          val?.name === 'Contacts'
-            ? 'user'
-            : val?.name === 'Accounts'
-            ? 'building'
-            : val?.name === 'Calendar'
-            ? 'calendar-alt'
-            : null
-        }
+        key={val?.id}
+        icon={val?.iconName}
       />,
-      val?.name === 'Contacts'
-        ? 'menu2'
-        : val?.name === 'Accounts'
-        ? 'menu3'
-        : val?.name === 'Calendar'
-        ? 'menu4'
-        : null,
     );
   });
 
-  // // Create Home button
-
-  // // Create Contacts button
-  // let contactsButtonView = wrapButtonInMenuComponent(
-  // <ImageButton
-  //   type={CONTACTS}
-  //   label={CONTACTS}
-  //   module={{
-  //     name: 'Contacts',
-  //     label: 'Contacts',
-  //     id: 12,
-  //   }}
-  //   key="contact_menu"
-  //   icon={'user'}
-  // />,
-  //   'menu2',
-  // );
-
-  // // Create Accounts button
-  // let accountsButtonView = wrapButtonInMenuComponent(
-  //   <ImageButton
-  //     type={ACCOUNTS}
-  //     label={'Organizations'}
-  //     module={{
-  //       name: 'Accounts',
-  //       label: 'Organizations',
-  //       id: 11,
-  //     }}
-  //     key="account_menu"
-  //     icon={'building'}
-  //   />,
-  //   'menu3',
-  // );
-
-  // // Create Calendar button
-  // let calendarButtonView = wrapButtonInMenuComponent(
-  //   <ImageButton
-  //     type={CALENDAR}
-  //     label={'Calendar'}
-  //     module={{
-  //       name: 'Calendar',
-  //       label: 'Calendar',
-  //       id: 9,
-  //     }}
-  //     key="calendar"
-  //     icon={'calendar-alt'}
-  //   />,
-  //   'menu4',
-  // );
-
-  return [
-    homeButtonView,
-    mainMenu,
-    // contactsButtonView,
-    // accountsButtonView,
-    // calendarButtonView,
-  ];
+  return [homeButtonView, mainMenu];
 };
 
 const createDynamicMenu = (menu) => {

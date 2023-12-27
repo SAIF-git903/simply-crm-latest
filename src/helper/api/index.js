@@ -232,18 +232,19 @@ async function makeCallforFileUpload(
 
       //TODO combine with LoginHelper.js ??
       const newLoginDetails = {
-        username: loginDetails.username,
-        password: loginDetails.password,
-        url: loginDetails.url,
-        session: newResponseJson.result.login.session,
-        userTz: newResponseJson.result.login.user_tz,
-        crmTz: newResponseJson.result.login.crm_tz,
+        username: loginDetails?.username,
+        password: loginDetails?.password,
+        url: loginDetails?.url,
+        session: newResponseJson?.result?.login?.session,
+        userTz: newResponseJson?.result?.login?.user_tz,
+        crmTz: newResponseJson?.result?.login?.crm_tz,
         vtigerVersion: new_version,
-        dateFormat: newResponseJson.result.login.date_format,
-        modules: newResponseJson.result.modules,
-        menu: newResponseJson.result.menu,
-        userId: newResponseJson.result.login.userid,
-        isAdmin: newResponseJson.result.login.isAdmin,
+        dateFormat: newResponseJson?.result?.login?.date_format,
+        modules: newResponseJson?.result?.modules,
+        menu: newResponseJson?.result?.menu,
+        mobileapp_settings: newResponseJson?.result?.mobileapp_settings,
+        userId: newResponseJson?.result?.login?.userid,
+        isAdmin: newResponseJson?.result?.login?.isAdmin,
       };
       //TODO check me
       console.log('before update session');
@@ -302,6 +303,7 @@ async function doFetch(request_url, method, headers, body_data) {
     headers: headers,
     body: method === 'POST' ? JSON.stringify(body_data) : null,
   });
+
   //if fetch() will rejected, then error will thrown
   //if fetch() will resolved, then 'response' will be filled with response data
   let responseJson = await response.json().catch(function (error) {
@@ -528,4 +530,19 @@ export async function API_saveFile(
     },
     `${trimmedUrl}/modules/Mobile/api.php`,
   );
+}
+export function API_comman(record, module, relatedModule) {
+  return makeCall({
+    _operation: 'relatedRecordsWithGrouping',
+    record,
+    module,
+    relatedModule,
+  });
+}
+export function API_forfetchImageData(record) {
+  return makeCall({
+    record,
+    module: 'Documents',
+    _operation: 'downloadFile',
+  });
 }

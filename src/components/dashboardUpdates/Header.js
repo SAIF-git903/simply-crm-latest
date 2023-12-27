@@ -6,10 +6,22 @@ import {moduleSelected} from '../../actions';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 class Header extends Component {
-  handleDisplayModule(value) {
-    if (value === 'Organizations') value = 'Accounts';
-    this.props.moduleSelected(value);
-  }
+  handleDisplayModule = (value) => {
+    const findModule = (moduleName, moduleList) => {
+      return moduleList.find((module) => module?.name === moduleName) || null;
+    };
+    const modules = this.props?.modules;
+    const organizationModule = findModule('Accounts', modules);
+    const contactModule = findModule('Contacts', modules);
+    const calendarModule = findModule('Calendar', modules);
+
+    let newArry = [organizationModule, contactModule, calendarModule];
+
+    let newval = newArry.find((val) => val?.label === value) || null;
+    if (newval != null) {
+      this.props.moduleSelected(newval?.name);
+    }
+  };
 
   isModuleActive(moduleName) {
     for (const module of this.props.modules) {
@@ -19,16 +31,30 @@ class Header extends Component {
 
   render() {
     const {moduleName} = this.props;
+    const findModule = (moduleName, moduleList) => {
+      return moduleList.find((module) => module?.name === moduleName) || null;
+    };
+    const modules = this.props?.modules;
+    const organizationModule = findModule('Accounts', modules);
+    const contactModule = findModule('Contacts', modules);
+    const calendarModule = findModule('Calendar', modules);
 
     let dropdownText = moduleName;
-
     if (moduleName === 'Accounts') {
-      dropdownText = 'Organizations';
+      dropdownText = organizationModule?.label;
+    } else if (moduleName === 'Contacts') {
+      dropdownText = contactModule?.label;
+    } else if (moduleName === 'Calendar') {
+      dropdownText = calendarModule?.label;
     }
 
-    const options = ['Organizations', 'Contacts', 'Calendar'];
+    const options = [
+      organizationModule?.label,
+      contactModule?.label,
+      calendarModule?.label,
+    ].filter(Boolean);
 
-    if (this.isModuleActive('Leads')) options.push('Leads');
+    // if (this.isModuleActive('Leads')) options.push('Leads');
 
     return (
       <View style={styles.subContainer}>
@@ -43,10 +69,9 @@ class Header extends Component {
           </Text>
           <ModalDropdown
             options={options}
-            onSelect={(index, value) =>
-              this.handleDisplayModule.bind(this)(value)
-            }
+            onSelect={(index, value) => this.handleDisplayModule(value)}
             defaultValue={moduleName}
+            saveScrollPosition={false}
             dropdownStyle={{
               width: '64.5%',
               marginLeft: 10,

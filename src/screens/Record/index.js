@@ -11,54 +11,51 @@ import {
   Alert,
   Modal,
   ActivityIndicator,
+  Dimensions,
 } from 'react-native';
-import {useIsFocused, CommonActions} from '@react-navigation/native';
-
+import {CommonActions} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch, useSelector} from 'react-redux';
-import FontAwesome, {
-  SolidIcons,
-  RegularIcons,
-  BrandIcons,
-  parseIconFromClassName,
-} from 'react-native-fontawesome';
+import FontAwesome, {parseIconFromClassName} from 'react-native-fontawesome';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import DocumentPicker from 'react-native-document-picker';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import axios from 'axios';
+import RNFetchBlob from 'rn-fetch-blob';
 
 import Header from '../../components/common/Header';
 import Viewer from '../../components/recordViewer/viewer';
 import Updates from './Updates';
 import Comments from './Comments/';
-import IconTabBar from '../../components/common/IconTabBar';
-import {backgroundColor} from 'react-native-calendars/src/style';
 import Summery from '../../components/recordViewer/Summery';
-import {LOGINDETAILSKEY, URLDETAILSKEY} from '../../variables/strings';
+import {URLDETAILSKEY} from '../../variables/strings';
 import {
-  API_deleteRecord,
+  API_describe,
   API_fetchButtons,
   API_fetchRecordWithGrouping,
+  API_forfetchImageData,
   API_saveFile,
 } from '../../helper/api';
 import store from '../../store';
-import moment from 'moment';
+
 import {deleteRecord} from '../../actions';
 import {deleteCalendarRecord} from '../../ducks/calendar';
+import CommanView from '../../components/recordViewer/CommanView';
 
-var ScrollableTabView = require('react-native-scrollable-tab-view');
+// var ScrollableTabView = require('react-native-scrollable-tab-view');
 
 export default function RecordDetails({route}) {
-  const isFocused = useIsFocused();
+  // const isFocused = useIsFocused();
+  const {height, width} = Dimensions.get('window');
 
   const listerInstance = route?.params?.listerInstance;
   const index = route?.params?.index;
 
   const recordViewerState = useSelector((state) => state.recordViewer);
-  console.log('recordViewerState', recordViewerState);
 
   const {enabledModules} = useSelector(
     (state) => state.comments,
@@ -85,6 +82,7 @@ export default function RecordDetails({route}) {
         />
       ),
     };
+
     const viewer = {
       tabIcon: 'file-alt',
       tabLabel: 'Details',
@@ -112,160 +110,203 @@ export default function RecordDetails({route}) {
       ),
     };
 
-    const contacts = {
-      tabIcon: 'user',
-      tabLabel: 'Contacts',
-      component: (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>No details found</Text>
-        </View>
-      ),
-    };
+    // const contacts = {
+    //   tabIcon: 'user',
+    //   tabLabel: 'Contacts',
+    //   component: (
+    //     <CommanView
+    //       tabLabel="Contacts"
+    //       moduleName={moduleName}
+    //       recordId={recordId}
+    //     />
+    //   ),
+    // };
+    // const Emails = {
+    //   tabIcon: 'envelope',
+    //   tabLabel: 'Emails',
+    //   component: (
+    //     <CommanView
+    //       tabLabel="Emails"
+    //       moduleName={moduleName}
+    //       recordId={recordId}
+    //     />
+    //   ),
+    // };
+    // const Documents = {
+    //   tabIcon: 'list-ul',
+    //   tabLabel: 'Documents',
+    //   component: (
+    //     <CommanView
+    //       tabLabel="Documents"
+    //       moduleName={moduleName}
+    //       recordId={recordId}
+    //     />
+    //   ),
+    // };
 
-    const deals = {
-      tabIcon: 'handshake',
-      tabLabel: 'Deals',
-      component: (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>No details found</Text>
-        </View>
-      ),
-    };
-    const messagehistory = {
-      tabIcon: 'sms',
-      tabLabel: 'Message History',
-      component: (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>No details found</Text>
-        </View>
-      ),
-    };
-    const salesOrders = {
-      tabIcon: 'clipboard-list',
-      tabLabel: 'Sales Orders',
-      component: (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>No details found</Text>
-        </View>
-      ),
-    };
-    const invoices = {
-      tabIcon: 'file-invoice-dollar',
-      tabLabel: 'Invoices',
-      component: (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>No details found</Text>
-        </View>
-      ),
-    };
-    const activities = {
-      tabIcon: 'calendar-alt',
-      tabLabel: 'Activities',
-      component: (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>No details found</Text>
-        </View>
-      ),
-    };
-    const emails = {
-      tabIcon: 'envelope',
-      tabLabel: 'Emails',
-      component: (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>No details found</Text>
-        </View>
-      ),
-    };
-    const documents = {
-      tabIcon: 'file',
-      tabLabel: 'Documents',
-      component: (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>No details found</Text>
-        </View>
-      ),
-    };
-    const members = {
-      tabIcon: 'building',
-      tabLabel: 'Members',
-      component: (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>No details found</Text>
-        </View>
-      ),
-    };
-    const tickets = {
-      tabIcon: 'ticket-alt',
-      tabLabel: 'Tickets',
-      component: (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>No details found</Text>
-        </View>
-      ),
-    };
-    const products = {
-      tabIcon: 'shopping-cart',
-      tabLabel: 'Products',
-      component: (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>No details found</Text>
-        </View>
-      ),
-    };
-    const services = {
-      tabIcon: 'hand-holding-usd',
-      tabLabel: 'Services',
-      component: (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>No details found</Text>
-        </View>
-      ),
-    };
-    const simplyvoice = {
-      tabIcon: 'phone-call',
-      tabLabel: 'Simply Voice',
-      component: (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>No details found</Text>
-        </View>
-      ),
-    };
-    const feedBack = {
-      tabIcon: 'feedback',
-      tabLabel: 'Feedback',
-      component: (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>No details found</Text>
-        </View>
-      ),
-    };
-    const webtracker = {
-      tabIcon: 'search',
-      tabLabel: 'Web Tracker',
-      component: (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>No details found</Text>
-        </View>
-      ),
-    };
-    const vendors = {
-      tabIcon: 'shield-alt',
-      tabLabel: 'Vendors',
-      component: (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>No details found</Text>
-        </View>
-      ),
-    };
-    const participations = {
-      tabIcon: 'groups',
-      tabLabel: 'Participations',
-      component: (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>No details found</Text>
-        </View>
-      ),
-    };
+    // const products = {
+    //   tabIcon: 'shopping-cart',
+    //   tabLabel: 'Products',
+    //   component: (
+    //     <CommanView tabLabel="" moduleName={moduleName} recordId={recordId} />
+    //   ),
+    // };
+    // const services = {
+    //   tabIcon: 'hand-holding-usd',
+    //   tabLabel: 'Services',
+    //   component: (
+    //     <CommanView
+    //       tabLabel="Services"
+    //       moduleName={moduleName}
+    //       recordId={recordId}
+    //     />
+    //   ),
+    // };
+
+    // const ReceiveMessage = {
+    //   tabIcon: 'sms',
+    //   tabLabel: 'ReceiveMessage',
+    //   component: (
+    //     <CommanView
+    //       tabLabel="ReceiveMessage"
+    //       moduleName={moduleName}
+    //       recordId={recordId}
+    //     />
+    //   ),
+    // };
+    // const Quotes = {
+    //   tabIcon: 'quote-left',
+    //   tabLabel: 'Quotes',
+    //   component: (
+    //     <CommanView
+    //       tabLabel="Quotes"
+    //       moduleName={moduleName}
+    //       recordId={recordId}
+    //     />
+    //   ),
+    // };
+
+    // const Potentials = {
+    //   tabIcon: 'head-lightbulb-outline',
+    //   tabLabel: 'Potentials',
+    //   component: (
+    //     <CommanView
+    //       tabLabel="Potentials"
+    //       moduleName={moduleName}
+    //       recordId={recordId}
+    //     />
+    //   ),
+    // };
+    // const Calendar = {
+    //   tabIcon: 'calendar-alt',
+    //   tabLabel: 'Calendar',
+    //   component: (
+    //     <CommanView
+    //       tabLabel="Calendar"
+    //       moduleName={moduleName}
+    //       recordId={recordId}
+    //     />
+    //   ),
+    // };
+    // const HelpDesk = {
+    //   tabIcon: 'hands-helping',
+    //   tabLabel: 'HelpDesk',
+    //   component: (
+    //     <CommanView
+    //       tabLabel="HelpDesk"
+    //       moduleName={moduleName}
+    //       recordId={recordId}
+    //     />
+    //   ),
+    // };
+    // const SalesOrder = {
+    //   tabIcon: 'clipboard-list',
+    //   tabLabel: 'SalesOrder',
+    //   component: (
+    //     <CommanView
+    //       tabLabel="SalesOrder"
+    //       moduleName={moduleName}
+    //       recordId={recordId}
+    //     />
+    //   ),
+    // };
+    // const Invoice = {
+    //   tabIcon: 'file-invoice',
+    //   tabLabel: 'Invoice',
+    //   component: (
+    //     <CommanView
+    //       tabLabel="Invoice"
+    //       moduleName={moduleName}
+    //       recordId={recordId}
+    //     />
+    //   ),
+    // };
+    // const SimplyVoice = {
+    //   tabIcon: 'phone-call',
+    //   tabLabel: 'SimplyVoice',
+    //   component: (
+    //     <CommanView
+    //       tabLabel="SimplyVoice"
+    //       moduleName={moduleName}
+    //       recordId={recordId}
+    //     />
+    //   ),
+    // };
+    // const Participation = {
+    //   tabIcon: 'users',
+    //   tabLabel: 'Participation',
+    // component: (
+    //   <CommanView
+    //     tabLabel="Participation"
+    //     moduleName={moduleName}
+    //     recordId={recordId}
+    //   />
+    // ),
+    // };
+    // const Timesheets = {
+    //   tabIcon: 'clipboard-list',
+    //   tabLabel: 'Timesheets',
+    //   component: (
+    //     <CommanView
+    //       tabLabel="Timesheets"
+    //       moduleName={moduleName}
+    //       recordId={recordId}
+    //     />
+    //   ),
+    // };
+    // const SMPFeedback = {
+    //   tabIcon: 'feedback',
+    //   tabLabel: 'SMPFeedback',
+    //   component: (
+    //     <CommanView
+    //       tabLabel="SMPFeedback"
+    //       moduleName={moduleName}
+    //       recordId={recordId}
+    //     />
+    //   ),
+    // };
+    // const WebTracker = {
+    //   tabIcon: 'search',
+    //   tabLabel: 'WebTracker',
+    //   component: (
+    //     <CommanView
+    //       tabLabel="WebTracker"
+    //       moduleName={moduleName}
+    //       recordId={recordId}
+    //     />
+    //   ),
+    // };
+    // const SMPTracker = {
+    //   tabIcon: 'search',
+    //   tabLabel: 'SMPTracker',
+    //   component: (
+    //     <CommanView
+    //       tabLabel="SMPTracker"
+    //       moduleName={moduleName}
+    //       recordId={recordId}
+    //     />
+    //   ),
+    // };
 
     const comments = {
       tabIcon: 'comment',
@@ -274,26 +315,27 @@ export default function RecordDetails({route}) {
     };
 
     tabs.push(
-      // Summary,
+      Summary,
       viewer,
       updates,
       // contacts,
-      // deals,
-      // messagehistory,
-      // salesOrders,
-      // invoices,
-      // activities,
-      // emails,
-      // documents,
-      // members,
-      // tickets,
       // products,
+      // Emails,
       // services,
-      // simplyvoice,
-      // feedBack,
-      // webtracker,
-      // vendors,
-      // participations,
+      // ReceiveMessage,
+      // Quotes,
+      // Potentials,
+      // Calendar,
+      // HelpDesk,
+      // SalesOrder,
+      // Invoice,
+      // Documents,
+      // SimplyVoice,
+      // Participation,
+      // Timesheets,
+      // SMPFeedback,
+      // WebTracker,
+      // SMPTracker,
     );
 
     if (enabledModules.includes(moduleName)) tabs.push(comments);
@@ -320,6 +362,10 @@ export default function RecordDetails({route}) {
   const [itemFields, setItemFields] = useState([]);
   const [newArr, setNewArr] = useState([]);
   const [state, setState] = useState({value: '', fun: ''});
+  const [newTabs, setNewTabs] = useState([]);
+  const [imageModel, setImageModel] = useState(false);
+  const [IMG, setIMG] = useState();
+  const [fileType, setFileType] = useState('');
 
   let data = [
     {
@@ -351,6 +397,79 @@ export default function RecordDetails({route}) {
     // },
   ];
 
+  useEffect(() => {
+    setloading(true);
+    getRelativeModuleModules();
+  }, []);
+
+  const getImageData = async (data) => {
+    let record = data[0]?.record;
+
+    let url = await get_Url();
+
+    try {
+      let res = await axios.post(
+        `${url}/modules/Mobile/api.php`,
+        {
+          record,
+          module: 'Documents',
+          _operation: 'downloadFile',
+        },
+
+        {
+          responseType: 'blob',
+        },
+      );
+      let imgUrl = URL.createObjectURL(res.data);
+      setIMG(imgUrl);
+      setImageModel(true);
+    } catch (error) {
+      console.log('err', error);
+    }
+  };
+
+  const downloadImage = async () => {
+    // console.log('blob', IMG.blob());
+  };
+
+  const getRelativeModuleModules = async () => {
+    try {
+      let res = await API_describe(moduleName);
+
+      const new_array = res?.result?.describe?.relatedModules.map(
+        (label, index) => {
+          return {
+            tabLabel: label,
+            tabIcon: '',
+            component: (
+              <CommanView
+                tabLabel={label}
+                moduleName={moduleName}
+                recordId={recordId}
+                onPress={(data) => {
+                  getImageData(data);
+                }}
+              />
+            ),
+          };
+        },
+      );
+
+      // let newarray = tabs.filter((val) => {
+      //   return res?.result?.describe?.relatedModules.some(
+      //     (mod) => val.tabLabel === mod,
+      //   );
+      // });
+      // if (newarray) {
+      //   setloading(false);
+      // }
+
+      setNewTabs([tabs[1], tabs[2], tabs[tabs.length - 1], ...new_array]);
+    } catch (error) {
+      console.log('err', error);
+    }
+  };
+
   const loadMore = () => {
     setItemsToShow(itemsToShow + 5); // Load more items
   };
@@ -365,26 +484,17 @@ export default function RecordDetails({route}) {
   }, [itemFields]);
 
   useEffect(() => {
+    getRecords();
+    if (moduleName === 'Contacts' || moduleName === 'Accounts') {
+      getButtons();
+    }
+  }, []);
+
+  useEffect(() => {
     if (firstname || lastname) {
       setFullName(`${firstname} ${lastname}`);
     }
   }, [firstname, lastname]);
-
-  useEffect(() => {
-    if (isFocused) {
-      getRecords();
-      if (moduleName === 'Contacts' || moduleName === 'Accounts') {
-        getButtons();
-      }
-    }
-  }, [isFocused]);
-  // useEffect(() => {
-  //   if (visible === false) {
-  //     if ((state.fun, state.value)) {
-
-  //     }
-  //   }
-  // }, [visible]);
 
   const get_Url = async () => {
     const URLDetails = await AsyncStorage.getItem(URLDETAILSKEY);
@@ -407,7 +517,19 @@ export default function RecordDetails({route}) {
     try {
       setloading(true);
       let res = await API_fetchRecordWithGrouping(moduleName, recordId);
-      res?.result?.record?.blocks[0]?.fields.map((val) => {
+
+      const labelToCheck =
+        moduleName === 'Contacts'
+          ? 'LBL_CONTACT_INFORMATION'
+          : moduleName === 'Calendar'
+          ? 'LBL_EVENT_INFORMATION'
+          : 'LBL_ACCOUNT_INFORMATION';
+
+      const containsLabel = res?.result?.record?.blocks.find(
+        (item) => item.label === labelToCheck,
+      );
+
+      containsLabel?.fields.map((val) => {
         if (val.name === 'firstname') {
           setFirstName(val?.value);
         }
@@ -424,9 +546,9 @@ export default function RecordDetails({route}) {
           setSubject(val?.value);
         }
       });
-
-      setFields(res?.result?.record?.blocks[0]?.fields);
       setloading(false);
+
+      setFields(containsLabel?.fields);
     } catch (error) {
       setloading(false);
 
@@ -527,7 +649,7 @@ export default function RecordDetails({route}) {
       height: 400,
       mediaType: 'photo',
       includeBase64: true,
-      useFrontCamera: true,
+      // useFrontCamera: true,
       cropping: true,
     })
       .then((image) => {
@@ -579,7 +701,7 @@ export default function RecordDetails({route}) {
   const onDelete = () => {
     Alert.alert(
       'Are you sure want to delete this record ?',
-      fullName,
+      '',
       [
         {text: 'Cancel', onPress: () => {}, style: 'cancel'},
         {
@@ -617,7 +739,7 @@ export default function RecordDetails({route}) {
   function onDeleteForCalender() {
     Alert.alert(
       'Are you sure want to delete this record ?',
-      subject,
+      '',
       [
         {text: 'Cancel', onPress: () => {}, style: 'cancel'},
         {
@@ -689,13 +811,13 @@ export default function RecordDetails({route}) {
           padding: 5,
         }}
         onPress={() => setItems(item.tabLabel)}>
-        {item.tabLabel === 'Simply Voice' ? (
+        {item.tabLabel === 'SimplyVoice' ? (
           <Feather
             name={item.tabIcon}
             color={item.tabLabel === items ? '#00BBF2' : '#707070'}
             size={20}
           />
-        ) : item.tabLabel === 'Feedback' ? (
+        ) : item.tabLabel === 'SMPFeedback' ? (
           <MaterialIcons
             name={item.tabIcon}
             color={item.tabLabel === items ? '#00BBF2' : '#707070'}
@@ -703,6 +825,12 @@ export default function RecordDetails({route}) {
           />
         ) : item.tabLabel === 'Participations' ? (
           <MaterialIcons
+            name={item.tabIcon}
+            color={item.tabLabel === items ? '#00BBF2' : '#707070'}
+            size={20}
+          />
+        ) : item.tabLabel === 'Potentials' ? (
+          <MaterialCommunityIcons
             name={item.tabIcon}
             color={item.tabLabel === items ? '#00BBF2' : '#707070'}
             size={20}
@@ -730,6 +858,81 @@ export default function RecordDetails({route}) {
 
   return (
     <View style={{flex: 1}}>
+      {imageModel && (
+        <View
+          style={{
+            position: 'absolute',
+            height: '100%',
+            width: '100%',
+            backgroundColor: 'rgba(52,52,52,0.3)',
+            zIndex: 1,
+            justifyContent: 'center',
+          }}>
+          <View
+            style={{
+              height: height - 120,
+              width: width - 40,
+              alignSelf: 'center',
+            }}>
+            <Image
+              resizeMode="contain"
+              style={{height: '100%', width: '100%'}}
+              source={{uri: IMG}}
+            />
+          </View>
+          <View
+            style={{
+              alignItems: 'center',
+              // justifyContent: 'space-between',
+              justifyContent: 'center',
+              // flexDirection: 'row',
+              marginHorizontal: 20,
+            }}>
+            {/* <TouchableOpacity
+              activeOpacity={0.7}
+              style={{
+                backgroundColor: '#5699E6',
+                paddingHorizontal: 25,
+                paddingVertical: 8,
+                justifyContent: 'center',
+                borderRadius: 5,
+              }}
+              onPress={() => downloadImage()}>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  color: '#fff',
+                  fontWeight: '700',
+                  fontFamily: 'Poppins-SemiBold',
+                  fontSize: 16,
+                }}>
+                Download
+              </Text>
+            </TouchableOpacity> */}
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={{
+                backgroundColor: '#EE4B2B',
+                paddingHorizontal: 25,
+                paddingVertical: 8,
+                justifyContent: 'center',
+                borderRadius: 5,
+              }}
+              onPress={() => setImageModel(false)}>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  color: '#fff',
+                  fontWeight: '700',
+                  fontFamily: 'Poppins-SemiBold',
+                  fontSize: 16,
+                }}>
+                Close
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
       <Header
         title={'Record Details'}
         showBackButton
@@ -1002,7 +1205,8 @@ export default function RecordDetails({route}) {
           elevation: 5,
         }}>
         <FlatList
-          data={tabs.slice(0, itemsToShow)}
+          // data={newTabs.slice(0, itemsToShow)}
+          data={newTabs}
           horizontal
           contentContainerStyle={{
             alignItems: 'center',
@@ -1011,31 +1215,31 @@ export default function RecordDetails({route}) {
           }}
           showsHorizontalScrollIndicator={false}
           renderItem={renderItem}
-          ListFooterComponent={
-            tabs.length > itemsToShow && (
-              <TouchableOpacity
-                style={{
-                  backgroundColor: '#00BBF2',
-                  marginRight: 10,
-                  borderRadius: 5,
-                }}
-                onPress={loadMore}>
-                <Text
-                  style={{
-                    paddingHorizontal: 10,
-                    paddingVertical: 5,
-                    color: '#fff',
-                    fontFamily: 'Poppins-Regular',
-                  }}>
-                  Load More
-                </Text>
-              </TouchableOpacity>
-            )
-          }
+          // ListFooterComponent={
+          //   newTabs.length > itemsToShow && (
+          //     <TouchableOpacity
+          //       style={{
+          //         backgroundColor: '#00BBF2',
+          //         marginRight: 10,
+          //         borderRadius: 5,
+          //       }}
+          //       onPress={loadMore}>
+          //       <Text
+          //         style={{
+          //           paddingHorizontal: 10,
+          //           paddingVertical: 5,
+          //           color: '#fff',
+          //           fontFamily: 'Poppins-Regular',
+          //         }}>
+          //         Load More
+          //       </Text>
+          //     </TouchableOpacity>
+          //   )
+          // }
         />
       </View>
       <View style={{flex: 1}}>
-        {tabs.map((val) => {
+        {newTabs.map((val) => {
           if (val.tabLabel === items) {
             return val.component;
           }
