@@ -19,6 +19,7 @@ import {
   fetchRecordDataHelper,
   deleteRecordHelper,
   getAddressDetails,
+  getInstancesListforMSlogin,
 } from '../helper';
 
 export const dimensionChanged = (isPortrait, width, height) => ({
@@ -27,12 +28,28 @@ export const dimensionChanged = (isPortrait, width, height) => ({
 });
 
 export const loginUser =
-  (email, password, url, navigation, loginInstance) => (dispatch) => {
+  (email, password, token, url, navigation, loginInstance) => (dispatch) => {
     if (validData(email, password, url)) {
       loginInstance.setState({loading: true});
       getInstancesList(
         email,
         password,
+        token,
+        url,
+        navigation,
+        loginInstance,
+        dispatch,
+      );
+    }
+  };
+export const loginUserforMslogin =
+  (email, token, password, url, navigation, loginInstance) => (dispatch) => {
+    if (token) {
+      loginInstance.setState({loading: true});
+      getInstancesListforMSlogin(
+        email,
+        password,
+        token,
         url,
         navigation,
         loginInstance,

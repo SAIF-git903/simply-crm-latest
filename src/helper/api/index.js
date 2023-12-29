@@ -32,6 +32,7 @@ async function makeCall(body, request_url, headers, method = 'POST') {
     record: body.record,
     ids: JSON.stringify(body.ids),
     query: body.query,
+    msgraph_access_token: body.msgraph_access_token,
     // values: body.values && JSON.parse(body.values),
     values: body.values,
     parentRecord: body.parentRecord,
@@ -336,6 +337,18 @@ export function API_locateInstance(email, password) {
     'GET',
   );
 }
+export function API_locateInstanceformslogin(email, token) {
+  const en_email = encodeURIComponent(email);
+  const en_password = 'xxxx';
+  return makeCall(
+    {},
+    `https://sai.simplyhq.com/outlookplugin.php?action=LocateInstance&email=${en_email}&password=${en_password}&api_key=GFaAX9WDxqHfqVmkrsq3QvpsDmMu4KZd&msgraph_access_token=${token}`,
+    {
+      'cache-control': 'no-cache',
+    },
+    'GET',
+  );
+}
 
 export function API_loginAndFetchModules(trimmedUrl, username, password) {
   return makeCall(
@@ -343,6 +356,20 @@ export function API_loginAndFetchModules(trimmedUrl, username, password) {
       _operation: 'loginAndFetchModules',
       username,
       password,
+    },
+    `${trimmedUrl}/modules/Mobile/api.php`,
+  );
+}
+export function API_loginAndFetchModulesforMSlogin(
+  trimmedUrl,
+  username,
+  msgraph_access_token,
+) {
+  return makeCall(
+    {
+      _operation: 'loginAndFetchModules',
+      username,
+      msgraph_access_token,
     },
     `${trimmedUrl}/modules/Mobile/api.php`,
   );

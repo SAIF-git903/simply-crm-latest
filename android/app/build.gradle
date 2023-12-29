@@ -81,8 +81,8 @@ android {
         versionCode 2
         versionName "1.2"
         manifestPlaceholders = [
-      appAuthRedirectScheme: 'login.live.com'
-    ]
+            appAuthRedirectScheme: 'graph-simplycrm'
+        ]
     }
     signingConfigs {
         debug {
