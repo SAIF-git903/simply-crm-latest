@@ -21,75 +21,85 @@ import MenuHolder from '../components/drawer/layouts/menuHolder';
 
 const hiddenModules = ['RecycleBin', 'EmailTemplates', 'Reports'];
 
-export const renderDrawerContent = (menu) => {
-  return [...createFixedMenu(), ...createDynamicMenu(menu)];
+export const renderDrawerContent = (data) => {
+  // console.log(
+  //   'data',
+  //   data?.mobileapp_settings?.visibility?.visibility?.defaultMenuNames,
+  // );
+  let menu = data?.menu;
+
+  let homeTitle = data?.homeTitle;
+
+  let itemNew = [];
+
+  const module_Names = ['Contacts', 'Accounts', 'Calendar'];
+
+  // const module = data?.modules
+  // .find((module) => module?.name === module_Names);
+  // console.log('module', module);
+
+  const moduleNames = data?.mobileapp_settings?.visibility?.visibility
+    ?.defaultMenuNames
+    ? data?.mobileapp_settings?.visibility?.visibility?.defaultMenuNames
+    : module_Names;
+
+  if (moduleNames) {
+    for (let moduleName of moduleNames) {
+      const module = data?.modules.find(
+        (module) => module?.name === moduleName,
+      );
+      if (module) {
+        itemNew.push(module);
+      }
+    }
+  }
+
+  return [...createFixedMenu(itemNew, homeTitle), ...createDynamicMenu(menu)];
 };
 
-const createFixedMenu = () => {
-  // Create Home button
+const createFixedMenu = (itemNew, homeTitle) => {
+  let iconNames = [
+    'user',
+    'building',
+    'calendar-alt',
+    'handshake',
+    'shield-alt',
+  ];
+  const newArray = itemNew?.map((item, index) => ({
+    ...item,
+    iconName: iconNames[index] || '', // Use an empty string as a default value
+  }));
+
   let homeButtonView = wrapButtonInMenuComponent(
-    <ImageButton type={HOME} label={'Home'} key="home_menu" icon={'home'} />,
+    <ImageButton
+      type={HOME}
+      label={homeTitle ? homeTitle : 'Home'}
+      key="home_menu"
+      icon={'home'}
+    />,
     'menu1',
   );
 
-  // Create Contacts button
-  let contactsButtonView = wrapButtonInMenuComponent(
-    <ImageButton
-      type={CONTACTS}
-      label={CONTACTS}
-      module={{
-        name: 'Contacts',
-        label: 'Contacts',
-        id: 12,
-      }}
-      key="contact_menu"
-      icon={'user'}
-    />,
-    'menu2',
-  );
+  let mainMenu = newArray.map((val) => {
+    return wrapButtonInMenuComponent(
+      <ImageButton
+        type={val?.name}
+        label={val?.label}
+        module={{
+          name: val?.name,
+          label: val?.label,
+          id: val?.id,
+        }}
+        key={val?.id}
+        icon={val?.iconName}
+      />,
+    );
+  });
 
-  // Create Accounts button
-  let accountsButtonView = wrapButtonInMenuComponent(
-    <ImageButton
-      type={ACCOUNTS}
-      label={'Organizations'}
-      module={{
-        name: 'Accounts',
-        label: 'Organizations',
-        id: 11,
-      }}
-      key="account_menu"
-      icon={'building'}
-    />,
-    'menu3',
-  );
-
-  // Create Calendar button
-  let calendarButtonView = wrapButtonInMenuComponent(
-    <ImageButton
-      type={CALENDAR}
-      label={'Calendar'}
-      module={{
-        name: 'Calendar',
-        label: 'Calendar',
-        id: 9,
-      }}
-      key="calendar"
-      icon={'calendar-alt'}
-    />,
-    'menu4',
-  );
-
-  return [
-    homeButtonView,
-    contactsButtonView,
-    accountsButtonView,
-    calendarButtonView,
-  ];
+  return [homeButtonView, mainMenu];
 };
 
 const createDynamicMenu = (menu) => {
-  console.log('menu', menu);
   const sectionViews = [];
   for (const section of menu) {
     const moduleButtonViews = createModuleButtonViews(section);

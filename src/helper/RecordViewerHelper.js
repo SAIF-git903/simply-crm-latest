@@ -77,6 +77,7 @@ const getRecordDataFromInternet = async (
       viewerInstance.props.moduleName,
       viewerInstance.props.recordId,
     );
+
     if (responseJson.success) {
       await getAndSaveData(responseJson, viewerInstance, false, '');
     } else {
@@ -191,152 +192,151 @@ const getAndSaveData = async (
         statusTextColor: '#000000',
       });
       return;
-    }
-    for (let i = 0; i < blocks.length; i++) {
-      const block = blocks[i];
-      //block.label - label from database
-      //block.translatedLabel - translated label
-      const fieldViews = [];
-      const fields = block.fields;
+    } else {
+      for (let i = 0; i < blocks.length; i++) {
+        const block = blocks[i];
+        //block.label - label from database
+        //block.translatedLabel - translated label
+        const fieldViews = [];
+        const fields = block.fields;
 
-      if (viewerInstance.props.moduleName === 'Emails') {
-        if (block.label === 'Emails_Block1') {
-          block.translatedLabel = 'Created Time';
-        } else if (block.label === 'Emails_Block2') {
-          block.translatedLabel = 'Subject';
-        } else if (block.label === 'Emails_Block3') {
-          break;
-        }
-      }
-
-      let k = 0;
-      for (; k < fields.length; k++) {
-        const field = fields[k];
-
-        if (
-          viewerInstance.props.moduleName === 'Calendar' &&
-          field.name === 'contact_id'
-        ) {
-          continue;
+        if (viewerInstance.props.moduleName === 'Emails') {
+          if (block.label === 'Emails_Block1') {
+            block.translatedLabel = 'Created Time';
+          } else if (block.label === 'Emails_Block2') {
+            block.translatedLabel = 'Subject';
+          } else if (block.label === 'Emails_Block3') {
+            break;
+          }
         }
 
-        let value;
-        if (typeof field.value === 'string') {
-          if (typeof field.uitype === 'string') {
-            try {
-              const uiType = parseInt(field.uitype, 10);
-              if (uiType === 252) {
-                const crmValue = moment.tz(
-                  `${field.value}`,
-                  'HH:mm:ss',
-                  loginDetails.crmTz,
-                );
-                const userValue = crmValue.clone().tz(loginDetails.userTz);
-                value = userValue.format('hh:mmA');
-              } else if (uiType === 70) {
-                const crmValue = moment.tz(
-                  `${field.value}`,
-                  'YYYY-MM-DD HH:mm:ss',
-                  loginDetails.crmTz,
-                );
-                const userValue = crmValue.clone().tz(loginDetails.userTz);
-                value = userValue.format('D-MM-YYYY hh:mmA');
-              } else {
+        for (let k = 0; k < fields.length; k++) {
+          const field = fields[k];
+
+          if (
+            viewerInstance.props.moduleName === 'Calendar' &&
+            field.name === 'contact_id'
+          ) {
+            continue;
+          }
+
+          let value;
+          if (typeof field.value === 'string') {
+            if (typeof field.uitype === 'string') {
+              try {
+                const uiType = parseInt(field.uitype, 10);
+                if (uiType === 252) {
+                  const crmValue = moment.tz(
+                    `${field.value}`,
+                    'HH:mm:ss',
+                    loginDetails.crmTz,
+                  );
+                  const userValue = crmValue.clone().tz(loginDetails.userTz);
+                  value = userValue.format('hh:mmA');
+                } else if (uiType === 70) {
+                  const crmValue = moment.tz(
+                    `${field.value}`,
+                    'YYYY-MM-DD HH:mm:ss',
+                    loginDetails.crmTz,
+                  );
+                  const userValue = crmValue.clone().tz(loginDetails.userTz);
+                  value = userValue.format('D-MM-YYYY hh:mmA');
+                } else {
+                  value = field.value;
+                }
+
+                if (uiType === 7 || uiType === 72) {
+                  value = formatNumber(field.value);
+                }
+              } catch (error) {
+                console.log(error);
                 value = field.value;
               }
-
-              if (uiType === 7 || uiType === 72 || uiType === 71) {
-                value = formatNumber(field.value);
+            } else {
+              try {
+                const uiType = field.uitype;
+                if (uiType === 252) {
+                  const crmValue = moment.tz(
+                    `${field.value}`,
+                    'HH:mm:ss',
+                    loginDetails.crmTz,
+                  );
+                  const userValue = crmValue.clone().tz(loginDetails.userTz);
+                  value = userValue.format('hh:mmA');
+                } else if (uiType === 70) {
+                  const crmValue = moment.tz(
+                    `${field.value}`,
+                    'YYYY-MM-DD HH:mm:ss',
+                    loginDetails.crmTz,
+                  );
+                  const userValue = crmValue.clone().tz(loginDetails.userTz);
+                  value = userValue.format('D-MM-YYYY hh:mmA');
+                } else {
+                  value = field.value;
+                }
+              } catch (error) {
+                console.log(error);
+                value = field.value;
               }
-            } catch (error) {
-              console.log(error);
-              value = field.value;
             }
           } else {
-            try {
-              const uiType = field.uitype;
-              if (uiType === 252) {
-                const crmValue = moment.tz(
-                  `${field.value}`,
-                  'HH:mm:ss',
-                  loginDetails.crmTz,
-                );
-                const userValue = crmValue.clone().tz(loginDetails.userTz);
-                value = userValue.format('hh:mmA');
-              } else if (uiType === 70) {
-                const crmValue = moment.tz(
-                  `${field.value}`,
-                  'YYYY-MM-DD HH:mm:ss',
-                  loginDetails.crmTz,
-                );
-                const userValue = crmValue.clone().tz(loginDetails.userTz);
-                value = userValue.format('D-MM-YYYY hh:mmA');
-              } else {
-                value = field.value;
-              }
-            } catch (error) {
-              console.log(error);
-              value = field.value;
-            }
+            value = field.value.label;
           }
-        } else {
-          value = field.value.label;
-        }
-        fieldViews.push(
-          <Field
-            key={k}
-            label={field.label}
-            value={value}
-            index={k}
-            uiType={field.uitype}
-            recordId={viewerInstance.props.recordId}
-            isLocation={
-              field.name === 'location' &&
-              (viewerInstance.props.moduleName === 'Calendar' ||
-                viewerInstance.props.moduleName === 'Events')
-            }
-          />,
-        );
-      }
-      //add "Show Image" line
-      if (
-        viewerInstance.props.moduleName === 'Documents' &&
-        block.label === 'LBL_FILE_INFORMATION'
-      ) {
-        const div = processFile(records);
-        if (div) {
           fieldViews.push(
             <Field
-              key={k + 1}
-              label={'Click to show image'}
-              modal={div}
-              uiType={1}
+              key={k}
+              label={field.label}
+              value={value}
+              index={k}
+              uiType={field.uitype}
               recordId={viewerInstance.props.recordId}
+              isLocation={
+                field.name === 'location' &&
+                (viewerInstance.props.moduleName === 'Calendar' ||
+                  viewerInstance.props.moduleName === 'Events')
+              }
             />,
           );
         }
-      }
-
-      blockViews.push(
-        <Section
-          key={i}
-          headerStyle={{paddingLeft: 15}}
-          style={{paddingTop: 5}}
-          open={i === 0}
-          sectionBackgroundColor={'#f2f3f8'}
-          sectionHeaderBackground={'#f2f3f8'}
-          sectionHeaderImageColor={DRAWER_SECTION_HEADER_IMAGE_COLOR}
-          sectionHeaderImageSelectedColor={
-            DRAWER_SECTION_HEADER_IMAGE_SELECTED_COLOR
+        //add "Show Image" line
+        if (
+          viewerInstance.props.moduleName === 'Documents' &&
+          block.label === 'LBL_FILE_INFORMATION'
+        ) {
+          const div = processFile(records);
+          if (div) {
+            fieldViews.push(
+              <Field
+                key={Math.random()}
+                label={'Click to show image'}
+                modal={div}
+                uiType={1}
+                recordId={viewerInstance.props.recordId}
+              />,
+            );
           }
-          headerName={block.translatedLabel}
-          content={<SectionBox style={{padding: 5}}>{fieldViews}</SectionBox>}
-          contentHeight={fieldViews.length * 60 + 5}
-        />,
-      );
+        }
 
-      i++;
+        blockViews.push(
+          <Section
+            key={i}
+            headerStyle={{paddingLeft: 15}}
+            style={{paddingTop: 5}}
+            open={i === 0}
+            sectionBackgroundColor={'#f2f3f8'}
+            sectionHeaderBackground={'#f2f3f8'}
+            sectionHeaderImageColor={DRAWER_SECTION_HEADER_IMAGE_COLOR}
+            sectionHeaderImageSelectedColor={
+              DRAWER_SECTION_HEADER_IMAGE_SELECTED_COLOR
+            }
+            headerName={block.translatedLabel}
+            content={<SectionBox style={{padding: 5}}>{fieldViews}</SectionBox>}
+            contentHeight={fieldViews.length * 60 + 5}
+          />,
+        );
+      }
     }
+
     const viewData = [];
     viewData.push(blockViews);
 

@@ -136,7 +136,12 @@ export const fetchRecordHelper = async (
   }
 };
 
-export const viewRecord = async (recordId, listerInstance, dispatch) => {
+export const viewRecord = async (
+  recordId,
+  selectedIndex,
+  listerInstance,
+  dispatch,
+) => {
   const {event} = store.getState();
   const width = event.width;
   const isPortrait = event.isPortrait;
@@ -152,7 +157,10 @@ export const viewRecord = async (recordId, listerInstance, dispatch) => {
         recordId,
       },
     });
-    listerInstance.props.navigation.navigate('Record Details');
+    listerInstance.props.navigation.navigate('Record Details', {
+      listerInstance: listerInstance,
+      index: selectedIndex,
+    });
   } else {
     if (width > 600) {
       //It is a tablet
@@ -201,7 +209,6 @@ const getDataFromInternet = async (
 ) => {
   //Getting data from internet
   try {
-    console.log('listerInstance', listerInstance.state);
     const {auth} = store.getState();
     const loginDetails = auth.loginDetails;
     const vtigerSeven = loginDetails.vtigerVersion > 6;
@@ -545,6 +552,9 @@ const getFieldsForModule = (moduleName) => {
       fields = {
         soLable: 'subject',
         status: 'sostatus',
+        contact_id: 'contact_id',
+        account_id: 'account_id',
+        assigned_user_id: 'assigned_user_id',
       };
       break;
     }
@@ -605,6 +615,7 @@ const getFieldsForModule = (moduleName) => {
         potentialLable: 'potentialname',
         amount: 'amount',
         stage: 'sales_stage',
+        related_to: 'related_to',
       };
       break;
     }
@@ -676,6 +687,7 @@ const getFieldsForModule = (moduleName) => {
     case MODULE_PROJECT: {
       fields = {
         projectLable: 'projectname',
+        linktoaccountscontactslbl: 'linktoaccountscontacts',
       };
       break;
     }
@@ -861,7 +873,7 @@ const getItem = (listerInstance, item, index, isDashboard, isRefRecord) => {
     case CONTACTS: {
       recordName = item.label;
       // recordName = [item.firstname, ' ', item.lastname];
-      labels = [item.email];
+      labels = [item.phone, item.email];
       break;
     }
     case VENDORS: {
@@ -885,7 +897,12 @@ const getItem = (listerInstance, item, index, isDashboard, isRefRecord) => {
     }
     case SALESORDER: {
       recordName = item.soLable;
-      labels = [item.status];
+      labels = [
+        item.contact_id.label,
+        item.status,
+        item.account_id.label,
+        item.assigned_user_id.label,
+      ];
       break;
     }
     case INVOICE: {
@@ -919,7 +936,7 @@ const getItem = (listerInstance, item, index, isDashboard, isRefRecord) => {
     }
     case OPPORTUNITIES: {
       recordName = item.potentialLable;
-      labels = [item.amount, item.stage];
+      labels = [item.related_to.label, item.amount, item.stage];
       break;
     }
     case PRODUCTS: {
@@ -966,6 +983,8 @@ const getItem = (listerInstance, item, index, isDashboard, isRefRecord) => {
     }
     case MODULE_PROJECT: {
       recordName = item.projectLable;
+      labels = [item.linktoaccountscontactslbl.label];
+
       break;
     }
     case COMMENTS: {

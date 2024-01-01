@@ -90,6 +90,7 @@ class AddRecords extends Component {
           }}>
           <Viewer
             recordId={this.state.recordId}
+            subModule={this.props.route?.params?.submodule}
             navigation={this.props.navigation}
             moduleName={moduleName}
             moduleId={this.props.moduleId}

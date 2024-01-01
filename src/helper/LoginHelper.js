@@ -11,11 +11,14 @@ import {
   API_loginAndFetchModules,
   API_locateInstance,
   API_forgotPassword,
+  API_locateInstanceformslogin,
+  API_loginAndFetchModulesforMSlogin,
 } from './api';
 
 export const getInstancesList = async (
   email,
   password,
+  token,
   url,
   navigation,
   loginInstance,
@@ -27,6 +30,7 @@ export const getInstancesList = async (
       doUserLogin(
         URLDetails.userName,
         URLDetails.password,
+        URLDetails.token,
         URLDetails.url,
         navigation,
         loginInstance,
@@ -53,6 +57,7 @@ export const getInstancesList = async (
             output[0].url,
             output[0].username,
             password,
+            '',
             navigation,
             loginInstance,
             dispatch,
@@ -78,11 +83,79 @@ export const getInstancesList = async (
     showNetworkError(loginInstance);
   }
 };
+export const getInstancesListforMSlogin = async (
+  email,
+  password,
+  token,
+  url,
+  navigation,
+  loginInstance,
+  dispatch,
+) => {
+  try {
+    const URLDetails = JSON.parse(await AsyncStorage.getItem(URLDETAILSKEY));
+    if (URLDetails !== null) {
+      doUserLoginForMSLogin(
+        URLDetails.userName,
+        URLDetails.password,
+        URLDetails.token,
+        URLDetails.url,
+        navigation,
+        loginInstance,
+        dispatch,
+      );
+    } else {
+      const responseJson = await API_locateInstanceformslogin(email, token);
+      if (responseJson.output.success !== 0) {
+        const output = responseJson.output;
+        if (output.length > 1) {
+          // multi urls
+          Toast.show('Please select the url to login');
+          loginInstance.setState({
+            loading: false,
+            showUrlList: true,
+            urlList: output,
+            password,
+            username: output[0].username,
+            dispatch,
+          });
+        } else if (output.length === 1) {
+          // single url
+          assignUrl(
+            output[0].url,
+            output[0].username,
+            password,
+            token,
+            navigation,
+            loginInstance,
+            dispatch,
+          );
+        } else {
+          //no urls
+          Toast.show('No Url Found');
+          loginInstance.setState({loading: false});
+        }
+      } else {
+        loginInstance.setState({loading: false});
+        Alert.alert(
+          'Login failed',
+          'Please check your email and password',
+          [{text: 'Ok', onPress: () => {}}],
+          {cancelable: true},
+        );
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    showNetworkError(loginInstance);
+  }
+};
 
 export const assignUrl = async (
   crmUrl,
   crmUsername,
   crmPassword,
+  token,
   navigation,
   loginInstance,
   dispatch,
@@ -92,12 +165,14 @@ export const assignUrl = async (
       url: crmUrl,
       userName: crmUsername,
       password: crmPassword,
+      token: token,
     };
     AsyncStorage.setItem(URLDETAILSKEY, JSON.stringify(urlDetails));
     await addDatabaseKey(URLDETAILSKEY);
     doUserLogin(
       crmUsername,
       crmPassword,
+      token,
       crmUrl,
       navigation,
       loginInstance,
@@ -112,6 +187,120 @@ export const assignUrl = async (
 export const doUserLogin = async (
   username,
   password,
+  token,
+  url,
+  navigation,
+  loginInstance,
+  dispatch,
+) => {
+  try {
+    let trimmedUrl = url.replace(/ /g, '').replace(/\/$/, '');
+    trimmedUrl =
+      trimmedUrl.indexOf('://') === -1 ? 'https://' + trimmedUrl : trimmedUrl;
+    if (url.includes('www.')) {
+      trimmedUrl = trimmedUrl.replace('www.', '');
+    }
+    if (url.includes('http://')) {
+      trimmedUrl = trimmedUrl.replace('http://', 'https://');
+    }
+    let responseJson = null;
+    if (token) {
+      responseJson = await API_loginAndFetchModulesforMSlogin(
+        trimmedUrl,
+        username,
+        token,
+      );
+    } else {
+      responseJson = await API_loginAndFetchModules(
+        trimmedUrl,
+        username,
+        password,
+      );
+    }
+    if (responseJson.success) {
+      let vtiger_version =
+        responseJson?.result?.login?.vtiger_version?.charAt(0);
+      let simply_version =
+        responseJson?.result?.login?.simply_version?.charAt(0);
+      let new_version = null;
+      if (
+        (vtiger_version != null && vtiger_version !== undefined) ||
+        (simply_version !== null && simply_version !== undefined)
+      ) {
+        if (vtiger_version) {
+          new_version = vtiger_version;
+        } else {
+          new_version = simply_version;
+        }
+      }
+      const loginDetails = {
+        username,
+        password,
+        url: trimmedUrl,
+        session: responseJson?.result?.login?.session,
+        userTz: responseJson?.result?.login?.user_tz,
+        crmTz: responseJson?.result?.login?.crm_tz,
+        vtigerVersion: new_version,
+        dateFormat: responseJson?.result?.login?.date_format,
+        modules: responseJson?.result?.modules,
+        menu: responseJson?.result?.menu,
+        mobileapp_settings: responseJson?.result?.mobileapp_settings,
+        userId: responseJson?.result?.login?.userid,
+        isAdmin: responseJson?.result.login.isAdmin,
+        token: token ? token : null,
+      };
+
+      store
+        .dispatch(fetchUserData(loginDetails))
+        .then(async () => {
+          AsyncStorage.setItem(LOGINDETAILSKEY, JSON.stringify(loginDetails));
+          await addDatabaseKey(LOGINDETAILSKEY);
+          loginUserSuccess(dispatch, loginDetails, navigation);
+        })
+        .catch((e) => {
+          console.log(e);
+          loginInstance.setState({
+            loading: false,
+            showUrlList: false,
+            componentToLoad: LOGINFORM,
+          });
+          Alert.alert(
+            'Authentication failed',
+            'Something went wrong, please try again later',
+            [{text: 'Ok', onPress: () => {}}],
+            {cancelable: true},
+          );
+        });
+    } else {
+      loginInstance.setState({loading: false, showUrlList: false});
+      Alert.alert(
+        'Authentication failed',
+        'Check your username and password',
+        [{text: 'Ok', onPress: () => {}}],
+        {cancelable: true},
+      );
+    }
+  } catch (error) {
+    console.log(error);
+    try {
+      const loginDetails = JSON.parse(
+        await AsyncStorage.getItem(LOGINDETAILSKEY),
+      );
+      if (loginDetails !== null) {
+        loginUserSuccess(dispatch, loginDetails, navigation);
+      } else {
+        showNetworkError(loginInstance);
+      }
+    } catch (error) {
+      console.log(error);
+      showNetworkError(loginInstance);
+    }
+  }
+};
+export const doUserLoginForMSLogin = async (
+  username,
+  password,
+  token,
   url,
   navigation,
   loginInstance,
@@ -128,14 +317,16 @@ export const doUserLogin = async (
       trimmedUrl = trimmedUrl.replace('http://', 'https://');
     }
 
-    const responseJson = await API_loginAndFetchModules(
+    const responseJson = await API_loginAndFetchModulesforMSlogin(
       trimmedUrl,
       username,
-      password,
+      token,
     );
     if (responseJson.success) {
-      let vtiger_version = responseJson.result.login.vtiger_version.charAt(0);
-      let simply_version = responseJson.result.login.simply_version.charAt(0);
+      let vtiger_version =
+        responseJson?.result?.login?.vtiger_version?.charAt(0);
+      let simply_version =
+        responseJson?.result?.login?.simply_version?.charAt(0);
       let new_version = null;
       if (
         (vtiger_version != null && vtiger_version !== undefined) ||
@@ -151,15 +342,17 @@ export const doUserLogin = async (
         username,
         password,
         url: trimmedUrl,
-        session: responseJson.result.login.session,
-        userTz: responseJson.result.login.user_tz,
-        crmTz: responseJson.result.login.crm_tz,
+        session: responseJson?.result?.login?.session,
+        userTz: responseJson?.result?.login?.user_tz,
+        crmTz: responseJson?.result?.login?.crm_tz,
         vtigerVersion: new_version,
-        dateFormat: responseJson.result.login.date_format,
-        modules: responseJson.result.modules,
-        menu: responseJson.result.menu,
-        userId: responseJson.result.login.userid,
-        isAdmin: responseJson.result.login.isAdmin,
+        dateFormat: responseJson?.result?.login?.date_format,
+        modules: responseJson?.result?.modules,
+        menu: responseJson?.result?.menu,
+        mobileapp_settings: responseJson?.result?.mobileapp_settings,
+        userId: responseJson?.result?.login?.userid,
+        isAdmin: responseJson?.result.login.isAdmin,
+        token: token ? token : null,
       };
 
       store

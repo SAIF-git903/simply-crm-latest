@@ -7,7 +7,7 @@ import SafeAreaView from 'react-native-safe-area-view';
 
 import SplashComponent from '../components/splashComponent';
 import LoginForm from '../components/loginForm';
-import {loginUser} from '../actions/';
+import {loginUser, loginUserforMslogin} from '../actions/';
 import {LOGINDETAILSKEY, LOADER, LOGINFORM, INTRO} from '../variables/strings';
 import IntroSlide from '../components/introSlide';
 
@@ -93,14 +93,27 @@ class Splash extends Component {
       const loginDetails = JSON.parse(
         await AsyncStorage.getItem(LOGINDETAILSKEY),
       );
+
       if (loginDetails !== null) {
-        this.props.loginUser(
-          loginDetails.username,
-          loginDetails.password,
-          loginDetails.url,
-          this.props.navigation,
-          this,
-        );
+        if (loginDetails?.token !== null) {
+          this.props.loginUserforMslogin(
+            loginDetails.username,
+            loginDetails?.token,
+            loginDetails.password,
+            loginDetails.url,
+            this.props.navigation,
+            this,
+          );
+        } else {
+          this.props.loginUser(
+            loginDetails.username,
+            loginDetails.password,
+            loginDetails?.token,
+            loginDetails.url,
+            this.props.navigation,
+            this,
+          );
+        }
         this.setState({componentToLoad: LOADER});
       } else {
         const wasIntroShown = await this.didShowIntro();
@@ -189,4 +202,4 @@ class Splash extends Component {
   }
 }
 
-export default connect(undefined, {loginUser})(Splash);
+export default connect(undefined, {loginUser, loginUserforMslogin})(Splash);

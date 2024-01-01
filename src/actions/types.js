@@ -29,4 +29,3 @@ export const SAVE_SUCCESS = 'save_success';
 export const COPY_CONTACT_ADDRESS = 'copy_contact_address';
 
 export const COPY_ORGANISATION_ADDRESS = 'copy_organisation_address';
-

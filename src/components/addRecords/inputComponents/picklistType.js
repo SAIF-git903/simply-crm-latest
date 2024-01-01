@@ -18,10 +18,7 @@ class PickListType extends Component {
     //     : val;
 
     this.state = {
-      saveValue:
-        this.props.obj.name === 'cf_test_drop_down'
-          ? this.props.obj.type.defaultValue
-          : null,
+      saveValue: this.props.obj.default ? this.props.obj.default : null,
       fieldName: this.props.obj.name,
     };
   }
@@ -31,32 +28,33 @@ class PickListType extends Component {
 
     return (
       <View style={commonStyles.inputHolder}>
-        {this.state.fieldName === 'duration_minutes'
+        {/* {this.state.fieldName === 'duration_minutes'
           ? null
-          : this.props.fieldLabelView}
-        {this.state.fieldName === 'duration_minutes' ? null : (
-          <View style={{flex: 1}}>
-            <Picker
-              mode="dropdown"
-              selectedValue={this.state.saveValue}
-              onValueChange={(itemValue) => {
-                this.setState({saveValue: itemValue});
-              }}>
-              {/* {this.props.obj.name === 'cf_test_drop_down' ? null : ( */}
-              <Picker.Item label={'Select an option'} value={0} />
-              {/* )} */}
-              {options.map((item, index) => {
-                return (
-                  <Picker.Item
-                    label={item.label}
-                    value={item.value}
-                    key={index}
-                  />
-                );
-              })}
-            </Picker>
-          </View>
-        )}
+          : this.props.fieldLabelView} */}
+        {this.props.fieldLabelView}
+        {/* {this.state.fieldName === 'duration_minutes' ? null : ( */}
+        <View style={{flex: 1}}>
+          <Picker
+            mode="dropdown"
+            selectedValue={this.state.saveValue}
+            onValueChange={(itemValue) => {
+              this.setState({saveValue: itemValue});
+            }}>
+            {/* {this.props.obj.name === 'cf_test_drop_down' ? null : ( */}
+            <Picker.Item label={'Select an option'} value={0} />
+            {/* )} */}
+            {options.map((item, index) => {
+              return (
+                <Picker.Item
+                  label={item.label}
+                  value={item.value}
+                  key={index}
+                />
+              );
+            })}
+          </Picker>
+        </View>
+        {/* )} */}
       </View>
     );
   }

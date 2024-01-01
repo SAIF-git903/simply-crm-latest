@@ -9,6 +9,7 @@ import {
   Text,
   Dimensions,
   LayoutAnimation,
+  KeyboardAvoidingView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import SafeAreaView from 'react-native-safe-area-view';
@@ -25,7 +26,7 @@ export default function InputField(props) {
   const dispatch = useDispatch();
 
   const {isAddingComment, replyTo, editedComment} = useSelector(
-    state => state.comments,
+    (state) => state.comments,
   );
 
   async function submit() {

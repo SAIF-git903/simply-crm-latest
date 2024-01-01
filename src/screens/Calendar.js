@@ -7,6 +7,8 @@ import {
   RefreshControl,
   Alert,
   ActivityIndicator,
+  Platform,
+  StatusBar,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
@@ -18,6 +20,8 @@ import {
   CalendarList,
 } from 'react-native-calendars';
 import SwipeOut from 'react-native-swipeout';
+import Popover from 'react-native-popover-view';
+
 import {UPDATE_RECORD_VIEWER} from '../actions/types';
 import {getCalendarRecords, deleteCalendarRecord} from '../ducks/calendar';
 import Header from '../components/common/Header';
@@ -25,12 +29,14 @@ import {fontStyles} from '../styles/common';
 
 const moment = require('moment-timezone');
 
-export default function Calendar() {
+export default function Calendar(props) {
+  let moduleTitle = props?.route?.params?.moduleLable;
   const [currentDate, setCurrentDate] = useState(new moment());
   const [showCalendar, setShowCalendar] = useState(false);
   const [page, setPage] = useState(1);
   const [data, setData] = useState([]);
   const [newData, setNewData] = useState([]);
+  const [visible, setVisible] = useState(false);
 
   const dispatch = useDispatch();
   const {records, isLoading, isRefreshing, recordsLoading} = useSelector(
@@ -47,8 +53,8 @@ export default function Calendar() {
   modifyData = new_Data.filter((val) => val.title >= date);
 
   const dates = modifyData.sort((a, b) => {
-    const dateA = new Date(b.title);
-    const dateB = new Date(a.title);
+    const dateA = new Date(a.title);
+    const dateB = new Date(b.title);
     return dateA - dateB;
   });
 
@@ -68,35 +74,30 @@ export default function Calendar() {
     }
   }, [records]);
 
-  useEffect(() => {
-    if (isRefreshing === true) {
-      setPage(page + 1);
-    }
-  }, [isRefreshing]);
-
-  const loadmoredata = () => {
-    if (dates.length > 0) {
-      fetchData(true, page);
-    }
-  };
+  // const loadmoredata = () => {
+  //   if (dates.length > 0) {
+  //     fetchData(true, page);
+  //   }
+  // };
 
   const renderFooter = () => {
-    if (dates.length > 0 && records?.length > 0) {
-      return (
-        <View style={{alignItems: 'center', padding: 10}}>
-          <ActivityIndicator size="small" animating={isRefreshing} />
-          <Text style={{color: 'gray'}}>
-            {isRefreshing ? 'Loading records...' : null}
-          </Text>
-        </View>
-      );
-    }
-    if (dates.length === 0 && isLoading) {
+    // if (dates.length > 0 && records?.length > 0) {
+    //   return (
+    //     <View style={{alignItems: 'center', padding: 10}}>
+    //       <ActivityIndicator size="small" animating={isRefreshing} />
+    //       <Text style={{color: 'gray'}}>
+    //         {isRefreshing ? 'Loading records...' : null}
+    //       </Text>
+    //     </View>
+    //   );
+    // }
+    if (isLoading) {
       return (
         <View style={{alignItems: 'center', padding: 10}}>
           <ActivityIndicator
             size="small"
-            animating={dates.length === 0 ? true : false}
+            animating={isLoading}
+            color={'#00BBF2'}
           />
           <Text style={{color: 'gray'}}>{'Loading...'}</Text>
         </View>
@@ -106,26 +107,121 @@ export default function Calendar() {
 
   function renderAddRecordButton() {
     return (
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate('Add Record', {
-            lister: {
-              refreshData: () => fetchData(),
-            },
-          })
+      // <View
+      //   style={{
+      //     alignItems: 'center',
+      //     flexDirection: 'row',
+      //     justifyContent: 'center',
+
+      //     // backgroundColor: 'red',
+      //   }}>
+      <Popover
+        isVisible={visible}
+        verticalOffset={
+          Platform.OS === 'android' ? -StatusBar.currentHeight : 0
+        }
+        onRequestClose={() => setVisible(false)}
+        from={
+          <TouchableOpacity
+            // style={{marginRight: 10}}
+            onPress={() => setVisible(true)}>
+            <View
+              style={{
+                backgroundColor: 'rgba(255,255,255,0.2)',
+                width: 27,
+                height: 27,
+                borderRadius: 3,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Icon name="plus" size={18} color="white" />
+            </View>
+          </TouchableOpacity>
         }>
+        <TouchableOpacity
+          style={{
+            height: 35,
+            width: 110,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          onPress={() => {
+            setVisible(false);
+            navigation.navigate('Add Record', {
+              lister: {
+                refreshData: () => fetchData(),
+              },
+              submodule: 'Events',
+            });
+          }}>
+          <Text
+            style={{
+              textAlign: 'center',
+              color: '#EE4B2B',
+              fontWeight: '700',
+              fontFamily: 'Poppins-SemiBold',
+            }}>
+            Add Event
+          </Text>
+        </TouchableOpacity>
         <View
           style={{
-            backgroundColor: 'rgba(255,255,255,.2)',
-            width: 27,
-            height: 27,
-            borderRadius: 3,
+            borderWidth: 0.5,
+            width: '70%',
+            borderColor: '#707070',
+            alignSelf: 'center',
+          }}
+        />
+        <TouchableOpacity
+          style={{
+            width: 110,
+
+            height: 35,
             justifyContent: 'center',
             alignItems: 'center',
+          }}
+          onPress={() => {
+            setVisible(false);
+            navigation.navigate('Add Record', {
+              lister: {
+                refreshData: () => fetchData(),
+              },
+              submodule: 'Tasks',
+            });
           }}>
-          <Icon name="plus" size={18} color="white" />
-        </View>
-      </TouchableOpacity>
+          <Text
+            style={{
+              textAlign: 'center',
+              color: '#5699E6',
+              fontWeight: 'bold',
+              fontFamily: 'Poppins-SemiBold',
+            }}>
+            Add Task
+          </Text>
+        </TouchableOpacity>
+      </Popover>
+
+      // <TouchableOpacity
+      //   onPress={() =>
+      //     navigation.navigate('Add Record', {
+      //       lister: {
+      //         refreshData: () => fetchData(),
+      //       },
+      //     })
+      //   }>
+      //   <View
+      //     style={{
+      //       backgroundColor: 'rgba(255,255,255,.2)',
+      //       width: 27,
+      //       height: 27,
+      //       borderRadius: 3,
+      //       justifyContent: 'center',
+      //       alignItems: 'center',
+      //     }}>
+      //     <Icon name="plus" size={18} color="white" />
+      //   </View>
+      // </TouchableOpacity>
+      // </View>
     );
   }
 
@@ -162,6 +258,9 @@ export default function Calendar() {
           text: 'Yes',
           onPress: () => {
             dispatch(deleteCalendarRecord(item.id));
+            let newdatas = dates.filter((val) => val.id !== item.Id);
+            setData(newdatas);
+            fetchData(true);
           },
         },
       ],
@@ -467,7 +566,7 @@ export default function Calendar() {
   return (
     <View style={styles.backgroundStyle}>
       <Header
-        title={'Calendar'}
+        title={moduleTitle}
         customRightButton={renderAddRecordButton()}
         //TODO there is only one 'Add new record' button, and it will create a Event, so there is no way to create new Task record
       />
@@ -516,12 +615,12 @@ export default function Calendar() {
             //     refreshing={records.length > 0 ? false : true}
             //     title={'Getting records'}
             //     titleColor={'gray'}
-            //     // onRefresh={() => fetchData()}
+            //     onRefresh={() => fetchData()}
             //   />
             // }
             // ListHeaderComponent={renderlistHeader}
-            onEndReached={loadmoredata}
-            onEndReachedThreshold={0.1}
+            // onEndReached={loadmoredata}
+            // onEndReachedThreshold={0.1}
             ListFooterComponent={renderFooter}
           />
         </CalendarProvider>

@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux';
+import {combineReducers} from 'redux';
 import AuthReducer from './authReducer';
 import EventReducer from './eventReducer';
 import DrawerReducer from './drawerReducer';
@@ -11,6 +11,7 @@ import UserReducer from './userReducer';
 import calendar from '../ducks/calendar';
 import updates from '../ducks/updates';
 import comments from '../ducks/comments';
+import durationreducer from './durationReducer';
 
 export default combineReducers({
   auth: AuthReducer,
@@ -22,6 +23,6 @@ export default combineReducers({
   UserReducer,
   calendar,
   updates,
-  comments
+  comments,
+  durationreducer,
 });
-

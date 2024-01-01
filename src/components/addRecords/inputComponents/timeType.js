@@ -20,7 +20,9 @@ class TimeType extends Component {
   render() {
     return (
       <View style={commonStyles.inputHolder}>
-        {this.props.fieldLabelView}
+        {this.state.fieldName === 'duration_hours'
+          ? null
+          : this.props.fieldLabelView}
         <View style={{flex: 1}}>
           {/* <DatePicker
             // style={{width: '100%'}}
@@ -55,60 +57,70 @@ class TimeType extends Component {
               this.setState({saveValue: time});
             }}
           /> */}
-          <View style={{width: '100%'}}>
-            <View style={{flexDirection: 'row'}}>
-              <View
-                style={{
-                  //paddingTop: 9,
-                  borderColor: '#ABABAB',
-                  borderWidth: 0.5,
-                  padding: 0,
-                  borderTopLeftRadius: 4,
-                  borderTopRightRadius: 4,
-                  borderBottomLeftRadius: 4,
-                  borderBottomRightRadius: 4,
-                  height: 38,
-                  width: '80%',
-                  justifyContent: 'center',
-                }}>
-                <Text style={{paddingLeft: 10, fontSize: 17}}>
-                  {this.state.saveValue
-                    ? moment(this.state.saveValue).format('HH:mm')
-                    : ''}
-                </Text>
-              </View>
-              <TouchableOpacity
-                style={{height: 35, width: 35}}
-                onPress={() => this.setState({visible: true})}>
-                <Image
-                  source={require('../../../../assets/images/date_icon.png')}
+          {this.state.fieldName === 'duration_hours' ? null : (
+            <View style={{width: '100%'}}>
+              <View style={{flexDirection: 'row'}}>
+                <View
                   style={{
-                    alignItems: 'center',
+                    //paddingTop: 9,
+                    borderColor: '#ABABAB',
+                    borderWidth: 0.5,
+                    padding: 0,
+                    borderTopLeftRadius: 4,
+                    borderTopRightRadius: 4,
+                    borderBottomLeftRadius: 4,
+                    borderBottomRightRadius: 4,
+                    height: 38,
+                    width: '80%',
                     justifyContent: 'center',
-                    height: '100%',
-                    width: '100%',
-                  }}
-                />
-              </TouchableOpacity>
+                  }}>
+                  <Text style={{paddingLeft: 10, fontSize: 17}}>
+                    {this.state.saveValue ? this.state.saveValue : ''}
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  style={{height: 35, width: 35}}
+                  onPress={() => this.setState({visible: true})}>
+                  <Image
+                    source={require('../../../../assets/images/date_icon.png')}
+                    style={{
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      height: '100%',
+                      width: '100%',
+                    }}
+                  />
+                </TouchableOpacity>
+              </View>
+              <DatePicker
+                modal
+                open={this.state.visible}
+                mode="time"
+                date={new Date()}
+                onConfirm={(date) => {
+                  this.setState({
+                    saveValue: moment(new Date(date)).format('HH:mm'),
+                  });
+
+                  this.setState({visible: false});
+
+                  // this.setState({saveValue: date});
+                }}
+                onCancel={() => {
+                  this.setState({visible: false});
+                }}
+              />
             </View>
-            <DatePicker
-              modal
-              open={this.state.visible}
-              mode="time"
-              date={this.state.saveValue ? this.state.saveValue : new Date()}
-              onConfirm={date => {
-                this.setState({visible: false});
-                this.setState({saveValue: date});
-              }}
-              onCancel={() => {
-                this.setState({visible: false});
-              }}
-            />
-          </View>
+          )}
         </View>
       </View>
     );
   }
 }
 
+// const mapDispatchToProps = {
+//   passValue,
+// };
+
+// export default connect(null, mapDispatchToProps)(TimeType);
 export default TimeType;

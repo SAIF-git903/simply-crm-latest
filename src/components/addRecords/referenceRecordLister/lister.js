@@ -64,23 +64,32 @@ class ReferenceLister extends Component {
   }
 
   doSearch(searchText) {
-    this.setState(
-      {
-        searchLabel: null,
-        searching: true,
-        loading: false,
-        isFlatListRefreshing: false,
-        nextPage: false,
-        // data: [],
-        pageToTake: 1,
-        selectedIndex: -1,
-        statusText: 'Searching .....',
-        statusTextColor: '#000000',
-      },
-      () => {
-        this.props.dispatch(fetchRecord(this, this.props.moduleName));
-      },
-    );
+    if (this.props.moduleName === 'Users') {
+      if (searchText) {
+        const filteredData = this.state.data.filter((item) =>
+          item.user_name.toLowerCase().includes(searchText.toLowerCase()),
+        );
+        this.setState({data: filteredData, searchLabel: searchText});
+      }
+    } else {
+      this.setState(
+        {
+          searchLabel: null,
+          searching: true,
+          loading: false,
+          isFlatListRefreshing: false,
+          nextPage: false,
+          // data: [],
+          pageToTake: 1,
+          selectedIndex: -1,
+          statusText: 'Searching .....',
+          statusTextColor: '#000000',
+        },
+        () => {
+          this.props.dispatch(fetchRecord(this, this.props.moduleName));
+        },
+      );
+    }
   }
 
   getRecords() {
@@ -91,6 +100,7 @@ class ReferenceLister extends Component {
         nextPage: false,
         data: [],
         pageToTake: 1,
+        searchLabel: null,
         selectedIndex: -1,
         statusText: 'Fetching Record',
         statusTextColor: '#000000',
@@ -225,7 +235,11 @@ class ReferenceLister extends Component {
   render() {
     return (
       <>
-        <View style={commonStyles.recordListerBackground}>
+        <View
+          style={[
+            commonStyles.recordListerBackground,
+            // {backgroundColor: 'red'},
+          ]}>
           {this.doRender()}
         </View>
       </>

@@ -8,42 +8,64 @@ import {
   Linking,
   Image,
   Platform,
+  Alert,
+  Modal,
+  ActivityIndicator,
+  Dimensions,
 } from 'react-native';
-
+import {CommonActions} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useSelector} from 'react-redux';
-import FontAwesome, {
-  SolidIcons,
-  RegularIcons,
-  BrandIcons,
-  parseIconFromClassName,
-} from 'react-native-fontawesome';
+import {useDispatch, useSelector} from 'react-redux';
+import FontAwesome, {parseIconFromClassName} from 'react-native-fontawesome';
+import ImageCropPicker from 'react-native-image-crop-picker';
+import DocumentPicker from 'react-native-document-picker';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
+import Feather from 'react-native-vector-icons/Feather';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import axios from 'axios';
+import RNFetchBlob from 'rn-fetch-blob';
 
 import Header from '../../components/common/Header';
 import Viewer from '../../components/recordViewer/viewer';
 import Updates from './Updates';
 import Comments from './Comments/';
-import IconTabBar from '../../components/common/IconTabBar';
-import {backgroundColor} from 'react-native-calendars/src/style';
 import Summery from '../../components/recordViewer/Summery';
 import {URLDETAILSKEY} from '../../variables/strings';
-import {API_fetchButtons, API_fetchRecordWithGrouping} from '../../helper/api';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import Feather from 'react-native-vector-icons/Feather';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {
+  API_describe,
+  API_fetchButtons,
+  API_fetchRecordWithGrouping,
+  API_forfetchImageData,
+  API_saveFile,
+} from '../../helper/api';
+import store from '../../store';
 
-var ScrollableTabView = require('react-native-scrollable-tab-view');
+import {deleteRecord} from '../../actions';
+import {deleteCalendarRecord} from '../../ducks/calendar';
+import CommanView from '../../components/recordViewer/CommanView';
 
-export default function RecordDetails() {
+// var ScrollableTabView = require('react-native-scrollable-tab-view');
+
+export default function RecordDetails({route}) {
+  // const isFocused = useIsFocused();
+  const {height, width} = Dimensions.get('window');
+
+  const listerInstance = route?.params?.listerInstance;
+  const index = route?.params?.index;
+
   const recordViewerState = useSelector((state) => state.recordViewer);
+
   const {enabledModules} = useSelector(
     (state) => state.comments,
     (p, n) => p.enabledModules === n.enabledModules,
   );
 
-  console.log('recordViewerState', recordViewerState);
-  console.log('enabledModules', enabledModules);
+  const dispatch = useDispatch();
+
   const {navigation, moduleName, recordId} = recordViewerState;
+
   function createTabs() {
     const tabs = [];
 
@@ -60,6 +82,7 @@ export default function RecordDetails() {
         />
       ),
     };
+
     const viewer = {
       tabIcon: 'file-alt',
       tabLabel: 'Details',
@@ -87,160 +110,203 @@ export default function RecordDetails() {
       ),
     };
 
-    const contacts = {
-      tabIcon: 'user',
-      tabLabel: 'Contacts',
-      component: (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>No details found</Text>
-        </View>
-      ),
-    };
+    // const contacts = {
+    //   tabIcon: 'user',
+    //   tabLabel: 'Contacts',
+    //   component: (
+    //     <CommanView
+    //       tabLabel="Contacts"
+    //       moduleName={moduleName}
+    //       recordId={recordId}
+    //     />
+    //   ),
+    // };
+    // const Emails = {
+    //   tabIcon: 'envelope',
+    //   tabLabel: 'Emails',
+    //   component: (
+    //     <CommanView
+    //       tabLabel="Emails"
+    //       moduleName={moduleName}
+    //       recordId={recordId}
+    //     />
+    //   ),
+    // };
+    // const Documents = {
+    //   tabIcon: 'list-ul',
+    //   tabLabel: 'Documents',
+    //   component: (
+    //     <CommanView
+    //       tabLabel="Documents"
+    //       moduleName={moduleName}
+    //       recordId={recordId}
+    //     />
+    //   ),
+    // };
 
-    const deals = {
-      tabIcon: 'handshake',
-      tabLabel: 'Deals',
-      component: (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>No details found</Text>
-        </View>
-      ),
-    };
-    const messagehistory = {
-      tabIcon: 'sms',
-      tabLabel: 'Message History',
-      component: (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>No details found</Text>
-        </View>
-      ),
-    };
-    const salesOrders = {
-      tabIcon: 'clipboard-list',
-      tabLabel: 'Sales Orders',
-      component: (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>No details found</Text>
-        </View>
-      ),
-    };
-    const invoices = {
-      tabIcon: 'file-invoice-dollar',
-      tabLabel: 'Invoices',
-      component: (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>No details found</Text>
-        </View>
-      ),
-    };
-    const activities = {
-      tabIcon: 'calendar-alt',
-      tabLabel: 'Activities',
-      component: (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>No details found</Text>
-        </View>
-      ),
-    };
-    const emails = {
-      tabIcon: 'envelope',
-      tabLabel: 'Emails',
-      component: (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>No details found</Text>
-        </View>
-      ),
-    };
-    const documents = {
-      tabIcon: 'file',
-      tabLabel: 'Documents',
-      component: (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>No details found</Text>
-        </View>
-      ),
-    };
-    const members = {
-      tabIcon: 'building',
-      tabLabel: 'Members',
-      component: (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>No details found</Text>
-        </View>
-      ),
-    };
-    const tickets = {
-      tabIcon: 'ticket-alt',
-      tabLabel: 'Tickets',
-      component: (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>No details found</Text>
-        </View>
-      ),
-    };
-    const products = {
-      tabIcon: 'shopping-cart',
-      tabLabel: 'Products',
-      component: (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>No details found</Text>
-        </View>
-      ),
-    };
-    const services = {
-      tabIcon: 'hand-holding-usd',
-      tabLabel: 'Services',
-      component: (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>No details found</Text>
-        </View>
-      ),
-    };
-    const simplyvoice = {
-      tabIcon: 'phone-call',
-      tabLabel: 'Simply Voice',
-      component: (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>No details found</Text>
-        </View>
-      ),
-    };
-    const feedBack = {
-      tabIcon: 'feedback',
-      tabLabel: 'Feedback',
-      component: (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>No details found</Text>
-        </View>
-      ),
-    };
-    const webtracker = {
-      tabIcon: 'search',
-      tabLabel: 'Web Tracker',
-      component: (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>No details found</Text>
-        </View>
-      ),
-    };
-    const vendors = {
-      tabIcon: 'shield-alt',
-      tabLabel: 'Vendors',
-      component: (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>No details found</Text>
-        </View>
-      ),
-    };
-    const participations = {
-      tabIcon: 'groups',
-      tabLabel: 'Participations',
-      component: (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>No details found</Text>
-        </View>
-      ),
-    };
+    // const products = {
+    //   tabIcon: 'shopping-cart',
+    //   tabLabel: 'Products',
+    //   component: (
+    //     <CommanView tabLabel="" moduleName={moduleName} recordId={recordId} />
+    //   ),
+    // };
+    // const services = {
+    //   tabIcon: 'hand-holding-usd',
+    //   tabLabel: 'Services',
+    //   component: (
+    //     <CommanView
+    //       tabLabel="Services"
+    //       moduleName={moduleName}
+    //       recordId={recordId}
+    //     />
+    //   ),
+    // };
+
+    // const ReceiveMessage = {
+    //   tabIcon: 'sms',
+    //   tabLabel: 'ReceiveMessage',
+    //   component: (
+    //     <CommanView
+    //       tabLabel="ReceiveMessage"
+    //       moduleName={moduleName}
+    //       recordId={recordId}
+    //     />
+    //   ),
+    // };
+    // const Quotes = {
+    //   tabIcon: 'quote-left',
+    //   tabLabel: 'Quotes',
+    //   component: (
+    //     <CommanView
+    //       tabLabel="Quotes"
+    //       moduleName={moduleName}
+    //       recordId={recordId}
+    //     />
+    //   ),
+    // };
+
+    // const Potentials = {
+    //   tabIcon: 'head-lightbulb-outline',
+    //   tabLabel: 'Potentials',
+    //   component: (
+    //     <CommanView
+    //       tabLabel="Potentials"
+    //       moduleName={moduleName}
+    //       recordId={recordId}
+    //     />
+    //   ),
+    // };
+    // const Calendar = {
+    //   tabIcon: 'calendar-alt',
+    //   tabLabel: 'Calendar',
+    //   component: (
+    //     <CommanView
+    //       tabLabel="Calendar"
+    //       moduleName={moduleName}
+    //       recordId={recordId}
+    //     />
+    //   ),
+    // };
+    // const HelpDesk = {
+    //   tabIcon: 'hands-helping',
+    //   tabLabel: 'HelpDesk',
+    //   component: (
+    //     <CommanView
+    //       tabLabel="HelpDesk"
+    //       moduleName={moduleName}
+    //       recordId={recordId}
+    //     />
+    //   ),
+    // };
+    // const SalesOrder = {
+    //   tabIcon: 'clipboard-list',
+    //   tabLabel: 'SalesOrder',
+    //   component: (
+    //     <CommanView
+    //       tabLabel="SalesOrder"
+    //       moduleName={moduleName}
+    //       recordId={recordId}
+    //     />
+    //   ),
+    // };
+    // const Invoice = {
+    //   tabIcon: 'file-invoice',
+    //   tabLabel: 'Invoice',
+    //   component: (
+    //     <CommanView
+    //       tabLabel="Invoice"
+    //       moduleName={moduleName}
+    //       recordId={recordId}
+    //     />
+    //   ),
+    // };
+    // const SimplyVoice = {
+    //   tabIcon: 'phone-call',
+    //   tabLabel: 'SimplyVoice',
+    //   component: (
+    //     <CommanView
+    //       tabLabel="SimplyVoice"
+    //       moduleName={moduleName}
+    //       recordId={recordId}
+    //     />
+    //   ),
+    // };
+    // const Participation = {
+    //   tabIcon: 'users',
+    //   tabLabel: 'Participation',
+    // component: (
+    //   <CommanView
+    //     tabLabel="Participation"
+    //     moduleName={moduleName}
+    //     recordId={recordId}
+    //   />
+    // ),
+    // };
+    // const Timesheets = {
+    //   tabIcon: 'clipboard-list',
+    //   tabLabel: 'Timesheets',
+    //   component: (
+    //     <CommanView
+    //       tabLabel="Timesheets"
+    //       moduleName={moduleName}
+    //       recordId={recordId}
+    //     />
+    //   ),
+    // };
+    // const SMPFeedback = {
+    //   tabIcon: 'feedback',
+    //   tabLabel: 'SMPFeedback',
+    //   component: (
+    //     <CommanView
+    //       tabLabel="SMPFeedback"
+    //       moduleName={moduleName}
+    //       recordId={recordId}
+    //     />
+    //   ),
+    // };
+    // const WebTracker = {
+    //   tabIcon: 'search',
+    //   tabLabel: 'WebTracker',
+    //   component: (
+    //     <CommanView
+    //       tabLabel="WebTracker"
+    //       moduleName={moduleName}
+    //       recordId={recordId}
+    //     />
+    //   ),
+    // };
+    // const SMPTracker = {
+    //   tabIcon: 'search',
+    //   tabLabel: 'SMPTracker',
+    //   component: (
+    //     <CommanView
+    //       tabLabel="SMPTracker"
+    //       moduleName={moduleName}
+    //       recordId={recordId}
+    //     />
+    //   ),
+    // };
 
     const comments = {
       tabIcon: 'comment',
@@ -249,26 +315,27 @@ export default function RecordDetails() {
     };
 
     tabs.push(
-      // Summary,
+      Summary,
       viewer,
       updates,
       // contacts,
-      // deals,
-      // messagehistory,
-      // salesOrders,
-      // invoices,
-      // activities,
-      // emails,
-      // documents,
-      // members,
-      // tickets,
       // products,
+      // Emails,
       // services,
-      // simplyvoice,
-      // feedBack,
-      // webtracker,
-      // vendors,
-      // participations,
+      // ReceiveMessage,
+      // Quotes,
+      // Potentials,
+      // Calendar,
+      // HelpDesk,
+      // SalesOrder,
+      // Invoice,
+      // Documents,
+      // SimplyVoice,
+      // Participation,
+      // Timesheets,
+      // SMPFeedback,
+      // WebTracker,
+      // SMPTracker,
     );
 
     if (enabledModules.includes(moduleName)) tabs.push(comments);
@@ -284,29 +351,132 @@ export default function RecordDetails() {
   const [btnTop, setBtnTop] = useState([]);
   const [id, setId] = useState();
   const [visible, setVisible] = useState(false);
+  const [loading, setloading] = useState(false);
+  const [documentModal, setdocumentModal] = useState(false);
   const [firstname, setFirstName] = useState('');
   const [lastname, setLastName] = useState('');
   const [fullName, setFullName] = useState('');
   const [orgname, setOrgName] = useState('');
+  const [subject, setSubject] = useState('');
   const [fields, setFields] = useState([]);
   const [itemFields, setItemFields] = useState([]);
   const [newArr, setNewArr] = useState([]);
   const [state, setState] = useState({value: '', fun: ''});
+  const [newTabs, setNewTabs] = useState([]);
+  const [imageModel, setImageModel] = useState(false);
+  const [IMG, setIMG] = useState();
+  const [fileType, setFileType] = useState('');
+
+  let data = [
+    {
+      id: 1,
+      lbl: 'Edit',
+      icon: (
+        <MaterialIcons name="mode-edit-outline" size={25} color="#757575" />
+      ),
+    },
+    {
+      id: 2,
+      lbl: 'Delete',
+      icon: <MaterialIcons name="delete" size={25} color="#757575" />,
+    },
+    {
+      id: 3,
+      lbl: 'Add Document (From Camera)',
+      icon: <Icon name="camera" size={25} color="#757575" />,
+    },
+    {
+      id: 4,
+      lbl: 'Add Document (From Gallery)',
+      icon: <IconFontAwesome name="photo" size={25} color="#757575" />,
+    },
+    // {
+    //   id: 5,
+    //   lbl: 'Create New Document',
+    //   icon: <Ionicons name="document-text-outline" size={30} color="#757575" />,
+    // },
+  ];
+
+  useEffect(() => {
+    setloading(true);
+    getRelativeModuleModules();
+  }, []);
+
+  const getImageData = async (data) => {
+    let record = data[0]?.record;
+
+    let url = await get_Url();
+
+    try {
+      let res = await axios.post(
+        `${url}/modules/Mobile/api.php`,
+        {
+          record,
+          module: 'Documents',
+          _operation: 'downloadFile',
+        },
+
+        {
+          responseType: 'blob',
+        },
+      );
+      let imgUrl = URL.createObjectURL(res.data);
+      setIMG(imgUrl);
+      setImageModel(true);
+    } catch (error) {
+      console.log('err', error);
+    }
+  };
+
+  const downloadImage = async () => {
+    // console.log('blob', IMG.blob());
+  };
+
+  const getRelativeModuleModules = async () => {
+    try {
+      let res = await API_describe(moduleName);
+
+      const new_array = res?.result?.describe?.relatedModules.map(
+        (label, index) => {
+          return {
+            tabLabel: label,
+            tabIcon: '',
+            component: (
+              <CommanView
+                tabLabel={label}
+                moduleName={moduleName}
+                recordId={recordId}
+                onPress={(data) => {
+                  getImageData(data);
+                }}
+              />
+            ),
+          };
+        },
+      );
+
+      // let newarray = tabs.filter((val) => {
+      //   return res?.result?.describe?.relatedModules.some(
+      //     (mod) => val.tabLabel === mod,
+      //   );
+      // });
+      // if (newarray) {
+      //   setloading(false);
+      // }
+
+      setNewTabs([tabs[1], tabs[2], tabs[tabs.length - 1], ...new_array]);
+    } catch (error) {
+      console.log('err', error);
+    }
+  };
 
   const loadMore = () => {
     setItemsToShow(itemsToShow + 5); // Load more items
   };
 
   useEffect(() => {
-    if (moduleName === 'Contacts' || moduleName === 'Accounts') {
-      getRecords();
-      getButtons();
-    }
-  }, []);
-
-  useEffect(() => {
-    const filteredFields = itemFields.map((val) => {
-      return fields.find((itm) => val === itm.name);
+    const filteredFields = itemFields?.map((val) => {
+      return fields?.find((itm) => val === itm?.name);
     });
     if (filteredFields != null && filteredFields != undefined) {
       setNewArr(filteredFields);
@@ -314,37 +484,74 @@ export default function RecordDetails() {
   }, [itemFields]);
 
   useEffect(() => {
-    setFullName(`${firstname} ${lastname}`);
+    getRecords();
+    if (moduleName === 'Contacts' || moduleName === 'Accounts') {
+      getButtons();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (firstname || lastname) {
+      setFullName(`${firstname} ${lastname}`);
+    }
   }, [firstname, lastname]);
 
-  // useEffect(() => {
-  //   if (visible === false) {
-  //     if ((state.fun, state.value)) {
+  const get_Url = async () => {
+    const URLDetails = await AsyncStorage.getItem(URLDETAILSKEY);
+    let urlDetail = JSON.parse(URLDetails);
+    let url = urlDetail.url;
+    let trimmedUrl = url.replace(/ /g, '')?.replace(/\/$/, '');
+    trimmedUrl =
+      trimmedUrl.indexOf('://') === -1 ? 'https://' + trimmedUrl : trimmedUrl;
+    if (url.includes('www.')) {
+      trimmedUrl = trimmedUrl?.replace('www.', '');
+    }
+    if (url.includes('http://')) {
+      trimmedUrl = trimmedUrl?.replace('http://', 'https://');
+    }
 
-  //     }
-  //   }
-  // }, [visible]);
+    return trimmedUrl;
+  };
 
   const getRecords = async () => {
     try {
+      setloading(true);
       let res = await API_fetchRecordWithGrouping(moduleName, recordId);
-      res?.result?.record?.blocks[0]?.fields.map((val) => {
+
+      const labelToCheck =
+        moduleName === 'Contacts'
+          ? 'LBL_CONTACT_INFORMATION'
+          : moduleName === 'Calendar'
+          ? 'LBL_EVENT_INFORMATION'
+          : 'LBL_ACCOUNT_INFORMATION';
+
+      const containsLabel = res?.result?.record?.blocks.find(
+        (item) => item.label === labelToCheck,
+      );
+
+      containsLabel?.fields.map((val) => {
         if (val.name === 'firstname') {
           setFirstName(val?.value);
         }
         if (val.name === 'lastname') {
           setLastName(val?.value);
         }
-        if (moduleName === 'Contacts' && val.label === 'Organization Name') {
+        if (moduleName === 'Contacts' && val.name === 'account_id') {
           setOrgName(val?.value?.label);
         }
-        if (moduleName === 'Accounts' && val.label === 'Organization Name') {
+        if (moduleName === 'Accounts' && val.name === 'accountname') {
           setOrgName(val?.value);
         }
+        if (moduleName === 'Calendar' && val.name === 'subject') {
+          setSubject(val?.value);
+        }
       });
+      setloading(false);
 
-      setFields(res?.result?.record?.blocks[0]?.fields);
+      setFields(containsLabel?.fields);
     } catch (error) {
+      setloading(false);
+
       console.log('err', error);
     }
   };
@@ -353,28 +560,20 @@ export default function RecordDetails() {
     let modulename = moduleName;
 
     try {
-      const URLDetails = JSON.parse(await AsyncStorage.getItem(URLDETAILSKEY));
-      let url = URLDetails.url;
-      let trimmedUrl = url.replace(/ /g, '').replace(/\/$/, '');
-      trimmedUrl =
-        trimmedUrl.indexOf('://') === -1 ? 'https://' + trimmedUrl : trimmedUrl;
-      if (url.includes('www.')) {
-        trimmedUrl = trimmedUrl.replace('www.', '');
-      }
-      if (url.includes('http://')) {
-        trimmedUrl = trimmedUrl.replace('http://', 'https://');
-      }
+      setloading(true);
 
+      let trimmedUrl = await get_Url();
       let res = await API_fetchButtons(trimmedUrl, modulename);
-      console.log('res', res);
       if (res?.result?.buttons !== null) {
         res?.result?.buttons.map((val) => {
           // if (val.location === 'top') {
           setBtnTop(res?.result?.buttons);
           // }
         });
+        setloading(false);
       }
     } catch (error) {
+      setloading(false);
       console.log('err', error);
     }
   };
@@ -407,6 +606,198 @@ export default function RecordDetails() {
     }
   };
 
+  const saveFile = async (filedata) => {
+    filedata.fileName = filedata.name;
+    try {
+      setloading(true);
+      const {auth} = store.getState();
+      const loginDetails = auth.loginDetails;
+      let modulename = 'Documents';
+      let parentRecord = recordId;
+      let parentModule = moduleName;
+      let val = {
+        notes_title: filedata?.name,
+        assigned_user_id: '19x' + loginDetails?.userId,
+        filename: filedata?.name,
+      };
+
+      let trimmedUrl = await get_Url();
+      let res = await API_saveFile(
+        trimmedUrl,
+        modulename,
+        val,
+        filedata,
+        parentRecord,
+        parentModule,
+      );
+      if (res.success === true) {
+        Alert.alert('Document added successfully.');
+        setloading(false);
+      } else {
+        Alert.alert('Document could not be added.');
+        setloading(false);
+      }
+    } catch (error) {
+      console.log('err', error);
+      setloading(false);
+    }
+  };
+
+  const opencamera = async () => {
+    ImageCropPicker.openCamera({
+      width: 300,
+      height: 400,
+      mediaType: 'photo',
+      includeBase64: true,
+      // useFrontCamera: true,
+      cropping: true,
+    })
+      .then((image) => {
+        const getFileName = (filePath) => {
+          // Use react-native-fs to extract filename from path
+          const pathArray = filePath.split('/');
+          const filename = pathArray[pathArray.length - 1];
+          return filename;
+        };
+        let fileName = getFileName(image.path);
+
+        let file = {
+          uri: image.path,
+          name: fileName,
+          filename: fileName,
+          type: image.mime,
+        };
+
+        saveFile(file, true);
+      })
+      .catch((err) => console.log('err', err));
+  };
+
+  const openimagelib = async () => {
+    try {
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.allFiles],
+      });
+
+      saveFile(res[0], true);
+    } catch (err) {
+      console.log('err', err);
+    }
+  };
+
+  const onEdit = () => {
+    navigation.navigate('Edit Record', {
+      id: recordId,
+      lister: listerInstance,
+      isDashboard: false,
+    });
+  };
+
+  function onEditForCalender() {
+    navigation.navigate('Edit Record', {
+      id: recordId,
+    });
+  }
+  const onDelete = () => {
+    Alert.alert(
+      'Are you sure want to delete this record ?',
+      '',
+      [
+        {text: 'Cancel', onPress: () => {}, style: 'cancel'},
+        {
+          text: 'Yes',
+          onPress: () => {
+            listerInstance.setState({selectedIndex: -1});
+            listerInstance.setState(
+              {
+                isFlatListRefreshing: true,
+              },
+              () => {
+                dispatch(
+                  deleteRecord(listerInstance, recordId, index, () => {
+                    listerInstance.setState({
+                      isFlatListRefreshing: false,
+                    });
+                  }),
+                );
+                navigation.dispatch(
+                  CommonActions.reset({
+                    index: 0,
+                    routes: [
+                      {name: 'Drawer'}, // Navigate to the top-level navigator
+                    ],
+                  }),
+                );
+              },
+            );
+          },
+        },
+      ],
+      {cancelable: true},
+    );
+  };
+  function onDeleteForCalender() {
+    Alert.alert(
+      'Are you sure want to delete this record ?',
+      '',
+      [
+        {text: 'Cancel', onPress: () => {}, style: 'cancel'},
+        {
+          text: 'Yes',
+          onPress: () => {
+            dispatch(deleteCalendarRecord(recordId));
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 0,
+                routes: [
+                  {name: 'Drawer'}, // Navigate to the top-level navigator
+                ],
+              }),
+            );
+          },
+        },
+      ],
+      {cancelable: true},
+    );
+  }
+
+  const handlePress = (itemId) => {
+    switch (itemId) {
+      case 1:
+        moduleName === 'Calendar' ? onEditForCalender() : onEdit();
+
+        break;
+      case 2:
+        moduleName === 'Calendar' ? onDeleteForCalender() : onDelete();
+
+        break;
+      case 3:
+        if (Platform.OS === 'ios') {
+          setTimeout(() => {
+            opencamera();
+          }, 1000);
+        } else {
+          opencamera();
+        }
+        break;
+      case 4:
+        if (Platform.OS === 'ios') {
+          setTimeout(() => {
+            openimagelib();
+          }, 1000);
+        } else {
+          openimagelib();
+        }
+        break;
+      case 5:
+        console.log('Create New Document selected');
+        break;
+      default:
+        break;
+    }
+    setdocumentModal(false);
+  };
+
   const renderItem = ({item, index}) => {
     return (
       <TouchableOpacity
@@ -420,13 +811,13 @@ export default function RecordDetails() {
           padding: 5,
         }}
         onPress={() => setItems(item.tabLabel)}>
-        {item.tabLabel === 'Simply Voice' ? (
+        {item.tabLabel === 'SimplyVoice' ? (
           <Feather
             name={item.tabIcon}
             color={item.tabLabel === items ? '#00BBF2' : '#707070'}
             size={20}
           />
-        ) : item.tabLabel === 'Feedback' ? (
+        ) : item.tabLabel === 'SMPFeedback' ? (
           <MaterialIcons
             name={item.tabIcon}
             color={item.tabLabel === items ? '#00BBF2' : '#707070'}
@@ -434,6 +825,12 @@ export default function RecordDetails() {
           />
         ) : item.tabLabel === 'Participations' ? (
           <MaterialIcons
+            name={item.tabIcon}
+            color={item.tabLabel === items ? '#00BBF2' : '#707070'}
+            size={20}
+          />
+        ) : item.tabLabel === 'Potentials' ? (
+          <MaterialCommunityIcons
             name={item.tabIcon}
             color={item.tabLabel === items ? '#00BBF2' : '#707070'}
             size={20}
@@ -461,7 +858,196 @@ export default function RecordDetails() {
 
   return (
     <View style={{flex: 1}}>
-      <Header title={'Record Details'} showBackButton />
+      {imageModel && (
+        <View
+          style={{
+            position: 'absolute',
+            height: '100%',
+            width: '100%',
+            backgroundColor: 'rgba(52,52,52,0.3)',
+            zIndex: 1,
+            justifyContent: 'center',
+          }}>
+          <View
+            style={{
+              height: height - 120,
+              width: width - 40,
+              alignSelf: 'center',
+            }}>
+            <Image
+              resizeMode="contain"
+              style={{height: '100%', width: '100%'}}
+              source={{uri: IMG}}
+            />
+          </View>
+          <View
+            style={{
+              alignItems: 'center',
+              // justifyContent: 'space-between',
+              justifyContent: 'center',
+              // flexDirection: 'row',
+              marginHorizontal: 20,
+            }}>
+            {/* <TouchableOpacity
+              activeOpacity={0.7}
+              style={{
+                backgroundColor: '#5699E6',
+                paddingHorizontal: 25,
+                paddingVertical: 8,
+                justifyContent: 'center',
+                borderRadius: 5,
+              }}
+              onPress={() => downloadImage()}>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  color: '#fff',
+                  fontWeight: '700',
+                  fontFamily: 'Poppins-SemiBold',
+                  fontSize: 16,
+                }}>
+                Download
+              </Text>
+            </TouchableOpacity> */}
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={{
+                backgroundColor: '#EE4B2B',
+                paddingHorizontal: 25,
+                paddingVertical: 8,
+                justifyContent: 'center',
+                borderRadius: 5,
+              }}
+              onPress={() => setImageModel(false)}>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  color: '#fff',
+                  fontWeight: '700',
+                  fontFamily: 'Poppins-SemiBold',
+                  fontSize: 16,
+                }}>
+                Close
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
+      <Header
+        title={'Record Details'}
+        showBackButton
+        showDetailButton
+        onPress={() => {
+          setdocumentModal(!documentModal);
+        }}
+      />
+      {loading && (
+        <View
+          style={{
+            position: 'absolute',
+            height: '100%',
+            width: '100%',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          }}>
+          <ActivityIndicator
+            animating={loading}
+            size={'large'}
+            color={'#fff'}
+          />
+        </View>
+      )}
+
+      {documentModal && (
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={documentModal}
+          onRequestClose={() => {
+            setdocumentModal(!documentModal);
+          }}>
+          <TouchableOpacity
+            onPress={() => setdocumentModal(false)}
+            activeOpacity={1}
+            style={{
+              flex: 1,
+              justifyContent: 'flex-end',
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            }}>
+            <View
+              style={{
+                backgroundColor: '#fff',
+                borderTopLeftRadius: 10,
+                marginHorizontal: 1,
+                borderTopRightRadius: 10,
+                paddingBottom: 50,
+              }}>
+              <View
+                style={{
+                  borderRadius: 50,
+                  width: '15%',
+                  backgroundColor: '#000',
+                  height: '3%',
+                  marginTop: 3,
+                  alignSelf: 'center',
+                }}
+              />
+
+              <View style={{paddingLeft: 20, paddingVertical: 15}}>
+                <Text
+                  style={{
+                    // color: '#757575',
+                    fontSize: 20,
+                    fontFamily: 'Poppins-SemiBold',
+                    fontWeight: '700',
+                    color: '#000',
+                  }}>
+                  Select option:
+                </Text>
+              </View>
+              {data.map((value, index) => {
+                return (
+                  <TouchableOpacity
+                    key={index}
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+
+                      borderBottomWidth: 3,
+                      borderRadius: 3,
+                      marginHorizontal: 20,
+                      borderBottomColor: '#efefef',
+                    }}
+                    onPress={() => handlePress(value.id)}>
+                    <View
+                      style={{
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}>
+                      {value.icon}
+                    </View>
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        fontWeight: '700',
+                        fontFamily: 'Poppins-SemiBold',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        paddingVertical: 10,
+                        paddingLeft: 15,
+                        color: '#000000',
+                      }}>
+                      {value.lbl}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          </TouchableOpacity>
+        </Modal>
+      )}
 
       {/* {moduleName === 'Contacts' ? ( */}
       {moduleName === 'Contacts' || moduleName === 'Accounts' ? (
@@ -619,7 +1205,8 @@ export default function RecordDetails() {
           elevation: 5,
         }}>
         <FlatList
-          data={tabs.slice(0, itemsToShow)}
+          // data={newTabs.slice(0, itemsToShow)}
+          data={newTabs}
           horizontal
           contentContainerStyle={{
             alignItems: 'center',
@@ -628,31 +1215,31 @@ export default function RecordDetails() {
           }}
           showsHorizontalScrollIndicator={false}
           renderItem={renderItem}
-          ListFooterComponent={
-            tabs.length > itemsToShow && (
-              <TouchableOpacity
-                style={{
-                  backgroundColor: '#00BBF2',
-                  marginRight: 10,
-                  borderRadius: 5,
-                }}
-                onPress={loadMore}>
-                <Text
-                  style={{
-                    paddingHorizontal: 10,
-                    paddingVertical: 5,
-                    color: '#fff',
-                    fontFamily: 'Poppins-Regular',
-                  }}>
-                  Load More
-                </Text>
-              </TouchableOpacity>
-            )
-          }
+          // ListFooterComponent={
+          //   newTabs.length > itemsToShow && (
+          //     <TouchableOpacity
+          //       style={{
+          //         backgroundColor: '#00BBF2',
+          //         marginRight: 10,
+          //         borderRadius: 5,
+          //       }}
+          //       onPress={loadMore}>
+          //       <Text
+          //         style={{
+          //           paddingHorizontal: 10,
+          //           paddingVertical: 5,
+          //           color: '#fff',
+          //           fontFamily: 'Poppins-Regular',
+          //         }}>
+          //         Load More
+          //       </Text>
+          //     </TouchableOpacity>
+          //   )
+          // }
         />
       </View>
       <View style={{flex: 1}}>
-        {tabs.map((val) => {
+        {newTabs.map((val) => {
           if (val.tabLabel === items) {
             return val.component;
           }
