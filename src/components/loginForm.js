@@ -479,14 +479,18 @@ class LoginForm extends Component {
                 </Animated.View>
               </TouchableOpacity>
             </View>
+
             {this.state.token === null && (
               <TouchableOpacity
                 style={styles.msloginbtn}
                 onPress={() => this.getData()}>
-                <MaterialCommunityIcons name="microsoft-azure" size={30} />
-                <Text style={styles.mslogintxt}>
-                  Login with Microsoft azure
-                </Text>
+                <View style={[styles.mslogoSection]}>
+                  <Image
+                    source={require('../../assets/images/microsoft.png')}
+                    style={styles.mslogo}
+                  />
+                </View>
+                <Text style={styles.mslogintxt}>Microsoft Login</Text>
               </TouchableOpacity>
             )}
           </View>
@@ -563,13 +567,25 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     flexDirection: 'row',
     backgroundColor: 'white',
-    justifyContent: 'center',
     alignItems: 'center',
   },
   mslogintxt: {
-    fontFamily: 'Poppins-Bold',
+    fontFamily: 'Poppins-Regular',
     color: 'black',
-    fontSize: 16,
+    fontSize: 18,
+    width: '65%',
+    textAlign: 'center',
+  },
+  mslogoSection: {
+    height: 30,
+    width: '20%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  mslogo: {
+    height: '100%',
+    width: '100%',
+    resizeMode: 'contain',
   },
 });
 
