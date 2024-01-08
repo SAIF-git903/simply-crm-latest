@@ -607,6 +607,7 @@ const getFieldsForModule = (moduleName) => {
         lastname: 'lastname',
         phone: 'phone',
         email: 'email',
+        mailingcity: 'mailingcity',
       };
       break;
     }
@@ -873,7 +874,7 @@ const getItem = (listerInstance, item, index, isDashboard, isRefRecord) => {
     case CONTACTS: {
       recordName = item.label;
       // recordName = [item.firstname, ' ', item.lastname];
-      labels = [item.phone, item.email];
+      labels = [item.phone, item.email, item.mailingcity];
       break;
     }
     case VENDORS: {
