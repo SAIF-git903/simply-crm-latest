@@ -48,6 +48,7 @@ async function makeCall(body, request_url, headers, method = 'POST') {
     filterid: body.filterid !== '' ? body.filterid : undefined,
     orderBy: body.orderBy !== '' ? body.orderBy : undefined,
     sortOrder: body.sortOrder !== '' ? body.sortOrder : undefined,
+    mode: body.mode,
   };
   console.log('body_data', body_data);
   //clear undefined
@@ -451,6 +452,7 @@ export function API_history(module, record) {
     _operation: 'history',
     module,
     record,
+    mode: 'all',
   });
 }
 
