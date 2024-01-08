@@ -23,8 +23,8 @@ export default class SectionHeader extends Component {
   }
 
   componentDidMount() {
-    this.props.openSection();
-    this.setState({selected: true});
+    // this.props.openSection();
+    this.setState({selected: this.props?.selected});
   }
 
   onToggleSection() {

@@ -322,7 +322,7 @@ const getAndSaveData = async (
             key={i}
             headerStyle={{paddingLeft: 15}}
             style={{paddingTop: 5}}
-            open={i === 0}
+            open={block?.display_status === 'open' ? true : false}
             sectionBackgroundColor={'#f2f3f8'}
             sectionHeaderBackground={'#f2f3f8'}
             sectionHeaderImageColor={DRAWER_SECTION_HEADER_IMAGE_COLOR}
