@@ -448,11 +448,13 @@ export function API_fetchRecord(body, request_url) {
 }
 
 export function API_history(module, record) {
+  let {auth} = store.getState();
+  let isAdminMode = auth?.loginDetails?.isAdmin === true ? '' : '';
   return makeCall({
     _operation: 'history',
     module,
     record,
-    mode: 'all',
+    mode: isAdminMode,
   });
 }
 

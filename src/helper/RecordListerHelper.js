@@ -160,6 +160,7 @@ export const viewRecord = async (
     listerInstance.props.navigation.navigate('Record Details', {
       listerInstance: listerInstance,
       index: selectedIndex,
+      recordId: recordId,
     });
   } else {
     if (width > 600) {

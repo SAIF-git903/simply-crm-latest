@@ -26,6 +26,8 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import axios from 'axios';
 import RNFetchBlob from 'rn-fetch-blob';
+import NfcManager, {Ndef, NfcEvents, NfcTech} from 'react-native-nfc-manager';
+import LottieView from 'lottie-react-native';
 
 import Header from '../../components/common/Header';
 import Viewer from '../../components/recordViewer/viewer';
@@ -54,6 +56,7 @@ export default function RecordDetails({route}) {
 
   const listerInstance = route?.params?.listerInstance;
   const index = route?.params?.index;
+  const itemID = route?.params?.recordId;
 
   const recordViewerState = useSelector((state) => state.recordViewer);
 
@@ -65,6 +68,17 @@ export default function RecordDetails({route}) {
   const dispatch = useDispatch();
 
   const {navigation, moduleName, recordId} = recordViewerState;
+
+  useEffect(() => {
+    const setRecordID = async () => {
+      try {
+        await AsyncStorage.setItem('UID', JSON.stringify(recordId));
+      } catch (error) {
+        console.log('err', error);
+      }
+    };
+    setRecordID();
+  }, []);
 
   function createTabs() {
     const tabs = [];
@@ -366,6 +380,50 @@ export default function RecordDetails({route}) {
   const [imageModel, setImageModel] = useState(false);
   const [IMG, setIMG] = useState();
   const [fileType, setFileType] = useState('');
+  const [NFCModel, setNFCModel] = useState(false);
+  const [saveTextModel, setSaveTextModel] = useState(false);
+  const [isCompare, setIsCompare] = useState(false);
+  const [isWrong, setIsWrong] = useState(false);
+  const [nfcText, setNFCText] = useState();
+
+  useEffect(() => {
+    NfcManager.start();
+  }, []);
+
+  // useEffect(() => {
+  //   NfcManager.setEventListener(NfcEvents.DiscoverTag, (tag) => {
+  //     console.log('tag found', tag);
+  // setNFCModel(false);
+
+  // if (
+  //   tag?.ndefMessage &&
+  //   tag?.ndefMessage[0] &&
+  //   tag.ndefMessage[0].payload?.length === 0
+  // ) {
+  //   // Handle the case when the tag or its properties are empty
+  //   console.log('Invalid or empty tag');
+  //   return;
+  // }
+
+  // let payloadData = tag?.ndefMessage[0]?.payload;
+  // Convert numeric values to Uint8Array
+  // const uint8Array = new Uint8Array(payloadData);
+
+  // Decode the Uint8Array into a string
+  // const decoder = new TextDecoder('utf-8');
+  // const resultString = decoder.decode(uint8Array);
+  // const modifiedString = resultString.replace(/en/g, '');
+
+  // console.log('modifiedString', modifiedString);
+
+  //     setNFCText(modifiedString);
+  //     setSaveTextModel(true);
+  //   });
+
+  //   return () => {
+  //     NfcManager.setEventListener(NfcEvents.DiscoverTag, null);
+  //   };
+  // }, []);
 
   let data = [
     {
@@ -685,18 +743,30 @@ export default function RecordDetails({route}) {
     }
   };
 
-  const onEdit = () => {
-    navigation.navigate('Edit Record', {
-      id: recordId,
-      lister: listerInstance,
-      isDashboard: false,
-    });
+  const onEdit = async () => {
+    try {
+      let res = await AsyncStorage.getItem('UID');
+      let jsonValue = JSON.parse(res);
+      navigation.navigate('Edit Record', {
+        id: jsonValue,
+        lister: listerInstance,
+        isDashboard: false,
+      });
+    } catch (error) {
+      console.log('err', error);
+    }
   };
 
-  function onEditForCalender() {
-    navigation.navigate('Edit Record', {
-      id: recordId,
-    });
+  async function onEditForCalender() {
+    try {
+      let res = await AsyncStorage.getItem('UID');
+      let jsonValue = JSON.parse(res);
+      navigation.navigate('Edit Record', {
+        id: jsonValue,
+      });
+    } catch (error) {
+      console.log('err', error);
+    }
   }
   const onDelete = () => {
     Alert.alert(
@@ -761,15 +831,83 @@ export default function RecordDetails({route}) {
     );
   }
 
+  const checkIsSupported = async () => {
+    const deviceIsSupported = await NfcManager.isSupported();
+    const deviceIsEnable = await NfcManager.isEnabled();
+
+    if (deviceIsSupported === false) {
+      Alert.alert('NFC functionality is not supported on this device.');
+    } else if (deviceIsEnable === false) {
+      if (Platform.OS === 'ios') {
+        Alert.alert('To use NFC, enable it in your device settings.');
+      } else {
+        Alert.alert('Please enable NFC to proceed.');
+      }
+    } else {
+      await readNdef();
+    }
+  };
+
+  async function readNdef() {
+    try {
+      if (Platform.OS === 'android') {
+        setNFCModel(true);
+      }
+      await NfcManager.requestTechnology(NfcTech.Ndef);
+      const tag = await NfcManager.getTag();
+
+      if (
+        tag?.ndefMessage &&
+        tag?.ndefMessage[0] &&
+        tag.ndefMessage[0].payload?.length === 0
+      ) {
+        Alert.alert('Invalid or empty tag');
+        setNFCModel(false);
+        return;
+      }
+
+      if (tag?.ndefMessage[0]?.payload?.length > 0) {
+        setNFCModel(false);
+
+        let payloadData = tag?.ndefMessage[0]?.payload;
+        // Convert numeric values to Uint8Array
+        // const uint8Array = new Uint8Array(payloadData);
+
+        // Decode the Uint8Array into a string
+        // const decoder = new TextDecoder('utf-8');
+        // const resultString = decoder.decode(uint8Array);
+
+        const resultString = String.fromCharCode.apply(null, payloadData);
+        const modifiedString = resultString.replace(/en/g, '');
+
+        if (nfcText) {
+          if (modifiedString === nfcText) {
+            setIsCompare(true);
+            setNFCText();
+          } else {
+            setIsWrong(true);
+            setNFCText();
+          }
+        } else {
+          setSaveTextModel(true);
+          setNFCText(modifiedString);
+        }
+      }
+    } catch (ex) {
+      console.log('Oops!', ex);
+    } finally {
+      // stop the nfc scanning
+      NfcManager.cancelTechnologyRequest();
+    }
+  }
+
   const handlePress = (itemId) => {
     switch (itemId) {
       case 1:
         moduleName === 'Calendar' ? onEditForCalender() : onEdit();
-
         break;
       case 2:
         moduleName === 'Calendar' ? onDeleteForCalender() : onDelete();
-
         break;
       case 3:
         if (Platform.OS === 'ios') {
@@ -1125,7 +1263,37 @@ export default function RecordDetails({route}) {
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-            <FlatList
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                width: '80%',
+                flexDirection: 'row',
+              }}>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: nfcText
+                    ? 'rgba(0, 133, 222, 0.3)'
+                    : '#0085DE',
+                  borderRadius: 5,
+                }}
+                disabled={nfcText ? true : false}
+                onPress={() => checkIsSupported()}>
+                <Text style={styles.nfcbtn}>saveNFC</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: nfcText
+                    ? '#4ec759'
+                    : 'rgba(78, 199, 89, 0.3)',
+                  borderRadius: 5,
+                }}
+                disabled={nfcText ? false : true}
+                onPress={() => checkIsSupported()}>
+                <Text style={styles.nfcbtn}>compareNFC</Text>
+              </TouchableOpacity>
+            </View>
+            {/* <FlatList
               data={btnTop}
               horizontal
               keyExtractor={(item) => item.id}
@@ -1185,7 +1353,7 @@ export default function RecordDetails({route}) {
                   </View>
                 );
               }}
-            />
+            /> */}
           </View>
         </View>
       ) : null}
@@ -1393,6 +1561,78 @@ export default function RecordDetails({route}) {
           </View>
         </View>
       )}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={NFCModel}
+        onRequestClose={() => {
+          setNFCModel(false);
+        }}>
+        <View style={styles.nfcScanView}>
+          <View style={styles.nfcInnerView}>
+            <Text style={styles.nfcreadytoscan}>Ready to Scan</Text>
+            <LottieView
+              source={require('../../../assets/images/NFC.json')}
+              style={{width: '90%', height: '90%'}}
+              autoPlay
+              loop
+            />
+            <TouchableOpacity
+              style={styles.btnCancle}
+              onPress={() => {
+                setNFCModel(false), NfcManager.cancelTechnologyRequest();
+              }}>
+              <Text style={{color: '#000', fontWeight: '700', fontSize: 20}}>
+                Cancel
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+      <Modal animationType="fade" transparent={true} visible={saveTextModel}>
+        <View style={styles.nfcViewTag}>
+          <View style={styles.nfcView}>
+            <LottieView
+              source={require('../../../assets/images/savetext.json')}
+              style={{width: '100%', height: '100%'}}
+              autoPlay
+              loop={false}
+              speed={1}
+              onAnimationFinish={() => setSaveTextModel(false)}
+            />
+          </View>
+        </View>
+      </Modal>
+      <Modal animationType="fade" transparent={true} visible={isCompare}>
+        <View style={styles.nfcViewTag}>
+          <View style={styles.nfcView}>
+            <LottieView
+              source={require('../../../assets/images/comparetext.json')}
+              style={{width: '100%', height: '100%'}}
+              autoPlay
+              loop={false}
+              speed={1}
+              onAnimationFinish={() => setIsCompare(false)}
+            />
+            <Text style={styles.nfcTitle}>Correct NFC code</Text>
+          </View>
+        </View>
+      </Modal>
+      <Modal animationType="fade" transparent={true} visible={isWrong}>
+        <View style={styles.nfcViewTag}>
+          <View style={styles.nfcView}>
+            <LottieView
+              source={require('../../../assets/images/wrongtext.json')}
+              style={{width: '90%', height: '90%'}}
+              autoPlay
+              loop={false}
+              speed={1}
+              onAnimationFinish={() => setIsWrong(false)}
+            />
+            <Text style={styles.nfcTitle}>Sorry, wrong NFC code</Text>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -1400,7 +1640,73 @@ export default function RecordDetails({route}) {
 const styles = StyleSheet.create({
   backgroundStyle: {
     width: '100%',
-
     backgroundColor: 'white',
+  },
+  nfcScanView: {
+    backgroundColor: Platform.OS === 'ios' ? null : 'rgba(0, 0, 0, 0.5)',
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
+  },
+  nfcInnerView: {
+    position: 'absolute',
+    bottom: 5,
+    borderRadius: 30,
+    height: '45%',
+    width: '95%',
+    alignSelf: 'center',
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  nfcreadytoscan: {
+    color: '#afafaf',
+    fontWeight: '400',
+    fontSize: 30,
+    position: 'absolute',
+    zIndex: 1,
+    top: 30,
+  },
+  nfcViewTag: {
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  nfcView: {
+    borderRadius: 15,
+    height: '25%',
+    width: '55%',
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+  },
+  nfcTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#000',
+    position: 'absolute',
+    bottom: 10,
+    fontFamily: 'Poppins-Bold',
+  },
+  btnCancle: {
+    backgroundColor: '#d3d2d8',
+    width: '80%',
+    height: '15%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 15,
+    position: 'absolute',
+    bottom: 30,
+  },
+  nfcbtn: {
+    color: '#fff',
+    fontSize: 18,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderRadius: 5,
   },
 });

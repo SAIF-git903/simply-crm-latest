@@ -1,9 +1,17 @@
 import React, {Component} from 'react';
-import {View, Text, Linking, Platform} from 'react-native';
+import {View, Text, Linking, Platform, TouchableOpacity} from 'react-native';
 import {fontStyles} from '../../styles/common';
 import {API_trackCall} from '../../helper/api';
+import IconButton from '../IconButton';
 
 export default class Field extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showPassword: false,
+    };
+  }
+
   onPressAction() {
     const {uiType, value} = this.props;
     switch (uiType) {
@@ -42,7 +50,12 @@ export default class Field extends Component {
     }
   }
 
+  updatePassword = () => {
+    console.log('hi');
+  };
+
   render() {
+    const {showPassword} = this.state;
     return (
       <View
         style={{
@@ -60,7 +73,13 @@ export default class Field extends Component {
             {this.props.label}:
           </Text>
         </View>
-        <View style={{width: '60%'}}>
+        <View
+          style={{
+            width: '60%',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}>
           {this.props.modal ? (
             this.props.modal
           ) : (
@@ -73,8 +92,26 @@ export default class Field extends Component {
               }
               selectable={true}
               numberOfLines={3}>
-              {this.props.value}
+              {this.props.uiType === '179'
+                ? showPassword === true
+                  ? this.props.value
+                  : '*'.repeat(this.props.value?.length)
+                : this.props.value}
             </Text>
+          )}
+          {this.props.uiType === '179' && (
+            <View style={{marginRight: 10}}>
+              <IconButton
+                solid
+                color={'#000'}
+                icon={showPassword ? 'eye-slash' : 'eye'}
+                size={20}
+                onPress={() => {
+                  this.setState({showPassword: !showPassword}),
+                    this.updatePassword();
+                }}
+              />
+            </View>
           )}
         </View>
       </View>

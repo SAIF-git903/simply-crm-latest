@@ -58,7 +58,7 @@ class DrawerContent extends Component {
   onSignOutPress() {
     Alert.alert(
       'Logout !',
-      'Are you sure all your offline data will be deleted?',
+      'Are you sure you want to logout?',
       [
         {text: 'Cancel', style: 'cancel'},
         {text: 'Ok', onPress: this.logout.bind(this)},
@@ -107,6 +107,7 @@ class DrawerContent extends Component {
   logout = async () => {
     try {
       await AsyncStorage.removeItem('fields');
+      await AsyncStorage.removeItem('UID');
     } catch (error) {
       console.log('err', error);
     }

@@ -31,8 +31,6 @@ class DateType extends Component {
   }
 
   componentDidMount() {
-    // console.log('this.props', this.props.obj.mandatory);
-
     if (this.props.submodule === 'Events') {
       if (this.state.fieldName === 'time_start') {
         const roundedTime = this.roundTimeToNextHour();
@@ -54,6 +52,10 @@ class DateType extends Component {
       if (this.state.fieldName === 'due_date') {
         this.setState({saveValue: new Date()});
       }
+    }
+
+    if (this.state.fieldName === 'closingdate') {
+      this.setState({saveValue: this?.props?.obj?.currentValue});
     }
   }
 
@@ -147,22 +149,20 @@ class DateType extends Component {
           <View
             style={{
               height: '100%',
-              width:'34%'
+              width: '34%',
             }}>
             <View
               style={{
                 flexDirection: 'row',
                 height: '50%',
                 alignItems: 'center',
-                
               }}>
               <Text
                 style={{
                   color: 'red',
                   fontSize: 16,
                   fontFamily: 'Poppins-Regular',
-                  paddingHorizontal:7
-             
+                  paddingHorizontal: 7,
                 }}>
                 {this.props.obj.mandatory === true ? `*` : null}
               </Text>
@@ -180,14 +180,13 @@ class DateType extends Component {
                 height: '50%',
                 flexDirection: 'row',
                 alignItems: 'center',
-                
               }}>
               <Text
                 style={{
                   color: 'red',
-                  fontSize: 16, 
+                  fontSize: 16,
                   fontFamily: 'Poppins-Regular',
-                  paddingHorizontal:7
+                  paddingHorizontal: 7,
                 }}>
                 {this.props.obj.mandatory === true ? `*` : null}
               </Text>
@@ -195,7 +194,7 @@ class DateType extends Component {
                 style={{
                   fontFamily: 'Poppins-Regular',
                   color: '#707070',
-                  fontSize: 14,  
+                  fontSize: 14,
                 }}>
                 End Time
               </Text>
@@ -304,10 +303,11 @@ class DateType extends Component {
             <TouchableOpacity onPress={this.onDatePress.bind(this)}>
               <View style={commonStyles.textbox}>
                 <Text style={[commonStyles.text, fontStyles.fieldValue]}>
-                  {/* {this.state.saveValue} */}
                   {this.state.saveValue
-                    ? moment(this.state.saveValue).format(this.state.formatDate)
-                    : ''}
+                    ? moment(this?.state?.saveValue).format(
+                        this?.state?.formatDate,
+                      )
+                    : this?.props?.obj?.currentValue}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -316,15 +316,16 @@ class DateType extends Component {
               modal
               open={this.state.visible}
               mode="date"
-              date={
-                this.state.saveValue !== null
-                  ? this.state.saveValue
-                  : new Date()
-              }
+              // date={
+              //   this.state.saveValue !== null
+              //     ? this.state.saveValue
+              //     : new Date()
+              // }
+              date={new Date()}
               onConfirm={(date) => {
                 this.setState({visible: false});
                 this.setState({
-                  saveValue: date,
+                  saveValue: moment(date).format(this?.state?.formatDate),
                 });
               }}
               onCancel={() => {
