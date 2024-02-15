@@ -119,7 +119,7 @@
 			<string>D2760000850100</string>
 			<string>D2760000850101</string>
 		</array>
-		<key>com.apple.developer.nfc.readersession.felica.systemcodes</key>
+		<!-- <key>com.apple.developer.nfc.readersession.felica.systemcodes</key>
 		<array>
 			<string>8005</string>
 			<string>8008</string>
@@ -129,6 +129,6 @@
 			<string>927a</string>
 			<string>12FC</string>
 			<string>86a7</string>
-		</array>
+		</array> -->
 	</dict>
 </plist>

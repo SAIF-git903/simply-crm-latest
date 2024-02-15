@@ -630,6 +630,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = simplycrm/simplycrm.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 6JWQQD5699;
 				ENABLE_BITCODE = NO;
@@ -646,6 +648,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.simplycrm.mobileapp;
 				PRODUCT_NAME = simplycrm;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -659,6 +662,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = simplycrm/simplycrmRelease.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 6JWQQD5699;
 				INFOPLIST_FILE = simplycrm/Info.plist;
@@ -674,6 +679,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.simplycrm.mobileapp;
 				PRODUCT_NAME = simplycrm;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

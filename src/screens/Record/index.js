@@ -386,10 +386,6 @@ export default function RecordDetails({route}) {
   const [isWrong, setIsWrong] = useState(false);
   const [nfcText, setNFCText] = useState();
 
-  useEffect(() => {
-    NfcManager.start();
-  }, []);
-
   // useEffect(() => {
   //   NfcManager.setEventListener(NfcEvents.DiscoverTag, (tag) => {
   //     console.log('tag found', tag);
@@ -1643,7 +1639,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   nfcScanView: {
-    backgroundColor: Platform.OS === 'ios' ? null : 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     position: 'absolute',
     height: '100%',
     width: '100%',
