@@ -128,7 +128,7 @@ class RecordItem extends Component {
   }
   handleTextLayout = (event) => {
     const {width} = event.nativeEvent.layout;
-    console.log('width', width);
+
     this.setState({textWidth: width});
   };
 
@@ -141,6 +141,7 @@ class RecordItem extends Component {
         style={{
           backgroundColor: labelColor,
           borderRadius: 3,
+          width: labelColor ? '50%' : '100%',
         }}>
         <Text
           key={index + 2}
@@ -150,6 +151,7 @@ class RecordItem extends Component {
             fontStyles.dashboardRecordLabel,
             {
               color: labelColor ? '#fff' : '#707070',
+              paddingLeft: labelColor ? 5 : 0,
             },
           ]}>
           {typeof label === 'object' ? label?.value : label}

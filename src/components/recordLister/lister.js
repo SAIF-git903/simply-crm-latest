@@ -10,7 +10,7 @@ import {
   ScrollView,
 } from 'react-native';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
-
+import Icon from 'react-native-vector-icons/Ionicons';
 import SearchBox from '../common/searchBox';
 import {commonStyles, fontStyles} from '../../styles/common';
 import {
@@ -61,6 +61,7 @@ class Lister extends Component {
       moduleName: '',
       visible: false,
       fieldLabel: [],
+      openFilters: {},
     };
   }
 
@@ -183,24 +184,34 @@ class Lister extends Component {
 
   renderFilteredList = (filterType) => {
     const items = this.state.filters.filters[filterType] || [];
-
+    if (!this.state.openFilters[filterType]) {
+      return null; // Do not render the FlatList if it's not open
+    }
     return (
-      <FlatList
-        keyExtractor={(item) => item.id}
-        data={items}
-        showsVerticalScrollIndicator={false}
-        renderItem={({item}) => (
-          <TouchableOpacity
-            onPress={() => {
-              store.dispatch(filterField(item?.id));
-              this.setState({visibleFilter: false}), this.dofilter(item.id);
-            }}>
-            <Text style={{paddingVertical: 10, paddingHorizontal: 10}}>
-              {item.name}
-            </Text>
-          </TouchableOpacity>
-        )}
-      />
+      <View style={{height: 300}}>
+        <FlatList
+          keyExtractor={(item) => item.id}
+          data={items}
+          showsVerticalScrollIndicator={false}
+          renderItem={({item}) => (
+            <TouchableOpacity
+              onPress={() => {
+                store.dispatch(filterField(item?.id));
+                this.setState({visibleFilter: false}), this.dofilter(item.id);
+              }}>
+              <Text
+                style={{
+                  paddingVertical: 10,
+                  paddingHorizontal: 10,
+                  color: '#000',
+                  fontFamily: 'Poppins-Regular',
+                }}>
+                {item.name}
+              </Text>
+            </TouchableOpacity>
+          )}
+        />
+      </View>
     );
   };
 
@@ -324,6 +335,21 @@ class Lister extends Component {
     );
   };
 
+  toggleFilter = (filterType) => {
+    this.setState((prevState) => {
+      const newOpenFilters = {[filterType]: !prevState.openFilters[filterType]};
+
+      // Close all other filters
+      Object.keys(prevState.openFilters).forEach((key) => {
+        if (key !== filterType) {
+          newOpenFilters[key] = false;
+        }
+      });
+
+      return {openFilters: newOpenFilters};
+    });
+  };
+
   doRender() {
     let view;
     if (this.state.loading) {
@@ -388,8 +414,14 @@ class Lister extends Component {
                   this.setState({visibleFilter: false});
                 }
               }}>
-              <Text>My filter</Text>
-              <EvilIcons name="chevron-down" size={20} />
+              <Text
+                style={{
+                  color: '#000',
+                  fontFamily: 'Poppins-Regular',
+                }}>
+                My filter
+              </Text>
+              <EvilIcons name="chevron-down" size={20} color={'#000'} />
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
@@ -410,8 +442,10 @@ class Lister extends Component {
                 paddingVertical: 5,
                 width: '45%',
               }}>
-              <Text>Sorted by</Text>
-              <EvilIcons name="chevron-down" size={20} />
+              <Text style={{color: '#000', fontFamily: 'Poppins-Regular'}}>
+                Sorted by
+              </Text>
+              <EvilIcons name="chevron-down" size={20} color={'#000'} />
             </TouchableOpacity>
           </View>
 
@@ -458,6 +492,8 @@ class Lister extends Component {
                           fontStyle: 'normal',
                           textTransform: 'capitalize',
                           fontWeight: '600',
+                          fontFamily: 'Poppins-Regular',
+                          color: '#000',
                         }}>
                         {item.label}
                       </Text>
@@ -497,22 +533,42 @@ class Lister extends Component {
                   style={{padding: 10}}
                 />
               ) : (
-                <ScrollView
-                  style={{height: 400}}
-                  showsVerticalScrollIndicator={false}>
+                <ScrollView showsVerticalScrollIndicator={false}>
                   {Object.keys(this.state.filters.filters).map((filterType) => (
-                    <View key={filterType} style={{height: 150}}>
-                      <View style={{backgroundColor: '#eeeeee'}}>
-                        <Text
+                    <View key={filterType}>
+                      <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={() => this.toggleFilter(filterType)}>
+                        <View
                           style={{
-                            paddingVertical: 10,
-                            paddingHorizontal: 10,
-                            fontWeight: '700',
-                            fontSize: 16,
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            backgroundColor: '#eeeeee',
+                            justifyContent: 'space-between',
                           }}>
-                          {filterType}
-                        </Text>
-                      </View>
+                          <Text
+                            style={{
+                              paddingVertical: 10,
+                              paddingHorizontal: 10,
+                              fontWeight: '700',
+                              fontFamily: 'Poppins-Regular',
+                              fontSize: 16,
+                              color: '#000',
+                            }}>
+                            {filterType}
+                          </Text>
+                          <Icon
+                            name={
+                              this.state.openFilters[filterType]
+                                ? 'arrow-up'
+                                : 'arrow-down'
+                            } // Choose the correct icon names
+                            size={20}
+                            color="#000"
+                            style={{marginRight: 10}}
+                          />
+                        </View>
+                      </TouchableOpacity>
                       {this.renderFilteredList(filterType)}
                     </View>
                   ))}
