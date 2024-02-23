@@ -4,6 +4,7 @@ import {LOGINDETAILSKEY} from '../../variables/strings';
 import {addDatabaseKey} from '../DatabaseKeyHelper';
 import {LOGIN_USER_SUCCESS} from '../../actions/types';
 import moment from 'moment';
+import {passField, sortField} from '../../actions';
 
 async function makeCall(body, request_url, headers, method = 'POST') {
   const {
@@ -294,6 +295,11 @@ async function doFetchForFileUpload(request_url, method, headers, body_data) {
       console.log('err', error);
     }
   }
+
+  if (responseJson?.result?.nameFields?.length > 0) {
+    store.dispatch(passField(responseJson?.result?.nameFields));
+  }
+
   return responseJson;
 }
 
@@ -316,6 +322,7 @@ async function doFetch(request_url, method, headers, body_data) {
   console.log('responseJson-->', responseJson);
 
   if (responseJson?.result?.headers) {
+    store.dispatch(sortField(responseJson?.result?.headers));
     try {
       const jsonValue = JSON.stringify(responseJson?.result?.headers);
       await AsyncStorage.setItem('fields', jsonValue);
@@ -323,6 +330,11 @@ async function doFetch(request_url, method, headers, body_data) {
       console.log('err', error);
     }
   }
+
+  if (responseJson?.result?.nameFields?.length > 0) {
+    store.dispatch(passField(responseJson?.result?.nameFields));
+  }
+
   return responseJson;
 }
 

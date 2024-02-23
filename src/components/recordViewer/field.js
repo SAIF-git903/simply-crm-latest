@@ -12,6 +12,15 @@ export default class Field extends Component {
     };
   }
 
+  getColorForLeadSource(leadSource) {
+    const {colorsType} = this.props;
+    if (colorsType && colorsType[leadSource]) {
+      return colorsType[leadSource];
+    }
+
+    return '#fff';
+  }
+
   onPressAction() {
     const {uiType, value} = this.props;
     switch (uiType) {
@@ -56,6 +65,8 @@ export default class Field extends Component {
 
   render() {
     const {showPassword} = this.state;
+    const {label, uiType, value, isLocation} = this.props;
+    const color = this.getColorForLeadSource(value);
     return (
       <View
         style={{
@@ -83,21 +94,33 @@ export default class Field extends Component {
           {this.props.modal ? (
             this.props.modal
           ) : (
-            <Text
-              onPress={() => this.onPressAction()}
-              style={
-                this.props.isLocation
-                  ? fontStyles.fieldValueLocation
-                  : [fontStyles.fieldValue]
-              }
-              selectable={true}
-              numberOfLines={3}>
-              {this.props.uiType === '179'
-                ? showPassword === true
-                  ? this.props.value
-                  : '*'.repeat(this.props.value?.length)
-                : this.props.value}
-            </Text>
+            <View
+              style={{
+                backgroundColor: color,
+                borderRadius: 3,
+              }}>
+              <Text
+                onPress={() => this.onPressAction()}
+                style={
+                  this.props.isLocation
+                    ? fontStyles.fieldValueLocation
+                    : [
+                        fontStyles.fieldValue,
+                        {
+                          paddingHorizontal: 5,
+                          color: color === '#fff' ? '#000' : '#fff',
+                        },
+                      ]
+                }
+                selectable={true}
+                numberOfLines={3}>
+                {this.props.uiType === '179'
+                  ? showPassword === true
+                    ? this.props.value
+                    : '*'.repeat(this.props.value?.length)
+                  : this.props.value}
+              </Text>
+            </View>
           )}
           {this.props.uiType === '179' && (
             <View style={{marginRight: 10}}>

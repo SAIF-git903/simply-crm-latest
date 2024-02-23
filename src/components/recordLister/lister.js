@@ -7,6 +7,7 @@ import {
   Touchable,
   TouchableOpacity,
   FlatList,
+  ScrollView,
 } from 'react-native';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
@@ -17,15 +18,19 @@ import {
   viewRecordAction,
   refreshRecord,
   getNextPageRecord,
+  passValue,
+  filterField,
 } from '../../actions';
 import {recordListRendererHelper} from '../../helper';
 import {
+  API_describe,
   API_fetchFilters,
   API_listModuleRecords,
   API_query,
 } from '../../helper/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {LOGINDETAILSKEY, URLDETAILSKEY} from '../../variables/strings';
+import store from '../../store';
 
 class Lister extends Component {
   constructor(props) {
@@ -63,6 +68,7 @@ class Lister extends Component {
     // this.getFields();
     this.getFilters();
     this.getRecords();
+    this.getColors();
   }
 
   getFields = async () => {
@@ -107,6 +113,27 @@ class Lister extends Component {
           this.setState({filters: allfilters});
         }
       }
+    } catch (error) {
+      console.log('err', error);
+    }
+  };
+
+  getColors = async () => {
+    try {
+      const res = await API_describe(this.props.moduleName);
+
+      let fieldsWithPicklistColors = [];
+      for (
+        let index = 0;
+        index < res?.result?.describe?.fields?.length;
+        index++
+      ) {
+        const field = res?.result?.describe?.fields[index];
+        if (field?.type?.picklistColors) {
+          fieldsWithPicklistColors.push(field);
+        }
+      }
+      this.props.dispatch(passValue(fieldsWithPicklistColors));
     } catch (error) {
       console.log('err', error);
     }
@@ -159,10 +186,13 @@ class Lister extends Component {
 
     return (
       <FlatList
+        keyExtractor={(item) => item.id}
         data={items}
+        showsVerticalScrollIndicator={false}
         renderItem={({item}) => (
           <TouchableOpacity
             onPress={() => {
+              store.dispatch(filterField(item?.id));
               this.setState({visibleFilter: false}), this.dofilter(item.id);
             }}>
             <Text style={{paddingVertical: 10, paddingHorizontal: 10}}>
@@ -170,7 +200,6 @@ class Lister extends Component {
             </Text>
           </TouchableOpacity>
         )}
-        keyExtractor={(item) => item.id}
       />
     );
   };
@@ -206,6 +235,7 @@ class Lister extends Component {
         if (this.props.saved === 'saved') {
           this.refreshData();
         }
+        store.dispatch(filterField(null));
       },
     );
   }
@@ -410,6 +440,8 @@ class Lister extends Component {
               }}>
               <FlatList
                 data={this.state.fieldLabel}
+                showsVerticalScrollIndicator={false}
+                style={{height: 300}}
                 renderItem={({item, index}) => {
                   return (
                     <TouchableOpacity
@@ -465,9 +497,11 @@ class Lister extends Component {
                   style={{padding: 10}}
                 />
               ) : (
-                <View>
+                <ScrollView
+                  style={{height: 400}}
+                  showsVerticalScrollIndicator={false}>
                   {Object.keys(this.state.filters.filters).map((filterType) => (
-                    <View key={filterType}>
+                    <View key={filterType} style={{height: 150}}>
                       <View style={{backgroundColor: '#eeeeee'}}>
                         <Text
                           style={{
@@ -482,7 +516,7 @@ class Lister extends Component {
                       {this.renderFilteredList(filterType)}
                     </View>
                   ))}
-                </View>
+                </ScrollView>
               )}
             </View>
           )}

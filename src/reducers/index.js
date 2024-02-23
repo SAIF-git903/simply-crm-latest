@@ -11,7 +11,10 @@ import UserReducer from './userReducer';
 import calendar from '../ducks/calendar';
 import updates from '../ducks/updates';
 import comments from '../ducks/comments';
-import durationreducer from './durationReducer';
+import colorRuducer from './durationReducer';
+import fieldReducer from './mainfieldReducer';
+import sortOrderReducer from './sortOrderFieldReducer';
+import filterReducer from './filterReducer';
 
 export default combineReducers({
   auth: AuthReducer,
@@ -24,5 +27,8 @@ export default combineReducers({
   calendar,
   updates,
   comments,
-  durationreducer,
+  colorRuducer,
+  fieldReducer,
+  sortOrderReducer,
+  filterReducer,
 });

@@ -14,7 +14,7 @@ export const PROJECT_IMAGE = 'project';
 export const TOOLS_IMAGE = 'tools';
 export const CUSTOM_IMAGE = 'custommodules';
 
-export const DRAWER_COLUMN_HEIGHT = 50; 
+export const DRAWER_COLUMN_HEIGHT = 50;
 export const DRAWER_COLUMN_TOTAL_HEIGHT = DRAWER_COLUMN_HEIGHT; //10 refers to margin
 
 //Button types:
@@ -48,6 +48,8 @@ export const EMAILS = 'Emails';
 export const REPORTS = 'Reports';
 export const DOCUMENTFOLDERS = 'DocumentFolders';
 export const USERS = 'Users';
+export const PARTICIPATION = 'Participation';
+export const CANDIDATES = 'Candidates';
 
 export const HOME = 'Dashboard';
 export const PROFILE = 'profile';
@@ -64,4 +66,3 @@ export const DB_KEYS_COLLECTION = 'db_keys_collection';
 
 export const HOME_MAIN = 'home_main';
 export const SEARCH_COMPONENT = 'search_component';
-

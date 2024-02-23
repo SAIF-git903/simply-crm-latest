@@ -10,16 +10,42 @@ import {
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import SwipeOut from 'react-native-swipeout';
-import {deleteRecord} from '../../actions';
+import {deleteRecord, filterField} from '../../actions';
 import {RECORD_COLOR, RECORD_SELECTED_COLOR} from '../../variables/themeColors';
 import {commonStyles, fontStyles} from '../../styles/common';
+import store from '../../store';
 
 class RecordItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: false,
+      labelColorsObject: {},
+      textWidth: 0,
     };
+  }
+
+  componentDidMount() {
+    const {colorRuducer} = store.getState();
+
+    let picklistColorsObject = {};
+
+    if (colorRuducer?.passedValue !== null) {
+      colorRuducer?.passedValue?.forEach((colorReducer) => {
+        if (colorReducer?.type?.picklistColors) {
+          Object.keys(colorReducer?.type?.picklistColors).forEach(
+            (colorKey) => {
+              if (!picklistColorsObject[colorKey]) {
+                picklistColorsObject[colorKey] =
+                  colorReducer?.type?.picklistColors[colorKey];
+              }
+            },
+          );
+        }
+      });
+    }
+
+    this.setState({labelColorsObject: picklistColorsObject});
   }
 
   getActions() {
@@ -100,22 +126,42 @@ class RecordItem extends Component {
       {cancelable: true},
     );
   }
+  handleTextLayout = (event) => {
+    const {width} = event.nativeEvent.layout;
+    console.log('width', width);
+    this.setState({textWidth: width});
+  };
 
-  renderLabel(label, index) {
+  renderLabel(label, index, labelColorsObject) {
+    const labelColor = labelColorsObject[label] || null;
+
     if (!label || label.length === 0) return null;
-
     return (
-      <Text
-        key={index + 2}
-        numberOfLines={1}
-        style={fontStyles.dashboardRecordLabel}>
-        {label}
-      </Text>
+      <View
+        style={{
+          backgroundColor: labelColor,
+          borderRadius: 3,
+        }}>
+        <Text
+          key={index + 2}
+          numberOfLines={1}
+          ellipsizeMode="tail"
+          style={[
+            fontStyles.dashboardRecordLabel,
+            {
+              color: labelColor ? '#fff' : '#707070',
+            },
+          ]}>
+          {typeof label === 'object' ? label?.value : label}
+        </Text>
+      </View>
     );
   }
 
-  renderLabels(labels) {
-    return labels.map(this.renderLabel);
+  renderLabels(labels, labelColorsObject) {
+    return labels.map((label, index) =>
+      this.renderLabel(label, index, labelColorsObject),
+    );
   }
 
   renderLoading() {
@@ -140,7 +186,7 @@ class RecordItem extends Component {
     );
   }
 
-  renderLine() {
+  renderLine(labelColorsObject) {
     let recordName = this.props.recordName;
     let no_tittle_style = {};
     if (recordName === '') {
@@ -171,7 +217,9 @@ class RecordItem extends Component {
                 style={[fontStyles.dashboardRecordLabelBig, no_tittle_style]}>
                 {recordName}
               </Text>
-              {this.props.labels ? this.renderLabels(this.props.labels) : null}
+              {this.props.labels
+                ? this.renderLabels(this.props.labels, labelColorsObject)
+                : null}
             </View>
           </TouchableOpacity>
         </SwipeOut>
@@ -180,7 +228,10 @@ class RecordItem extends Component {
   }
 
   render() {
-    return this.state.loading ? this.renderLoading() : this.renderLine();
+    const {labelColorsObject} = this.state;
+    return this.state.loading
+      ? this.renderLoading()
+      : this.renderLine(labelColorsObject);
   }
 }
 

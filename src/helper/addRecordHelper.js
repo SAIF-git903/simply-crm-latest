@@ -24,7 +24,7 @@ export const getRecordStructureHelper = async (currentInstance) => {
 
   // const calanderType = currentInstance.props
 
-  const {auth} = store.getState();
+  const {auth, colorRuducer} = store.getState();
   const loginDetails = auth.loginDetails;
   const vtigerSeven = loginDetails.vtigerVersion > 6;
 
@@ -190,6 +190,53 @@ export const getRecordStructureHelper = async (currentInstance) => {
               fieldObj.lable.indexOf(amp) !== -1
                 ? fieldObj.lable.replace(amp, '&')
                 : fieldObj.lable;
+
+            for (
+              let index = 0;
+              index < colorRuducer?.passedValue?.length;
+              index++
+            ) {
+              const element = colorRuducer?.passedValue[index];
+              if (element?.name === fieldObj.name) {
+                formArray.push(
+                  <View sequence={fieldObj.sequence} key={fieldObj.name}>
+                    <ComponentName
+                      obj={fieldObj}
+                      validLabel={validLabel}
+                      fieldLabelView={getFieldLabelView(
+                        fieldObj.mandatory,
+                        validLabel,
+                      )}
+                      navigation={currentInstance.props.navigation}
+                      moduleName={currentInstance.props.moduleName}
+                      submodule={currentInstance.props.subModule}
+                      formId={randomId}
+                      key={i}
+                      ref={(ref) => {
+                        if (ref !== null) {
+                          let arr = currentInstance.state.inputInstance;
+                          arr.push(ref);
+                          currentInstance.setState({inputInstance: arr});
+                        }
+                      }}
+                      userId={loginDetails.userId}
+                      onCopyPriceDetails={currentInstance.onCopyPriceDetails.bind(
+                        currentInstance,
+                      )}
+                      colorsType={element?.type?.picklistColors}
+                    />
+                    <View
+                      style={{
+                        width: '100%',
+                        height: 1,
+                        backgroundColor: '#f2f3f8',
+                      }}
+                    />
+                  </View>,
+                );
+              }
+            }
+
             formArray.push(
               <View sequence={fieldObj.sequence} key={fieldObj.name}>
                 <ComponentName
@@ -231,9 +278,24 @@ export const getRecordStructureHelper = async (currentInstance) => {
         // Sort fields
         formArray.sort((a, b) => a.props.sequence - b.props.sequence);
 
+        // Use a Set to keep track of unique keys
+        const uniqueKeys = new Set();
+
+        // Use Array.reduce to filter out duplicates
+        const deduplicatedArray = formArray.reduce((result, currentObject) => {
+          // Check if the key is not in the set
+          if (!uniqueKeys.has(currentObject.key)) {
+            // Add the key to the set
+            uniqueKeys.add(currentObject.key);
+            // Push the current object to the result array
+            result.push(currentObject);
+          }
+          return result;
+        }, []);
+
         content.push(
           <FormSection key={k} sequence={parseInt(sequence, 10)} title={label}>
-            {formArray}
+            {deduplicatedArray}
           </FormSection>,
         );
       }

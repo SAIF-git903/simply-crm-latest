@@ -3,7 +3,7 @@ const initialState = {
   passedValue: null,
 };
 
-const durationreducer = (state = initialState, action) => {
+const colorRuducer = (state = initialState, action) => {
   switch (action.type) {
     case 'PASS_VALUE':
       return {
@@ -15,4 +15,4 @@ const durationreducer = (state = initialState, action) => {
   }
 };
 
-export default durationreducer;
+export default colorRuducer;

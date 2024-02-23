@@ -44,7 +44,7 @@ import {
 } from '../../helper/api';
 import store from '../../store';
 
-import {deleteRecord} from '../../actions';
+import {deleteRecord, passValue} from '../../actions';
 import {deleteCalendarRecord} from '../../ducks/calendar';
 import CommanView from '../../components/recordViewer/CommanView';
 
@@ -55,6 +55,7 @@ export default function RecordDetails({route}) {
   const {height, width} = Dimensions.get('window');
 
   const listerInstance = route?.params?.listerInstance;
+
   const index = route?.params?.index;
   const itemID = route?.params?.recordId;
 
@@ -124,233 +125,13 @@ export default function RecordDetails({route}) {
       ),
     };
 
-    // const contacts = {
-    //   tabIcon: 'user',
-    //   tabLabel: 'Contacts',
-    //   component: (
-    //     <CommanView
-    //       tabLabel="Contacts"
-    //       moduleName={moduleName}
-    //       recordId={recordId}
-    //     />
-    //   ),
-    // };
-    // const Emails = {
-    //   tabIcon: 'envelope',
-    //   tabLabel: 'Emails',
-    //   component: (
-    //     <CommanView
-    //       tabLabel="Emails"
-    //       moduleName={moduleName}
-    //       recordId={recordId}
-    //     />
-    //   ),
-    // };
-    // const Documents = {
-    //   tabIcon: 'list-ul',
-    //   tabLabel: 'Documents',
-    //   component: (
-    //     <CommanView
-    //       tabLabel="Documents"
-    //       moduleName={moduleName}
-    //       recordId={recordId}
-    //     />
-    //   ),
-    // };
-
-    // const products = {
-    //   tabIcon: 'shopping-cart',
-    //   tabLabel: 'Products',
-    //   component: (
-    //     <CommanView tabLabel="" moduleName={moduleName} recordId={recordId} />
-    //   ),
-    // };
-    // const services = {
-    //   tabIcon: 'hand-holding-usd',
-    //   tabLabel: 'Services',
-    //   component: (
-    //     <CommanView
-    //       tabLabel="Services"
-    //       moduleName={moduleName}
-    //       recordId={recordId}
-    //     />
-    //   ),
-    // };
-
-    // const ReceiveMessage = {
-    //   tabIcon: 'sms',
-    //   tabLabel: 'ReceiveMessage',
-    //   component: (
-    //     <CommanView
-    //       tabLabel="ReceiveMessage"
-    //       moduleName={moduleName}
-    //       recordId={recordId}
-    //     />
-    //   ),
-    // };
-    // const Quotes = {
-    //   tabIcon: 'quote-left',
-    //   tabLabel: 'Quotes',
-    //   component: (
-    //     <CommanView
-    //       tabLabel="Quotes"
-    //       moduleName={moduleName}
-    //       recordId={recordId}
-    //     />
-    //   ),
-    // };
-
-    // const Potentials = {
-    //   tabIcon: 'head-lightbulb-outline',
-    //   tabLabel: 'Potentials',
-    //   component: (
-    //     <CommanView
-    //       tabLabel="Potentials"
-    //       moduleName={moduleName}
-    //       recordId={recordId}
-    //     />
-    //   ),
-    // };
-    // const Calendar = {
-    //   tabIcon: 'calendar-alt',
-    //   tabLabel: 'Calendar',
-    //   component: (
-    //     <CommanView
-    //       tabLabel="Calendar"
-    //       moduleName={moduleName}
-    //       recordId={recordId}
-    //     />
-    //   ),
-    // };
-    // const HelpDesk = {
-    //   tabIcon: 'hands-helping',
-    //   tabLabel: 'HelpDesk',
-    //   component: (
-    //     <CommanView
-    //       tabLabel="HelpDesk"
-    //       moduleName={moduleName}
-    //       recordId={recordId}
-    //     />
-    //   ),
-    // };
-    // const SalesOrder = {
-    //   tabIcon: 'clipboard-list',
-    //   tabLabel: 'SalesOrder',
-    //   component: (
-    //     <CommanView
-    //       tabLabel="SalesOrder"
-    //       moduleName={moduleName}
-    //       recordId={recordId}
-    //     />
-    //   ),
-    // };
-    // const Invoice = {
-    //   tabIcon: 'file-invoice',
-    //   tabLabel: 'Invoice',
-    //   component: (
-    //     <CommanView
-    //       tabLabel="Invoice"
-    //       moduleName={moduleName}
-    //       recordId={recordId}
-    //     />
-    //   ),
-    // };
-    // const SimplyVoice = {
-    //   tabIcon: 'phone-call',
-    //   tabLabel: 'SimplyVoice',
-    //   component: (
-    //     <CommanView
-    //       tabLabel="SimplyVoice"
-    //       moduleName={moduleName}
-    //       recordId={recordId}
-    //     />
-    //   ),
-    // };
-    // const Participation = {
-    //   tabIcon: 'users',
-    //   tabLabel: 'Participation',
-    // component: (
-    //   <CommanView
-    //     tabLabel="Participation"
-    //     moduleName={moduleName}
-    //     recordId={recordId}
-    //   />
-    // ),
-    // };
-    // const Timesheets = {
-    //   tabIcon: 'clipboard-list',
-    //   tabLabel: 'Timesheets',
-    //   component: (
-    //     <CommanView
-    //       tabLabel="Timesheets"
-    //       moduleName={moduleName}
-    //       recordId={recordId}
-    //     />
-    //   ),
-    // };
-    // const SMPFeedback = {
-    //   tabIcon: 'feedback',
-    //   tabLabel: 'SMPFeedback',
-    //   component: (
-    //     <CommanView
-    //       tabLabel="SMPFeedback"
-    //       moduleName={moduleName}
-    //       recordId={recordId}
-    //     />
-    //   ),
-    // };
-    // const WebTracker = {
-    //   tabIcon: 'search',
-    //   tabLabel: 'WebTracker',
-    //   component: (
-    //     <CommanView
-    //       tabLabel="WebTracker"
-    //       moduleName={moduleName}
-    //       recordId={recordId}
-    //     />
-    //   ),
-    // };
-    // const SMPTracker = {
-    //   tabIcon: 'search',
-    //   tabLabel: 'SMPTracker',
-    //   component: (
-    //     <CommanView
-    //       tabLabel="SMPTracker"
-    //       moduleName={moduleName}
-    //       recordId={recordId}
-    //     />
-    //   ),
-    // };
-
     const comments = {
       tabIcon: 'comment',
       tabLabel: 'Comments',
       component: <Comments key={3} tabLabel="Comments" recordId={recordId} />,
     };
 
-    tabs.push(
-      Summary,
-      viewer,
-      updates,
-      // contacts,
-      // products,
-      // Emails,
-      // services,
-      // ReceiveMessage,
-      // Quotes,
-      // Potentials,
-      // Calendar,
-      // HelpDesk,
-      // SalesOrder,
-      // Invoice,
-      // Documents,
-      // SimplyVoice,
-      // Participation,
-      // Timesheets,
-      // SMPFeedback,
-      // WebTracker,
-      // SMPTracker,
-    );
+    tabs.push(Summary, viewer, updates);
 
     if (enabledModules.includes(moduleName)) tabs.push(comments);
 
@@ -386,41 +167,6 @@ export default function RecordDetails({route}) {
   const [isWrong, setIsWrong] = useState(false);
   const [nfcText, setNFCText] = useState();
 
-  // useEffect(() => {
-  //   NfcManager.setEventListener(NfcEvents.DiscoverTag, (tag) => {
-  //     console.log('tag found', tag);
-  // setNFCModel(false);
-
-  // if (
-  //   tag?.ndefMessage &&
-  //   tag?.ndefMessage[0] &&
-  //   tag.ndefMessage[0].payload?.length === 0
-  // ) {
-  //   // Handle the case when the tag or its properties are empty
-  //   console.log('Invalid or empty tag');
-  //   return;
-  // }
-
-  // let payloadData = tag?.ndefMessage[0]?.payload;
-  // Convert numeric values to Uint8Array
-  // const uint8Array = new Uint8Array(payloadData);
-
-  // Decode the Uint8Array into a string
-  // const decoder = new TextDecoder('utf-8');
-  // const resultString = decoder.decode(uint8Array);
-  // const modifiedString = resultString.replace(/en/g, '');
-
-  // console.log('modifiedString', modifiedString);
-
-  //     setNFCText(modifiedString);
-  //     setSaveTextModel(true);
-  //   });
-
-  //   return () => {
-  //     NfcManager.setEventListener(NfcEvents.DiscoverTag, null);
-  //   };
-  // }, []);
-
   let data = [
     {
       id: 1,
@@ -454,7 +200,28 @@ export default function RecordDetails({route}) {
   useEffect(() => {
     setloading(true);
     getRelativeModuleModules();
+    // getColors();
   }, []);
+
+  // const getColors = async () => {
+  //   try {
+  //     const res = await API_describe(moduleName);
+  //     let fieldsWithPicklistColors = [];
+  //     for (
+  //       let index = 0;
+  //       index < res?.result?.describe?.fields?.length;
+  //       index++
+  //     ) {
+  //       const field = res?.result?.describe?.fields[index];
+  //       if (field?.type?.picklistColors) {
+  //         fieldsWithPicklistColors.push(field);
+  //       }
+  //     }
+  //     dispatch(passValue(fieldsWithPicklistColors));
+  //   } catch (error) {
+  //     console.log('err', error);
+  //   }
+  // };
 
   const getImageData = async (data) => {
     let record = data[0]?.record;
@@ -494,7 +261,7 @@ export default function RecordDetails({route}) {
         (label, index) => {
           return {
             tabLabel: label,
-            tabIcon: '',
+            // tabIcon: '',
             component: (
               <CommanView
                 tabLabel={label}

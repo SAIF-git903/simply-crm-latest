@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View} from 'react-native';
+import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import {commonStyles} from '../../../styles/common';
 import {connect} from 'react-redux';
@@ -18,13 +18,22 @@ class PickListType extends Component {
     //     : val;
 
     this.state = {
-      saveValue: this.props.obj.default ? this.props.obj.default : null,
+      saveValue: this.props.obj.default ? this.props.obj.default.trim() : null,
       fieldName: this.props.obj.name,
+      visible: false,
     };
   }
 
+  newarray = () => {
+    let newVal = this.props?.obj?.type?.picklistValues?.map((item) => ({
+      ...item,
+      color: this.props?.colorsType[item?.value] || null, // Assign the color, or null if not found
+    }));
+    return newVal;
+  };
+
   render() {
-    let options = this.props.obj.type.picklistValues;
+    // let options = this.props.obj.type.picklistValues;
 
     return (
       <View style={commonStyles.inputHolder}>
@@ -33,27 +42,86 @@ class PickListType extends Component {
           : this.props.fieldLabelView} */}
         {this.props.fieldLabelView}
         {/* {this.state.fieldName === 'duration_minutes' ? null : ( */}
+        {/* {this.props.obj.name === 'cf_test_drop_down' ? null : ( */}
+        {/* )} */}
         <View style={{flex: 1}}>
-          <Picker
+          {/* <Picker
             mode="dropdown"
             selectedValue={this.state.saveValue}
             onValueChange={(itemValue) => {
               this.setState({saveValue: itemValue});
             }}>
-            {/* {this.props.obj.name === 'cf_test_drop_down' ? null : ( */}
             <Picker.Item label={'Select an option'} value={0} />
-            {/* )} */}
-            {options.map((item, index) => {
+
+            {this.newarray()?.map((item, index) => {
               return (
                 <Picker.Item
                   label={item.label}
                   value={item.value}
                   key={index}
+                  color={item.color}
                 />
               );
             })}
-          </Picker>
+          </Picker> */}
+
+          {this.state.visible ? (
+            <ScrollView
+              style={{height: 100}}
+              showsVerticalScrollIndicator={false}>
+              {this.newarray()?.map((item, index) => {
+                return (
+                  <TouchableOpacity
+                    key={index}
+                    style={{
+                      alignSelf: 'center',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: '100%',
+                      borderRadius: 3,
+                      backgroundColor: item?.color,
+                      marginVertical: 1,
+                    }}
+                    onPress={() => {
+                      this.setState({visible: false});
+                      this.setState({saveValue: item?.value});
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: 'Poppins-Medium',
+                        fontSize: 18,
+                        paddingVertical: 5,
+                        color: item.color ? '#fff' : '#000',
+                      }}>
+                      {item?.value}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </ScrollView>
+          ) : (
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={{
+                height: '100%',
+                width: '100%',
+                backgroundColor: 'rgba(100, 100, 100, 0.2)',
+                borderRadius: 5,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              onPress={() => {
+                this.setState({visible: true});
+              }}>
+              <Text style={{fontFamily: 'Poppins-Medium', fontSize: 18}}>
+                {this.state.saveValue
+                  ? this.state.saveValue
+                  : 'Select an option'}
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
+
         {/* )} */}
       </View>
     );

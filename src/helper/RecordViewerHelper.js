@@ -176,7 +176,7 @@ const getAndSaveData = async (
   offline,
   message,
 ) => {
-  const {auth} = store.getState();
+  const {auth, colorRuducer} = store.getState();
   const loginDetails = auth.loginDetails;
 
   if (responseJson.success) {
@@ -198,6 +198,7 @@ const getAndSaveData = async (
         //block.label - label from database
         //block.translatedLabel - translated label
         const fieldViews = [];
+
         const fields = block.fields;
 
         if (viewerInstance.props.moduleName === 'Emails') {
@@ -282,6 +283,33 @@ const getAndSaveData = async (
           } else {
             value = field.value.label;
           }
+
+          for (
+            let index = 0;
+            index < colorRuducer?.passedValue?.length;
+            index++
+          ) {
+            const element = colorRuducer?.passedValue[index];
+            if (element?.name === field?.name) {
+              fieldViews.push(
+                <Field
+                  key={k}
+                  label={field.label}
+                  value={value}
+                  colorsType={element?.type?.picklistColors}
+                  index={k}
+                  uiType={field.uitype}
+                  recordId={viewerInstance.props.recordId}
+                  isLocation={
+                    field.name === 'location' &&
+                    (viewerInstance.props.moduleName === 'Calendar' ||
+                      viewerInstance.props.moduleName === 'Events')
+                  }
+                />,
+              );
+            }
+          }
+
           fieldViews.push(
             <Field
               key={k}
@@ -317,6 +345,21 @@ const getAndSaveData = async (
           }
         }
 
+        // Use a Set to keep track of unique keys
+        const uniqueKeys = new Set();
+
+        // Use Array.reduce to filter out duplicates
+        const deduplicatedArray = fieldViews.reduce((result, currentObject) => {
+          // Check if the key is not in the set
+          if (!uniqueKeys.has(currentObject.key)) {
+            // Add the key to the set
+            uniqueKeys.add(currentObject.key);
+            // Push the current object to the result array
+            result.push(currentObject);
+          }
+          return result;
+        }, []);
+
         blockViews.push(
           <Section
             key={i}
@@ -330,7 +373,9 @@ const getAndSaveData = async (
               DRAWER_SECTION_HEADER_IMAGE_SELECTED_COLOR
             }
             headerName={block.translatedLabel}
-            content={<SectionBox style={{padding: 5}}>{fieldViews}</SectionBox>}
+            content={
+              <SectionBox style={{padding: 5}}>{deduplicatedArray}</SectionBox>
+            }
             contentHeight={fieldViews.length * 60 + 5}
           />,
         );
@@ -338,6 +383,7 @@ const getAndSaveData = async (
     }
 
     const viewData = [];
+
     viewData.push(blockViews);
 
     if (!offline) {

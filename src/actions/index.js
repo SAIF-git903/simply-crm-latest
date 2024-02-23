@@ -186,3 +186,12 @@ export const saveSuccess = (saved, recordId) => (dispatch) => {
 export const passValue = (data) => (dispatch) => {
   dispatch({type: 'PASS_VALUE', payload: data});
 };
+export const passField = (data) => (dispatch) => {
+  dispatch({type: 'PASS_FIELDS', payload: data});
+};
+export const sortField = (data) => (dispatch) => {
+  dispatch({type: 'SORT_FIELDS', payload: data});
+};
+export const filterField = (data) => (dispatch) => {
+  dispatch({type: 'PASS_FILTER', payload: data});
+};
