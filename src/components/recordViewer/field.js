@@ -62,11 +62,29 @@ export default class Field extends Component {
   updatePassword = () => {
     console.log('hi');
   };
+  isLightColor = (hexColor) => {
+    // Convert hex color to RGB object
+    const hexToRgb = (hex) => {
+      const bigint = parseInt(hex?.slice(1), 16);
+      const r = (bigint >> 16) & 255;
+      const g = (bigint >> 8) & 255;
+      const b = bigint & 255;
+      return {r, g, b};
+    };
+
+    // Calculate luminance
+    const rgb = hexToRgb(hexColor);
+    const luminance = (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255;
+
+    // You can adjust the threshold based on your preference
+    return luminance > 0.5; // If luminance is greater than 0.5, consider it a light color
+  };
 
   render() {
     const {showPassword} = this.state;
     const {label, uiType, value, isLocation} = this.props;
     const color = this.getColorForLeadSource(value);
+    const textColor = this.isLightColor(color) ? 'black' : 'white';
     return (
       <View
         style={{
@@ -108,7 +126,7 @@ export default class Field extends Component {
                         fontStyles.fieldValue,
                         {
                           paddingHorizontal: 5,
-                          color: color === '#fff' ? '#000' : '#fff',
+                          color: color ? textColor : '#000',
                         },
                       ]
                 }

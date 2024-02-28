@@ -32,6 +32,24 @@ class PickListType extends Component {
     return newVal;
   };
 
+  isLightColor = (hexColor) => {
+    // Convert hex color to RGB object
+    const hexToRgb = (hex) => {
+      const bigint = parseInt(hex?.slice(1), 16);
+      const r = (bigint >> 16) & 255;
+      const g = (bigint >> 8) & 255;
+      const b = bigint & 255;
+      return {r, g, b};
+    };
+
+    // Calculate luminance
+    const rgb = hexToRgb(hexColor);
+    const luminance = (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255;
+
+    // You can adjust the threshold based on your preference
+    return luminance > 0.5; // If luminance is greater than 0.5, consider it a light color
+  };
+
   render() {
     // let options = this.props.obj.type.picklistValues;
 
@@ -70,6 +88,9 @@ class PickListType extends Component {
               style={{height: 100}}
               showsVerticalScrollIndicator={false}>
               {this.newarray()?.map((item, index) => {
+                const textColor = this.isLightColor(item?.color)
+                  ? 'black'
+                  : 'white';
                 return (
                   <TouchableOpacity
                     key={index}
@@ -91,7 +112,7 @@ class PickListType extends Component {
                         fontFamily: 'Poppins-Medium',
                         fontSize: 18,
                         paddingVertical: 5,
-                        color: item.color ? '#fff' : '#000',
+                        color: item.color ? textColor : '#000',
                       }}>
                       {item?.value}
                     </Text>

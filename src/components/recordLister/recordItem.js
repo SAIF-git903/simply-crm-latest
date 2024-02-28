@@ -126,22 +126,48 @@ class RecordItem extends Component {
       {cancelable: true},
     );
   }
-  handleTextLayout = (event) => {
-    const {width} = event.nativeEvent.layout;
 
-    this.setState({textWidth: width});
+  // Function to check if a color is light or dark
+  isLightColor = (hexColor) => {
+    // Convert hex color to RGB object
+    const hexToRgb = (hex) => {
+      const bigint = parseInt(hex?.slice(1), 16);
+      const r = (bigint >> 16) & 255;
+      const g = (bigint >> 8) & 255;
+      const b = bigint & 255;
+      return {r, g, b};
+    };
+
+    // Calculate luminance
+    const rgb = hexToRgb(hexColor);
+    const luminance = (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255;
+
+    // You can adjust the threshold based on your preference
+    return luminance > 0.5; // If luminance is greater than 0.5, consider it a light color
+  };
+
+  calculateWidth = (textLength) => {
+    return textLength * 10; // This function calculates the width of the text component based on its text length.
   };
 
   renderLabel(label, index, labelColorsObject) {
     const labelColor = labelColorsObject[label] || null;
 
     if (!label || label.length === 0) return null;
+
+    const textColor = this.isLightColor(labelColor) ? 'black' : 'white';
+
+    const width = this.calculateWidth(
+      typeof label === 'object' ? label?.value?.length : label?.length,
+    );
+
     return (
       <View
         style={{
           backgroundColor: labelColor,
           borderRadius: 3,
-          width: labelColor ? '50%' : '100%',
+          marginVertical: labelColor ? 2 : 0,
+          width: width,
         }}>
         <Text
           key={index + 2}
@@ -150,8 +176,10 @@ class RecordItem extends Component {
           style={[
             fontStyles.dashboardRecordLabel,
             {
-              color: labelColor ? '#fff' : '#707070',
-              paddingLeft: labelColor ? 5 : 0,
+              color: labelColor ? textColor : '#707070',
+              textAlign: labelColor ? 'center' : 'left',
+              paddingVertical: labelColor ? 2 : 0,
+              fontWeight: labelColor ? '500' : 'normal',
             },
           ]}>
           {typeof label === 'object' ? label?.value : label}

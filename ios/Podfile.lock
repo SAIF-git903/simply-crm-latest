@@ -356,7 +356,7 @@ PODS:
   - react-native-app-auth (7.1.3):
     - AppAuth (~> 1.6)
     - React-Core
-  - react-native-date-picker (4.3.6):
+  - react-native-date-picker (4.3.7):
     - React-Core
   - react-native-document-picker (9.1.1):
     - React-Core
@@ -474,7 +474,7 @@ PODS:
     - React-perflogger (= 0.72.3)
   - rn-fetch-blob (0.12.0):
     - React-Core
-  - RNCAsyncStorage (1.22.1):
+  - RNCAsyncStorage (1.22.2):
     - React-Core
   - RNCMaskedView (0.1.11):
     - React
@@ -482,7 +482,7 @@ PODS:
     - React-Core
   - RNDateTimePicker (7.6.2):
     - React-Core
-  - RNDeviceInfo (10.12.0):
+  - RNDeviceInfo (10.13.1):
     - React-Core
   - RNGestureHandler (2.15.0):
     - RCT-Folly (= 2021.07.22.00)
@@ -769,7 +769,7 @@ SPEC CHECKSUMS:
   React-jsinspector: b511447170f561157547bc0bef3f169663860be7
   React-logger: c5b527272d5f22eaa09bb3c3a690fee8f237ae95
   react-native-app-auth: aafaa6e2934ceeb72d1f5a42962937ffeed9566c
-  react-native-date-picker: c28ccf1b3bc3de3bc6a785792a393fee49677f89
+  react-native-date-picker: 5637f417bb0c1981bc9d483324d5eb5929a1651c
   react-native-document-picker: 3599b238843369026201d2ef466df53f77ae0452
   react-native-nfc-manager: 2a87d561c4fa832e6597a5f2f7c197808c019ab8
   react-native-safe-area-context: b97eb6f9e3b7f437806c2ce5983f479f8eb5de4b
@@ -792,11 +792,11 @@ SPEC CHECKSUMS:
   React-utils: bcb57da67eec2711f8b353f6e3d33bd8e4b2efa3
   ReactCommon: d7d63a5b3c3ff29304a58fc8eb3b4f1b077cd789
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
-  RNCAsyncStorage: 7deab901e27d1f989a83e8be6ce91b673772c848
+  RNCAsyncStorage: 014a78b2cc8cc107c9e92ee428dc0c1ac3223416
   RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
   RNCPicker: b18aaf30df596e9b1738e7c1f9ee55402a229dca
   RNDateTimePicker: fc2e4f2795877d45e84d85659bebe627eba5c931
-  RNDeviceInfo: db5c64a060e66e5db3102d041ebe3ef307a85120
+  RNDeviceInfo: 4f9c7cfd6b9db1b05eb919620a001cf35b536423
   RNGestureHandler: 7909c50383a18f0cb10ce1db7262b9a6da504c03
   RNImageCropPicker: e7ab6fb43d2fc3e84651e786ef4a080d63b0ed3d
   RNReanimated: c1b56d030d1616239861534d9adb531f8cffab68
