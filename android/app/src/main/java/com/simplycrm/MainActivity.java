@@ -1,4 +1,4 @@
-package com.simplycrm;
+package com.simplycrm.mobileappnew;
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

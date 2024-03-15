@@ -25,6 +25,7 @@ export const getRecordStructureHelper = async (currentInstance) => {
   // const calanderType = currentInstance.props
 
   const {auth, colorRuducer} = store.getState();
+
   const loginDetails = auth.loginDetails;
   const vtigerSeven = loginDetails.vtigerVersion > 6;
 
@@ -197,6 +198,7 @@ export const getRecordStructureHelper = async (currentInstance) => {
               index++
             ) {
               const element = colorRuducer?.passedValue[index];
+
               if (element?.name === fieldObj.name) {
                 formArray.push(
                   <View sequence={fieldObj.sequence} key={fieldObj.name}>

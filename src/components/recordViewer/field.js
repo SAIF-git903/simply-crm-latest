@@ -17,8 +17,7 @@ export default class Field extends Component {
     if (colorsType && colorsType[leadSource]) {
       return colorsType[leadSource];
     }
-
-    return '#fff';
+    return '';
   }
 
   onPressAction() {

@@ -1026,7 +1026,7 @@ export default function RecordDetails({route}) {
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-            <View
+            {/* <View
               style={{
                 alignItems: 'center',
                 justifyContent: 'space-between',
@@ -1055,7 +1055,7 @@ export default function RecordDetails({route}) {
                 onPress={() => checkIsSupported()}>
                 <Text style={styles.nfcbtn}>compareNFC</Text>
               </TouchableOpacity>
-            </View>
+            </View> */}
             {/* <FlatList
               data={btnTop}
               horizontal

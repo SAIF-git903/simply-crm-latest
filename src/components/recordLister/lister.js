@@ -134,6 +134,7 @@ class Lister extends Component {
           fieldsWithPicklistColors.push(field);
         }
       }
+
       this.props.dispatch(passValue(fieldsWithPicklistColors));
     } catch (error) {
       console.log('err', error);
@@ -533,8 +534,11 @@ class Lister extends Component {
                   style={{padding: 10}}
                 />
               ) : (
-                <ScrollView showsVerticalScrollIndicator={false}>
-                  {Object.keys(this.state.filters.filters).map((filterType) => (
+                <FlatList
+                  data={Object.keys(this.state.filters.filters)}
+                  keyExtractor={(filterType) => filterType}
+                  showsVerticalScrollIndicator={false}
+                  renderItem={({item: filterType}) => (
                     <View key={filterType}>
                       <TouchableOpacity
                         activeOpacity={0.7}
@@ -562,7 +566,7 @@ class Lister extends Component {
                               this.state.openFilters[filterType]
                                 ? 'arrow-up'
                                 : 'arrow-down'
-                            } // Choose the correct icon names
+                            }
                             size={20}
                             color="#000"
                             style={{marginRight: 10}}
@@ -571,8 +575,49 @@ class Lister extends Component {
                       </TouchableOpacity>
                       {this.renderFilteredList(filterType)}
                     </View>
-                  ))}
-                </ScrollView>
+                  )}
+                />
+
+                // <ScrollView showsVerticalScrollIndicator={false}>
+                //   {Object.keys(this.state.filters.filters).map((filterType) => (
+                //     <View key={filterType}>
+                //       <TouchableOpacity
+                //         activeOpacity={0.7}
+                //         onPress={() => this.toggleFilter(filterType)}>
+                //         <View
+                //           style={{
+                //             flexDirection: 'row',
+                //             alignItems: 'center',
+                //             backgroundColor: '#eeeeee',
+                //             justifyContent: 'space-between',
+                //           }}>
+                //           <Text
+                //             style={{
+                //               paddingVertical: 10,
+                //               paddingHorizontal: 10,
+                //               fontWeight: '700',
+                //               fontFamily: 'Poppins-Regular',
+                //               fontSize: 16,
+                //               color: '#000',
+                //             }}>
+                //             {filterType}
+                //           </Text>
+                //           <Icon
+                //             name={
+                //               this.state.openFilters[filterType]
+                //                 ? 'arrow-up'
+                //                 : 'arrow-down'
+                //             } // Choose the correct icon names
+                //             size={20}
+                //             color="#000"
+                //             style={{marginRight: 10}}
+                //           />
+                //         </View>
+                //       </TouchableOpacity>
+                //       {this.renderFilteredList(filterType)}
+                //     </View>
+                //   ))}
+                // </ScrollView>
               )}
             </View>
           )}

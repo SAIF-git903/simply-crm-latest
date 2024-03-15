@@ -1,4 +1,5 @@
-package com.simplycrm;
+//package com.simplycrm;
+package com.simplycrm.mobileappnew;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

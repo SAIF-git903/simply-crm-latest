@@ -73,13 +73,15 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.simplycrm"
+    //    namespace "com.simplycrm"
+    namespace "com.simplycrm.mobileappnew"
+
     defaultConfig {
-        applicationId "com.simplycrm"
+        applicationId "com.simplycrm.mobileappnew"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 2
-        versionName "1.2"
+        versionCode 11
+        versionName "11.111"
         manifestPlaceholders = [
             appAuthRedirectScheme: 'graph-simplycrm'
         ]
