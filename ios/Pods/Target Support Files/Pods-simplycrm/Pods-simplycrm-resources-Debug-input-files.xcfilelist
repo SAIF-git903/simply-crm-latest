@@ -1,4 +1,6 @@
 ${PODS_ROOT}/Target Support Files/Pods-simplycrm/Pods-simplycrm-resources.sh
+${PODS_CONFIGURATION_BUILD_DIR}/AppAuth/AppAuthCore_Privacy.bundle
+${PODS_CONFIGURATION_BUILD_DIR}/RNCAsyncStorage/RNCAsyncStorage_resources.bundle
 ${PODS_CONFIGURATION_BUILD_DIR}/RNImageCropPicker/QBImagePicker.bundle
 ${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf
 ${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf
@@ -21,5 +23,6 @@ ${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.
 ${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf
 ${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle
 ${PODS_CONFIGURATION_BUILD_DIR}/TOCropViewController/TOCropViewControllerBundle.bundle
-${PODS_CONFIGURATION_BUILD_DIR}/lottie-ios/Lottie_Privacy.bundle
+${PODS_CONFIGURATION_BUILD_DIR}/Toast/Toast.bundle
+${PODS_CONFIGURATION_BUILD_DIR}/lottie-ios/LottiePrivacyInfo.bundle
 ${PODS_CONFIGURATION_BUILD_DIR}/lottie-react-native/Lottie_React_Native_Privacy.bundle

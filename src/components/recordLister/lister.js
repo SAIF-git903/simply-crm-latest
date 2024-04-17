@@ -62,6 +62,7 @@ class Lister extends Component {
       visible: false,
       fieldLabel: [],
       openFilters: {},
+      defaultFilterID: '',
     };
   }
 
@@ -123,6 +124,8 @@ class Lister extends Component {
     try {
       const res = await API_describe(this.props.moduleName);
 
+      this.setState({defaultFilterID: res?.result?.describe?.idPrefix});
+
       let fieldsWithPicklistColors = [];
       for (
         let index = 0;
@@ -152,6 +155,7 @@ class Lister extends Component {
         this.props = newprops;
         if (this.props.saved !== 'not_saved') {
           this.getRecords();
+          this.getColors();
         }
       },
     );
@@ -189,29 +193,51 @@ class Lister extends Component {
       return null; // Do not render the FlatList if it's not open
     }
     return (
-      <View style={{height: 300}}>
-        <FlatList
-          keyExtractor={(item) => item.id}
-          data={items}
-          showsVerticalScrollIndicator={false}
-          renderItem={({item}) => (
-            <TouchableOpacity
-              onPress={() => {
-                store.dispatch(filterField(item?.id));
-                this.setState({visibleFilter: false}), this.dofilter(item.id);
+      <View>
+        {items?.length > 0 ? (
+          <View>
+            <FlatList
+              keyExtractor={(item) => item.id}
+              data={items}
+              showsVerticalScrollIndicator={false}
+              renderItem={({item}) => (
+                <TouchableOpacity
+                  onPress={() => {
+                    store.dispatch(filterField(item?.id));
+                    this.setState({visibleFilter: false}),
+                      this.dofilter(item.id);
+                  }}>
+                  <Text
+                    style={{
+                      paddingVertical: 10,
+                      paddingHorizontal: 10,
+                      color: '#000',
+                      fontFamily: 'Poppins-Regular',
+                    }}>
+                    {item.name}
+                  </Text>
+                </TouchableOpacity>
+              )}
+            />
+          </View>
+        ) : (
+          <TouchableOpacity
+            onPress={() => {
+              store.dispatch(filterField(this.state.defaultFilterID));
+              this.setState({visibleFilter: false}),
+                this.dofilter(this.state.defaultFilterID);
+            }}>
+            <Text
+              style={{
+                paddingVertical: 10,
+                paddingHorizontal: 10,
+                color: '#000',
+                fontFamily: 'Poppins-Regular',
               }}>
-              <Text
-                style={{
-                  paddingVertical: 10,
-                  paddingHorizontal: 10,
-                  color: '#000',
-                  fontFamily: 'Poppins-Regular',
-                }}>
-                {item.name}
-              </Text>
-            </TouchableOpacity>
-          )}
-        />
+              All
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
     );
   };

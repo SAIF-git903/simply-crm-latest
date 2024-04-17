@@ -95,7 +95,7 @@ class RecordItem extends Component {
   onDelete() {
     Alert.alert(
       'Are you sure want to delete this record ?',
-      this.props.recordName,
+      this.props?.recordName?.toString()?.trim()?.replace(/,/g, ''),
       [
         {text: 'Cancel', onPress: () => {}, style: 'cancel'},
         {

@@ -85,7 +85,7 @@ extern "C" {
  * number doesn't need at all to match the overall OpenSSL version.
  * However, it's nice and more understandable if it actually does.
  * The current library version is stored in the macro SHLIB_VERSION_NUMBER,
- * which is just a piece of text in the format "M.m.e" (Major, minor, edit).
+ * which is just a piece of text in the format "M.m.e" (Major, minor, ).
  * For the sake of Tru64, IRIX, and any other OS that behaves in similar ways,
  * we need to keep a history of version numbers, which is done in the
  * macro SHLIB_VERSION_HISTORY.  The numbers are separated by colons and

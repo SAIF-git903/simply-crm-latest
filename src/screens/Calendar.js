@@ -251,7 +251,7 @@ export default function Calendar(props) {
   function onDelete(item) {
     Alert.alert(
       'Are you sure want to delete this record ?',
-      item.subject,
+      item?.subject?.toString(),
       [
         {text: 'Cancel', onPress: () => {}, style: 'cancel'},
         {

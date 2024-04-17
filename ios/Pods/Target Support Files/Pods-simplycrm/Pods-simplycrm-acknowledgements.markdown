@@ -1352,7 +1352,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 The MIT License (MIT)
 
-Copyright (c) 2015-2022 Tim Oliver
+Copyright (c) 2015-2024 Tim Oliver
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -1375,7 +1375,7 @@ SOFTWARE.
 
 ## Toast
 
-Copyright (c) 2011-2017 Charles Scalesse.
+Copyright (c) 2011-2024 Charles Scalesse.
 
 Permission is hereby granted, free of charge, to any person obtaining a
 copy of this software and associated documentation files (the
