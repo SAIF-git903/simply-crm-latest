@@ -374,7 +374,8 @@ const getAndSaveData = async (
             }
             headerName={block.translatedLabel}
             content={
-              <SectionBox style={{padding: 5}}>{deduplicatedArray}</SectionBox>
+              // <SectionBox style={{padding: 5}}>{deduplicatedArray}</SectionBox>
+              <SectionBox>{deduplicatedArray}</SectionBox>
             }
             contentHeight={fieldViews.length * 60 + 5}
           />,

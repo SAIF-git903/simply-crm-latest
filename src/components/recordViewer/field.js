@@ -3,6 +3,7 @@ import {View, Text, Linking, Platform, TouchableOpacity} from 'react-native';
 import {fontStyles} from '../../styles/common';
 import {API_trackCall} from '../../helper/api';
 import IconButton from '../IconButton';
+import {TextInput} from 'react-native-gesture-handler';
 
 export default class Field extends Component {
   constructor(props) {
@@ -94,7 +95,8 @@ export default class Field extends Component {
           borderBottomWidth: 0.5,
           borderColor: '#f2f3f8',
           alignItems: 'center',
-          padding: 10,
+          justifyContent: 'space-between',
+          paddingVertical: 10,
         }}>
         <View style={{width: '40%'}}>
           <Text style={fontStyles.fieldLabel} numberOfLines={2}>
@@ -116,27 +118,42 @@ export default class Field extends Component {
                 backgroundColor: color,
                 borderRadius: 3,
               }}>
-              <Text
-                onPress={() => this.onPressAction()}
-                style={
-                  this.props.isLocation
-                    ? fontStyles.fieldValueLocation
-                    : [
-                        fontStyles.fieldValue,
-                        {
-                          paddingHorizontal: 5,
-                          color: color ? textColor : '#000',
-                        },
-                      ]
-                }
-                selectable={true}
-                numberOfLines={3}>
-                {this.props.uiType === '179'
-                  ? showPassword === true
-                    ? this.props.value
-                    : '*'.repeat(this.props.value?.length)
-                  : this.props.value}
-              </Text>
+              {uiType === '19' ? (
+                <TextInput
+                  editable={false}
+                  value={this.props.value}
+                  multiline={true}
+                  style={[
+                    fontStyles.fieldValue,
+
+                    {
+                      color: color ? textColor : '#000',
+                    },
+                  ]}
+                />
+              ) : (
+                <Text
+                  onPress={() => this.onPressAction()}
+                  style={
+                    this.props.isLocation
+                      ? fontStyles.fieldValueLocation
+                      : [
+                          fontStyles.fieldValue,
+                          {
+                            paddingHorizontal: 5,
+                            color: color ? textColor : '#000',
+                          },
+                        ]
+                  }
+                  selectable={true}
+                  numberOfLines={3}>
+                  {this.props.uiType === '179'
+                    ? showPassword === true
+                      ? this.props.value
+                      : '*'.repeat(this.props.value?.length)
+                    : this.props.value}
+                </Text>
+              )}
             </View>
           )}
           {this.props.uiType === '179' && (

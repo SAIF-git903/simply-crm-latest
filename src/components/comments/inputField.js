@@ -96,21 +96,23 @@ export default function InputField(props) {
     <SafeAreaView style={styles.inputWrapper} forceInset={{bottom: 'always'}}>
       {renderReplyOrEdit()}
 
-      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+      <View style={{flexDirection: 'row', justifyContent: 'center'}}>
         <View style={{...styles.inputFieldWrapper}}>
           <TextInput
             editable={!isAddingComment}
             autoCorrect={false}
+            multiline={true}
             autoCapitalize="none"
             style={{
               ...styles.inputField,
               color: isAddingComment ? 'gray' : 'black',
+              marginTop: 10,
             }}
             value={value}
             onChangeText={onChangeText}
             placeholder={placeholder}
             placeholderTextColor={'#B2B3B5'}
-            returnKeyType={'send'}
+            returnKeyType={'default'}
             onSubmitEditing={submit}
           />
         </View>
@@ -155,13 +157,14 @@ const styles = StyleSheet.create({
   inputFieldWrapper: {
     flex: 1,
     backgroundColor: '#F2F3F5',
-    height: 48,
-    borderRadius: 99,
+    // height: 48,
+    borderRadius: 10,
   },
   inputField: {
     fontFamily: 'Poppins-Regular',
     paddingHorizontal: 20,
     fontSize: 15,
+    height: 80,
   },
   nameText: {
     fontFamily: 'Poppins-Medium',
