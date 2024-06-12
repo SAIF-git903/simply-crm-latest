@@ -358,7 +358,7 @@ PODS:
     - React-Core
   - react-native-date-picker (4.4.2):
     - React-Core
-  - react-native-document-picker (9.1.2):
+  - react-native-document-picker (9.3.0):
     - React-Core
   - react-native-nfc-manager (3.14.14):
     - React-Core
@@ -770,7 +770,7 @@ SPEC CHECKSUMS:
   React-logger: c5b527272d5f22eaa09bb3c3a690fee8f237ae95
   react-native-app-auth: aafaa6e2934ceeb72d1f5a42962937ffeed9566c
   react-native-date-picker: 312c387d2ff873c66c5e4cf78ff6827fa91644e2
-  react-native-document-picker: 86bcfb8e2c94cd587ca9feb0049831b806df590d
+  react-native-document-picker: 5b97e24a7f1a1e4a50a72c540a043f32d29a70a2
   react-native-nfc-manager: ead2cd1d1eaab139cc8b2dc5fbfe575eaa45efc4
   react-native-safe-area-context: b97eb6f9e3b7f437806c2ce5983f479f8eb5de4b
   react-native-simple-toast: 1f1cc551d419bc0ab05dcb0136554006c274789d

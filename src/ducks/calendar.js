@@ -144,7 +144,6 @@ export const getCalendarRecords = (isRefreshing, page) => async (dispatch) => {
 
     // Fields that we filter out from the record
     const requiredFields = [
-      'subject',
       'date_start',
       'time_start',
       'time_end',
@@ -170,6 +169,25 @@ export const getCalendarRecords = (isRefreshing, page) => async (dispatch) => {
       }
       return item;
     });
+    matchAndAddSubject(calendarRecords, mappedRecords);
+
+    function matchAndAddSubject(calendarRecords, mappedRecords) {
+      // Create a map to quickly access the subject from calendarRecords by id
+      const calendarMap = new Map();
+
+      calendarRecords.forEach((record) => {
+        const id = record.id.split('x')[1]; // Extract the part after '9x'
+        calendarMap.set(id, record.subject);
+      });
+
+      // Add subject to mappedRecords if the id matches
+      mappedRecords.forEach((record) => {
+        const id = record.id.split('x')[1]; // Extract the part after '18x'
+        if (calendarMap.has(id)) {
+          record.subject = calendarMap.get(id);
+        }
+      });
+    }
 
     dispatch(getCalendarRecordsFulfilled(mappedRecords));
   } catch (e) {

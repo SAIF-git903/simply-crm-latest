@@ -54,6 +54,8 @@
 		<string>$(PRODUCT_NAME) would like to upload photos from your photo gallery</string>
 		<key>NSPhotoLibraryUsageDescription</key>
 		<string>$(PRODUCT_NAME) would like to use photos from your photo gallery</string>
+		<key>NSDocumentDirectoryUsageDescription</key>
+		<string>We need your permission to access your documents</string>
 		<key>UIAppFonts</key>
 		<array>
 			<string>AntDesign.ttf</string>

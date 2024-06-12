@@ -23,6 +23,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import axios from 'axios';
 import RNFetchBlob from 'rn-fetch-blob';
@@ -166,6 +167,7 @@ export default function RecordDetails({route}) {
   const [isCompare, setIsCompare] = useState(false);
   const [isWrong, setIsWrong] = useState(false);
   const [nfcText, setNFCText] = useState();
+  const [file, setFile] = useState(null);
 
   let data = [
     {
@@ -182,19 +184,21 @@ export default function RecordDetails({route}) {
     },
     {
       id: 3,
-      lbl: 'Add Document (From Camera)',
+      // lbl: 'Add Document (From Camera)',
+      lbl: 'Take a photo with camera ',
       icon: <Icon name="camera" size={25} color="#757575" />,
     },
     {
       id: 4,
-      lbl: 'Add Document (From Gallery)',
+      // lbl: 'Add Document (From Gallery)',
+      lbl: 'Add a photo from camera\nlibrary',
       icon: <IconFontAwesome name="photo" size={25} color="#757575" />,
     },
-    // {
-    //   id: 5,
-    //   lbl: 'Create New Document',
-    //   icon: <Ionicons name="document-text-outline" size={30} color="#757575" />,
-    // },
+    {
+      id: 5,
+      lbl: 'File From Documents',
+      icon: <Ionicons name="document-text-outline" size={30} color="#757575" />,
+    },
   ];
 
   useEffect(() => {
@@ -495,15 +499,42 @@ export default function RecordDetails({route}) {
   };
 
   const openimagelib = async () => {
-    try {
-      const res = await DocumentPicker.pick({
-        type: [DocumentPicker.types.allFiles],
-      });
+    ImageCropPicker.openPicker({
+      width: 300,
+      height: 400,
+      mediaType: 'photo',
+      includeBase64: true,
+      // useFrontCamera: true,
+      cropping: true,
+    })
+      .then((image) => {
+        const getFileName = (filePath) => {
+          // Use react-native-fs to extract filename from path
+          const pathArray = filePath.split('/');
+          const filename = pathArray[pathArray.length - 1];
+          return filename;
+        };
+        let fileName = getFileName(image.path);
 
-      saveFile(res[0], true);
-    } catch (err) {
-      console.log('err', err);
-    }
+        let file = {
+          uri: image.path,
+          name: fileName,
+          filename: fileName,
+          type: image.mime,
+        };
+
+        saveFile(file, true);
+      })
+      .catch((err) => console.log('err', err));
+    // try {
+    //   const res = await DocumentPicker.pick({
+    //     type: [DocumentPicker.types.images],
+    //   });
+
+    //   saveFile(res[0], true);
+    // } catch (err) {
+    //   console.log('err', err);
+    // }
   };
 
   const onEdit = async () => {
@@ -691,13 +722,59 @@ export default function RecordDetails({route}) {
         }
         break;
       case 5:
-        console.log('Create New Document selected');
+        if (Platform.OS === 'ios') {
+          setTimeout(() => {
+            pickFile();
+          }, 1000);
+        } else {
+          pickFile();
+        }
         break;
       default:
         break;
     }
     setdocumentModal(false);
   };
+
+  const pickFile = async () => {
+    try {
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.allFiles],
+      });
+      saveFile(res[0], true);
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        console.log('err', err);
+      } else {
+        console.log('err', err);
+        // Alert.alert('Unknown error: ' + JSON.stringify(err));
+      }
+    }
+  };
+
+  // const uploadFile = async () => {
+  //   if (file) {
+  //     const formData = new FormData();
+  //     formData.append('file', {
+  //       uri: file.uri,
+  //       type: file.type,
+  //       name: file.name,
+  //     });
+
+  //     try {
+  //       const response = await axios.post('YOUR_SERVER_URL/upload', formData, {
+  //         headers: {
+  //           'Content-Type': 'multipart/form-data',
+  //         },
+  //       });
+  //       Alert.alert('File uploaded successfully');
+  //     } catch (err) {
+  //       Alert.alert('File upload failed: ' + JSON.stringify(err));
+  //     }
+  //   } else {
+  //     Alert.alert('Please select a file first');
+  //   }
+  // };
 
   const renderItem = ({item, index}) => {
     return (
