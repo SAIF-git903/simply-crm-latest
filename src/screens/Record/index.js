@@ -714,9 +714,13 @@ export default function RecordDetails({route}) {
         break;
       case 4:
         if (Platform.OS === 'ios') {
+          setloading(true);
           setTimeout(() => {
             openimagelib();
           }, 1000);
+          setTimeout(() => {
+            setloading(false);
+          }, 1100);
         } else {
           openimagelib();
         }
