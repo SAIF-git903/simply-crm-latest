@@ -257,13 +257,17 @@ const getAndSaveData = async (
               try {
                 const uiType = field.uitype;
                 if (uiType === 252) {
-                  const crmValue = moment.tz(
-                    `${field.value}`,
-                    'HH:mm:ss',
-                    loginDetails.crmTz,
-                  );
-                  const userValue = crmValue.clone().tz(loginDetails.userTz);
-                  value = userValue.format('hh:mmA');
+                  // const crmValue = moment.tz(
+                  //   `${field.value}`,
+                  //   'HH:mm:ss',
+                  //   loginDetails.crmTz,
+                  // );
+                  // const userValue = crmValue.clone().tz(loginDetails.userTz);
+                  // value = userValue.format('hh:mmA');
+                  value = convertTo12HourFormat(field?.value);
+                  function convertTo12HourFormat(time) {
+                    return moment(time, 'HH:mm').format('hh:mm A');
+                  }
                 } else if (uiType === 70) {
                   const crmValue = moment.tz(
                     `${field.value}`,
