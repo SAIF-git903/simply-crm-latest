@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Button, Image, Text, TouchableOpacity, View} from 'react-native';
 import DatePicker from 'react-native-date-picker';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {fontStyles, commonStyles} from '../../../styles/common';
 import moment from 'moment';
 
@@ -79,17 +80,34 @@ class TimeType extends Component {
                   </Text>
                 </View>
                 <TouchableOpacity
-                  style={{height: 35, width: 35}}
+                  style={{
+                    height: 35,
+                    width: 35,
+                  }}
                   onPress={() => this.setState({visible: true})}>
-                  <Image
-                    source={require('../../../../assets/images/date_icon.png')}
-                    style={{
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      height: '100%',
-                      width: '100%',
-                    }}
-                  />
+                  {this.props.obj.name === 'time_in' ||
+                  this.props.obj.name === 'time_out' ? (
+                    <View
+                      style={{
+                        height: '100%',
+                        width: '100%',
+                        alignItems: 'center',
+                        paddingLeft: 10,
+                        justifyContent: 'center',
+                      }}>
+                      <FontAwesome5 name="clock" size={25} solid />
+                    </View>
+                  ) : (
+                    <Image
+                      source={require('../../../../assets/images/date_icon.png')}
+                      style={{
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        height: '100%',
+                        width: '100%',
+                      }}
+                    />
+                  )}
                 </TouchableOpacity>
               </View>
               <DatePicker

@@ -23,7 +23,7 @@ class DateType extends Component {
       pickDate: null,
       saveValue: this.props.submodule === 'Events' ? new Date() : null,
       fieldName: this.props.obj.name,
-      formatDate: formatDate !== undefined ? formatDate : formatedDate,
+      formatDate: formatDate !== undefined ? formatedDate : formatedDate,
       visible: false,
       modal: false,
       endDate: null,
@@ -56,6 +56,15 @@ class DateType extends Component {
 
     if (this.state.fieldName === 'closingdate') {
       this.setState({saveValue: this?.props?.obj?.currentValue});
+    }
+
+    if (
+      this.state.fieldName === 'timesheetdate' &&
+      this.props?.moduleName === 'Timesheets'
+    ) {
+      this.setState({
+        saveValue: moment(new Date()).format(this.state.formatDate),
+      });
     }
   }
 

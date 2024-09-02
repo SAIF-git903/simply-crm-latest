@@ -210,16 +210,31 @@ const getAndSaveData = async (
             break;
           }
         }
-
+        // const uitypeToSkip = [15, 63, 55, 16, 56, 1]; // Add more uitypes to this array if needed
+        const namesToSkip = [
+          'duration_hours',
+          // 'eventstatus',
+          'duration_minutes',
+          'notime',
+          'starred',
+          'tags',
+        ];
         for (let k = 0; k < fields.length; k++) {
           const field = fields[k];
 
-          if (
-            viewerInstance.props.moduleName === 'Calendar' &&
-            field.name === 'contact_id'
-          ) {
+          // if (uitypeToSkip.includes(parseInt(field.uitype, 10))) {
+          //   continue;
+          // }
+
+          if (namesToSkip.includes(field.name)) {
             continue;
           }
+          // if (
+          //   viewerInstance.props.moduleName === 'Calendar' &&
+          //   field.name === 'contact_id'
+          // ) {
+          //   continue;
+          // }
 
           let value;
           if (typeof field.value === 'string') {
@@ -368,7 +383,7 @@ const getAndSaveData = async (
           <Section
             key={i}
             headerStyle={{paddingLeft: 15}}
-            style={{paddingTop: 5}}
+            style={{paddingTop: 0, marginBottom: 0}}
             open={block?.display_status === 'open' ? true : false}
             sectionBackgroundColor={'#f2f3f8'}
             sectionHeaderBackground={'#f2f3f8'}
@@ -381,7 +396,13 @@ const getAndSaveData = async (
               // <SectionBox style={{padding: 5}}>{deduplicatedArray}</SectionBox>
               <SectionBox>{deduplicatedArray}</SectionBox>
             }
-            contentHeight={fieldViews.length * 60 + 5}
+            contentHeight={
+              viewerInstance?.props?.moduleName === 'Calendar' ||
+              viewerInstance.props.moduleName === 'Events'
+                ? fieldViews.length * 50
+                : fieldViews.length * 60 + 5
+            }
+            // contentHeight={fieldViews.length * 60 + 5}
           />,
         );
       }

@@ -174,7 +174,10 @@ export const getRecordStructureHelper = async (currentInstance) => {
                 break;
               case 'time':
                 // ComponentName = TimeForm;
-                ComponentName = DateForm;
+                ComponentName =
+                  currentInstance?.props?.moduleName === 'Timesheets'
+                    ? TimeForm
+                    : DateForm;
                 break;
               case 'string':
               case 'text':

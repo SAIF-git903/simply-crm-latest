@@ -96,7 +96,7 @@ export default class Field extends Component {
           borderColor: '#f2f3f8',
           alignItems: 'center',
           justifyContent: 'space-between',
-          paddingVertical: 10,
+          paddingVertical: uiType === '19' ? 0 : 10,
         }}>
         <View style={{width: '40%'}}>
           <Text style={fontStyles.fieldLabel} numberOfLines={2}>
@@ -119,18 +119,37 @@ export default class Field extends Component {
                 borderRadius: 3,
               }}>
               {uiType === '19' ? (
-                <TextInput
-                  editable={false}
-                  value={this.props.value}
-                  multiline={true}
-                  style={[
-                    fontStyles.fieldValue,
+                <>
+                  {this.props.value ? (
+                    <TextInput
+                      editable={false}
+                      value={this.props.value ? this.props.value : 'N/A'}
+                      multiline={true}
+                      style={[
+                        fontStyles.fieldValue,
 
-                    {
-                      color: color ? textColor : '#000',
-                    },
-                  ]}
-                />
+                        {
+                          color: color
+                            ? textColor
+                            : this.props.value
+                            ? '#000'
+                            : '#707070',
+                        },
+                      ]}
+                    />
+                  ) : (
+                    <Text
+                      style={[
+                        fontStyles.fieldValue,
+                        {
+                          paddingVertical: 10,
+                          color: '#707070',
+                        },
+                      ]}>
+                      N/A
+                    </Text>
+                  )}
+                </>
               ) : (
                 <Text
                   onPress={() => this.onPressAction()}
@@ -141,7 +160,11 @@ export default class Field extends Component {
                           fontStyles.fieldValue,
                           {
                             paddingHorizontal: 5,
-                            color: color ? textColor : '#000',
+                            color: color
+                              ? textColor
+                              : this.props.value
+                              ? '#000'
+                              : '#707070',
                           },
                         ]
                   }
@@ -151,7 +174,9 @@ export default class Field extends Component {
                     ? showPassword === true
                       ? this.props.value
                       : '*'.repeat(this.props.value?.length)
-                    : this.props.value}
+                    : this.props.value
+                    ? this.props.value
+                    : 'N/A'}
                 </Text>
               )}
             </View>

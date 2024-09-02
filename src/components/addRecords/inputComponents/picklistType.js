@@ -24,11 +24,23 @@ class PickListType extends Component {
     };
   }
 
+  // newarray = () => {
+  //   let newVal = this.props?.obj?.type?.picklistValues?.map((item) => ({
+  //     ...item,
+  //     color: this.props?.colorsType[item?.value] || null, // Assign the color, or null if not found
+  //   }));
+  //   return newVal;
+  // };
+
   newarray = () => {
-    let newVal = this.props?.obj?.type?.picklistValues?.map((item) => ({
+    const picklistValues = this.props?.obj?.type?.picklistValues || [];
+    const colorsType = this.props?.colorsType || {};
+
+    const newVal = picklistValues.map((item) => ({
       ...item,
-      color: this.props?.colorsType[item?.value] || null, // Assign the color, or null if not found
+      color: colorsType[item?.value] || null, // Assign the color, or null if not found
     }));
+
     return newVal;
   };
 
@@ -100,7 +112,9 @@ class PickListType extends Component {
                       justifyContent: 'center',
                       width: '100%',
                       borderRadius: 3,
-                      backgroundColor: item?.color,
+                      backgroundColor: item?.color
+                        ? item?.color
+                        : 'rgba(100, 100, 100, 0.2)',
                       marginVertical: 1,
                     }}
                     onPress={() => {
