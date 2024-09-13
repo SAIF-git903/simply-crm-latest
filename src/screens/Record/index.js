@@ -1249,6 +1249,7 @@ export default function RecordDetails({route}) {
                               item?.runFunction[0].function,
                               item?.runFunction[0].parameter,
                             );
+                            setSaveText(item?.runFunction[0].parameter);
                           } else {
                             setVisible(!visible);
                             setItemFields(item.showModal);
