@@ -4,6 +4,7 @@ import {fontStyles} from '../../styles/common';
 import {API_trackCall} from '../../helper/api';
 import IconButton from '../IconButton';
 import {TextInput} from 'react-native-gesture-handler';
+import {isLightColor} from '../common/TextColor';
 
 export default class Field extends Component {
   constructor(props) {
@@ -62,40 +63,23 @@ export default class Field extends Component {
   updatePassword = () => {
     console.log('hi');
   };
-  isLightColor = (hexColor) => {
-    // Convert hex color to RGB object
-    const hexToRgb = (hex) => {
-      const bigint = parseInt(hex?.slice(1), 16);
-      const r = (bigint >> 16) & 255;
-      const g = (bigint >> 8) & 255;
-      const b = bigint & 255;
-      return {r, g, b};
-    };
-
-    // Calculate luminance
-    const rgb = hexToRgb(hexColor);
-    const luminance = (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255;
-
-    // You can adjust the threshold based on your preference
-    return luminance > 0.5; // If luminance is greater than 0.5, consider it a light color
-  };
 
   render() {
     const {showPassword} = this.state;
     const {label, uiType, value, isLocation} = this.props;
     const color = this.getColorForLeadSource(value);
-    const textColor = this.isLightColor(color) ? 'black' : 'white';
+    const textColor = isLightColor(color) ? 'black' : 'white';
     return (
       <View
         style={{
           width: '100%',
           // maxHeight: 70,
           // height: 70,
-          flexDirection: 'row',
+          // flexDirection: 'row',
           borderBottomWidth: 0.5,
           borderColor: '#f2f3f8',
-          alignItems: 'center',
-          justifyContent: 'space-between',
+          // alignItems: 'center',
+          // justifyContent: 'space-between',
           paddingVertical: uiType === '19' ? 0 : 10,
         }}>
         <View style={{width: '40%'}}>
@@ -121,23 +105,37 @@ export default class Field extends Component {
               {uiType === '19' ? (
                 <>
                   {this.props.value ? (
-                    <TextInput
-                      editable={false}
-                      value={this.props.value ? this.props.value : 'N/A'}
-                      multiline={true}
+                    <Text
                       style={[
                         fontStyles.fieldValue,
-
                         {
+                          paddingVertical: 10,
                           color: color
                             ? textColor
                             : this.props.value
                             ? '#000'
                             : '#707070',
                         },
-                      ]}
-                    />
+                      ]}>
+                      {this.props.value}
+                    </Text>
                   ) : (
+                    // <TextInput
+                    //   editable={false}
+                    //   value={this.props.value ? this.props.value : 'N/A'}
+                    //   multiline={true}
+                    //   style={[
+                    //     fontStyles.fieldValue,
+
+                    //     {
+                    //       color: color
+                    //         ? textColor
+                    //         : this.props.value
+                    //         ? '#000'
+                    //         : '#707070',
+                    //     },
+                    //   ]}
+                    // />
                     <Text
                       style={[
                         fontStyles.fieldValue,
@@ -163,7 +161,7 @@ export default class Field extends Component {
                             color: color
                               ? textColor
                               : this.props.value
-                              ? '#000'
+                              ? '#707070'
                               : '#707070',
                           },
                         ]

@@ -6,6 +6,7 @@ import {commonStyles, fontStyles} from '../../styles/common';
 import {saveSuccess} from '../../actions';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {SinglePickerMaterialDialog} from 'react-native-material-dialog';
+import {HEADER_COLOR} from '../../variables/themeColors';
 
 class Header extends Component {
   constructor(props) {
@@ -60,7 +61,7 @@ class Header extends Component {
           name="save"
           solid
           size={28}
-          color="white"
+          color={this.props.isTimesheets ? '#fff' : '#fff'}
         />
       );
     }
@@ -80,7 +81,7 @@ class Header extends Component {
           visible={this.state.dialogueVisible}
           selectedItem={this.state.dialogueSelectedValue}
           onCancel={() => this.setState({dialogueVisible: false})}
-          onOk={result => {
+          onOk={(result) => {
             this.setState(
               {
                 dialogueSelectedValue: result.selectedItem,
@@ -101,17 +102,36 @@ class Header extends Component {
 
   render() {
     return (
-      <View style={commonStyles.headerBackground}>
+      <View
+        style={[
+          commonStyles.headerBackground,
+          {
+            backgroundColor: this.props?.isTimesheets ? '#fff' : HEADER_COLOR,
+          },
+        ]}>
         <SafeAreaView forceInset={{top: 'always', bottom: 'never'}}>
           <View style={commonStyles.headerContentStyle}>
-            <View style={{width: 40}}>{this.renderBackButton()}</View>
+            <View style={{width: 40}}>
+              {this.props?.isTimesheets ? null : this.renderBackButton()}
+            </View>
             <View
               style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-              <Text style={[fontStyles.navbarTitle, {textAlign: 'center'}]}>
+              <Text
+                style={[
+                  fontStyles.navbarTitle,
+                  {
+                    textAlign: 'center',
+                    fontSize: this.props.isTimesheets ? 20 : 16,
+                    fontWeight: '700',
+                    color: this.props.isTimesheets ? '#000' : '#fff',
+                  },
+                ]}>
                 {this.props.moduleLable}
               </Text>
             </View>
-            <TouchableOpacity onPress={this.onAddButtonPress.bind(this)}>
+            <TouchableOpacity
+              disabled={this.props.isTimesheets ? true : false}
+              onPress={this.onAddButtonPress.bind(this)}>
               <View
                 style={{
                   minWidth: 40,

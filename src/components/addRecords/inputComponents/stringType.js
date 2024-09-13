@@ -68,7 +68,7 @@ class StringType extends Component {
             this.props.moduleName === 'Calendar' && commonStyles.textbox,
             fontStyles.fieldValue,
             {
-              paddingLeft: 10,
+              // paddingLeft: 10,
 
               color: this.state.showError ? 'red' : fontStyles.fieldValue.color,
             },
@@ -76,7 +76,8 @@ class StringType extends Component {
           keyboardType={keyboardType}
           value={this.state.saveValue}
           onChangeText={this.onTextInputChange.bind(this)}
-          placeholderTextColor={'#C5C5C5'}
+          // placeholderTextColor={'#C5C5C5'}
+          placeholderTextColor={'#707070'}
         />
       </View>
     );

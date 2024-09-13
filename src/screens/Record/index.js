@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {createRef, useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -23,6 +23,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import axios from 'axios';
@@ -45,12 +46,14 @@ import {
 } from '../../helper/api';
 import store from '../../store';
 
-import {deleteRecord, passValue} from '../../actions';
+import {deleteRecord, isTimeSheetModal, passValue} from '../../actions';
 import {deleteCalendarRecord} from '../../ducks/calendar';
 import CommanView from '../../components/recordViewer/CommanView';
+import AddRecords from '../../components/addRecords';
+import {isLightColor} from '../../components/common/TextColor';
 
 // var ScrollableTabView = require('react-native-scrollable-tab-view');
-
+const icon = <FontAwesome5 name={'comments'} />;
 export default function RecordDetails({route}) {
   // const isFocused = useIsFocused();
   const {height, width} = Dimensions.get('window');
@@ -59,7 +62,6 @@ export default function RecordDetails({route}) {
 
   const index = route?.params?.index;
   const itemID = route?.params?.recordId;
-
   const recordViewerState = useSelector((state) => state.recordViewer);
 
   const {enabledModules} = useSelector(
@@ -84,10 +86,22 @@ export default function RecordDetails({route}) {
 
   function createTabs() {
     const tabs = [];
-
+    const viewer = {
+      tabIcon: 'file-alt',
+      tabLabel: 'Details',
+      component: (
+        <Viewer
+          key={0}
+          tabLabel="Details"
+          navigation={navigation}
+          moduleName={moduleName}
+          recordId={recordId}
+        />
+      ),
+    };
     const Summary = {
       tabIcon: 'list-ul',
-      tabLabel: 'Summary',
+      tabLabel: 'Details',
       component: (
         <Summery
           key={1}
@@ -99,19 +113,19 @@ export default function RecordDetails({route}) {
       ),
     };
 
-    const viewer = {
-      tabIcon: 'file-alt',
-      tabLabel: 'Details',
-      component: (
-        <Viewer
-          key={1}
-          tabLabel="Details"
-          navigation={navigation}
-          moduleName={moduleName}
-          recordId={recordId}
-        />
-      ),
-    };
+    // const viewer = {
+    //   tabIcon: 'file-alt',
+    //   tabLabel: 'Details',
+    //   component: (
+    //     <Viewer
+    //       key={1}
+    //       tabLabel="Details"
+    //       navigation={navigation}
+    //       moduleName={moduleName}
+    //       recordId={recordId}
+    //     />
+    //   ),
+    // };
 
     const updates = {
       tabIcon: 'history',
@@ -132,7 +146,7 @@ export default function RecordDetails({route}) {
       component: <Comments key={3} tabLabel="Comments" recordId={recordId} />,
     };
 
-    tabs.push(Summary, viewer, updates);
+    tabs.push(viewer, Summary, updates);
 
     if (enabledModules.includes(moduleName)) tabs.push(comments);
 
@@ -142,6 +156,7 @@ export default function RecordDetails({route}) {
   const tabs = createTabs();
   // const tabIcons = tabs.map((x) => x.tabIcon);
   // const tabComponents = tabs.map((x) => x.component);
+  // const [items, setItems] = useState('Details');
   const [items, setItems] = useState('Details');
   const [itemsToShow, setItemsToShow] = useState(3);
   const [btnTop, setBtnTop] = useState([]);
@@ -168,7 +183,8 @@ export default function RecordDetails({route}) {
   const [isWrong, setIsWrong] = useState(false);
   const [nfcText, setNFCText] = useState();
   const [file, setFile] = useState(null);
-
+  const [timeSheetModal, setTimeSheetModal] = useState(false);
+  const [saveText, setSaveText] = useState();
   let data = [
     {
       id: 1,
@@ -204,28 +220,39 @@ export default function RecordDetails({route}) {
   useEffect(() => {
     setloading(true);
     getRelativeModuleModules();
-    // getColors();
   }, []);
 
-  // const getColors = async () => {
-  //   try {
-  //     const res = await API_describe(moduleName);
-  //     let fieldsWithPicklistColors = [];
-  //     for (
-  //       let index = 0;
-  //       index < res?.result?.describe?.fields?.length;
-  //       index++
-  //     ) {
-  //       const field = res?.result?.describe?.fields[index];
-  //       if (field?.type?.picklistColors) {
-  //         fieldsWithPicklistColors.push(field);
-  //       }
-  //     }
-  //     dispatch(passValue(fieldsWithPicklistColors));
-  //   } catch (error) {
-  //     console.log('err', error);
-  //   }
-  // };
+  const getColors = async () => {
+    try {
+      const res = await API_describe('Timesheets');
+      let fieldsWithPicklistColors = [];
+      for (
+        let index = 0;
+        index < res?.result?.describe?.fields?.length;
+        index++
+      ) {
+        const field = res?.result?.describe?.fields[index];
+        if (field?.type?.picklistColors) {
+          fieldsWithPicklistColors.push(field);
+        }
+      }
+      dispatch(passValue(fieldsWithPicklistColors));
+    } catch (error) {
+      console.log('err', error);
+    }
+  };
+  const colorsType = useSelector((state) => state?.colorRuducer?.passedValue);
+
+  let isTime_SheetModal = useSelector(
+    (state) => state?.timeSheetModalReducer?.is_TimeSheetModal,
+  );
+
+  useEffect(() => {
+    if (isTime_SheetModal === false) {
+      setTimeSheetModal(isTime_SheetModal);
+      dispatch(isTimeSheetModal(null));
+    }
+  }, [isTime_SheetModal]);
 
   const getImageData = async (data) => {
     let record = data[0]?.record;
@@ -261,24 +288,26 @@ export default function RecordDetails({route}) {
     try {
       let res = await API_describe(moduleName);
 
-      const new_array = res?.result?.describe?.relatedModules.map(
-        (label, index) => {
-          return {
-            tabLabel: label,
-            // tabIcon: '',
-            component: (
-              <CommanView
-                tabLabel={label}
-                moduleName={moduleName}
-                recordId={recordId}
-                onPress={(data) => {
-                  getImageData(data);
-                }}
-              />
-            ),
-          };
-        },
+      let filterData = res?.result?.describe?.relatedModules?.filter(
+        (val) => val !== 'ModComments',
       );
+
+      const new_array = filterData?.map((label, index) => {
+        return {
+          tabLabel: label,
+          // tabIcon: '',
+          component: (
+            <CommanView
+              tabLabel={label}
+              moduleName={moduleName}
+              recordId={recordId}
+              onPress={(data) => {
+                getImageData(data);
+              }}
+            />
+          ),
+        };
+      });
 
       // let newarray = tabs.filter((val) => {
       //   return res?.result?.describe?.relatedModules.some(
@@ -289,7 +318,13 @@ export default function RecordDetails({route}) {
       //   setloading(false);
       // }
 
-      setNewTabs([tabs[1], tabs[2], tabs[tabs.length - 1], ...new_array]);
+      setNewTabs([
+        // tabs[0],
+        tabs[1],
+        tabs[2],
+        tabs[tabs.length - 1],
+        ...new_array,
+      ]);
     } catch (error) {
       console.log('err', error);
     }
@@ -303,6 +338,9 @@ export default function RecordDetails({route}) {
     const filteredFields = itemFields?.map((val) => {
       return fields?.find((itm) => val === itm?.name);
     });
+
+    console.log('filteredFields', filteredFields);
+
     if (filteredFields != null && filteredFields != undefined) {
       setNewArr(filteredFields);
     }
@@ -411,24 +449,43 @@ export default function RecordDetails({route}) {
       Linking.openURL(emailUrl)
         .then((res) => console.log('res', res))
         .catch((err) => console.log('err', err));
+    } else if (fun === 'map') {
+      openMap(params);
+    } else if (fun === 'quickcreate') {
+      getColors();
+      setloading(true);
+      setTimeout(() => {
+        setSaveText(params);
+        setloading(false);
+        setTimeSheetModal(true);
+      }, 1000);
     } else {
       if (fun === 'call') {
+        console.log('params', params);
+        const ph_no = getValueByName(params);
+
         let phoneNumber = '';
         if (Platform.OS === 'android') {
-          phoneNumber = `tel:${params}`;
+          phoneNumber = `tel:${ph_no}`;
         } else {
-          phoneNumber = `telprompt:${params}`;
+          phoneNumber = `telprompt:${ph_no}`;
         }
 
         Linking.openURL(phoneNumber)
           .then((res) => console.log('res', res))
           .catch((err) => console.log('err', err));
       } else {
-        Linking.openURL(`${fun}:${params}`)
+        Linking.openURL(`${fun}:${phoneNumber}`)
           .then((res) => console.log('res', res))
           .catch((err) => console.log('err', err));
       }
     }
+  };
+
+  const getValueByName = (params) => {
+    const match = fields.find((val) => val?.name === params);
+
+    return match?.value ? match?.value : undefined;
   };
 
   const saveFile = async (filedata) => {
@@ -738,6 +795,29 @@ export default function RecordDetails({route}) {
         break;
     }
     setdocumentModal(false);
+  };
+  const openMap = (address) => {
+    const encodedAddress = encodeURIComponent(address);
+
+    // URL format for Apple Maps (iOS) and Google Maps (Android)
+    const appleMapsUrl = `maps://?q=${encodedAddress}`; // Apple Maps (iOS)
+    const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`; // Google Maps (Android and iOS)
+
+    // Open Google Maps on Android, Apple Maps on iOS
+    const url = Platform.select({
+      ios: appleMapsUrl,
+      android: googleMapsUrl,
+    });
+
+    Linking.canOpenURL(url)
+      .then((supported) => {
+        if (supported) {
+          Linking.openURL(url);
+        } else {
+          Alert.alert('Unable to open map', 'No map application available.');
+        }
+      })
+      .catch((err) => console.error('An error occurred', err));
   };
 
   const pickFile = async () => {
@@ -1137,8 +1217,9 @@ export default function RecordDetails({route}) {
                 <Text style={styles.nfcbtn}>compareNFC</Text>
               </TouchableOpacity>
             </View> */}
-            {/* <FlatList
+            <FlatList
               data={btnTop}
+              showsHorizontalScrollIndicator={false}
               horizontal
               keyExtractor={(item) => item.id}
               contentContainerStyle={{
@@ -1147,6 +1228,7 @@ export default function RecordDetails({route}) {
               }}
               // scrollEnabled={false}
               renderItem={({item, index}) => {
+                const textColor = isLightColor(item?.color) ? 'black' : 'white';
                 const parsedIcon = parseIconFromClassName(item.icon);
                 return (
                   <View
@@ -1158,14 +1240,24 @@ export default function RecordDetails({route}) {
                     {parsedIcon ? (
                       <TouchableOpacity
                         activeOpacity={0.5}
+                        style={{
+                          borderRadius: 5,
+                        }}
                         onPress={() => {
-                          setState({
-                            value: item?.runFunction[0].parameter,
-                            fun: item?.runFunction[0].function,
-                          });
-
-                          setVisible(!visible);
-                          setItemFields(item.showModal);
+                          if (item?.showModal[0] === '') {
+                            ongenericFunction(
+                              item?.runFunction[0].function,
+                              item?.runFunction[0].parameter,
+                            );
+                          } else {
+                            setVisible(!visible);
+                            setItemFields(item.showModal);
+                            setState({
+                              value: item?.runFunction[0].parameter,
+                              fun: item?.runFunction[0].function,
+                            });
+                            setSaveText(item?.runFunction[0].parameter);
+                          }
                         }}>
                         <FontAwesome
                           icon={parsedIcon}
@@ -1179,17 +1271,31 @@ export default function RecordDetails({route}) {
                           backgroundColor: item.color,
                           paddingHorizontal: 20,
                           paddingVertical: 5,
+                          borderRadius: 5,
                         }}
                         onPress={() => {
-                          setState({
-                            value: item?.runFunction[0].parameter,
-                            fun: item?.runFunction[0].function,
-                          });
-
-                          setVisible(!visible);
-                          setItemFields(item.showModal);
+                          // setVisible(!visible);
+                          if (item?.showModal[0] === '') {
+                            ongenericFunction(
+                              item?.runFunction[0].function,
+                              item?.runFunction[0].parameter,
+                            );
+                            setSaveText(item?.text);
+                          } else {
+                            setVisible(!visible);
+                            setItemFields(item.showModal);
+                            setState({
+                              value: item?.runFunction[0].parameter,
+                              fun: item?.runFunction[0].function,
+                            });
+                            setSaveText(item?.runFunction[0].parameter);
+                          }
                         }}>
-                        <Text style={{fontFamily: 'Poppins-SemiBold'}}>
+                        <Text
+                          style={{
+                            fontFamily: 'Poppins-SemiBold',
+                            color: textColor,
+                          }}>
                           {item.text}
                         </Text>
                       </TouchableOpacity>
@@ -1197,7 +1303,7 @@ export default function RecordDetails({route}) {
                   </View>
                 );
               }}
-            /> */}
+            />
           </View>
         </View>
       ) : null}
@@ -1336,7 +1442,11 @@ export default function RecordDetails({route}) {
                         color: val?.value ? '#000' : '#9a9a9c',
                         fontFamily: 'Poppins-Regular',
                       }}>
-                      {val?.value ? val?.value : 'No detail'}
+                      {val?.value?.label
+                        ? val?.value?.label
+                        : val?.value
+                        ? val?.value
+                        : 'No detail'}
                     </Text>
                   </View>
                 </View>
@@ -1474,6 +1584,56 @@ export default function RecordDetails({route}) {
               onAnimationFinish={() => setIsWrong(false)}
             />
             <Text style={styles.nfcTitle}>Sorry, wrong NFC code</Text>
+          </View>
+        </View>
+      </Modal>
+      <Modal animationType="slide" transparent={true} visible={timeSheetModal}>
+        <View
+          activeOpacity={1}
+          style={{
+            flex: 1,
+            justifyContent: 'flex-end',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          }}
+          // onPress={() => setTimeSheetModal(false)}
+        >
+          <View
+            style={{
+              height: '90%',
+              overflow: 'hidden',
+              width: '100%',
+              alignSelf: 'center',
+              alignItems: 'center',
+              justifyContent: 'center',
+              // borderRadius: 30,
+              borderTopLeftRadius: 30,
+              borderTopRightRadius: 30,
+            }}>
+            <View style={{position: 'absolute', zIndex: 1, top: 13}}>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                style={{alignItems: 'center', justifyContent: 'center'}}
+                onPress={() => {
+                  setTimeSheetModal(false);
+                }}>
+                <View
+                  style={{
+                    height: 5,
+                    width: 50,
+                    borderRadius: 10,
+                    backgroundColor: '#000',
+                  }}
+                />
+              </TouchableOpacity>
+            </View>
+            <AddRecords
+              recordId={recordId}
+              lister={route?.params?.listerInstance}
+              isDashboard={false}
+              navigation={route?.params?.listerInstance?.props?.navigation}
+              isTimesheets={saveText}
+              colorsType={colorsType}
+            />
           </View>
         </View>
       </Modal>

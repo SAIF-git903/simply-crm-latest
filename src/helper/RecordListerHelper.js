@@ -516,6 +516,7 @@ const getFieldsForModule = (moduleName) => {
   let specialFields = {};
 
   const {sortOrderReducer} = store.getState();
+
   const sortfields = sortOrderReducer?.fields;
   fields = sortfields?.reduce((result, val) => {
     result[val?.name?.replace(/\s/g, '')] = val?.name;
@@ -929,8 +930,24 @@ const getItem = (listerInstance, item, index, isDashboard, isRefRecord) => {
     }
   }
 
-  recordName = Object.values(result);
-  labels = remainingLabels;
+  // recordName = Object.values(result);
+  // labels = remainingLabels;
+  // console.log('labels', labels);
+
+  switch (listerInstance.props.moduleName) {
+    case 'Timesheets':
+      recordName = Object.values(result);
+      // labels = remainingLabels;
+      labels = remainingLabels?.map((item) =>
+        item?.startsWith('47x') ? '--' : item,
+      );
+      break;
+
+    default:
+      recordName = Object.values(result);
+      labels = remainingLabels;
+      break;
+  }
 
   // switch (listerInstance.props.moduleName) {
   //   //TODO add keys for label, for 'Amount: 130' instead of '130' in recordItem

@@ -157,13 +157,15 @@ class DateType extends Component {
           'time_start' ? (
           <View
             style={{
-              height: '100%',
-              width: '34%',
+              flexDirection: 'row',
+              // justifyContent: 'space-between',
+              // height: '100%',
+              // width: '34%',
             }}>
             <View
               style={{
                 flexDirection: 'row',
-                height: '50%',
+                // height: '50%',
                 alignItems: 'center',
               }}>
               <Text
@@ -184,9 +186,18 @@ class DateType extends Component {
                 Time Start
               </Text>
             </View>
+            <Text
+              style={{
+                fontFamily: 'Poppins-Regular',
+                color: '#707070',
+                fontSize: 14,
+                marginLeft: 10,
+              }}>
+              &
+            </Text>
             <View
               style={{
-                height: '50%',
+                // height: '50%',
                 flexDirection: 'row',
                 alignItems: 'center',
               }}>
@@ -215,69 +226,9 @@ class DateType extends Component {
         {this.state.fieldName === 'duration_hours' ||
         this.state.fieldName === 'time_end' ? null : this.state.fieldName ===
           'time_start' ? (
-          <View style={{flex: 1}}>
-            <View style={{width: '100%'}}>
-              <View style={{flexDirection: 'row'}}>
-                <View
-                  style={{
-                    //paddingTop: 9,
-                    borderColor: '#ABABAB',
-                    borderWidth: 0.5,
-                    padding: 0,
-                    borderTopLeftRadius: 4,
-                    borderTopRightRadius: 4,
-                    borderBottomLeftRadius: 4,
-                    borderBottomRightRadius: 4,
-                    height: 38,
-                    width: '80%',
-                    justifyContent: 'center',
-                  }}>
-                  <Text style={{paddingLeft: 10, fontSize: 17}}>
-                    {this.state.saveValue &&
-                      moment(this.state.saveValue).format('HH:mm')}
-                  </Text>
-                </View>
-                <TouchableOpacity
-                  style={{height: 35, width: 35}}
-                  onPress={() => this.setState({modal: true})}>
-                  <Image
-                    source={require('../../../../assets/images/date_icon.png')}
-                    style={{
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      height: '100%',
-                      width: '100%',
-                    }}
-                  />
-                </TouchableOpacity>
-              </View>
-              <DatePicker
-                modal
-                open={this.state.modal}
-                mode="time"
-                date={
-                  this.state.saveValue !== null
-                    ? this.state.saveValue
-                    : new Date()
-                }
-                onConfirm={(date) => {
-                  let newDate = this.roundTimeToNearestDuration(date);
-                  if (this.state.fieldName === 'time_start') {
-                    this.setState({saveValue: newDate.date});
-                  } else if (this.state.fieldName === 'time_end') {
-                    this.setState({saveValue: newDate.date});
-                  } else {
-                    this.setState({saveValue: date});
-                  }
-                  this.setState({modal: false});
-                }}
-                onCancel={() => {
-                  this.setState({modal: false});
-                }}
-              />
-            </View>
-            <View style={{flex: 1, marginTop: 25}}>
-              <View style={{width: '100%'}}>
+          <View>
+            <View style={{flex: 1}}>
+              <View style={{width: '50%'}}>
                 <View style={{flexDirection: 'row'}}>
                   <View
                     style={{
@@ -294,14 +245,81 @@ class DateType extends Component {
                       justifyContent: 'center',
                     }}>
                     <Text style={{paddingLeft: 10, fontSize: 17}}>
-                      {this.state.endDate !== null
-                        ? moment(this.state.endDate).format('HH:mm')
-                        : this.state.saveValue
-                        ? moment(this.state.saveValue)
-                            .add(1, 'hours')
-                            .format('HH:mm')
-                        : null}
+                      {this.state.saveValue &&
+                        moment(this.state.saveValue).format('HH:mm')}
                     </Text>
+                  </View>
+                  <TouchableOpacity
+                    style={{height: 35, width: 35}}
+                    onPress={() => this.setState({modal: true})}>
+                    <Image
+                      source={require('../../../../assets/images/date_icon.png')}
+                      style={{
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        height: '100%',
+                        width: '100%',
+                      }}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <DatePicker
+                  modal
+                  open={this.state.modal}
+                  mode="time"
+                  date={
+                    this.state.saveValue !== null
+                      ? this.state.saveValue
+                      : new Date()
+                  }
+                  onConfirm={(date) => {
+                    let newDate = this.roundTimeToNearestDuration(date);
+                    if (this.state.fieldName === 'time_start') {
+                      this.setState({saveValue: newDate.date});
+                    } else if (this.state.fieldName === 'time_end') {
+                      this.setState({saveValue: newDate.date});
+                    } else {
+                      this.setState({saveValue: date});
+                    }
+                    this.setState({modal: false});
+                  }}
+                  onCancel={() => {
+                    this.setState({modal: false});
+                  }}
+                />
+              </View>
+              <View
+                style={{
+                  flex: 1,
+                  // marginTop: 25,
+                  marginTop: 10,
+                }}>
+                <View style={{width: '50%'}}>
+                  <View style={{flexDirection: 'row'}}>
+                    <View
+                      style={{
+                        //paddingTop: 9,
+                        borderColor: '#ABABAB',
+                        borderWidth: 0.5,
+                        padding: 0,
+                        borderTopLeftRadius: 4,
+                        borderTopRightRadius: 4,
+                        borderBottomLeftRadius: 4,
+                        borderBottomRightRadius: 4,
+                        height: 38,
+                        width: '80%',
+                        justifyContent: 'center',
+                      }}>
+                      <Text style={{paddingLeft: 10, fontSize: 17}}>
+                        {this.state.endDate !== null
+                          ? moment(this.state.endDate).format('HH:mm')
+                          : this.state.saveValue
+                          ? moment(this.state.saveValue)
+                              .add(1, 'hours')
+                              .format('HH:mm')
+                          : null}
+                      </Text>
+                    </View>
                   </View>
                 </View>
               </View>

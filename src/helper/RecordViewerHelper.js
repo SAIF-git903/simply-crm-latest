@@ -399,7 +399,7 @@ const getAndSaveData = async (
             contentHeight={
               viewerInstance?.props?.moduleName === 'Calendar' ||
               viewerInstance.props.moduleName === 'Events'
-                ? fieldViews.length * 50
+                ? fieldViews.length * 60 + 5
                 : fieldViews.length * 60 + 5
             }
             // contentHeight={fieldViews.length * 60 + 5}

@@ -30,14 +30,15 @@ class NumericType extends Component {
           <View style={{flex: 1}}>
             <TextInput
               autoGrow={true}
-              placeholderTextColor={'#C5C5C5'}
+              // placeholderTextColor={'#C5C5C5'}
+              placeholderTextColor={'#707070'}
               placeholder={this.props.validLabel}
               autoCorrect={false}
               autoCapitalize="none"
               style={[
                 commonStyles.label,
                 fontStyles.fieldValue,
-                {paddingLeft: 0},
+                // {paddingLeft: 10},
               ]}
               keyboardType="numeric"
               value={this.state.saveValue}

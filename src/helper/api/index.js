@@ -4,7 +4,7 @@ import {LOGINDETAILSKEY} from '../../variables/strings';
 import {addDatabaseKey} from '../DatabaseKeyHelper';
 import {LOGIN_USER_SUCCESS} from '../../actions/types';
 import moment from 'moment';
-import {passField, sortField} from '../../actions';
+import {defaultFilterId, passField, sortField} from '../../actions';
 
 async function makeCall(body, request_url, headers, method = 'POST') {
   const {
@@ -319,7 +319,13 @@ async function doFetch(request_url, method, headers, body_data) {
     console.log('response', response);
     throw error;
   });
-  console.log('responseJson-->', responseJson);
+  console.log('responseJson---->', responseJson);
+
+  if (responseJson?.result?.describe?.defaultFilterId) {
+    store.dispatch(
+      defaultFilterId(responseJson?.result?.describe?.defaultFilterId),
+    );
+  }
 
   if (responseJson?.result?.headers) {
     store.dispatch(sortField(responseJson?.result?.headers));

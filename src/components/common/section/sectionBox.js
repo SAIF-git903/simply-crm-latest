@@ -4,7 +4,11 @@ import {View, StyleSheet, ScrollView} from 'react-native';
 export default function SectionBox({children, style}) {
   return (
     <View style={[styles.wrapper, style]}>
-      <ScrollView showsVerticalScrollIndicator={false}>{children}</ScrollView>
+      <ScrollView
+        contentContainerStyle={{flexGrow: 1}}
+        showsVerticalScrollIndicator={false}>
+        {children}
+      </ScrollView>
     </View>
   );
 }

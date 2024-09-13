@@ -3,6 +3,7 @@ import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import {commonStyles} from '../../../styles/common';
 import {connect} from 'react-redux';
+import {isLightColor} from '../../common/TextColor';
 
 class PickListType extends Component {
   constructor(props) {
@@ -21,6 +22,8 @@ class PickListType extends Component {
       saveValue: this.props.obj.default ? this.props.obj.default.trim() : null,
       fieldName: this.props.obj.name,
       visible: false,
+      isColor: null,
+      istextColor: null,
     };
   }
 
@@ -44,23 +47,23 @@ class PickListType extends Component {
     return newVal;
   };
 
-  isLightColor = (hexColor) => {
-    // Convert hex color to RGB object
-    const hexToRgb = (hex) => {
-      const bigint = parseInt(hex?.slice(1), 16);
-      const r = (bigint >> 16) & 255;
-      const g = (bigint >> 8) & 255;
-      const b = bigint & 255;
-      return {r, g, b};
-    };
+  // isLightColor = (hexColor) => {
+  //   // Convert hex color to RGB object
+  //   const hexToRgb = (hex) => {
+  //     const bigint = parseInt(hex?.slice(1), 16);
+  //     const r = (bigint >> 16) & 255;
+  //     const g = (bigint >> 8) & 255;
+  //     const b = bigint & 255;
+  //     return {r, g, b};
+  //   };
 
-    // Calculate luminance
-    const rgb = hexToRgb(hexColor);
-    const luminance = (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255;
+  //   // Calculate luminance
+  //   const rgb = hexToRgb(hexColor);
+  //   const luminance = (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255;
 
-    // You can adjust the threshold based on your preference
-    return luminance > 0.5; // If luminance is greater than 0.5, consider it a light color
-  };
+  //   // You can adjust the threshold based on your preference
+  //   return luminance > 0.5; // If luminance is greater than 0.5, consider it a light color
+  // };
 
   render() {
     // let options = this.props.obj.type.picklistValues;
@@ -70,7 +73,7 @@ class PickListType extends Component {
         {/* {this.state.fieldName === 'duration_minutes'
           ? null
           : this.props.fieldLabelView} */}
-        {this.props.fieldLabelView}
+        <View style={{paddingBottom: 10}}>{this.props.fieldLabelView}</View>
         {/* {this.state.fieldName === 'duration_minutes' ? null : ( */}
         {/* {this.props.obj.name === 'cf_test_drop_down' ? null : ( */}
         {/* )} */}
@@ -100,16 +103,15 @@ class PickListType extends Component {
               style={{height: 100}}
               showsVerticalScrollIndicator={false}>
               {this.newarray()?.map((item, index) => {
-                const textColor = this.isLightColor(item?.color)
-                  ? 'black'
-                  : 'white';
+                const textColor = isLightColor(item?.color) ? 'black' : 'white';
                 return (
                   <TouchableOpacity
                     key={index}
                     style={{
-                      alignSelf: 'center',
+                      // alignSelf: 'center',
                       alignItems: 'center',
                       justifyContent: 'center',
+                      // paddingLeft: 10,
                       width: '100%',
                       borderRadius: 3,
                       backgroundColor: item?.color
@@ -120,6 +122,8 @@ class PickListType extends Component {
                     onPress={() => {
                       this.setState({visible: false});
                       this.setState({saveValue: item?.value});
+                      this.setState({isColor: item?.color});
+                      this.setState({istextColor: textColor});
                     }}>
                     <Text
                       style={{
@@ -138,9 +142,12 @@ class PickListType extends Component {
             <TouchableOpacity
               activeOpacity={0.7}
               style={{
-                height: '100%',
+                // height: '100%',
                 width: '100%',
-                backgroundColor: 'rgba(100, 100, 100, 0.2)',
+                backgroundColor:
+                  this.state?.isColor !== null
+                    ? this.state?.isColor
+                    : 'rgba(100, 100, 100, 0.2)',
                 borderRadius: 5,
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -148,7 +155,17 @@ class PickListType extends Component {
               onPress={() => {
                 this.setState({visible: true});
               }}>
-              <Text style={{fontFamily: 'Poppins-Medium', fontSize: 18}}>
+              <Text
+                style={{
+                  fontFamily: 'Poppins-Medium',
+                  fontSize: 18,
+                  paddingVertical: 5,
+                  color:
+                    this.state?.istextColor !== null &&
+                    this.state?.isColor !== null
+                      ? this.state?.istextColor
+                      : '#000',
+                }}>
                 {this.state.saveValue
                   ? this.state.saveValue
                   : 'Select an option'}

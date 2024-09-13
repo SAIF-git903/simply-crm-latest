@@ -26,59 +26,117 @@ export const renderDrawerContent = (data) => {
   //   'data',
   //   data?.mobileapp_settings?.visibility?.visibility?.defaultMenuNames,
   // );
+
   let menu = data?.menu;
 
   let homeTitle = data?.homeTitle;
 
-  let itemNew = [];
+  // let itemNew = [];
 
-  const module_Names = ['Contacts', 'Accounts', 'Calendar'];
+  // const module_Names = ['Contacts', 'Accounts', 'Calendar'];
 
   // const module = data?.modules
   // .find((module) => module?.name === module_Names);
   // console.log('module', module);
 
-  const moduleNames = data?.mobileapp_settings?.visibility?.visibility
-    ?.defaultMenuNames
-    ? data?.mobileapp_settings?.visibility?.visibility?.defaultMenuNames
-    : module_Names;
+  // const moduleNames = data?.mobileapp_settings?.visibility?.visibility
+  //   ?.defaultMenuNames
+  //   ? data?.mobileapp_settings?.visibility?.visibility?.defaultMenuNames
+  //   : data?.mobileapp_settings?.visibility?.defaultMenuNames
+  //   ? data?.mobileapp_settings?.visibility?.defaultMenuNames
+  //   : [];
 
-  if (moduleNames) {
-    for (let moduleName of moduleNames) {
-      const module = data?.modules.find(
-        (module) => module?.name === moduleName,
-      );
-      if (module) {
-        itemNew.push(module);
-      }
-    }
+  // if (moduleNames) {
+  //   for (let moduleName of moduleNames) {
+  //     const module = data?.modules.find(
+  //       (module) => module?.name === moduleName,
+  //     );
+  //     if (module) {
+  //       itemNew.push(module);
+  //     }
+  //   }
+  // }
+  const fixedMenuItems = menu.filter((item) => item?.modules?.length === 0);
+  if (fixedMenuItems.length > 0) {
+    return [...createFixedMenu(fixedMenuItems, homeTitle)];
   }
 
-  return [...createFixedMenu(itemNew, homeTitle), ...createDynamicMenu(menu)];
+  // Otherwise, create the dynamic menu with the original menu items
+  return [...createDynamicMenu(menu)];
+  // return [...createFixedMenu(itemNew, homeTitle), ...createDynamicMenu(menu)];
 };
 
 const createFixedMenu = (itemNew, homeTitle) => {
-  let iconNames = [
-    'user',
-    'building',
-    'calendar-alt',
-    'handshake',
-    'shield-alt',
-  ];
-  const newArray = itemNew?.map((item, index) => ({
-    ...item,
-    iconName: iconNames[index] || '', // Use an empty string as a default value
-  }));
+  // let iconNames = [
+  //   'user',
+  //   'building',
+  //   'calendar-alt',
+  //   'handshake',
+  //   'shield-alt',
+  // ];
+  // const newArray = itemNew?.map((item, index) => ({
+  //   ...item,
+  //   iconName: iconNames[index] || '', // Use an empty string as a default value
+  // }));
 
-  let homeButtonView = wrapButtonInMenuComponent(
-    <ImageButton
-      type={HOME}
-      label={homeTitle ? homeTitle : 'Home'}
-      key="home_menu"
-      icon={'home'}
-    />,
-    'menu1',
-  );
+  const newArray = itemNew?.map((item, index) => {
+    let iconName = '';
+
+    switch (item?.name?.toLowerCase()) {
+      case 'contacts':
+        iconName = 'user';
+        break;
+      case 'accounts':
+        iconName = 'building';
+        break;
+      case 'vendors':
+        iconName = 'shield-alt';
+        break;
+      case 'potentials':
+        iconName = 'handshake';
+        break;
+      case 'calendar':
+        iconName = 'calendar-alt';
+        break;
+      case 'home':
+        iconName = 'home';
+        break;
+      case 'marketing':
+        iconName = 'bullhorn';
+
+      case 'sales':
+        iconName = 'dot-circle';
+
+      case 'inventory':
+        iconName = 'dolly-flatbed';
+
+      case 'support':
+        iconName = 'life-ring';
+
+      case 'project':
+        iconName = 'project-diagram';
+
+      case 'tools':
+        iconName = 'wrench';
+      default:
+        iconName = 'folder' || ''; // Use fallback from the iconNames array or an empty string
+    }
+
+    return {
+      ...item,
+      iconName, // Assign the iconName based on the switch case
+    };
+  });
+
+  // let homeButtonView = wrapButtonInMenuComponent(
+  //   <ImageButton
+  //     type={HOME}
+  //     label={homeTitle ? homeTitle : 'Home'}
+  //     key="home_menu"
+  //     icon={'home'}
+  //   />,
+  //   'menu1',
+  // );
 
   let mainMenu = newArray.map((val) => {
     return wrapButtonInMenuComponent(
@@ -96,12 +154,16 @@ const createFixedMenu = (itemNew, homeTitle) => {
     );
   });
 
-  return [homeButtonView, mainMenu];
+  // return [homeButtonView, mainMenu];
+  return [mainMenu];
 };
 
 const createDynamicMenu = (menu) => {
+  let isArry = Array.isArray(menu);
+  let newMenu = isArry ? menu : Object.values(menu);
   const sectionViews = [];
-  for (const section of menu) {
+  // for (const section of menu) {
+  for (const section of newMenu) {
     const moduleButtonViews = createModuleButtonViews(section);
     const newSection = (
       <Section

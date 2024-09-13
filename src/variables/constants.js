@@ -51,7 +51,8 @@ export const USERS = 'Users';
 export const PARTICIPATION = 'Participation';
 export const CANDIDATES = 'Candidates';
 
-export const HOME = 'Dashboard';
+// export const HOME = 'Dashboard';
+export const HOME = 'Home';
 export const PROFILE = 'profile';
 export const SETTINGS = 'settings';
 export const LOGOUT = 'logout';

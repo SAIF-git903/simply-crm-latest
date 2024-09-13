@@ -195,3 +195,9 @@ export const sortField = (data) => (dispatch) => {
 export const filterField = (data) => (dispatch) => {
   dispatch({type: 'PASS_FILTER', payload: data});
 };
+export const isTimeSheetModal = (data) => (dispatch) => {
+  dispatch({type: 'Is_Modal', payload: data});
+};
+export const defaultFilterId = (data) => (dispatch) => {
+  dispatch({type: 'defaultFilterId', payload: data});
+};

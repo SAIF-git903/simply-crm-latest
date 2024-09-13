@@ -51,6 +51,7 @@ export default function Calendar(props) {
 
   let date = moment(new Date()).format('YYYY-MM-DD');
   modifyData = new_Data.filter((val) => val.title >= date);
+  // modifyData = new_Data.filter((val) => val.title <= date);
 
   const dates = modifyData.sort((a, b) => {
     const dateA = new Date(a.title);
@@ -317,6 +318,7 @@ export default function Calendar(props) {
         right={swipeOutButtons}
         autoClose>
         <TouchableOpacity
+          activeOpacity={0.7}
           style={{
             ...styles.itemWrapper,
             paddingTop: props.index === 0 ? 10 : 0,

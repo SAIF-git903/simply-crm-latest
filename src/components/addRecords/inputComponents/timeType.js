@@ -61,7 +61,49 @@ class TimeType extends Component {
           {this.state.fieldName === 'duration_hours' ? null : (
             <View style={{width: '100%'}}>
               <View style={{flexDirection: 'row'}}>
-                <View
+                {this.props.obj.name === 'time_in' ||
+                this.props.obj.name === 'time_out' ? (
+                  <TouchableOpacity
+                    activeOpacity={0.5}
+                    style={{
+                      //paddingTop: 9,
+                      borderColor: '#ABABAB',
+                      borderWidth: 0.5,
+                      padding: 0,
+                      borderTopLeftRadius: 4,
+                      borderTopRightRadius: 4,
+                      borderBottomLeftRadius: 4,
+                      borderBottomRightRadius: 4,
+                      height: 38,
+                      width: '80%',
+                      justifyContent: 'center',
+                    }}
+                    onPress={() => this.setState({visible: true})}>
+                    <Text style={{paddingLeft: 10, fontSize: 17}}>
+                      {this.state.saveValue ? this.state.saveValue : ''}
+                    </Text>
+                  </TouchableOpacity>
+                ) : (
+                  <View
+                    style={{
+                      //paddingTop: 9,
+                      borderColor: '#ABABAB',
+                      borderWidth: 0.5,
+                      padding: 0,
+                      borderTopLeftRadius: 4,
+                      borderTopRightRadius: 4,
+                      borderBottomLeftRadius: 4,
+                      borderBottomRightRadius: 4,
+                      height: 38,
+                      width: '80%',
+                      justifyContent: 'center',
+                    }}>
+                    <Text style={{paddingLeft: 10, fontSize: 17}}>
+                      {this.state.saveValue ? this.state.saveValue : ''}
+                    </Text>
+                  </View>
+                )}
+                {/* <View
                   style={{
                     //paddingTop: 9,
                     borderColor: '#ABABAB',
@@ -78,8 +120,9 @@ class TimeType extends Component {
                   <Text style={{paddingLeft: 10, fontSize: 17}}>
                     {this.state.saveValue ? this.state.saveValue : ''}
                   </Text>
-                </View>
+                </View> */}
                 <TouchableOpacity
+                  activeOpacity={0.7}
                   style={{
                     height: 35,
                     width: 35,

@@ -14,7 +14,7 @@ import DateForm from '../components/addRecords/inputComponents/dateType';
 import TimeForm from '../components/addRecords/inputComponents/timeType';
 import MultiPickerForm from '../components/addRecords/inputComponents/multipicklistType';
 import ReferenceForm from '../components/addRecords/inputComponents/referenceType';
-import {saveSuccess} from '../actions';
+import {isTimeSheetModal, saveSuccess} from '../actions';
 import {API_structure, API_fetchRecord, API_saveRecord} from './api';
 import {fontStyles, commonStyles} from '../styles/common';
 import moment from 'moment';
@@ -337,11 +337,12 @@ const getFieldLabelView = (mandatory, validLabel) => {
     );
   }
   return (
-    <View style={{flex: 0.5, justifyContent: 'flex-start'}}>
+    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+      {/* <View style={{flex: 0.5, justifyContent: 'flex-start'}}> */}
+      <View style={[commonStyles.mandatory]}>{view}</View>
       <Text style={[commonStyles.label, fontStyles.fieldLabel]}>
         {validLabel}
       </Text>
-      <View style={commonStyles.mandatory}>{view}</View>
     </View>
   );
 };
@@ -539,22 +540,27 @@ const doSaveRecord = async (
       }
       Toast.show(message);
       dispatch(saveSuccess('saved', currentInstance?.props?.recordId));
+
       // NavigationActions.reset({
       //   index: 0,
       //   actions: [NavigationActions.navigate({routeName: 'HomeScreen'})],
       // });
       // Make sure to use the correct navigation reference
-      currentInstance.props.navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [
-            {name: 'Drawer'}, // Navigate to the top-level navigator
-          ],
-        }),
-      );
 
-      //currentInstance.props.navigation.pop();
-      listerInstance.refreshData();
+      if (listerInstance !== undefined) {
+        //currentInstance.props.navigation.pop();
+        listerInstance.refreshData();
+        currentInstance.props.navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [
+              {name: 'Drawer'}, // Navigate to the top-level navigator
+            ],
+          }),
+        );
+      } else {
+        dispatch(isTimeSheetModal(false));
+      }
     } else {
       headerInstance.setState({loading: false});
       if (responseJson.error.message === '') {

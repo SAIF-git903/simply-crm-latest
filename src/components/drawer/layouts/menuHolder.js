@@ -22,7 +22,7 @@ export default function MenuHolder(props) {
 
   // Redux state
   const dispatch = useDispatch();
-  const selectedButton = useSelector(state => state.drawer.selectedButton);
+  const selectedButton = useSelector((state) => state.drawer.selectedButton);
 
   const navigation = useNavigation();
 

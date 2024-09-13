@@ -1,18 +1,22 @@
 import React, {Component} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
 import {connect} from 'react-redux';
 import Header from './header';
 import Viewer from './viewer';
 import {saveRecordHelper, copyAddress} from '../../helper';
 import {CALENDAR} from '../../variables/constants';
+import timeSheetModalReducer from '../../reducers/TimeSheetReducer';
+import {isTimeSheetModal} from '../../actions';
 
 class AddRecords extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      recordId: this.props.route.params.id ? this.props.route.params.id : '',
-      lister: this.props.route.params.lister,
-      isDashboard: this.props.route.params.isDashboard
+      recordId: this.props.route?.params?.id
+        ? this.props.route?.params?.id
+        : '',
+      lister: this.props.route?.params?.lister,
+      isDashboard: this.props.route?.params?.isDashboard
         ? this.props.route.params.isDashboard
         : false,
     };
@@ -76,11 +80,20 @@ class AddRecords extends Component {
         <Header
           recordId={this.state.recordId}
           navigation={this.props.navigation}
-          moduleName={moduleName}
+          moduleName={
+            this.props?.isTimesheets ? this.props.isTimesheets : moduleName
+          }
           moduleId={this.props.moduleId}
-          moduleLable={this.props.moduleLable}
+          moduleLable={
+            this.props?.isTimesheets
+              ? this.props.isTimesheets
+              : this.props.moduleLable
+          }
           callViewer={this.callViewer.bind(this)}
           showCopyOptions={this.showCopyOptions.bind(this)}
+          isTimesheets={
+            this.props?.isTimesheets ? this.props?.isTimesheets : null
+          }
         />
         <View
           style={{
@@ -92,12 +105,79 @@ class AddRecords extends Component {
             recordId={this.state.recordId}
             subModule={this.props.route?.params?.submodule}
             navigation={this.props.navigation}
-            moduleName={moduleName}
+            moduleName={
+              this.props?.isTimesheets ? this.props?.isTimesheets : moduleName
+            }
             moduleId={this.props.moduleId}
             moduleLable={this.props.moduleLable}
             onRef={(ref) => (this.viewer = ref)}
           />
         </View>
+        {this.props.isTimesheets ? (
+          <View
+            style={{
+              position: 'absolute',
+              zIndex: 1,
+              height: '12%',
+              width: '100%',
+              alignSelf: 'center',
+              bottom: 0,
+              alignItems: 'center',
+              justifyContent: 'space-around',
+              flexDirection: 'row',
+              backgroundColor: 'white',
+              shadowColor: '#000',
+              shadowOffset: {
+                width: 0,
+                height: 1,
+              },
+              shadowOpacity: 0.22,
+              shadowRadius: 2.22,
+
+              elevation: 3,
+            }}>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={{
+                backgroundColor: '#EE4B2B',
+                width: 110,
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: 40,
+                borderRadius: 10,
+              }}
+              onPress={() => this.props.dispatch(isTimeSheetModal(false))}>
+              <Text
+                style={{
+                  color: '#fff',
+                  fontSize: 18,
+                  fontFamily: 'Poppins-SemiBold',
+                }}>
+                Cancel
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={{
+                backgroundColor: '#75C2F6',
+                width: 110,
+                height: 40,
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: 10,
+              }}
+              onPress={() => this.callViewer(this)}>
+              <Text
+                style={{
+                  color: '#fff',
+                  fontSize: 18,
+                  fontFamily: 'Poppins-SemiBold',
+                }}>
+                Save
+              </Text>
+            </TouchableOpacity>
+          </View>
+        ) : null}
       </View>
     );
   }

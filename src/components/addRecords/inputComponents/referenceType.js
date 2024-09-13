@@ -48,6 +48,9 @@ class ReferenceType extends Component {
       if (this.state.fieldName === 'assigned_user_id') {
         this.setState({referenceValue: loginDetails?.username});
       }
+      if (this.state.fieldName === 'created_user_id') {
+        this.setState({referenceValue: loginDetails?.username});
+      }
     } catch (error) {
       console.log('error', error);
     }
@@ -157,48 +160,53 @@ class ReferenceType extends Component {
 
     return (
       <View style={commonStyles.inputHolder}>
-        {this.props.fieldLabelView}
-        <View style={{flex: 1}}>
-          <TouchableOpacity onPress={this.onReferencePress.bind(this, type)}>
-            <View style={commonStyles.textbox}>
-              <Text
-                numberOfLines={1}
-                style={[commonStyles.text, fontStyles.fieldValue]}>
-                {this.state.referenceValue}
-              </Text>
+        {this.state.fieldName === 'created_user_id' ? null : (
+          <>
+            <View style={{paddingBottom: 10}}>{this.props.fieldLabelView}</View>
+            <View style={{flex: 1}}>
+              <TouchableOpacity
+                onPress={this.onReferencePress.bind(this, type)}>
+                <View style={commonStyles.textbox}>
+                  <Text
+                    numberOfLines={1}
+                    style={[commonStyles.text, fontStyles.fieldValue]}>
+                    {this.state.referenceValue}
+                  </Text>
+                </View>
+              </TouchableOpacity>
             </View>
-          </TouchableOpacity>
-        </View>
-        <SinglePickerMaterialDialog
-          title={'Choose one'}
-          items={items}
-          visible={this.state.dialogueVisible}
-          selectedItem={this.state.dialogueSelectedValue}
-          onCancel={() => {
-            this.setState({dialogueVisible: false});
-          }}
-          onOk={(result) => {
-            if (result.selectedItem === undefined) {
-              this.setState({dialogueVisible: false});
-            } else {
-              this.setState(
-                {
-                  dialogueSelectedValue: result.selectedItem,
-                  selectedRefModule: result.selectedItem.label,
-                  dialogueVisible: false,
-                },
-                () => {
-                  this.props.navigation.navigate('Reference Screen', {
-                    selectedModule: result.selectedItem.label,
-                    uniqueId: this.state.formId,
-                    moduleLable: this.props.validLabel,
-                  });
-                },
-              );
-            }
-          }}
-          scrolled
-        />
+            <SinglePickerMaterialDialog
+              title={'Choose one'}
+              items={items}
+              visible={this.state.dialogueVisible}
+              selectedItem={this.state.dialogueSelectedValue}
+              onCancel={() => {
+                this.setState({dialogueVisible: false});
+              }}
+              onOk={(result) => {
+                if (result.selectedItem === undefined) {
+                  this.setState({dialogueVisible: false});
+                } else {
+                  this.setState(
+                    {
+                      dialogueSelectedValue: result.selectedItem,
+                      selectedRefModule: result.selectedItem.label,
+                      dialogueVisible: false,
+                    },
+                    () => {
+                      this.props.navigation.navigate('Reference Screen', {
+                        selectedModule: result.selectedItem.label,
+                        uniqueId: this.state.formId,
+                        moduleLable: this.props.validLabel,
+                      });
+                    },
+                  );
+                }
+              }}
+              scrolled
+            />
+          </>
+        )}
       </View>
     );
   }

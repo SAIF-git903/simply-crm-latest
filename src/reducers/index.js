@@ -15,6 +15,8 @@ import colorRuducer from './durationReducer';
 import fieldReducer from './mainfieldReducer';
 import sortOrderReducer from './sortOrderFieldReducer';
 import filterReducer from './filterReducer';
+import timeSheetModalReducer from './TimeSheetReducer';
+import defaultFilterIdReducer from './DefaultFilter';
 
 export default combineReducers({
   auth: AuthReducer,
@@ -31,4 +33,6 @@ export default combineReducers({
   fieldReducer,
   sortOrderReducer,
   filterReducer,
+  timeSheetModalReducer,
+  defaultFilterIdReducer,
 });

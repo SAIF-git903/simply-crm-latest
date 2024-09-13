@@ -66,8 +66,8 @@ class ReferenceLister extends Component {
   doSearch(searchText) {
     if (this.props.moduleName === 'Users') {
       if (searchText) {
-        const filteredData = this.state.data.filter((item) =>
-          item.user_name.toLowerCase().includes(searchText.toLowerCase()),
+        const filteredData = this?.state.data?.filter((item) =>
+          item.user_name?.toLowerCase()?.includes(searchText?.toLowerCase()),
         );
         this.setState({data: filteredData, searchLabel: searchText});
       }

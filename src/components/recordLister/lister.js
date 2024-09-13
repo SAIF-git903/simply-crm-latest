@@ -69,8 +69,8 @@ class Lister extends Component {
   componentDidMount() {
     // this.getFields();
     this.getFilters();
-    this.getRecords();
     this.getColors();
+    this.getRecords();
   }
 
   getFields = async () => {
@@ -139,6 +139,7 @@ class Lister extends Component {
       }
 
       this.props.dispatch(passValue(fieldsWithPicklistColors));
+      store.dispatch(filterField(res?.result?.describe?.defaultFilterId));
     } catch (error) {
       console.log('err', error);
     }

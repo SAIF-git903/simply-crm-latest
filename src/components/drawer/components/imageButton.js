@@ -13,7 +13,7 @@ import {fontStyles} from '../../../styles/common';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 export default function ImageButton({icon, type, label, module}) {
-  const {selectedButton} = useSelector(state => state.drawer);
+  const {selectedButton} = useSelector((state) => state.drawer);
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
