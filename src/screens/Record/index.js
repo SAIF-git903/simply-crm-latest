@@ -16,7 +16,7 @@ import {
 import {CommonActions} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch, useSelector} from 'react-redux';
-import FontAwesome, {parseIconFromClassName} from 'react-native-fontawesome';
+// import FontAwesome, {parseIconFromClassName} from 'react-native-fontawesome';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import DocumentPicker from 'react-native-document-picker';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -24,12 +24,16 @@ import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import axios from 'axios';
 import RNFetchBlob from 'rn-fetch-blob';
 import NfcManager, {Ndef, NfcEvents, NfcTech} from 'react-native-nfc-manager';
 import LottieView from 'lottie-react-native';
+import * as SolidIcons from '@fortawesome/free-solid-svg-icons';
+import * as BrandIcons from '@fortawesome/free-brands-svg-icons';
+import * as RegularIcons from '@fortawesome/free-regular-svg-icons';
 
 import Header from '../../components/common/Header';
 import Viewer from '../../components/recordViewer/viewer';
@@ -40,6 +44,7 @@ import {URLDETAILSKEY} from '../../variables/strings';
 import {
   API_describe,
   API_fetchButtons,
+  API_fetchRecord,
   API_fetchRecordWithGrouping,
   API_forfetchImageData,
   API_saveFile,
@@ -51,6 +56,8 @@ import {deleteCalendarRecord} from '../../ducks/calendar';
 import CommanView from '../../components/recordViewer/CommanView';
 import AddRecords from '../../components/addRecords';
 import {isLightColor} from '../../components/common/TextColor';
+// import {DynamicIcon} from '../../components/common/DynamicIcon';
+import {fontStyles} from '../../styles/common';
 
 // var ScrollableTabView = require('react-native-scrollable-tab-view');
 const icon = <FontAwesome5 name={'comments'} />;
@@ -185,6 +192,7 @@ export default function RecordDetails({route}) {
   const [file, setFile] = useState(null);
   const [timeSheetModal, setTimeSheetModal] = useState(false);
   const [saveText, setSaveText] = useState();
+  const [profileImage, setProfileImage] = useState();
   let data = [
     {
       id: 1,
@@ -350,6 +358,7 @@ export default function RecordDetails({route}) {
     getRecords();
     if (moduleName === 'Contacts' || moduleName === 'Accounts') {
       getButtons();
+      getFatchRecord();
     }
   }, []);
 
@@ -435,6 +444,31 @@ export default function RecordDetails({route}) {
         });
         setloading(false);
       }
+    } catch (error) {
+      setloading(false);
+      console.log('err', error);
+    }
+  };
+  const getFatchRecord = async () => {
+    try {
+      setloading(true);
+
+      const param = {
+        record: recordId,
+        module: moduleName,
+      };
+      let res = await API_fetchRecord(param);
+      if (res?.result?.record?.imagename) {
+        setProfileImage(res?.result?.record?.imagename);
+      }
+      // if (res?.result?.buttons !== null) {
+      //   res?.result?.buttons.map((val) => {
+      //     // if (val.location === 'top') {
+      //     setBtnTop(res?.result?.buttons);
+      //     // }
+      //   });
+      // }
+      setloading(false);
     } catch (error) {
       setloading(false);
       console.log('err', error);
@@ -1135,7 +1169,11 @@ export default function RecordDetails({route}) {
                     overflow: 'hidden',
                   }}>
                   <Image
-                    source={require('../../../assets/images/user.png')}
+                    source={
+                      profileImage
+                        ? {uri: profileImage}
+                        : require('../../../assets/images/user.png')
+                    }
                     style={{height: '100%', width: '100%'}}
                   />
                 </View>
@@ -1229,15 +1267,16 @@ export default function RecordDetails({route}) {
               // scrollEnabled={false}
               renderItem={({item, index}) => {
                 const textColor = isLightColor(item?.color) ? 'black' : 'white';
-                const parsedIcon = parseIconFromClassName(item.icon);
+                // const parsedIcon = parseIconFromClassName(item.icon);
                 return (
                   <View
+                    key={index}
                     style={{
                       paddingHorizontal: 5,
                       alignItems: 'center',
                       justifyContent: 'center',
                     }}>
-                    {parsedIcon ? (
+                    {/* {parsedIcon ? (
                       <TouchableOpacity
                         activeOpacity={0.5}
                         style={{
@@ -1265,42 +1304,52 @@ export default function RecordDetails({route}) {
                           style={{color: item.color, fontSize: 30}}
                         />
                       </TouchableOpacity>
-                    ) : (
-                      <TouchableOpacity
-                        key={item.id}
+                    ) : ( */}
+                    <TouchableOpacity
+                      key={item.id}
+                      style={{
+                        backgroundColor: item.color,
+                        paddingHorizontal: 20,
+                        paddingVertical: 5,
+                        borderRadius: 5,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => {
+                        // setVisible(!visible);
+                        if (item?.showModal[0] === '') {
+                          ongenericFunction(
+                            item?.runFunction[0].function,
+                            item?.runFunction[0].parameter,
+                          );
+                          setSaveText(item?.runFunction[0].parameter);
+                        } else {
+                          setVisible(!visible);
+                          setItemFields(item.showModal);
+                          setState({
+                            value: item?.runFunction[0].parameter,
+                            fun: item?.runFunction[0].function,
+                          });
+                          setSaveText(item?.runFunction[0].parameter);
+                        }
+                      }}>
+                      {/* <DynamicIcon iconName={item?.icon} color={textColor} /> */}
+                      <FontAwesome
+                        name={item?.icon}
+                        color={textColor}
+                        size={20}
+                      />
+                      <Text
                         style={{
-                          backgroundColor: item.color,
-                          paddingHorizontal: 20,
-                          paddingVertical: 5,
-                          borderRadius: 5,
-                        }}
-                        onPress={() => {
-                          // setVisible(!visible);
-                          if (item?.showModal[0] === '') {
-                            ongenericFunction(
-                              item?.runFunction[0].function,
-                              item?.runFunction[0].parameter,
-                            );
-                            setSaveText(item?.runFunction[0].parameter);
-                          } else {
-                            setVisible(!visible);
-                            setItemFields(item.showModal);
-                            setState({
-                              value: item?.runFunction[0].parameter,
-                              fun: item?.runFunction[0].function,
-                            });
-                            setSaveText(item?.runFunction[0].parameter);
-                          }
+                          fontFamily: 'Poppins-SemiBold',
+                          color: textColor,
+                          marginLeft: 10,
                         }}>
-                        <Text
-                          style={{
-                            fontFamily: 'Poppins-SemiBold',
-                            color: textColor,
-                          }}>
-                          {item.text}
-                        </Text>
-                      </TouchableOpacity>
-                    )}
+                        {item.text}
+                      </Text>
+                    </TouchableOpacity>
+                    {/* )} */}
                   </View>
                 );
               }}
@@ -1386,63 +1435,64 @@ export default function RecordDetails({route}) {
           {tabComponents}
         </ScrollableTabView>
       </View> */}
-      {visible === true && (
+
+      <Modal animationType="slide" transparent={true} visible={visible}>
         <View
           style={{
-            position: 'absolute',
             height: '100%',
             width: '100%',
-            backgroundColor: 'rgba(100, 100, 100, 0.3)',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
             alignItems: 'center',
-            justifyContent: 'center',
+            justifyContent: 'flex-end',
           }}>
           <View
             style={{
-              position: 'absolute',
-              zIndex: 1,
-              width: '80%',
-              alignSelf: 'center',
               backgroundColor: '#fff',
-              shadowColor: '#000',
-              borderRadius: 5,
+              width: '100%',
+              borderTopLeftRadius: 30,
+              borderTopRightRadius: 30,
               paddingHorizontal: 10,
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
-
-              elevation: 5,
             }}>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                paddingVertical: 10,
+              }}
+              onPress={() => {
+                setVisible(false);
+              }}>
+              <View
+                style={{
+                  height: 5,
+                  width: 50,
+                  borderRadius: 10,
+                  backgroundColor: '#000',
+                }}
+              />
+            </TouchableOpacity>
             {newArr.map((val, index) => {
               return (
                 <View
                   style={{
-                    flexDirection: 'row',
                     marginHorizontal: 10,
-                    alignItems: 'center',
                     justifyContent: 'center',
                     backgroundColor: '#fff',
                     marginTop: 10,
-                    borderBottomWidth: 0.5,
-                    borderBottomColor: '#9a9a9c',
                     paddingBottom: 5,
                   }}>
-                  <View style={{width: '50%'}}>
-                    <Text
-                      style={{
-                        fontFamily: 'Poppins-Medium',
-                      }}>
-                      {val?.label} :
-                    </Text>
+                  <View>
+                    <Text style={fontStyles.fieldLabel}>{val?.label} :</Text>
                   </View>
-                  <View style={{width: '50%'}}>
-                    <Text
-                      style={{
-                        color: val?.value ? '#000' : '#9a9a9c',
-                        fontFamily: 'Poppins-Regular',
-                      }}>
+                  <View
+                    style={{
+                      backgroundColor: '#f0f1f5',
+                      paddingLeft: 10,
+                      paddingVertical: 5,
+                      borderRadius: 5,
+                    }}>
+                    <Text style={fontStyles.fieldValue}>
                       {val?.value?.label
                         ? val?.value?.label
                         : val?.value
@@ -1515,7 +1565,8 @@ export default function RecordDetails({route}) {
             </View>
           </View>
         </View>
-      )}
+      </Modal>
+
       <Modal
         animationType="slide"
         transparent={true}

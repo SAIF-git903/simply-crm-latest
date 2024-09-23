@@ -68,8 +68,10 @@ class StringType extends Component {
             this.props.moduleName === 'Calendar' && commonStyles.textbox,
             fontStyles.fieldValue,
             {
-              // paddingLeft: 10,
-
+              paddingLeft: 10,
+              borderRadius: 5,
+              height: 40,
+              backgroundColor: '#f0f1f5',
               color: this.state.showError ? 'red' : fontStyles.fieldValue.color,
             },
           ]}
@@ -108,7 +110,11 @@ class StringType extends Component {
     return (
       <View style={commonStyles.inputHolder}>
         {this.props.fieldLabelView}
-        <View style={{flex: 1}}>{this.doRender()}</View>
+        <View
+        // style={{flex: 1}}
+        >
+          {this.doRender()}
+        </View>
       </View>
     );
   }

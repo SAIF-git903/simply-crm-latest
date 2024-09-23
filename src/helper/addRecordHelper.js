@@ -18,6 +18,7 @@ import {isTimeSheetModal, saveSuccess} from '../actions';
 import {API_structure, API_fetchRecord, API_saveRecord} from './api';
 import {fontStyles, commonStyles} from '../styles/common';
 import moment from 'moment';
+import Signature from '../components/addRecords/inputComponents/SignatureType';
 
 export const getRecordStructureHelper = async (currentInstance) => {
   const calanderType = currentInstance.props.subModule;
@@ -142,6 +143,9 @@ export const getRecordStructureHelper = async (currentInstance) => {
             switch (type) {
               case 'boolean':
                 ComponentName = BooleanForm;
+                break;
+              case 'signature':
+                ComponentName = Signature;
                 break;
               case 'picklist':
                 ComponentName = PickerForm;

@@ -106,9 +106,9 @@ class Viewer extends Component {
 }
 const styles = {
   subContainer: {
-    justifyContent: 'flex-start',
-    flexDirection: 'row',
-    position: 'relative',
+    // justifyContent: 'flex-start',
+    // flexDirection: 'row',
+    // position: 'relative',
     //alignItems: 'center',
     flex: 1,
   },

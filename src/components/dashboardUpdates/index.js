@@ -33,15 +33,44 @@ const IconButton = ({icon, title, style, onPress}) => {
 class UpdateWidget extends Component {
   render() {
     const {navigation} = this.props;
-    const findModule = (moduleName, moduleList) => {
-      return moduleList.find((module) => module?.name === moduleName) || null;
-    };
+    // const findModule = (moduleName, moduleList) => {
+    //   return moduleList.find((module) => module?.name === moduleName) || null;
+    // };
 
+    const filterData = this.props?.loginDetails?.menu?.filter(
+      (val) => val?.name !== 'Home',
+    );
+
+    const firstThree = filterData.slice(0, 3);
     const modules = this.props?.loginDetails?.modules;
 
-    const organizationModule = findModule('Accounts', modules);
-    const contactModule = findModule('Contacts', modules);
-    const calendarModule = findModule('Calendar', modules);
+    function capitalizeName(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1)?.toLowerCase();
+    }
+    const modifyMenuWithModuleId = (menu, modules) => {
+      return menu?.map((menuItem) => {
+        // Find the corresponding module
+        const correspondingModule = modules?.find(
+          (module) =>
+            module?.name?.toLowerCase() === menuItem?.name?.toLowerCase(),
+        );
+        // Merge if module is found
+        const updatedMenuItem = {...menuItem, id: correspondingModule?.id};
+        // Capitalize the name
+        return {
+          ...updatedMenuItem,
+          name: capitalizeName(updatedMenuItem?.name),
+        };
+      });
+    };
+
+    const modifiedMenu = modifyMenuWithModuleId(firstThree, modules);
+
+    const newData = modifiedMenu?.filter((val) => val?.id !== undefined);
+
+    // const organizationModule = findModule('Accounts', modules);
+    // const contactModule = findModule('Contacts', modules);
+    // const calendarModule = findModule('Calendar', modules);
 
     return (
       <View style={styles.container}>
@@ -53,9 +82,52 @@ class UpdateWidget extends Component {
             paddingHorizontal: 20,
             justifyContent: 'center',
           }}>
-          {organizationModule && (
+          {newData?.map((val) => {
+            console.log('val', val);
+            return (
+              <>
+                {val?.name === 'Calendar' ? (
+                  <View style={styles.iconButtonContainer}>
+                    <IconButton
+                      icon={'building'}
+                      title={val?.label}
+                      onPress={() => {
+                        this.props.dispatch(
+                          drawerButtonPress(val?.name, val?.label, val?.id),
+                        );
+
+                        navigation.navigate(val?.name, {
+                          moduleName: val?.name,
+                          moduleLable: val?.label,
+                          moduleId: val?.id,
+                        });
+                      }}
+                    />
+                  </View>
+                ) : (
+                  <View style={styles.iconButtonContainer}>
+                    <IconButton
+                      icon={'building'}
+                      title={val?.label}
+                      onPress={() => {
+                        this.props.dispatch(
+                          drawerButtonPress(val?.name, val?.label, val?.id),
+                        );
+
+                        navigation.navigate('Records', {
+                          moduleName: val?.name,
+                          moduleLable: val?.label,
+                          moduleId: val?.id,
+                        });
+                      }}
+                    />
+                  </View>
+                )}
+              </>
+            );
+          })}
+          {/* {organizationModule && (
             <View style={styles.iconButtonContainer}>
-              {/* buttons */}
               <IconButton
                 icon={'building'}
                 title={organizationModule?.label}
@@ -122,7 +194,7 @@ class UpdateWidget extends Component {
                 }}
               />
             </View>
-          )}
+          )} */}
           {/* 
                     <IconButton
                         icon={'tasks'}
@@ -130,7 +202,7 @@ class UpdateWidget extends Component {
                     /> */}
         </View>
         <View style={{padding: 10, paddingBottom: 0}}>
-          <Header modules={this.props.loginDetails.modules} />
+          <Header modules={this.props.loginDetails.modules} menu={newData} />
         </View>
         <View style={{flex: 1, padding: 10}}>
           <Viewer navigation={navigation} />

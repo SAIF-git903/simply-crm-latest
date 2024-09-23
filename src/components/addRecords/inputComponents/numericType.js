@@ -27,7 +27,9 @@ class NumericType extends Component {
           ? null
           : this.props.fieldLabelView}
         {this.state.fieldName === 'duration_hours' ? null : (
-          <View style={{flex: 1}}>
+          <View
+          // style={{flex: 1}}
+          >
             <TextInput
               autoGrow={true}
               // placeholderTextColor={'#C5C5C5'}
@@ -38,7 +40,12 @@ class NumericType extends Component {
               style={[
                 commonStyles.label,
                 fontStyles.fieldValue,
-                // {paddingLeft: 10},
+                {
+                  paddingLeft: 10,
+                  borderRadius: 5,
+                  backgroundColor: '#f0f1f5',
+                  height: 40,
+                },
               ]}
               keyboardType="numeric"
               value={this.state.saveValue}
