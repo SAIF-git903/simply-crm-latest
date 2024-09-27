@@ -357,8 +357,6 @@ export default function RecordDetails({route}) {
       return fields?.find((itm) => val === itm?.name);
     });
 
-    console.log('filteredFields', filteredFields);
-
     if (filteredFields != null && filteredFields != undefined) {
       setNewArr(filteredFields);
     }
@@ -399,7 +397,27 @@ export default function RecordDetails({route}) {
     try {
       setloading(true);
       let res = await API_fetchRecordWithGrouping(moduleName, recordId);
-
+      res?.result?.record?.blocks?.forEach((block) =>
+        block?.fields?.forEach((field) => {
+          if (field?.name === 'firstname') {
+            setFirstName(field?.value);
+            // console.log('field', field?.value);
+          }
+          if (field?.name === 'lastname') {
+            setLastName(field?.value);
+            // console.log('field', field?.value);
+          }
+          if (moduleName === 'Contacts' && field?.name === 'account_id') {
+            setOrgName(field?.value?.label);
+          }
+          if (moduleName === 'Accounts' && field?.name === 'accountname') {
+            setOrgName(field?.value);
+          }
+          if (moduleName === 'Calendar' && field?.name === 'subject') {
+            setSubject(field?.value);
+          }
+        }),
+      );
       // const labelToCheck =
       //   moduleName === 'Contacts'
       //     ? 'LBL_CONTACT_INFORMATION'
@@ -407,37 +425,41 @@ export default function RecordDetails({route}) {
       //     ? 'LBL_EVENT_INFORMATION'
       //     : 'LBL_ACCOUNT_INFORMATION';
 
-      const containsLabel = res?.result?.record?.blocks.find(
-        (item) => item.label,
-      );
+      // const containsLabel = res?.result?.record?.blocks.find(
+      //   (item) => item.label,
+      // );
 
-      containsLabel?.fields.map((val) => {
-        if (val.name === 'firstname') {
-          setFirstName(val?.value);
-        }
-        if (val.name === 'lastname') {
-          setLastName(val?.value);
-        }
-        if (moduleName === 'Contacts' && val.name === 'account_id') {
-          setOrgName(val?.value?.label);
-        }
-        if (moduleName === 'Accounts' && val.name === 'accountname') {
-          setOrgName(val?.value);
-        }
-        if (moduleName === 'Calendar' && val.name === 'subject') {
-          setSubject(val?.value);
-        }
-      });
+      // containsLabel?.fields.map((val) => {
+      //   if (val.name === 'firstname') {
+      //     setFirstName(val?.value);
+      //   }
+      //   if (val.name === 'lastname') {
+      //     setLastName(val?.value);
+      //   }
+      //   if (moduleName === 'Contacts' && val.name === 'account_id') {
+      //     setOrgName(val?.value?.label);
+      //   }
+      //   if (moduleName === 'Accounts' && val.name === 'accountname') {
+      //     setOrgName(val?.value);
+      //   }
+      //   if (moduleName === 'Calendar' && val.name === 'subject') {
+      //     setSubject(val?.value);
+      //   }
+      // });
+      const allFields = getAllFields(res?.result?.record);
       setloading(false);
 
-      setFields(containsLabel?.fields);
+      setFields(allFields);
     } catch (error) {
       setloading(false);
 
       console.log('err', error);
     }
   };
-
+  const getAllFields = (record) => {
+    // Use flatMap to combine all fields from each block into a single array
+    return record.blocks.flatMap((block) => block.fields);
+  };
   const getButtons = async () => {
     let modulename = moduleName;
 

@@ -3,6 +3,19 @@ import React from 'react';
 import {fontStyles} from '../styles/common';
 
 const RecordModal = ({visible, newArr, onClose, onSave}) => {
+  const processFieldValue = (field) => {
+    let fieldValue;
+
+    if (typeof field?.value === 'object' && field?.value !== null) {
+      // If the value is an object, we use the label or value inside it
+      fieldValue = field?.value?.label || field?.value?.value;
+    } else {
+      // If the value is a string or empty, use it directly
+      fieldValue = field?.value;
+    }
+
+    return fieldValue;
+  };
   return (
     <Modal animationType="slide" transparent={true} visible={visible}>
       <View
@@ -39,8 +52,10 @@ const RecordModal = ({visible, newArr, onClose, onSave}) => {
             />
           </TouchableOpacity>
           {newArr.map((val, index) => {
+            const fieldValue = processFieldValue(val);
             return (
               <View
+                key={index}
                 style={{
                   marginHorizontal: 10,
                   justifyContent: 'center',
@@ -49,7 +64,7 @@ const RecordModal = ({visible, newArr, onClose, onSave}) => {
                   paddingBottom: 5,
                 }}>
                 <View>
-                  <Text style={fontStyles.fieldLabel}>{val?.label} :</Text>
+                  <Text style={fontStyles.fieldLabel}>{val?.label} </Text>
                 </View>
                 {val?.uitype === '164' ? (
                   <View
@@ -78,11 +93,7 @@ const RecordModal = ({visible, newArr, onClose, onSave}) => {
                       borderRadius: 5,
                     }}>
                     <Text style={fontStyles.fieldValue}>
-                      {val?.value?.label
-                        ? val?.value?.label
-                        : val?.value
-                        ? val?.value
-                        : 'No detail'}
+                      {fieldValue ? fieldValue : 'N/A'}
                     </Text>
                   </View>
                 )}
