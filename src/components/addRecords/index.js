@@ -7,6 +7,7 @@ import {saveRecordHelper, copyAddress} from '../../helper';
 import {CALENDAR} from '../../variables/constants';
 import timeSheetModalReducer from '../../reducers/TimeSheetReducer';
 import {isTimeSheetModal} from '../../actions';
+import {generalBgColor} from '../../variables/themeColors';
 
 class AddRecords extends Component {
   constructor(props) {
@@ -99,7 +100,6 @@ class AddRecords extends Component {
           style={{
             width: '100%',
             height: '100%',
-            paddingBottom: 100,
           }}>
           <Viewer
             recordId={this.state.recordId}
@@ -113,7 +113,7 @@ class AddRecords extends Component {
             onRef={(ref) => (this.viewer = ref)}
           />
         </View>
-        {this.props.isTimesheets ? (
+        {/* {this.props.isTimesheets ? (
           <View
             style={{
               position: 'absolute',
@@ -177,7 +177,7 @@ class AddRecords extends Component {
               </Text>
             </TouchableOpacity>
           </View>
-        ) : null}
+        ) : null} */}
       </View>
     );
   }
@@ -187,6 +187,8 @@ const styles = StyleSheet.create({
   backgroundStyle: {
     width: '100%',
     flex: 1,
+    paddingBottom: 80,
+    backgroundColor: generalBgColor,
   },
 });
 

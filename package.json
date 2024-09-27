@@ -59,6 +59,7 @@
     "react-native-scrollable-tab-view": "^1.0.0",
     "react-native-signature-canvas": "^4.7.2",
     "react-native-simple-toast": "^3.0.1",
+    "react-native-splash-screen": "^3.3.0",
     "react-native-svg": "^15.7.1",
     "react-native-swipeout": "^2.3.6",
     "react-native-timeline-flatlist": "^0.8.0",

@@ -5,6 +5,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
+import SplashScreen from 'react-native-splash-screen';
 
 import DrawerContent from './components/drawerContent';
 
@@ -47,6 +48,15 @@ StatusBar.setTranslucent(true);
 StatusBar.setBarStyle('light-content', true);
 
 export default class Router extends Component {
+  componentDidMount() {
+    // do stuff while splash screen is shown
+    // After having done stuff (such as async tasks) hide the splash screen
+
+    setTimeout(() => {
+      SplashScreen.hide();
+    }, 1000);
+  }
+
   createLoginStack = () => (
     <Stack.Navigator
       screenOptions={{

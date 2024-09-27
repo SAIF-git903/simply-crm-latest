@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import {getRecordStructureHelper, copyPriceDetails} from '../../helper';
+import {generalBgColor} from '../../variables/themeColors';
 
 class Viewer extends Component {
   constructor(props) {
@@ -97,7 +98,7 @@ class Viewer extends Component {
   render() {
     // console.log('rerender viewer');
     return (
-      <View style={{flex: 1, backgroundColor: '#f2f3f8'}}>
+      <View style={{flex: 1, backgroundColor: generalBgColor}}>
         {this.doRender()}
       </View>
     );

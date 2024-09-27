@@ -2,10 +2,11 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {View, Image, Text, TouchableOpacity} from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import Icon from 'react-native-vector-icons/FontAwesome6';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import {commonStyles, fontStyles} from '../../styles/common';
-import {HEADER_IMAGE_COLOR} from '../../variables/themeColors';
+import {HEADER_IMAGE_COLOR, headerIconColor} from '../../variables/themeColors';
 
 class Header extends Component {
   componentDidMount() {
@@ -41,7 +42,8 @@ class Header extends Component {
       //This is phone
       return (
         <TouchableOpacity onPress={this.onBackButtonPress.bind(this)}>
-          <Icon name="angle-left" size={28} color="white" />
+          {/* <Icon name="arrow-left" size={28} color="white" /> */}
+          <MaterialIcons name="arrow-back" size={30} color={headerIconColor} />
         </TouchableOpacity>
       );
     }

@@ -14,9 +14,12 @@ import {
 } from 'react-native';
 import IconButton from '../components/IconButton';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import {resetPassword} from '../helper';
 import {fontStyles} from '../styles/common';
+import {headerIconColor} from '../variables/themeColors';
 
 class ForgotPassword extends Component {
   static navigationOptions = {
@@ -119,7 +122,9 @@ class ForgotPassword extends Component {
         <View style={styles.logoMainHolder}>
           <View style={{width: '100%', flex: 1, padding: 10, paddingTop: 40}}>
             <TouchableOpacity onPress={this.onBackPress.bind(this)}>
-              <Icon name="angle-left" size={28} color="white" />
+              {/* <Icon name="arrow-left" size={28} color="white" /> */}
+
+              <MaterialIcons name="arrow-back" size={30} color={'white'} />
             </TouchableOpacity>
           </View>
           <View style={styles.logoSubHolder}>

@@ -4,7 +4,9 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 import {commonStyles, fontStyles} from '../../../styles/common';
 import {viewSearchAction, updateSearchModule} from '../../../actions';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import Icon from 'react-native-vector-icons/FontAwesome6';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {headerIconColor, headerTextColor} from '../../../variables/themeColors';
 
 class ReferenceHeader extends Component {
   componentDidMount() {}
@@ -31,19 +33,33 @@ class ReferenceHeader extends Component {
     }
     return (
       <TouchableOpacity onPress={this.onBackButtonPress.bind(this)}>
-        <Icon name="angle-left" size={28} color="white" />
+        {/* <Icon name="arrow-left" size={28} color={headerIconColor} /> */}
+        <MaterialIcons name="arrow-back" size={30} color={headerIconColor} />
       </TouchableOpacity>
     );
   }
 
   render() {
     return (
-      <View style={commonStyles.headerBackground}>
+      <View
+        style={[
+          commonStyles.headerBackground,
+          {
+            borderBottomWidth: 0.5,
+            borderBottomColor: '#d3d2d8',
+          },
+        ]}>
         <SafeAreaView forceInset={{top: 'always', bottom: 'never'}}>
           <View style={commonStyles.headerContentStyle}>
             <View style={{width: 40}}>{this.renderBackButton()}</View>
             <View style={{flex: 1, marginRight: 40}}>
-              <Text style={fontStyles.navbarTitle}>
+              <Text
+                style={[
+                  fontStyles.navbarTitle,
+                  {
+                    color: headerTextColor,
+                  },
+                ]}>
                 {this.props.moduleLable}
               </Text>
             </View>

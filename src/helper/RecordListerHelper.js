@@ -52,7 +52,7 @@ const moment = require('moment-timezone');
 
 const styles = StyleSheet.create({
   list: {
-    margin: 10,
+    margin: 5,
     marginTop: 0,
     shadowColor: '#000',
     shadowOffset: {

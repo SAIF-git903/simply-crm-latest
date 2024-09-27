@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import Header from '../components/common/Header';
 import Lister from '../components/recordLister/lister';
+import {generalBgColor, headerIconColor} from '../variables/themeColors';
 
 export default class Records extends Component {
   constructor(props) {
@@ -25,7 +27,8 @@ export default class Records extends Component {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <Icon name="plus" size={18} color="white" />
+          {/* <Icon name="plus" size={25} color={headerIconColor} /> */}
+          <Ionicons name="add-outline" size={30} color={headerIconColor} />
         </View>
       </TouchableOpacity>
     );
@@ -57,5 +60,6 @@ const styles = StyleSheet.create({
   backgroundStyle: {
     width: '100%',
     flex: 1,
+    backgroundColor: generalBgColor,
   },
 });

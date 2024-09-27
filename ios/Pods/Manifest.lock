@@ -367,6 +367,8 @@ PODS:
   - react-native-simple-toast (3.3.1):
     - React-Core
     - Toast (~> 4)
+  - react-native-splash-screen (3.3.0):
+    - React-Core
   - react-native-webview (13.12.2):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
@@ -567,6 +569,7 @@ DEPENDENCIES:
   - react-native-nfc-manager (from `../node_modules/react-native-nfc-manager`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-simple-toast (from `../node_modules/react-native-simple-toast`)
+  - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -675,6 +678,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-simple-toast:
     :path: "../node_modules/react-native-simple-toast"
+  react-native-splash-screen:
+    :path: "../node_modules/react-native-splash-screen"
   react-native-webview:
     :path: "../node_modules/react-native-webview"
   React-NativeModulesApple:
@@ -780,6 +785,7 @@ SPEC CHECKSUMS:
   react-native-nfc-manager: ead2cd1d1eaab139cc8b2dc5fbfe575eaa45efc4
   react-native-safe-area-context: b97eb6f9e3b7f437806c2ce5983f479f8eb5de4b
   react-native-simple-toast: 1f1cc551d419bc0ab05dcb0136554006c274789d
+  react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
   react-native-webview: 265d09bdb52de0fc52b1e07c76229d3a571eb88f
   React-NativeModulesApple: bfbb84f3e6a1b919791b57303524de557ba45fef
   React-perflogger: 6bd153e776e6beed54c56b0847e1220a3ff92ba5

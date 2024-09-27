@@ -128,7 +128,7 @@ class LoginForm extends Component {
     }
 
     Animated.spring(this.buttonAnimatedValue, {
-      toValue: 0.7,
+      toValue: 0.9,
       useNativeDriver: true,
     }).start(() => {
       Animated.spring(this.buttonAnimatedValue, {
@@ -330,9 +330,9 @@ class LoginForm extends Component {
     if (this.state.email.length !== 0) {
       clear = (
         <IconButton
-          icon={'times-circle'}
+          icon={'close-circle'}
           solid
-          size={14}
+          size={18}
           onPress={() => this.setState({email: ''})}
         />
       );
@@ -351,8 +351,8 @@ class LoginForm extends Component {
           }}>
           <IconButton
             solid
-            icon={showPassword ? 'eye-slash' : 'eye'}
-            size={16}
+            icon={showPassword ? 'eye-off' : 'eye'}
+            size={20}
             onPress={() => this.setState({showPassword: !showPassword})}
           />
         </View>

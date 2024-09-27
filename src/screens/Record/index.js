@@ -58,6 +58,15 @@ import AddRecords from '../../components/addRecords';
 import {isLightColor} from '../../components/common/TextColor';
 // import {DynamicIcon} from '../../components/common/DynamicIcon';
 import {fontStyles} from '../../styles/common';
+import RecordModal from '../../model/RecordModal';
+import ProfileModal from '../../model/ProfileModal';
+import FormMoadal from '../../model/FormMoadal';
+import {
+  generalBgColor,
+  headerIconColor,
+  textColor,
+  textColor2,
+} from '../../variables/themeColors';
 
 // var ScrollableTabView = require('react-native-scrollable-tab-view');
 const icon = <FontAwesome5 name={'comments'} />;
@@ -191,6 +200,7 @@ export default function RecordDetails({route}) {
   const [nfcText, setNFCText] = useState();
   const [file, setFile] = useState(null);
   const [timeSheetModal, setTimeSheetModal] = useState(false);
+  const [profileVisible, setProfileVisible] = useState(false);
   const [saveText, setSaveText] = useState();
   const [profileImage, setProfileImage] = useState();
   let data = [
@@ -356,8 +366,8 @@ export default function RecordDetails({route}) {
 
   useEffect(() => {
     getRecords();
+    getButtons();
     if (moduleName === 'Contacts' || moduleName === 'Accounts') {
-      getButtons();
       getFatchRecord();
     }
   }, []);
@@ -390,15 +400,15 @@ export default function RecordDetails({route}) {
       setloading(true);
       let res = await API_fetchRecordWithGrouping(moduleName, recordId);
 
-      const labelToCheck =
-        moduleName === 'Contacts'
-          ? 'LBL_CONTACT_INFORMATION'
-          : moduleName === 'Calendar'
-          ? 'LBL_EVENT_INFORMATION'
-          : 'LBL_ACCOUNT_INFORMATION';
+      // const labelToCheck =
+      //   moduleName === 'Contacts'
+      //     ? 'LBL_CONTACT_INFORMATION'
+      //     : moduleName === 'Calendar'
+      //     ? 'LBL_EVENT_INFORMATION'
+      //     : 'LBL_ACCOUNT_INFORMATION';
 
       const containsLabel = res?.result?.record?.blocks.find(
-        (item) => item.label === labelToCheck,
+        (item) => item.label,
       );
 
       containsLabel?.fields.map((val) => {
@@ -903,38 +913,39 @@ export default function RecordDetails({route}) {
           marginHorizontal: 15,
           justifyContent: 'center',
           borderBottomWidth: item.tabLabel === items ? 2 : 0,
-          borderBottomColor: item.tabLabel === items ? '#00BBF2' : '#707070',
+          borderBottomColor:
+            item.tabLabel === items ? headerIconColor : textColor,
           padding: 5,
         }}
         onPress={() => setItems(item.tabLabel)}>
         {item.tabLabel === 'SimplyVoice' ? (
           <Feather
             name={item.tabIcon}
-            color={item.tabLabel === items ? '#00BBF2' : '#707070'}
+            color={item.tabLabel === items ? headerIconColor : textColor}
             size={20}
           />
         ) : item.tabLabel === 'SMPFeedback' ? (
           <MaterialIcons
             name={item.tabIcon}
-            color={item.tabLabel === items ? '#00BBF2' : '#707070'}
+            color={item.tabLabel === items ? headerIconColor : textColor}
             size={20}
           />
         ) : item.tabLabel === 'Participations' ? (
           <MaterialIcons
             name={item.tabIcon}
-            color={item.tabLabel === items ? '#00BBF2' : '#707070'}
+            color={item.tabLabel === items ? headerIconColor : textColor}
             size={20}
           />
         ) : item.tabLabel === 'Potentials' ? (
           <MaterialCommunityIcons
             name={item.tabIcon}
-            color={item.tabLabel === items ? '#00BBF2' : '#707070'}
+            color={item.tabLabel === items ? headerIconColor : textColor}
             size={20}
           />
         ) : (
           <Icon
             name={item.tabIcon}
-            color={item.tabLabel === items ? '#00BBF2' : '#707070'}
+            color={item.tabLabel === items ? headerIconColor : textColor}
             size={20}
           />
         )}
@@ -944,7 +955,8 @@ export default function RecordDetails({route}) {
             paddingLeft: 10,
             fontFamily:
               item.tabLabel === items ? 'Poppins-Medium' : 'Poppins-Regular',
-            color: item.tabLabel === items ? '#00BBF2' : '#707070',
+            color: item.tabLabel === items ? headerIconColor : textColor,
+            // color: item.tabLabel === items ? headerIconColor : '#707070',
           }}>
           {item.tabLabel}
         </Text>
@@ -953,7 +965,7 @@ export default function RecordDetails({route}) {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex: 1, backgroundColor: generalBgColor}}>
       {imageModel && (
         <View
           style={{
@@ -1148,7 +1160,13 @@ export default function RecordDetails({route}) {
       {/* {moduleName === 'Contacts' ? ( */}
       {moduleName === 'Contacts' || moduleName === 'Accounts' ? (
         <View>
-          <View style={{paddingTop: 8, width: '100%', backgroundColor: '#fff'}}>
+          <View
+            style={{
+              paddingTop: 8,
+              paddingBottom: 8,
+              width: '100%',
+              backgroundColor: '#fff',
+            }}>
             <View
               style={{
                 flexDirection: 'row',
@@ -1160,23 +1178,43 @@ export default function RecordDetails({route}) {
                   width: '25%',
                   alignItems: 'center',
                   justifyContent: 'center',
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 1,
+                  },
+                  shadowOpacity: 0.22,
+                  shadowRadius: 2.22,
+
+                  elevation: 3,
                 }}>
-                <View
+                <TouchableOpacity
+                  activeOpacity={0.7}
                   style={{
                     height: 65,
                     width: 65,
-                    borderRadius: 60,
+                    borderRadius: 5,
                     overflow: 'hidden',
+                    backgroundColor: '#fff',
+                  }}
+                  onPress={() => {
+                    if (profileImage) {
+                      setProfileVisible(true);
+                    }
                   }}>
                   <Image
                     source={
                       profileImage
                         ? {uri: profileImage}
-                        : require('../../../assets/images/user.png')
+                        : require('../../../assets/images/user1.png')
                     }
-                    style={{height: '100%', width: '100%'}}
+                    style={{
+                      height: '100%',
+                      width: '100%',
+                      resizeMode: 'cover',
+                    }}
                   />
-                </View>
+                </TouchableOpacity>
               </View>
               <View style={{width: '70%'}}>
                 {moduleName === 'Contacts' ? (
@@ -1185,7 +1223,7 @@ export default function RecordDetails({route}) {
                       numberOfLines={1}
                       style={{
                         fontSize: 20,
-                        color: fullName ? '#000' : '#9a9a9c',
+                        color: fullName ? textColor2 : textColor,
                         fontFamily: 'Poppins-SemiBold',
                       }}>
                       {fullName ? fullName : 'Full Name'}
@@ -1194,7 +1232,7 @@ export default function RecordDetails({route}) {
                     <Text
                       style={{
                         fontSize: 15,
-                        color: orgname ? '#000' : '#9a9a9c',
+                        color: orgname ? textColor2 : textColor,
                         fontFamily: orgname
                           ? 'Poppins-Regular'
                           : 'Poppins-SemiBold',
@@ -1218,14 +1256,17 @@ export default function RecordDetails({route}) {
               </TouchableOpacity> */}
             </View>
           </View>
-          <View
-            style={{
-              backgroundColor: '#fff',
-              paddingVertical: 20,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            {/* <View
+        </View>
+      ) : null}
+      {btnTop?.length > 0 && (
+        <View
+          style={{
+            backgroundColor: '#fff',
+            paddingVertical: 20,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          {/* <View
               style={{
                 alignItems: 'center',
                 justifyContent: 'space-between',
@@ -1255,28 +1296,28 @@ export default function RecordDetails({route}) {
                 <Text style={styles.nfcbtn}>compareNFC</Text>
               </TouchableOpacity>
             </View> */}
-            <FlatList
-              data={btnTop}
-              showsHorizontalScrollIndicator={false}
-              horizontal
-              keyExtractor={(item) => item.id}
-              contentContainerStyle={{
-                flexGrow: 1,
-                marginHorizontal: 10,
-              }}
-              // scrollEnabled={false}
-              renderItem={({item, index}) => {
-                const textColor = isLightColor(item?.color) ? 'black' : 'white';
-                // const parsedIcon = parseIconFromClassName(item.icon);
-                return (
-                  <View
-                    key={index}
-                    style={{
-                      paddingHorizontal: 5,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}>
-                    {/* {parsedIcon ? (
+          <FlatList
+            data={btnTop}
+            showsHorizontalScrollIndicator={false}
+            horizontal
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={{
+              flexGrow: 1,
+              marginHorizontal: 10,
+            }}
+            // scrollEnabled={false}
+            renderItem={({item, index}) => {
+              const textColor = isLightColor(item?.color) ? 'black' : 'white';
+              // const parsedIcon = parseIconFromClassName(item.icon);
+              return (
+                <View
+                  key={index}
+                  style={{
+                    paddingHorizontal: 5,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  {/* {parsedIcon ? (
                       <TouchableOpacity
                         activeOpacity={0.5}
                         style={{
@@ -1305,72 +1346,63 @@ export default function RecordDetails({route}) {
                         />
                       </TouchableOpacity>
                     ) : ( */}
-                    <TouchableOpacity
-                      key={item.id}
+                  <TouchableOpacity
+                    key={item.id}
+                    style={{
+                      backgroundColor: item.color,
+                      paddingHorizontal: 20,
+                      paddingVertical: 5,
+                      borderRadius: 5,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                    onPress={() => {
+                      // setVisible(!visible);
+                      if (item?.showModal[0] === '') {
+                        ongenericFunction(
+                          item?.runFunction[0].function,
+                          item?.runFunction[0].parameter,
+                        );
+                        setSaveText(item?.runFunction[0].parameter);
+                      } else {
+                        setVisible(!visible);
+                        setItemFields(item.showModal);
+                        setState({
+                          value: item?.runFunction[0].parameter,
+                          fun: item?.runFunction[0].function,
+                        });
+                        setSaveText(item?.runFunction[0].parameter);
+                      }
+                    }}>
+                    {/* <DynamicIcon iconName={item?.icon} color={textColor} /> */}
+                    <FontAwesome
+                      name={item?.icon}
+                      color={textColor}
+                      size={20}
+                    />
+                    <Text
                       style={{
-                        backgroundColor: item.color,
-                        paddingHorizontal: 20,
-                        paddingVertical: 5,
-                        borderRadius: 5,
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                      onPress={() => {
-                        // setVisible(!visible);
-                        if (item?.showModal[0] === '') {
-                          ongenericFunction(
-                            item?.runFunction[0].function,
-                            item?.runFunction[0].parameter,
-                          );
-                          setSaveText(item?.runFunction[0].parameter);
-                        } else {
-                          setVisible(!visible);
-                          setItemFields(item.showModal);
-                          setState({
-                            value: item?.runFunction[0].parameter,
-                            fun: item?.runFunction[0].function,
-                          });
-                          setSaveText(item?.runFunction[0].parameter);
-                        }
+                        fontFamily: 'Poppins-SemiBold',
+                        color: textColor,
+                        marginLeft: 10,
                       }}>
-                      {/* <DynamicIcon iconName={item?.icon} color={textColor} /> */}
-                      <FontAwesome
-                        name={item?.icon}
-                        color={textColor}
-                        size={20}
-                      />
-                      <Text
-                        style={{
-                          fontFamily: 'Poppins-SemiBold',
-                          color: textColor,
-                          marginLeft: 10,
-                        }}>
-                        {item.text}
-                      </Text>
-                    </TouchableOpacity>
-                    {/* )} */}
-                  </View>
-                );
-              }}
-            />
-          </View>
+                      {item.text}
+                    </Text>
+                  </TouchableOpacity>
+                  {/* )} */}
+                </View>
+              );
+            }}
+          />
         </View>
-      ) : null}
-
+      )}
       <View
         style={{
           height: '7%',
           backgroundColor: '#fff',
-          shadowColor: '#000',
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.25,
-          shadowRadius: 3.84,
-
-          elevation: 5,
+          borderBottomWidth: 0.5,
+          borderBottomColor: '#d3d2d8',
         }}>
         <FlatList
           // data={newTabs.slice(0, itemsToShow)}
@@ -1436,136 +1468,15 @@ export default function RecordDetails({route}) {
         </ScrollableTabView>
       </View> */}
 
-      <Modal animationType="slide" transparent={true} visible={visible}>
-        <View
-          style={{
-            height: '100%',
-            width: '100%',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-          }}>
-          <View
-            style={{
-              backgroundColor: '#fff',
-              width: '100%',
-              borderTopLeftRadius: 30,
-              borderTopRightRadius: 30,
-              paddingHorizontal: 10,
-            }}>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                paddingVertical: 10,
-              }}
-              onPress={() => {
-                setVisible(false);
-              }}>
-              <View
-                style={{
-                  height: 5,
-                  width: 50,
-                  borderRadius: 10,
-                  backgroundColor: '#000',
-                }}
-              />
-            </TouchableOpacity>
-            {newArr.map((val, index) => {
-              return (
-                <View
-                  style={{
-                    marginHorizontal: 10,
-                    justifyContent: 'center',
-                    backgroundColor: '#fff',
-                    marginTop: 10,
-                    paddingBottom: 5,
-                  }}>
-                  <View>
-                    <Text style={fontStyles.fieldLabel}>{val?.label} :</Text>
-                  </View>
-                  <View
-                    style={{
-                      backgroundColor: '#f0f1f5',
-                      paddingLeft: 10,
-                      paddingVertical: 5,
-                      borderRadius: 5,
-                    }}>
-                    <Text style={fontStyles.fieldValue}>
-                      {val?.value?.label
-                        ? val?.value?.label
-                        : val?.value
-                        ? val?.value
-                        : 'No detail'}
-                    </Text>
-                  </View>
-                </View>
-              );
-            })}
-            <View
-              style={{
-                alignItems: 'center',
-                justifyContent: 'flex-end',
-                flexDirection: 'row',
-              }}>
-              <TouchableOpacity
-                style={{
-                  // alignSelf: 'flex-end',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  // marginVertical: 10,
-                  marginTop: 20,
-                  marginBottom: 10,
-                  // backgroundColor: '#EE4B2B',
-                  borderColor: '#EE4B2B',
-                  borderWidth: 2.5,
-                  borderRadius: 5,
-                  marginRight: 10,
-                }}
-                onPress={() => setVisible(false)}>
-                <Text
-                  style={{
-                    paddingVertical: 3,
-                    color: '#EE4B2B',
-                    fontWeight: 'bold',
-                    paddingHorizontal: 20,
-                    fontFamily: 'Poppins-SemiBold',
-                  }}>
-                  Cancel
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  // alignSelf: 'flex-end',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  // marginVertical: 10,
-                  marginTop: 20,
-                  marginBottom: 10,
-                  // backgroundColor: '#75C2F6',
-                  borderColor: '#75C2F6',
-                  borderWidth: 2.5,
-                  borderRadius: 5,
-                }}
-                onPress={() => {
-                  setVisible(false), ongenericFunction(state.fun, state.value);
-                }}>
-                <Text
-                  style={{
-                    paddingVertical: 3,
-                    color: '#75C2F6',
-                    fontWeight: 'bold',
-                    paddingHorizontal: 20,
-                    fontFamily: 'Poppins-SemiBold',
-                  }}>
-                  Save
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
+      <RecordModal
+        visible={visible}
+        newArr={newArr}
+        onClose={() => setVisible(false)}
+        onSave={() => {
+          setVisible(false);
+          ongenericFunction(state.fun, state.value);
+        }}
+      />
 
       <Modal
         animationType="slide"
@@ -1639,56 +1550,27 @@ export default function RecordDetails({route}) {
           </View>
         </View>
       </Modal>
-      <Modal animationType="slide" transparent={true} visible={timeSheetModal}>
-        <View
-          activeOpacity={1}
-          style={{
-            flex: 1,
-            justifyContent: 'flex-end',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          }}
-          // onPress={() => setTimeSheetModal(false)}
-        >
-          <View
-            style={{
-              height: '90%',
-              overflow: 'hidden',
-              width: '100%',
-              alignSelf: 'center',
-              alignItems: 'center',
-              justifyContent: 'center',
-              // borderRadius: 30,
-              borderTopLeftRadius: 30,
-              borderTopRightRadius: 30,
-            }}>
-            <View style={{position: 'absolute', zIndex: 1, top: 13}}>
-              <TouchableOpacity
-                activeOpacity={0.7}
-                style={{alignItems: 'center', justifyContent: 'center'}}
-                onPress={() => {
-                  setTimeSheetModal(false);
-                }}>
-                <View
-                  style={{
-                    height: 5,
-                    width: 50,
-                    borderRadius: 10,
-                    backgroundColor: '#000',
-                  }}
-                />
-              </TouchableOpacity>
-            </View>
-            <AddRecords
-              recordId={recordId}
-              lister={route?.params?.listerInstance}
-              isDashboard={false}
-              navigation={route?.params?.listerInstance?.props?.navigation}
-              isTimesheets={saveText}
-              colorsType={colorsType}
-            />
-          </View>
-        </View>
-      </Modal>
+
+      <FormMoadal
+        timeSheetModal={timeSheetModal}
+        onPress={() => setTimeSheetModal(false)}
+        component={
+          <AddRecords
+            recordId={recordId}
+            lister={route?.params?.listerInstance}
+            isDashboard={false}
+            navigation={route?.params?.listerInstance?.props?.navigation}
+            isTimesheets={saveText}
+            colorsType={colorsType}
+          />
+        }
+      />
+
+      <ProfileModal
+        profileVisible={profileVisible}
+        profileImage={profileImage}
+        onPress={() => setProfileVisible(false)}
+      />
     </View>
   );
 }

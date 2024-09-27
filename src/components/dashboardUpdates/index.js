@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, TouchableOpacity, Text} from 'react-native';
+import {View, TouchableOpacity, Text, ImageBackground} from 'react-native';
 import {connect} from 'react-redux';
 
 import Header from './Header';
@@ -33,6 +33,7 @@ const IconButton = ({icon, title, style, onPress}) => {
 class UpdateWidget extends Component {
   render() {
     const {navigation} = this.props;
+
     // const findModule = (moduleName, moduleList) => {
     //   return moduleList.find((module) => module?.name === moduleName) || null;
     // };
@@ -67,7 +68,6 @@ class UpdateWidget extends Component {
     const modifiedMenu = modifyMenuWithModuleId(firstThree, modules);
 
     const newData = modifiedMenu?.filter((val) => val?.id !== undefined);
-
     // const organizationModule = findModule('Accounts', modules);
     // const contactModule = findModule('Contacts', modules);
     // const calendarModule = findModule('Calendar', modules);
@@ -77,13 +77,12 @@ class UpdateWidget extends Component {
         <View
           style={{
             flexDirection: 'row',
-            paddingTop: 30,
-            paddingBottom: 20,
+            paddingTop: newData?.length > 0 ? 30 : 0,
+            paddingBottom: newData?.length > 0 ? 20 : 0,
             paddingHorizontal: 20,
             justifyContent: 'center',
           }}>
           {newData?.map((val) => {
-            console.log('val', val);
             return (
               <>
                 {val?.name === 'Calendar' ? (

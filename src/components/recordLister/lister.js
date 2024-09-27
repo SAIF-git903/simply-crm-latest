@@ -9,7 +9,9 @@ import {
   FlatList,
   ScrollView,
 } from 'react-native';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Icon from 'react-native-vector-icons/Ionicons';
 import SearchBox from '../common/searchBox';
 import {commonStyles, fontStyles} from '../../styles/common';
@@ -31,6 +33,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {LOGINDETAILSKEY, URLDETAILSKEY} from '../../variables/strings';
 import store from '../../store';
+import {generalBgColor} from '../../variables/themeColors';
 
 class Lister extends Component {
   constructor(props) {
@@ -63,6 +66,8 @@ class Lister extends Component {
       fieldLabel: [],
       openFilters: {},
       defaultFilterID: '',
+      sortName: undefined,
+      filterName: undefined,
     };
   }
 
@@ -207,6 +212,7 @@ class Lister extends Component {
                     store.dispatch(filterField(item?.id));
                     this.setState({visibleFilter: false}),
                       this.dofilter(item.id);
+                    this.setState({filterName: item?.name});
                   }}>
                   <Text
                     style={{
@@ -227,6 +233,7 @@ class Lister extends Component {
               store.dispatch(filterField(this.state.defaultFilterID));
               this.setState({visibleFilter: false}),
                 this.dofilter(this.state.defaultFilterID);
+              this.setState({filterName: 'All'});
             }}>
             <Text
               style={{
@@ -260,9 +267,13 @@ class Lister extends Component {
         pageToTake: 1,
         searchText: '',
         selectedFilter: '',
+        orderBy: '',
+        sortOrder: '',
         selectedIndex: -1,
         statusText: 'Fetching Record',
         statusTextColor: '#000000',
+        filterName: undefined,
+        sortName: undefined,
       },
       () => {
         setInterval(() => {
@@ -397,11 +408,12 @@ class Lister extends Component {
         <View style={{flex: 1}}>
           <View
             style={{
-              padding: 15,
+              paddingHorizontal: 10,
+              paddingVertical: 15,
               paddingBottom: 5,
               justifyContent: 'center',
               alignItems: 'center',
-              paddingHorizontal: 40,
+              // paddingHorizontal: 40,
             }}>
             <SearchBox
               searchText={this.state.searchText}
@@ -418,18 +430,20 @@ class Lister extends Component {
             style={{
               flexDirection: 'row',
               alignItems: 'center',
-              justifyContent: 'space-evenly',
+              justifyContent: 'space-between',
+              paddingHorizontal: 10,
               width: '100%',
               marginTop: 10,
             }}>
             <TouchableOpacity
               style={{
                 borderWidth: 1,
+                borderColor: '#dfdfdf',
+
                 borderRadius: 5,
                 flexDirection: 'row',
                 alignItems: 'center',
-                justifyContent: 'center',
-                // paddingHorizontal: 10,
+                paddingHorizontal: 10,
                 paddingVertical: 5,
                 width: '45%',
               }}
@@ -442,14 +456,18 @@ class Lister extends Component {
                   this.setState({visibleFilter: false});
                 }
               }}>
+              <AntDesign name="filter" size={20} color={'#707070'} />
               <Text
+                numberOfLines={1}
                 style={{
-                  color: '#000',
+                  color: '#707070',
                   fontFamily: 'Poppins-Regular',
+                  marginLeft: 10,
+                  fontSize: 16,
+                  width: '80%',
                 }}>
-                My filter
+                {this.state.filterName ? this.state?.filterName : 'My filter'}
               </Text>
-              <EvilIcons name="chevron-down" size={20} color={'#000'} />
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
@@ -463,17 +481,25 @@ class Lister extends Component {
               style={{
                 borderWidth: 1,
                 borderRadius: 5,
+                borderColor: '#dfdfdf',
                 flexDirection: 'row',
                 alignItems: 'center',
-                justifyContent: 'center',
-                // paddingHorizontal: 10,
+                paddingHorizontal: 10,
                 paddingVertical: 5,
+
                 width: '45%',
               }}>
-              <Text style={{color: '#000', fontFamily: 'Poppins-Regular'}}>
-                Sorted by
+              <MaterialIcons name="sort" size={20} color={'#707070'} />
+              <Text
+                numberOfLines={1}
+                style={{
+                  color: '#707070',
+                  fontFamily: 'Poppins-Regular',
+                  marginLeft: 10,
+                  fontSize: 16,
+                }}>
+                {this.state.sortName ? this.state.sortName : 'Sort by'}
               </Text>
-              <EvilIcons name="chevron-down" size={20} color={'#000'} />
             </TouchableOpacity>
           </View>
 
@@ -485,7 +511,7 @@ class Lister extends Component {
                 justifyContent: 'center',
                 backgroundColor: '#fff',
                 paddingHorizontal: 10,
-                top: 105,
+                top: 115,
                 zIndex: 1,
                 right: 10,
                 borderRadius: 5,
@@ -514,6 +540,7 @@ class Lister extends Component {
                       onPress={() => {
                         this.sortByName(item.name),
                           this.setState({visible: false});
+                        this.setState({sortName: item?.label});
                       }}>
                       <Text
                         style={{
@@ -540,7 +567,7 @@ class Lister extends Component {
               style={{
                 backgroundColor: '#fff',
                 position: 'absolute',
-                top: 105,
+                top: 115,
                 zIndex: 1,
                 left: 10,
                 borderRadius: 5,
@@ -561,49 +588,53 @@ class Lister extends Component {
                   style={{padding: 10}}
                 />
               ) : (
-                <FlatList
-                  data={Object.keys(this.state.filters.filters)}
-                  keyExtractor={(filterType) => filterType}
-                  showsVerticalScrollIndicator={false}
-                  renderItem={({item: filterType}) => (
-                    <View key={filterType}>
-                      <TouchableOpacity
-                        activeOpacity={0.7}
-                        onPress={() => this.toggleFilter(filterType)}>
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            backgroundColor: '#eeeeee',
-                            justifyContent: 'space-between',
-                          }}>
-                          <Text
+                <View style={{maxHeight: 200}}>
+                  <FlatList
+                    data={Object.keys(this.state.filters.filters)}
+                    keyExtractor={(filterType) => filterType}
+                    showsVerticalScrollIndicator={false}
+                    nestedScrollEnabled={true}
+                    renderItem={({item: filterType}) => (
+                      <View key={filterType}>
+                        <TouchableOpacity
+                          activeOpacity={0.7}
+                          onPress={() => this.toggleFilter(filterType)}>
+                          <View
                             style={{
-                              paddingVertical: 10,
-                              paddingHorizontal: 10,
-                              fontWeight: '700',
-                              fontFamily: 'Poppins-Regular',
-                              fontSize: 16,
-                              color: '#000',
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              // backgroundColor: '#eeeeee',
+                              backgroundColor: generalBgColor,
+                              justifyContent: 'space-between',
                             }}>
-                            {filterType}
-                          </Text>
-                          <Icon
-                            name={
-                              this.state.openFilters[filterType]
-                                ? 'arrow-up'
-                                : 'arrow-down'
-                            }
-                            size={20}
-                            color="#000"
-                            style={{marginRight: 10}}
-                          />
-                        </View>
-                      </TouchableOpacity>
-                      {this.renderFilteredList(filterType)}
-                    </View>
-                  )}
-                />
+                            <Text
+                              style={{
+                                paddingVertical: 10,
+                                paddingHorizontal: 10,
+                                fontWeight: '700',
+                                fontFamily: 'Poppins-Regular',
+                                fontSize: 16,
+                                color: '#000',
+                              }}>
+                              {filterType}
+                            </Text>
+                            <Icon
+                              name={
+                                this.state.openFilters[filterType]
+                                  ? 'arrow-up'
+                                  : 'arrow-down'
+                              }
+                              size={20}
+                              color="#000"
+                              style={{marginRight: 10}}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                        {this.renderFilteredList(filterType)}
+                      </View>
+                    )}
+                  />
+                </View>
 
                 // <ScrollView showsVerticalScrollIndicator={false}>
                 //   {Object.keys(this.state.filters.filters).map((filterType) => (

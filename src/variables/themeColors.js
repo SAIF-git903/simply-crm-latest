@@ -17,7 +17,8 @@ export const DRAWER_INNER_BORDER_COLOR = '#606771';
 export const DRAWER_BORDER_COLOR = '#868d98';
 
 //Header Color
-export const HEADER_COLOR = '#364150';
+// export const HEADER_COLOR = '#364150';
+export const HEADER_COLOR = '#FFF';
 export const HEADER_TEXT_COLOR = '#FFFFFF';
 export const HEADER_IMAGE_COLOR = '#ffffff';
 export const HEADER_IMAGE_SELECTED_COLOR = '#34bfa3';
@@ -28,3 +29,9 @@ export const STATUS_BACKGROUND_COLOR = '#ffffff';
 //Record Color
 export const RECORD_COLOR = '#ffffff';
 export const RECORD_SELECTED_COLOR = '#D3D3D3';
+
+export const headerIconColor = '#035eff';
+export const headerTextColor = '#131b3c';
+export const generalBgColor = '#f5f8f9';
+export const textColor = '#465a78';
+export const textColor2 = '#131b3c';

@@ -1,12 +1,22 @@
 import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {View, Text, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import Entypo from 'react-native-vector-icons/Entypo';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  FlatList,
+  StatusBar,
+} from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome6';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {DrawerActions} from '@react-navigation/native';
 import SafeAreaView from 'react-native-safe-area-view';
 
 import {fontStyles} from '../../styles/common';
+import {headerIconColor, headerTextColor} from '../../variables/themeColors';
 
 export default function Header(props) {
   const [visible, setVisible] = useState(false);
@@ -23,7 +33,8 @@ export default function Header(props) {
   function renderMenuButton() {
     return (
       <TouchableOpacity onPress={onMenuButtonPress}>
-        <Icon name="bars" size={28} color="white" />
+        {/* <Icon name="bars" size={25} color={headerIconColor} /> */}
+        <Ionicons name="menu-outline" size={30} color={headerIconColor} />
       </TouchableOpacity>
     );
   }
@@ -35,13 +46,15 @@ export default function Header(props) {
         style={{
           width: 28,
         }}>
-        <Icon name="angle-left" size={28} color="white" />
+        {/* <Icon name="arrow-left" size={28} color={headerIconColor} /> */}
+        <MaterialIcons name="arrow-back" size={30} color={headerIconColor} />
       </TouchableOpacity>
     );
   }
 
   return (
     <>
+      <StatusBar backgroundColor={'#fff'} barStyle={'dark-content'} />
       <View style={styles.wrapper}>
         <SafeAreaView forceInset={{top: 'always', bottom: 'never'}}>
           <View style={styles.contentContainer}>
@@ -50,7 +63,15 @@ export default function Header(props) {
             </View>
 
             <View style={{flex: 1}}>
-              <Text style={fontStyles.navbarTitle}>{title}</Text>
+              <Text
+                style={[
+                  fontStyles.navbarTitle,
+                  {
+                    color: headerTextColor,
+                  },
+                ]}>
+                {title}
+              </Text>
             </View>
 
             <View style={{minWidth: 28}}>
@@ -58,7 +79,11 @@ export default function Header(props) {
             </View>
             {showDetailButton && (
               <TouchableOpacity onPress={onPress}>
-                <Entypo name="dots-three-vertical" size={25} color="#fff" />
+                <MaterialCommunityIcons
+                  name="dots-vertical"
+                  size={30}
+                  color={headerIconColor}
+                />
               </TouchableOpacity>
             )}
           </View>
@@ -71,7 +96,10 @@ export default function Header(props) {
 const styles = StyleSheet.create({
   wrapper: {
     alignItems: 'stretch',
-    backgroundColor: '#364150',
+    // backgroundColor: '#364150',
+    backgroundColor: '#FFF',
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#d3d2d8',
   },
   contentContainer: {
     padding: 10,

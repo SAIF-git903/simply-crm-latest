@@ -1,16 +1,14 @@
-import { MODULE_SELECT } from '../actions/types';
+import {MODULE_SELECT} from '../actions/types';
 
 const INITIAL_STATE = {
-    moduleName: 'Accounts',
-
+  moduleName: '',
 };
 
 export default (state = INITIAL_STATE, action) => {
-    switch (action.type) {
-        case MODULE_SELECT:
-            return { ...state, moduleName: action.payload };
-        default:
-            return state;
-    }
+  switch (action.type) {
+    case MODULE_SELECT:
+      return {...state, moduleName: action.payload};
+    default:
+      return state;
+  }
 };
-

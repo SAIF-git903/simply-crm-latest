@@ -13,6 +13,7 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {
   WeekCalendar,
   CalendarProvider,
@@ -26,6 +27,7 @@ import {UPDATE_RECORD_VIEWER} from '../actions/types';
 import {getCalendarRecords, deleteCalendarRecord} from '../ducks/calendar';
 import Header from '../components/common/Header';
 import {fontStyles} from '../styles/common';
+import {headerIconColor} from '../variables/themeColors';
 
 const moment = require('moment-timezone');
 
@@ -135,7 +137,8 @@ export default function Calendar(props) {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-              <Icon name="plus" size={18} color="white" />
+              {/* <Icon name="plus" size={25} color={headerIconColor} /> */}
+              <Ionicons name="add-outline" size={30} color={headerIconColor} />
             </View>
           </TouchableOpacity>
         }>

@@ -11,7 +11,7 @@ class Header extends Component {
     this.state = {visible: false, value: null};
   }
   componentDidMount() {
-    console.log('this.props', this.props);
+    this.props.moduleSelected(this.props?.menu[0]?.name);
   }
 
   // handleDisplayModule = (value) => {

@@ -165,7 +165,8 @@ class DrawerContent extends Component {
           flex: 1,
           backgroundColor: DRAWER_BACKGROUND,
         }}>
-        <StatusBar backgroundColor={HEADER_COLOR} barStyle="light-content" />
+        {/* <StatusBar backgroundColor={HEADER_COLOR} barStyle="light-content" /> */}
+        <StatusBar backgroundColor={HEADER_COLOR} barStyle="dark-content" />
 
         {Platform.OS === 'ios'
           ? this.renderSafeContent()

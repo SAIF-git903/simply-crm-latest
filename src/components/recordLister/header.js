@@ -10,8 +10,9 @@ import {
 } from 'react-native';
 import {commonStyles, fontStyles} from '../../styles/common';
 import {viewSearchAction, updateSearchModule} from '../../actions';
-import {HEADER_TEXT_COLOR} from '../../variables/themeColors';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import {HEADER_TEXT_COLOR, headerIconColor} from '../../variables/themeColors';
+import Icon from 'react-native-vector-icons/FontAwesome6';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 class Header extends Component {
   componentDidMount() {}
@@ -37,7 +38,8 @@ class Header extends Component {
       //This is phone
       return (
         <TouchableOpacity onPress={this.onMenuButtonPress.bind(this)}>
-          <Icon name="bars" size={28} color="white" />
+          {/* <Icon name="bars" size={28} color="white" /> */}
+          <Ionicons name="menu-outline" size={30} color={headerIconColor} />
         </TouchableOpacity>
       );
     }
@@ -57,14 +59,19 @@ class Header extends Component {
             <TouchableOpacity onPress={this.onSearchButtonPress.bind(this)}>
               <View
                 style={{
-                  backgroundColor: 'rgba(255,255,255,.2)',
+                  backgroundColor: 'rgba(255,255,255,0.2)',
                   width: 27,
                   height: 27,
                   borderRadius: 3,
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}>
-                <Icon name="plus" size={18} color="white" />
+                {/* <Icon name="plus" size={25} color={headerIconColor} /> */}
+                <Ionicons
+                  name="add-outline"
+                  size={30}
+                  color={headerIconColor}
+                />
               </View>
             </TouchableOpacity>
           </View>

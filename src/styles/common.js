@@ -1,5 +1,10 @@
 import {StyleSheet, Platform} from 'react-native';
-import {HEADER_COLOR} from '../variables/themeColors';
+import {
+  generalBgColor,
+  HEADER_COLOR,
+  textColor,
+  textColor2,
+} from '../variables/themeColors';
 
 export const commonStyles = StyleSheet.create({
   headerBackground: {
@@ -16,6 +21,7 @@ export const commonStyles = StyleSheet.create({
   },
   recordListerBackground: {
     flex: 1,
+    backgroundColor: generalBgColor,
   },
   recordViewerBackground: {
     flex: 1,
@@ -118,9 +124,9 @@ export const fontStyles = StyleSheet.create({
     marginTop: 3,
   },
   sectionTitle: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: 'Poppins-Regular',
     color: '#707070',
-    fontSize: 18,
+    fontSize: 16,
   },
   fieldLabel: {
     fontFamily: 'Poppins-Regular',
@@ -128,15 +134,16 @@ export const fontStyles = StyleSheet.create({
     // fontFamily: 'Poppins-Bold',
     // color: '#707070',
     color: '#C5C5C5',
-    fontSize: 15,
+    // color: textColor,
+    fontSize: 16,
     // fontSize: 16,
   },
   fieldValue: {
-    fontFamily: 'Poppins-Bold',
+    fontFamily: 'Poppins-Regular',
     // color: 'black',
-
+    fontWeight: '400',
     color: '#707070',
-
+    // color: textColor2,
     fontSize: 17,
   },
   fieldValueLocation: {
@@ -182,7 +189,7 @@ export const fontStyles = StyleSheet.create({
   searchBoxLabel: {
     fontFamily: 'Poppins-Regular',
     color: '#707070',
-    fontSize: 16,
+    fontSize: 18,
   },
   drawerMenuButtonText: {
     fontFamily: 'Poppins-Regular',

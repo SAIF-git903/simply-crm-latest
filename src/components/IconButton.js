@@ -1,6 +1,6 @@
 import React from 'react';
 import {TouchableOpacity, StyleSheet} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export default function IconButton({icon, size, onPress, color, solid}) {
   return (

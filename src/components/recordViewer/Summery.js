@@ -11,14 +11,22 @@ import {
   UIManager,
   LayoutAnimation,
   Animated,
+  Image,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {API_fetchRecordWithGrouping, API_trackCall} from '../../helper/api';
 import {fontStyles} from '../../styles/common';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import Icon from 'react-native-vector-icons/FontAwesome6';
 import IconButton from '../IconButton';
 import store from '../../store';
 import {isLightColor} from '../common/TextColor';
+import {
+  generalBgColor,
+  headerIconColor,
+  textColor2,
+  textColor as txtColor,
+} from '../../variables/themeColors';
+import {makePhoneCall, sendSMS} from '../common/Common';
 
 // Enable layout animation for Android
 if (
@@ -124,7 +132,7 @@ const Summery = ({navigation, moduleName, recordId}) => {
   const renderFieldValue = (value) => {
     if (typeof value === 'object' && value !== null) {
       // If it's an object, render a specific property or convert it to a string
-      return value?.name || value?.value;
+      return value?.name || value?.label;
     }
     return value; // Otherwise, just render the value as is
   };
@@ -148,15 +156,17 @@ const Summery = ({navigation, moduleName, recordId}) => {
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
+            paddingHorizontal: 10,
           }}>
           <Text
             style={[
               fontStyles.sectionTitle,
               ,
               {
-                fontWeight: 'bold',
+                // fontWeight: 'bold',
                 marginVertical: 10,
-                color: item?.display_status === 'open' ? '#707070' : 'gray',
+                // color: item?.display_status === 'open' ? '#707070' : 'gray',
+                color: txtColor,
               },
             ]}>
             {item.translatedLabel}
@@ -164,7 +174,8 @@ const Summery = ({navigation, moduleName, recordId}) => {
           <Icon
             name={arrowIcon}
             size={16}
-            color={'#707070'}
+            // color={'#707070'}
+            color={txtColor}
             style={{
               marginLeft: 20,
             }}
@@ -174,7 +185,7 @@ const Summery = ({navigation, moduleName, recordId}) => {
           <View
             style={{
               backgroundColor: '#fff',
-              paddingHorizontal: 20,
+              paddingHorizontal: 10,
               paddingVertical: 10,
             }}>
             {item?.fields?.map((field, index) => {
@@ -183,9 +194,23 @@ const Summery = ({navigation, moduleName, recordId}) => {
               const textColor = isLightColor(getBG) ? 'black' : 'white';
 
               return (
-                <View key={index}>
-                  <Text style={fontStyles.fieldLabel} numberOfLines={2}>
-                    {field?.label}:
+                <View
+                  key={index}
+                  style={{
+                    borderBottomWidth: 0.5,
+                    borderBottomColor: '#d3d2d8',
+                    marginBottom: 10,
+                  }}>
+                  <Text
+                    style={[
+                      fontStyles.fieldLabel,
+                      {
+                        color: txtColor,
+                        fontSize: 13,
+                      },
+                    ]}
+                    numberOfLines={2}>
+                    {field?.label}
                   </Text>
                   <View
                     style={{
@@ -210,9 +235,12 @@ const Summery = ({navigation, moduleName, recordId}) => {
 
                               // color: color
                               //   ? textColor
+                              // color: renderFieldValue(field?.value)
+                              //   ? '#707070'
+                              //   : '#707070',
                               color: renderFieldValue(field?.value)
-                                ? '#707070'
-                                : '#707070',
+                                ? textColor2
+                                : textColor2,
                             },
                           ]}>
                           {renderFieldValue(field?.value)
@@ -224,6 +252,46 @@ const Summery = ({navigation, moduleName, recordId}) => {
                             : 'N/A'}
                         </Text>
                       </TouchableOpacity>
+                    ) : field?.uitype === '164' ? (
+                      field?.value ? (
+                        <View
+                          style={{
+                            height: 100,
+                            width: 100,
+                          }}>
+                          <Image
+                            source={{uri: field?.value}}
+                            style={{
+                              height: '100%',
+                              width: '100%',
+                              resizeMode: 'contain',
+                            }}
+                          />
+                        </View>
+                      ) : (
+                        <Text
+                          style={[
+                            fontStyles.fieldValue,
+                            {color: textColor2, marginVertical: 10},
+                          ]}>
+                          N/A
+                        </Text>
+                      )
+                    ) : field?.uitype === '69' ? (
+                      <View
+                        style={{
+                          height: 50,
+                          width: 50,
+                        }}>
+                        <Image
+                          source={{uri: field?.value}}
+                          style={{
+                            height: '100%',
+                            width: '100%',
+                            resizeMode: 'contain',
+                          }}
+                        />
+                      </View>
                     ) : (
                       <TouchableOpacity
                         style={{
@@ -247,11 +315,16 @@ const Summery = ({navigation, moduleName, recordId}) => {
                             fontStyles.fieldValue,
                             {
                               paddingHorizontal: textColor && getBG ? 10 : 0,
+                              // color: fieldValue
+                              //   ? textColor && getBG
+                              //     ? textColor
+                              //     : '#707070'
+                              //   : '#707070',
                               color: fieldValue
                                 ? textColor && getBG
                                   ? textColor
-                                  : '#707070'
-                                : '#707070',
+                                  : textColor2
+                                : textColor2,
                             },
                           ]}>
                           {renderFieldValue(field?.value)
@@ -262,15 +335,56 @@ const Summery = ({navigation, moduleName, recordId}) => {
                     )}
 
                     {field?.uitype === '179' && (
-                      <IconButton
-                        solid
-                        color={'#000'}
-                        icon={showPassword ? 'eye-slash' : 'eye'}
-                        size={20}
-                        onPress={() => {
-                          setShowPassword(!showPassword);
-                        }}
-                      />
+                      <View style={{paddingHorizontal: 20}}>
+                        <IconButton
+                          solid
+                          color={headerIconColor}
+                          icon={
+                            showPassword ? 'eye-off-outline' : 'eye-outline'
+                          }
+                          size={25}
+                          onPress={() => {
+                            setShowPassword(!showPassword);
+                          }}
+                        />
+                      </View>
+                    )}
+                    {field?.uitype === '13' && (
+                      <View style={{paddingHorizontal: 20}}>
+                        <IconButton
+                          solid
+                          color={headerIconColor}
+                          icon={'mail-outline'}
+                          size={25}
+                          onPress={() => {
+                            Linking.openURL(`mailto:${field?.value}`);
+                          }}
+                        />
+                      </View>
+                    )}
+                    {field?.uitype === '11' && (
+                      <View style={{flexDirection: 'row'}}>
+                        <IconButton
+                          solid
+                          color={headerIconColor}
+                          icon={'chatbox-outline'}
+                          size={25}
+                          onPress={() => {
+                            sendSMS(field?.value, '');
+                          }}
+                        />
+                        <View style={{paddingHorizontal: 20}}>
+                          <IconButton
+                            solid
+                            color={headerIconColor}
+                            icon={'call-outline'}
+                            size={25}
+                            onPress={() => {
+                              makePhoneCall(field?.value);
+                            }}
+                          />
+                        </View>
+                      </View>
                     )}
                   </View>
                 </View>
@@ -283,13 +397,13 @@ const Summery = ({navigation, moduleName, recordId}) => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex: 1, backgroundColor: generalBgColor}}>
       <FlatList
         data={data}
+        showsVerticalScrollIndicator={false}
         contentContainerStyle={{
-          marginHorizontal: 10,
-          // backgroundColor: '#fff',
-          paddingHorizontal: 10,
+          marginHorizontal: 5,
+          // backgroundColor: '#000',
           marginTop: 20,
           // marginBottom: 100,
           paddingBottom: 50,
