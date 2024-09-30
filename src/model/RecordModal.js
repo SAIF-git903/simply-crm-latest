@@ -1,8 +1,22 @@
-import {View, Text, Modal, TouchableOpacity, Image} from 'react-native';
+import {
+  View,
+  Text,
+  Modal,
+  TouchableOpacity,
+  Image,
+  TextInput,
+} from 'react-native';
 import React from 'react';
 import {fontStyles} from '../styles/common';
 
-const RecordModal = ({visible, newArr, onClose, onSave}) => {
+const RecordModal = ({
+  visible,
+  newArr,
+  onClose,
+  onSave,
+  inputValues,
+  setInputValues,
+}) => {
   const processFieldValue = (field) => {
     let fieldValue;
 
@@ -15,6 +29,12 @@ const RecordModal = ({visible, newArr, onClose, onSave}) => {
     }
 
     return fieldValue;
+  };
+  const handleInputChange = (label, value) => {
+    setInputValues((prevValues) => ({
+      ...prevValues,
+      [label]: value,
+    }));
   };
   return (
     <Modal animationType="slide" transparent={true} visible={visible}>
@@ -33,6 +53,7 @@ const RecordModal = ({visible, newArr, onClose, onSave}) => {
             borderTopLeftRadius: 30,
             borderTopRightRadius: 30,
             paddingHorizontal: 10,
+            paddingBottom: 10,
           }}>
           <TouchableOpacity
             activeOpacity={0.7}
@@ -51,6 +72,54 @@ const RecordModal = ({visible, newArr, onClose, onSave}) => {
               }}
             />
           </TouchableOpacity>
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'space-around',
+              flexDirection: 'row',
+            }}>
+            <TouchableOpacity
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderColor: '#EE4B2B',
+                borderWidth: 2.5,
+                borderRadius: 5,
+                marginRight: 10,
+              }}
+              onPress={onClose}>
+              <Text
+                style={{
+                  paddingVertical: 3,
+                  color: '#EE4B2B',
+                  fontWeight: 'bold',
+                  paddingHorizontal: 20,
+                  fontFamily: 'Poppins-SemiBold',
+                }}>
+                Cancel
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderColor: '#75C2F6',
+                borderWidth: 2.5,
+                borderRadius: 5,
+              }}
+              onPress={onSave}>
+              <Text
+                style={{
+                  paddingVertical: 3,
+                  color: '#75C2F6',
+                  fontWeight: 'bold',
+                  paddingHorizontal: 20,
+                  fontFamily: 'Poppins-SemiBold',
+                }}>
+                Save
+              </Text>
+            </TouchableOpacity>
+          </View>
           {newArr.map((val, index) => {
             const fieldValue = processFieldValue(val);
             return (
@@ -89,75 +158,24 @@ const RecordModal = ({visible, newArr, onClose, onSave}) => {
                     style={{
                       backgroundColor: '#f0f1f5',
                       paddingLeft: 10,
-                      paddingVertical: 5,
                       borderRadius: 5,
                     }}>
-                    <Text style={fontStyles.fieldValue}>
+                    <TextInput
+                      placeholderTextColor={'#707070'}
+                      style={[fontStyles.fieldValue, {height: 40}]}
+                      onChangeText={(text) =>
+                        handleInputChange(val?.name, text)
+                      }
+                      placeholder={inputValues[val?.name] || fieldValue}
+                    />
+                    {/* <Text style={fontStyles.fieldValue}>
                       {fieldValue ? fieldValue : 'N/A'}
-                    </Text>
+                    </Text> */}
                   </View>
                 )}
               </View>
             );
           })}
-          <View
-            style={{
-              alignItems: 'center',
-              justifyContent: 'flex-end',
-              flexDirection: 'row',
-            }}>
-            <TouchableOpacity
-              style={{
-                // alignSelf: 'flex-end',
-                alignItems: 'center',
-                justifyContent: 'center',
-                // marginVertical: 10,
-                marginTop: 20,
-                marginBottom: 10,
-                // backgroundColor: '#EE4B2B',
-                borderColor: '#EE4B2B',
-                borderWidth: 2.5,
-                borderRadius: 5,
-                marginRight: 10,
-              }}
-              onPress={onClose}>
-              <Text
-                style={{
-                  paddingVertical: 3,
-                  color: '#EE4B2B',
-                  fontWeight: 'bold',
-                  paddingHorizontal: 20,
-                  fontFamily: 'Poppins-SemiBold',
-                }}>
-                Cancel
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                // alignSelf: 'flex-end',
-                alignItems: 'center',
-                justifyContent: 'center',
-                // marginVertical: 10,
-                marginTop: 20,
-                marginBottom: 10,
-                // backgroundColor: '#75C2F6',
-                borderColor: '#75C2F6',
-                borderWidth: 2.5,
-                borderRadius: 5,
-              }}
-              onPress={onSave}>
-              <Text
-                style={{
-                  paddingVertical: 3,
-                  color: '#75C2F6',
-                  fontWeight: 'bold',
-                  paddingHorizontal: 20,
-                  fontFamily: 'Poppins-SemiBold',
-                }}>
-                Save
-              </Text>
-            </TouchableOpacity>
-          </View>
         </View>
       </View>
     </Modal>

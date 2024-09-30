@@ -48,10 +48,17 @@ import {
   API_fetchRecordWithGrouping,
   API_forfetchImageData,
   API_saveFile,
+  API_saveRecord,
 } from '../../helper/api';
 import store from '../../store';
 
-import {deleteRecord, isTimeSheetModal, passValue} from '../../actions';
+import {
+  deleteRecord,
+  isTimeSheetModal,
+  passValue,
+  refreshRecordData,
+  saveSuccess,
+} from '../../actions';
 import {deleteCalendarRecord} from '../../ducks/calendar';
 import CommanView from '../../components/recordViewer/CommanView';
 import AddRecords from '../../components/addRecords';
@@ -202,6 +209,7 @@ export default function RecordDetails({route}) {
   const [timeSheetModal, setTimeSheetModal] = useState(false);
   const [profileVisible, setProfileVisible] = useState(false);
   const [saveText, setSaveText] = useState();
+  const [inputValues, setInputValues] = useState({});
   const [profileImage, setProfileImage] = useState();
   let data = [
     {
@@ -541,6 +549,13 @@ export default function RecordDetails({route}) {
           .then((res) => console.log('res', res))
           .catch((err) => console.log('err', err));
       } else {
+        const ph_no = getValueByName(params);
+        let phoneNumber = '';
+        if (Platform.OS === 'android') {
+          phoneNumber = `tel:${ph_no}`;
+        } else {
+          phoneNumber = `telprompt:${ph_no}`;
+        }
         Linking.openURL(`${fun}:${phoneNumber}`)
           .then((res) => console.log('res', res))
           .catch((err) => console.log('err', err));
@@ -925,6 +940,32 @@ export default function RecordDetails({route}) {
   //     Alert.alert('Please select a file first');
   //   }
   // };
+
+  const updateData = async () => {
+    try {
+      const responseJson = await API_saveRecord(
+        moduleName,
+        JSON.stringify(inputValues),
+        recordId,
+      );
+      console.log('responseJson', responseJson);
+      if (responseJson?.success === true) {
+        let data = {
+          loading: false,
+          isScrollViewRefreshing: true,
+          statusText: 'Refreshing',
+          statusTextColor: '#000000',
+        };
+
+        navigation.pop();
+      }
+      if (responseJson?.success === false) {
+        Alert.alert(responseJson?.error?.message);
+      }
+    } catch (error) {
+      console.log('err', error);
+    }
+  };
 
   const renderItem = ({item, index}) => {
     return (
@@ -1495,9 +1536,19 @@ export default function RecordDetails({route}) {
         newArr={newArr}
         onClose={() => setVisible(false)}
         onSave={() => {
+          const isEmpty = (obj) => {
+            return Object.keys(obj).length === 0;
+          };
+          let isData = !isEmpty(inputValues);
+
+          if (isData) {
+            updateData();
+          }
           setVisible(false);
           ongenericFunction(state.fun, state.value);
         }}
+        inputValues={inputValues}
+        setInputValues={setInputValues}
       />
 
       <Modal

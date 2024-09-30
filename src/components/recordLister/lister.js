@@ -76,6 +76,14 @@ class Lister extends Component {
     this.getFilters();
     this.getColors();
     this.getRecords();
+    this._unsubscribe = this.props.navigation.addListener('focus', () => {
+      this.getRecords();
+    });
+  }
+  componentWillUnmount() {
+    if (this._unsubscribe) {
+      this._unsubscribe();
+    }
   }
 
   getFields = async () => {
@@ -497,6 +505,7 @@ class Lister extends Component {
                   fontFamily: 'Poppins-Regular',
                   marginLeft: 10,
                   fontSize: 16,
+                  width: '80%',
                 }}>
                 {this.state.sortName ? this.state.sortName : 'Sort by'}
               </Text>
