@@ -154,23 +154,41 @@ class Header extends Component {
             backgroundColor: '#FFF',
             borderBottomWidth: 0.5,
             borderBottomColor: '#d3d2d8',
+            paddingBottom: 15,
+            paddingHorizontal: this.props.isTimesheets ? 0 : 10,
+            paddingTop: this.props.isTimesheets
+              ? 0
+              : Platform.OS === 'ios'
+              ? 10
+              : 15,
           },
         ]}>
         <SafeAreaView forceInset={{top: 'always', bottom: 'never'}}>
-          <View style={commonStyles.headerContentStyle}>
+          <View
+            style={[
+              commonStyles.headerContentStyle,
+              {
+                paddingHorizontal: this.props?.isTimesheets ? 30 : 0,
+              },
+            ]}>
             <View style={{minWidth: 40}}>
               {this.props?.isTimesheets
                 ? this.getCancleButton()
                 : this.renderBackButton()}
             </View>
             <View
-              style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
               <Text
                 style={[
                   fontStyles.navbarTitle,
                   {
                     textAlign: 'center',
                     color: headerTextColor,
+                    marginTop: this?.props?.isTimesheets ? 0 : 3,
                   },
                 ]}>
                 {this.props.moduleLable}

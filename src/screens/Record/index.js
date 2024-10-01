@@ -29,11 +29,11 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import axios from 'axios';
 import RNFetchBlob from 'rn-fetch-blob';
-import NfcManager, {Ndef, NfcEvents, NfcTech} from 'react-native-nfc-manager';
-import LottieView from 'lottie-react-native';
-import * as SolidIcons from '@fortawesome/free-solid-svg-icons';
-import * as BrandIcons from '@fortawesome/free-brands-svg-icons';
-import * as RegularIcons from '@fortawesome/free-regular-svg-icons';
+// import NfcManager, {Ndef, NfcEvents, NfcTech} from 'react-native-nfc-manager';
+// import LottieView from 'lottie-react-native';
+// import * as SolidIcons from '@fortawesome/free-solid-svg-icons';
+// import * as BrandIcons from '@fortawesome/free-brands-svg-icons';
+// import * as RegularIcons from '@fortawesome/free-regular-svg-icons';
 
 import Header from '../../components/common/Header';
 import Viewer from '../../components/recordViewer/viewer';
@@ -763,75 +763,75 @@ export default function RecordDetails({route}) {
     );
   }
 
-  const checkIsSupported = async () => {
-    const deviceIsSupported = await NfcManager.isSupported();
-    const deviceIsEnable = await NfcManager.isEnabled();
+  // const checkIsSupported = async () => {
+  //   const deviceIsSupported = await NfcManager.isSupported();
+  //   const deviceIsEnable = await NfcManager.isEnabled();
 
-    if (deviceIsSupported === false) {
-      Alert.alert('NFC functionality is not supported on this device.');
-    } else if (deviceIsEnable === false) {
-      if (Platform.OS === 'ios') {
-        Alert.alert('To use NFC, enable it in your device settings.');
-      } else {
-        Alert.alert('Please enable NFC to proceed.');
-      }
-    } else {
-      await readNdef();
-    }
-  };
+  //   if (deviceIsSupported === false) {
+  //     Alert.alert('NFC functionality is not supported on this device.');
+  //   } else if (deviceIsEnable === false) {
+  //     if (Platform.OS === 'ios') {
+  //       Alert.alert('To use NFC, enable it in your device settings.');
+  //     } else {
+  //       Alert.alert('Please enable NFC to proceed.');
+  //     }
+  //   } else {
+  //     await readNdef();
+  //   }
+  // };
 
-  async function readNdef() {
-    try {
-      if (Platform.OS === 'android') {
-        setNFCModel(true);
-      }
-      await NfcManager.requestTechnology(NfcTech.Ndef);
-      const tag = await NfcManager.getTag();
+  // async function readNdef() {
+  //   try {
+  //     if (Platform.OS === 'android') {
+  //       setNFCModel(true);
+  //     }
+  //     await NfcManager.requestTechnology(NfcTech.Ndef);
+  //     const tag = await NfcManager.getTag();
 
-      if (
-        tag?.ndefMessage &&
-        tag?.ndefMessage[0] &&
-        tag.ndefMessage[0].payload?.length === 0
-      ) {
-        Alert.alert('Invalid or empty tag');
-        setNFCModel(false);
-        return;
-      }
+  //     if (
+  //       tag?.ndefMessage &&
+  //       tag?.ndefMessage[0] &&
+  //       tag.ndefMessage[0].payload?.length === 0
+  //     ) {
+  //       Alert.alert('Invalid or empty tag');
+  //       setNFCModel(false);
+  //       return;
+  //     }
 
-      if (tag?.ndefMessage[0]?.payload?.length > 0) {
-        setNFCModel(false);
+  //     if (tag?.ndefMessage[0]?.payload?.length > 0) {
+  //       setNFCModel(false);
 
-        let payloadData = tag?.ndefMessage[0]?.payload;
-        // Convert numeric values to Uint8Array
-        // const uint8Array = new Uint8Array(payloadData);
+  //       let payloadData = tag?.ndefMessage[0]?.payload;
+  //       // Convert numeric values to Uint8Array
+  //       // const uint8Array = new Uint8Array(payloadData);
 
-        // Decode the Uint8Array into a string
-        // const decoder = new TextDecoder('utf-8');
-        // const resultString = decoder.decode(uint8Array);
+  //       // Decode the Uint8Array into a string
+  //       // const decoder = new TextDecoder('utf-8');
+  //       // const resultString = decoder.decode(uint8Array);
 
-        const resultString = String.fromCharCode.apply(null, payloadData);
-        const modifiedString = resultString.replace(/en/g, '');
+  //       const resultString = String.fromCharCode.apply(null, payloadData);
+  //       const modifiedString = resultString.replace(/en/g, '');
 
-        if (nfcText) {
-          if (modifiedString === nfcText) {
-            setIsCompare(true);
-            setNFCText();
-          } else {
-            setIsWrong(true);
-            setNFCText();
-          }
-        } else {
-          setSaveTextModel(true);
-          setNFCText(modifiedString);
-        }
-      }
-    } catch (ex) {
-      console.log('Oops!', ex);
-    } finally {
-      // stop the nfc scanning
-      NfcManager.cancelTechnologyRequest();
-    }
-  }
+  //       if (nfcText) {
+  //         if (modifiedString === nfcText) {
+  //           setIsCompare(true);
+  //           setNFCText();
+  //         } else {
+  //           setIsWrong(true);
+  //           setNFCText();
+  //         }
+  //       } else {
+  //         setSaveTextModel(true);
+  //         setNFCText(modifiedString);
+  //       }
+  //     }
+  //   } catch (ex) {
+  //     console.log('Oops!', ex);
+  //   } finally {
+  //     // stop the nfc scanning
+  //     NfcManager.cancelTechnologyRequest();
+  //   }
+  // }
 
   const handlePress = (itemId) => {
     switch (itemId) {
@@ -1551,7 +1551,7 @@ export default function RecordDetails({route}) {
         setInputValues={setInputValues}
       />
 
-      <Modal
+      {/* <Modal
         animationType="slide"
         transparent={true}
         visible={NFCModel}
@@ -1622,7 +1622,7 @@ export default function RecordDetails({route}) {
             <Text style={styles.nfcTitle}>Sorry, wrong NFC code</Text>
           </View>
         </View>
-      </Modal>
+      </Modal> */}
 
       <FormMoadal
         timeSheetModal={timeSheetModal}

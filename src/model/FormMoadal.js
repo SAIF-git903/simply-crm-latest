@@ -5,32 +5,35 @@ const {height, width} = Dimensions.get('window');
 
 const FormMoadal = ({timeSheetModal, onPress, component}) => {
   return (
-    <Modal animationType="slide" transparent={true} visible={timeSheetModal}>
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={timeSheetModal}
+      onRequestClose={onPress}>
       <View
+        activeOpacity={1}
         style={{
           backgroundColor: 'rgba(0, 0, 0, 0.5)',
           flex: 1,
+          justifyContent: 'flex-end',
         }}>
+        <TouchableOpacity style={{flex: 0.1}} onPress={onPress}>
+          <Text></Text>
+        </TouchableOpacity>
         <View
           style={{
-            height: '100%',
-            marginTop: 100,
-          }}
-          // onPress={() => setTimeSheetModal(false)}
-        >
-          <View
-            style={{
-              height: '90%',
-              overflow: 'hidden',
-              width: '100%',
-              alignSelf: 'center',
-              alignItems: 'center',
-              justifyContent: 'center',
-              // borderRadius: 30,
-              borderTopLeftRadius: 30,
-              borderTopRightRadius: 30,
-            }}>
-            <View style={{position: 'absolute', zIndex: 1, top: 13}}>
+            overflow: 'hidden',
+            width: '100%',
+            flex: 0.9,
+            // height: '90%',
+            alignSelf: 'center',
+            alignItems: 'center',
+            justifyContent: 'center',
+            // borderRadius: 30,
+            borderTopLeftRadius: 30,
+            borderTopRightRadius: 30,
+          }}>
+          {/* <View style={{position: 'absolute', zIndex: 1, top: 13}}>
               <TouchableOpacity
                 activeOpacity={0.7}
                 style={{alignItems: 'center', justifyContent: 'center'}}
@@ -44,9 +47,8 @@ const FormMoadal = ({timeSheetModal, onPress, component}) => {
                   }}
                 />
               </TouchableOpacity>
-            </View>
-            {component}
-          </View>
+            </View> */}
+          {component}
         </View>
       </View>
     </Modal>

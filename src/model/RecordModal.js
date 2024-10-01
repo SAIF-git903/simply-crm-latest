@@ -5,9 +5,14 @@ import {
   TouchableOpacity,
   Image,
   TextInput,
+  Button,
+  ScrollView,
 } from 'react-native';
-import React from 'react';
-import {fontStyles} from '../styles/common';
+import React, {createRef, useState} from 'react';
+import {commonStyles, fontStyles} from '../styles/common';
+import SignatureScreen from 'react-native-signature-canvas';
+import {headerIconColor} from '../variables/themeColors';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const RecordModal = ({
   visible,
@@ -17,6 +22,10 @@ const RecordModal = ({
   inputValues,
   setInputValues,
 }) => {
+  const signatureRef = createRef();
+  const [hasSigned, setHasSigned] = useState(false);
+  const imgWidth = '100%';
+  const imgHeight = 256;
   const processFieldValue = (field) => {
     let fieldValue;
 
@@ -30,6 +39,20 @@ const RecordModal = ({
 
     return fieldValue;
   };
+  const handleSignature = (signature, fieldName) => {
+    handleInputChange(fieldName, signature);
+    setHasSigned(true);
+  };
+  const handleConfirm = () => {
+    signatureRef.current.readSignature();
+  };
+
+  const handleClear = (e, fieldName) => {
+    signatureRef.current.clearSignature();
+    handleInputChange(fieldName, '');
+    setHasSigned(false);
+  };
+
   const handleInputChange = (label, value) => {
     setInputValues((prevValues) => ({
       ...prevValues,
@@ -38,24 +61,37 @@ const RecordModal = ({
   };
   return (
     <Modal animationType="slide" transparent={true} visible={visible}>
-      <View
-        style={{
-          height: '100%',
-          width: '100%',
-          backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          alignItems: 'center',
-          justifyContent: 'flex-end',
-        }}>
+      <KeyboardAwareScrollView
+        enableOnAndroid={true}
+        contentContainerStyle={{flexGrow: 1}}>
         <View
           style={{
-            backgroundColor: '#fff',
+            flex: 1,
             width: '100%',
-            borderTopLeftRadius: 30,
-            borderTopRightRadius: 30,
-            paddingHorizontal: 10,
-            paddingBottom: 10,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            justifyContent: 'flex-end',
           }}>
-          <TouchableOpacity
+          <TouchableOpacity style={{flex: 0.1}} onPress={onClose}>
+            <Text></Text>
+          </TouchableOpacity>
+          <View
+            style={{
+              backgroundColor: '#fff',
+              width: '100%',
+              flex: 0.9,
+              borderTopLeftRadius: 30,
+              borderTopRightRadius: 30,
+              paddingHorizontal: 10,
+              paddingBottom: 10,
+            }}>
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                // paddingVertical: 10,
+              }}
+            />
+            {/* <TouchableOpacity
             activeOpacity={0.7}
             style={{
               alignItems: 'center',
@@ -71,113 +107,139 @@ const RecordModal = ({
                 backgroundColor: '#000',
               }}
             />
-          </TouchableOpacity>
-          <View
-            style={{
-              alignItems: 'center',
-              justifyContent: 'space-around',
-              flexDirection: 'row',
-            }}>
-            <TouchableOpacity
+          </TouchableOpacity> */}
+            <View
               style={{
                 alignItems: 'center',
-                justifyContent: 'center',
-                borderColor: '#EE4B2B',
-                borderWidth: 2.5,
-                borderRadius: 5,
-                marginRight: 10,
-              }}
-              onPress={onClose}>
-              <Text
-                style={{
-                  paddingVertical: 3,
-                  color: '#EE4B2B',
-                  fontWeight: 'bold',
-                  paddingHorizontal: 20,
-                  fontFamily: 'Poppins-SemiBold',
-                }}>
-                Cancel
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderColor: '#75C2F6',
-                borderWidth: 2.5,
-                borderRadius: 5,
-              }}
-              onPress={onSave}>
-              <Text
-                style={{
-                  paddingVertical: 3,
-                  color: '#75C2F6',
-                  fontWeight: 'bold',
-                  paddingHorizontal: 20,
-                  fontFamily: 'Poppins-SemiBold',
-                }}>
-                Save
-              </Text>
-            </TouchableOpacity>
-          </View>
-          {newArr.map((val, index) => {
-            const fieldValue = processFieldValue(val);
-            return (
-              <View
-                key={index}
-                style={{
-                  marginHorizontal: 10,
-                  justifyContent: 'center',
-                  backgroundColor: '#fff',
-                  marginTop: 10,
-                  paddingBottom: 5,
-                }}>
-                <View>
-                  <Text style={fontStyles.fieldLabel}>{val?.label} </Text>
-                </View>
-                {val?.uitype === '164' ? (
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+                paddingHorizontal: 20,
+                marginTop: 20,
+                paddingBottom: 15,
+                borderBottomWidth: 0.5,
+                borderBottomColor: '#d3d2d8',
+              }}>
+              <TouchableOpacity onPress={onClose}>
+                <Text
+                  style={{
+                    fontFamily: 'Poppins-SemiBold',
+                    fontSize: 16,
+                    color: headerIconColor,
+                  }}>
+                  Cancel
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={onSave}>
+                <Text
+                  style={{
+                    fontFamily: 'Poppins-SemiBold',
+                    fontSize: 16,
+                    color: headerIconColor,
+                  }}>
+                  Save
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <ScrollView>
+              {newArr.map((val, index) => {
+                const fieldValue = processFieldValue(val);
+
+                return (
                   <View
+                    key={index}
                     style={{
-                      height: 100,
-                      width: '100%',
-                      backgroundColor: '#f0f1f5',
-                      alignItems: 'center',
+                      marginHorizontal: 10,
                       justifyContent: 'center',
+                      backgroundColor: '#fff',
+                      marginTop: 10,
+                      paddingBottom: 5,
                     }}>
-                    <Image
-                      source={{uri: val?.value}}
-                      style={{
-                        height: '100%',
-                        width: '100%',
-                        resizeMode: 'contain',
-                      }}
-                    />
-                  </View>
-                ) : (
-                  <View
-                    style={{
-                      backgroundColor: '#f0f1f5',
-                      paddingLeft: 10,
-                      borderRadius: 5,
-                    }}>
-                    <TextInput
-                      placeholderTextColor={'#707070'}
-                      style={[fontStyles.fieldValue, {height: 40}]}
-                      onChangeText={(text) =>
-                        handleInputChange(val?.name, text)
-                      }
-                      placeholder={inputValues[val?.name] || fieldValue}
-                    />
-                    {/* <Text style={fontStyles.fieldValue}>
+                    <View>
+                      <Text style={fontStyles.fieldLabel}>{val?.label} </Text>
+                    </View>
+                    {val?.uitype === '164' ? (
+                      <View
+                        style={[
+                          commonStyles.inputHolder,
+                          {
+                            width: imgWidth,
+                            height: fieldValue ? 400 : imgHeight,
+                          },
+                        ]}>
+                        <View>
+                          {fieldValue ? (
+                            <Image
+                              resizeMode={'contain'}
+                              style={{width: 100, height: 100}}
+                              source={{uri: fieldValue}}
+                            />
+                          ) : null}
+                        </View>
+                        <SignatureScreen
+                          ref={signatureRef}
+                          onOK={(signature) =>
+                            handleSignature(signature, val?.name)
+                          }
+                          backgroundColor="#f0f1f5"
+                          penColor={headerIconColor}
+                          webStyle={`
+                          .m-signature-pad {box-shadow: none; border: none; } 
+                          .m-signature-pad--body {border: none;}
+                          .m-signature-pad--footer {display: none; margin: 0px;}
+                          body,html {
+                          width: ${imgWidth}px; height: ${imgHeight}px;}
+                      `}
+                        />
+
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                          }}>
+                          <Button
+                            title="Clear"
+                            onPress={(e) => handleClear(e, val?.name)}
+                          />
+                          <Button title="Confirm" onPress={handleConfirm} />
+                        </View>
+
+                        {/* Optionally display a message if a signature is made */}
+                        {hasSigned && (
+                          <View style={{marginTop: 10}}>
+                            <Text style={{fontFamily: 'Poppins-SemiBold'}}>
+                              Signature captured!
+                            </Text>
+                          </View>
+                        )}
+                      </View>
+                    ) : (
+                      <View
+                        style={{
+                          backgroundColor: '#f0f1f5',
+                          paddingLeft: 10,
+                          borderRadius: 5,
+                        }}>
+                        <TextInput
+                          placeholderTextColor={'#707070'}
+                          style={[fontStyles.fieldValue, {height: 40}]}
+                          onChangeText={(text) =>
+                            handleInputChange(val?.name, text)
+                          }
+                          placeholder={inputValues[val?.name] || fieldValue}
+                        />
+                        {/* <Text style={fontStyles.fieldValue}>
                       {fieldValue ? fieldValue : 'N/A'}
                     </Text> */}
+                      </View>
+                    )}
                   </View>
-                )}
-              </View>
-            );
-          })}
+                );
+              })}
+            </ScrollView>
+          </View>
         </View>
-      </View>
+      </KeyboardAwareScrollView>
     </Modal>
   );
 };

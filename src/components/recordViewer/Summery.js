@@ -249,9 +249,28 @@ const Summery = ({navigation, moduleName, recordId}) => {
                               : '*'.repeat(
                                   renderFieldValue(field?.value?.length),
                                 )
-                            : 'N/A'}
+                            : ''}
                         </Text>
                       </TouchableOpacity>
+                    ) : field?.uitype === '56' ? (
+                      <View
+                        style={{
+                          width: 30,
+                          height: 30,
+                          borderColor: '#ddd',
+                          borderWidth: 1,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          marginVertical: 10,
+                        }}>
+                        {field?.value === '1' && (
+                          <Icon
+                            name={'check'}
+                            size={22}
+                            color={headerIconColor}
+                          />
+                        )}
+                      </View>
                     ) : field?.uitype === '164' ? (
                       field?.value ? (
                         <View
@@ -274,7 +293,7 @@ const Summery = ({navigation, moduleName, recordId}) => {
                             fontStyles.fieldValue,
                             {color: textColor2, marginVertical: 10},
                           ]}>
-                          N/A
+                          {''}
                         </Text>
                       )
                     ) : field?.uitype === '69' ? (
@@ -329,7 +348,7 @@ const Summery = ({navigation, moduleName, recordId}) => {
                           ]}>
                           {renderFieldValue(field?.value)
                             ? renderFieldValue(field?.value)
-                            : 'N/A'}
+                            : ''}
                         </Text>
                       </TouchableOpacity>
                     )}

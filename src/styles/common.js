@@ -9,8 +9,8 @@ import {
 export const commonStyles = StyleSheet.create({
   headerBackground: {
     width: '100%',
-    padding: 10,
-    paddingVertical: 15,
+    // padding: 10,
+    // paddingVertical: 15,
     paddingTop: Platform.OS === 'ios' ? 10 : 15,
     alignItems: 'center',
     backgroundColor: HEADER_COLOR,

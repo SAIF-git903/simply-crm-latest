@@ -933,7 +933,7 @@ const getItem = (listerInstance, item, index, isDashboard, isRefRecord) => {
   // recordName = Object.values(result);
   // labels = remainingLabels;
   // console.log('labels', labels);
-
+  // console.log('result', result);
   switch (listerInstance.props.moduleName) {
     case 'Timesheets':
       recordName = Object.values(result);
@@ -942,7 +942,11 @@ const getItem = (listerInstance, item, index, isDashboard, isRefRecord) => {
         item?.startsWith('47x') ? '--' : item,
       );
       break;
-
+    case 'Contacts':
+      // recordName = `${result.firstname} ${result.lastname}`;
+      recordName = Object.values(result).join(' ');
+      labels = remainingLabels;
+      break;
     default:
       recordName = Object.values(result);
       labels = remainingLabels;
