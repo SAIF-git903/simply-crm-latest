@@ -7,6 +7,8 @@ import {
   TextInput,
   Button,
   ScrollView,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import React, {createRef, useState} from 'react';
 import {commonStyles, fontStyles} from '../styles/common';
@@ -61,9 +63,9 @@ const RecordModal = ({
   };
   return (
     <Modal animationType="slide" transparent={true} visible={visible}>
-      <KeyboardAwareScrollView
-        enableOnAndroid={true}
-        contentContainerStyle={{flexGrow: 1}}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{flex: 1}}>
         <View
           style={{
             flex: 1,
@@ -140,7 +142,7 @@ const RecordModal = ({
                 </Text>
               </TouchableOpacity>
             </View>
-            <ScrollView>
+            <ScrollView scrollEnabled={newArr?.length > 1 ? true : false}>
               {newArr.map((val, index) => {
                 const fieldValue = processFieldValue(val);
 
@@ -239,7 +241,7 @@ const RecordModal = ({
             </ScrollView>
           </View>
         </View>
-      </KeyboardAwareScrollView>
+      </KeyboardAvoidingView>
     </Modal>
   );
 };

@@ -19,13 +19,14 @@ import {API_structure, API_fetchRecord, API_saveRecord} from './api';
 import {fontStyles, commonStyles} from '../styles/common';
 import moment from 'moment';
 import Signature from '../components/addRecords/inputComponents/SignatureType';
+import RefType from '../components/addRecords/inputComponents/refType';
 
 export const getRecordStructureHelper = async (currentInstance) => {
   const calanderType = currentInstance.props.subModule;
 
   // const calanderType = currentInstance.props
 
-  const {auth, colorRuducer} = store.getState();
+  const {auth, colorRuducer, timeSheetModalReducer} = store.getState();
 
   const loginDetails = auth.loginDetails;
   const vtigerSeven = loginDetails.vtigerVersion > 6;
@@ -174,7 +175,11 @@ export const getRecordStructureHelper = async (currentInstance) => {
                   fieldObj.defaultValue =
                     store.getState().UserReducer.userData.currency_id;
                 }
-                ComponentName = ReferenceForm;
+                if (timeSheetModalReducer?.is_TimeSheetModal) {
+                  ComponentName = RefType;
+                } else {
+                  ComponentName = ReferenceForm;
+                }
                 break;
               case 'time':
                 // ComponentName = TimeForm;

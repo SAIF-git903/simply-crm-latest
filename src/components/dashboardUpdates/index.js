@@ -68,6 +68,7 @@ class UpdateWidget extends Component {
     const modifiedMenu = modifyMenuWithModuleId(firstThree, modules);
 
     const newData = modifiedMenu?.filter((val) => val?.id !== undefined);
+
     // const organizationModule = findModule('Accounts', modules);
     // const contactModule = findModule('Contacts', modules);
     // const calendarModule = findModule('Calendar', modules);
@@ -83,12 +84,62 @@ class UpdateWidget extends Component {
             justifyContent: 'center',
           }}>
           {newData?.map((val) => {
+            let iconName;
+
+            switch (val?.name) {
+              case 'Accounts':
+                iconName = val?.icon ? val?.icon : 'building';
+                break;
+              case 'Contacts':
+                iconName = val?.icon ? val?.icon : 'user';
+                break;
+              case 'Project':
+                iconName = val?.icon ? val?.icon : 'diagram-project';
+                break;
+              case 'ProjectTask':
+                iconName = val?.icon ? val?.icon : 'list-check';
+                break;
+              case 'Potentials':
+                iconName = val?.icon ? val?.icon : 'handshake';
+                break;
+              case 'Timesheets':
+                iconName = val?.icon ? val?.icon : 'clock';
+                break;
+              case 'Vendors':
+                iconName = val?.icon ? val?.icon : 'truck-field';
+                break;
+              case 'HelpDesk':
+                iconName = val?.icon ? val?.icon : 'ticket';
+                break;
+              case 'Quotes':
+                iconName = val?.icon ? val?.icon : 'file-lines';
+                break;
+              case 'SalesOrder':
+                iconName = val?.icon ? val?.icon : 'file-invoice';
+                break;
+              case 'Invoice':
+                iconName = val?.icon ? val?.icon : 'file-invoice-dollar';
+                break;
+              case 'Products':
+                iconName = val?.icon ? val?.icon : 'cart-shopping';
+                break;
+              case 'Services':
+                iconName = val?.icon ? val?.icon : 'hand-holding-dollar';
+                break;
+              case 'Leads':
+                iconName = val?.icon ? val?.icon : 'user-check';
+                break;
+              default:
+                iconName = val?.icon;
+                break;
+            }
+
             return (
               <>
                 {val?.name === 'Calendar' ? (
                   <View style={styles.iconButtonContainer}>
                     <IconButton
-                      icon={'building'}
+                      icon={'calendar'}
                       title={val?.label}
                       onPress={() => {
                         this.props.dispatch(
@@ -106,7 +157,7 @@ class UpdateWidget extends Component {
                 ) : (
                   <View style={styles.iconButtonContainer}>
                     <IconButton
-                      icon={'building'}
+                      icon={iconName}
                       title={val?.label}
                       onPress={() => {
                         this.props.dispatch(

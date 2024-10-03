@@ -533,32 +533,37 @@ export default function RecordDetails({route}) {
         setloading(false);
         setTimeSheetModal(true);
       }, 1000);
+      dispatch(isTimeSheetModal(true));
     } else {
       if (fun === 'call') {
-        console.log('params', params);
         const ph_no = getValueByName(params);
 
-        let phoneNumber = '';
-        if (Platform.OS === 'android') {
-          phoneNumber = `tel:${ph_no}`;
-        } else {
-          phoneNumber = `telprompt:${ph_no}`;
-        }
+        if (ph_no) {
+          let phoneNumber = '';
+          if (Platform.OS === 'android') {
+            phoneNumber = `tel:${ph_no}`;
+          } else {
+            phoneNumber = `telprompt:${ph_no}`;
+          }
 
-        Linking.openURL(phoneNumber)
-          .then((res) => console.log('res', res))
-          .catch((err) => console.log('err', err));
+          Linking.openURL(phoneNumber)
+            .then((res) => console.log('res', res))
+            .catch((err) => console.log('err', err));
+        }
       } else {
         const ph_no = getValueByName(params);
-        let phoneNumber = '';
-        if (Platform.OS === 'android') {
-          phoneNumber = `tel:${ph_no}`;
-        } else {
-          phoneNumber = `telprompt:${ph_no}`;
+
+        if (ph_no) {
+          let phoneNumber = '';
+          if (Platform.OS === 'android') {
+            phoneNumber = `tel:${ph_no}`;
+          } else {
+            phoneNumber = `telprompt:${ph_no}`;
+          }
+          Linking.openURL(`${fun}:${phoneNumber}`)
+            .then((res) => console.log('res', res))
+            .catch((err) => console.log('err', err));
         }
-        Linking.openURL(`${fun}:${phoneNumber}`)
-          .then((res) => console.log('res', res))
-          .catch((err) => console.log('err', err));
       }
     }
   };
@@ -1626,7 +1631,10 @@ export default function RecordDetails({route}) {
 
       <FormMoadal
         timeSheetModal={timeSheetModal}
-        onPress={() => setTimeSheetModal(false)}
+        onPress={() => {
+          dispatch(isTimeSheetModal(null));
+          setTimeSheetModal(false);
+        }}
         component={
           <AddRecords
             recordId={recordId}
