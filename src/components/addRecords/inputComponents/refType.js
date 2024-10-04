@@ -5,16 +5,14 @@ import {
   TouchableOpacity,
   Modal,
   TextInput,
-  Platform,
   FlatList,
+  ActivityIndicator,
 } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {commonStyles, fontStyles} from '../../../styles/common';
-import {LOGINDETAILSKEY} from '../../../variables/strings';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {API_listModuleRecords} from '../../../helper/api';
-import {headerIconColor} from '../../../variables/themeColors';
+import {generalBgColor, headerIconColor} from '../../../variables/themeColors';
 import IconButton from '../../IconButton';
-import store from '../../../store';
 
 class RefType extends Component {
   constructor(props) {
@@ -29,36 +27,137 @@ class RefType extends Component {
           : undefined,
       recordData: [],
       nameFields: [],
-      referenceValue: '',
-      saveValue: '',
-      fieldName: this.props.obj.name,
+      referenceValue: this.props?.obj?.type?.picklistValues?.users[
+        this.props?.obj?.default
+      ]
+        ? this.props?.obj?.type?.picklistValues?.users[this.props?.obj?.default]
+        : '',
+      saveValue: this.props?.obj?.default ? this.props?.obj?.default : '',
+      fieldName: this.props.obj?.name,
+      page: 1,
+      limit: 25,
+      isLoadingMore: false, // For handling pagination
+      hasMoreData: true, // To track if there's more data to load
+      searchText: '',
+      isloading: false,
     };
   }
 
   componentDidMount() {
     this.getDetails();
   }
+
   getDetails = async () => {
     try {
       let res;
       if (this.props?.obj?.name === 'assigned_user_id') {
         res = await API_listModuleRecords('Users');
       } else {
-        res = await API_listModuleRecords(this.state.refTo, 1, 25);
+        res = await API_listModuleRecords(
+          this.state.refTo,
+          this.state.page,
+          this.state.limit,
+          '',
+          this.state.searchText,
+        );
       }
-      console.log('res', res);
       if (res?.result?.records) {
-        this.setState({recordData: res?.result?.records});
-        this.setState({nameFields: res?.result?.nameFields});
+        this.setState({isloading: false});
+
+        this.setState({
+          recordData: res?.result?.records,
+          nameFields: res?.result?.nameFields,
+        });
+      } else {
+        this.setState({isloading: false});
+
+        this.setState({
+          recordData: [],
+          nameFields: res?.result?.nameFields,
+        });
       }
     } catch (error) {
       console.log('error', error);
+      this.setState({isloading: false});
+    }
+  };
+
+  handleLoadMore = async () => {
+    if (this.state.isLoadingMore || !this.state.hasMoreData) {
+      // If already loading or no more data, do nothing
+      return;
+    }
+
+    this.setState({isLoadingMore: true});
+    if (this.props?.obj?.name !== 'assigned_user_id') {
+      try {
+        const res = await API_listModuleRecords(
+          this.state.refTo,
+          this.state.page + 1, // Increment page for the next batch
+          this.state.limit,
+          this.state.searchText,
+        );
+
+        if (res?.result?.records?.length > 0) {
+          // If new records are available, update the recordData and increment the page number
+          this.setState((prevState) => ({
+            recordData: [...prevState.recordData, ...res.result.records],
+            page: prevState.page + 1,
+          }));
+        } else {
+          // If no new records, set hasMoreData to false
+          this.setState({hasMoreData: false});
+        }
+      } catch (error) {
+        console.log('Error loading more data:', error);
+      } finally {
+        // Stop loading more data
+        this.setState({isLoadingMore: false});
+      }
+    }
+  };
+  renderFooter = () => {
+    if (!this.state.isLoadingMore) return null; // If not loading, no need to show the footer
+    return (
+      <View style={{paddingVertical: 20}}>
+        {this.props?.obj?.name !== 'assigned_user_id' && (
+          <ActivityIndicator size="small" color={headerIconColor} />
+        )}
+      </View>
+    );
+  };
+
+  onSearchText = () => {
+    this.setState({isloading: true});
+
+    if (this.props?.obj?.name === 'assigned_user_id') {
+      const filterData = this.state?.recordData?.filter(
+        (val) =>
+          val.first_name.includes(this.state.searchText) ||
+          val.last_name.includes(this.state.searchText),
+      );
+
+      if (this.state.searchText) {
+        this.setState({recordData: filterData});
+      } else {
+        this.getDetails();
+      }
+
+      setTimeout(() => {
+        this.setState({isloading: false});
+      }, 1000);
+    } else {
+      this.setState({
+        page: 1,
+        limit: 25,
+      });
+      this.getDetails();
     }
   };
 
   render() {
     return (
-      <View style={commonStyles.inputHolder}>
+      <View style={[commonStyles.inputHolder]}>
         <View style={{paddingBottom: 10}}>{this.props.fieldLabelView}</View>
         <TouchableOpacity
           onPress={() => {
@@ -76,7 +175,6 @@ class RefType extends Component {
           animationType="slide"
           transparent={true}
           visible={this.state.visible}
-          // visible={true}
           onRequestClose={() => this.setState({visible: false})}>
           <View
             activeOpacity={1}
@@ -95,20 +193,14 @@ class RefType extends Component {
             <View
               style={{
                 overflow: 'hidden',
-                backgroundColor: '#fff',
+                // backgroundColor: '#fff',
+                backgroundColor: generalBgColor,
                 width: '100%',
                 flex: 0.9,
                 alignSelf: 'center',
-
                 borderTopLeftRadius: 30,
                 borderTopRightRadius: 30,
               }}>
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              />
               <View
                 style={{
                   alignItems: 'center',
@@ -137,16 +229,30 @@ class RefType extends Component {
               </View>
               <View
                 style={{
-                  // width: '90%',
                   marginHorizontal: 15,
                   backgroundColor: '#FFF',
                   alignItems: 'center',
                   flexDirection: 'row',
+                  // justifyContent: 'space-between',
                   borderWidth: 1,
                   borderRadius: 5,
                   borderColor: '#dfdfdf',
                 }}>
-                <IconButton icon={'search'} color={'#707070'} size={25} />
+                {this.state.searchText ? (
+                  <IconButton
+                    icon={'search'}
+                    color={'#707070'}
+                    size={25}
+                    onPress={() => this.onSearchText()}
+                  />
+                ) : (
+                  <IconButton
+                    icon={'arrow-back-circle-sharp'}
+                    color={'#007aff'}
+                    size={25}
+                    onPress={() => this.onSearchText()}
+                  />
+                )}
                 <TextInput
                   autoGrow={true}
                   autoCorrect={false}
@@ -156,74 +262,119 @@ class RefType extends Component {
                     fontStyles.searchBoxLabel,
                     {
                       paddingLeft: 10,
-                      width: '88%',
+                      width: '80%',
                     },
                   ]}
                   placeholder="Search"
                   placeholderTextColor="#707070"
                   ref="searchbox"
+                  defaultValue={this.state.searchText}
                   autoCapitalize="none"
                   returnKeyType="done"
                   onChangeText={(text) => {
                     this.setState({searchText: text});
                   }}
                 />
+                {this.state.searchText && (
+                  <TouchableOpacity
+                    onPress={() => {
+                      this.setState({
+                        searchText: '',
+                        isloading: true,
+                      });
+                      setTimeout(() => {
+                        this.getDetails();
+                      }, 1000);
+                    }}>
+                    <Ionicons name="close-circle" size={25} color={'#707070'} />
+                  </TouchableOpacity>
+                )}
               </View>
 
-              <FlatList
-                contentContainerStyle={{
-                  flexGrow: 1,
-                  marginHorizontal: 15,
-                  marginTop: 10,
-                }}
-                showsVerticalScrollIndicator={false}
-                data={this.state.recordData}
-                renderItem={({item}) => {
-                  let recordName;
-                  const fields = this.state.nameFields;
-                  let result = {};
+              {this.state.isloading ? (
+                <View style={{paddingVertical: 20}}>
+                  <ActivityIndicator size="small" color={headerIconColor} />
+                </View>
+              ) : this.state.recordData?.length > 0 ? (
+                <FlatList
+                  contentContainerStyle={{
+                    flexGrow: 1,
+                    marginHorizontal: 15,
+                    marginTop: 10,
+                  }}
+                  showsVerticalScrollIndicator={false}
+                  data={this.state.recordData}
+                  renderItem={({item}) => {
+                    let recordName;
+                    const fields = this.state.nameFields;
+                    let result = {};
 
-                  fields.forEach((fieldName) => {
-                    if (item?.hasOwnProperty(fieldName)) {
-                      result[fieldName] = item[fieldName];
+                    fields.forEach((fieldName) => {
+                      if (item?.hasOwnProperty(fieldName)) {
+                        result[fieldName] = item[fieldName];
+                      }
+                    });
+
+                    switch (this.state.refTo) {
+                      case 'Timesheets':
+                        recordName = Object.values(result);
+                        break;
+                      case 'Contacts':
+                        recordName = Object.values(result).join(' ');
+                        break;
+                      default:
+                        recordName = Object.values(result);
+                        break;
                     }
-                  });
 
-                  switch (this.state.refTo) {
-                    case 'Timesheets':
-                      recordName = Object.values(result);
-                      break;
-                    case 'Contacts':
-                      recordName = Object.values(result).join(' ');
-                      break;
-                    default:
-                      recordName = Object.values(result);
-                      break;
-                  }
-
-                  return (
-                    <TouchableOpacity
-                      onPress={() => {
-                        this.setState({
-                          saveValue: item?.id,
-                          referenceValue: recordName,
-                          visible: false,
-                        });
-                      }}
-                      activeOpacity={0.7}
-                      style={{
-                        backgroundColor: '#fff',
-                        paddingVertical: 15,
-                        borderBottomWidth: 0.5,
-                        borderBottomColor: '#d3d2d8',
-                      }}>
-                      <Text style={[commonStyles.text, fontStyles.fieldValue]}>
-                        {recordName}
-                      </Text>
-                    </TouchableOpacity>
-                  );
-                }}
-              />
+                    return (
+                      <TouchableOpacity
+                        onPress={() => {
+                          this.setState({
+                            saveValue: item?.id,
+                            referenceValue: recordName,
+                            visible: false,
+                          });
+                        }}
+                        activeOpacity={0.7}
+                        style={{
+                          backgroundColor: '#fff',
+                          paddingVertical: 15,
+                          borderBottomWidth: 0.5,
+                          borderBottomColor: '#d3d2d8',
+                          paddingLeft: 15,
+                        }}>
+                        <Text
+                          style={{
+                            color: '#000',
+                            fontFamily: 'Poppins-Regular',
+                            fontSize: 18,
+                          }}>
+                          {recordName}
+                        </Text>
+                      </TouchableOpacity>
+                    );
+                  }}
+                  onEndReached={this.handleLoadMore} // Pagination handler
+                  onEndReachedThreshold={0.5} // Trigger when scrolled 50% to the end
+                  ListFooterComponent={this.renderFooter}
+                />
+              ) : (
+                <View
+                  style={{
+                    marginHorizontal: 15,
+                    backgroundColor: '#fff',
+                    marginTop: 10,
+                    paddingVertical: 15,
+                    paddingVertical: 30,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <Text style={[commonStyles.text, fontStyles.fieldValue, {}]}>
+                    No Records found.
+                  </Text>
+                </View>
+              )}
             </View>
           </View>
         </Modal>

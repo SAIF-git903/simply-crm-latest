@@ -54,9 +54,9 @@
 		<key>NSLocationWhenInUseUsageDescription</key>
 		<string></string>
 		<key>NSPhotoLibraryAddUsageDescription</key>
-		<string>$(PRODUCT_NAME) would like to upload photos from your photo gallery</string>
+		<string>$(PRODUCT_NAME) would like to upload photos from your photo gallery to attach these selected photos to the record in Simply CRM</string>
 		<key>NSPhotoLibraryUsageDescription</key>
-		<string>$(PRODUCT_NAME) would like to use photos from your photo gallery</string>
+		<string>$(PRODUCT_NAME) would like to use photos from your photo gallery to attach these selected photos  to the record in Simply CRM</string>
 		<key>UIAppFonts</key>
 		<array>
 			<string>AntDesign.ttf</string>
