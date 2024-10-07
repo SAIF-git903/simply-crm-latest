@@ -366,7 +366,10 @@ export default function RecordDetails({route}) {
     });
 
     if (filteredFields != null && filteredFields != undefined) {
-      setNewArr(filteredFields);
+      const filteredArray = filteredFields.filter(
+        (item) => item !== null && item !== undefined,
+      );
+      setNewArr(filteredArray);
     }
   }, [itemFields]);
 

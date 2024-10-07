@@ -60,7 +60,8 @@ class UpdateWidget extends Component {
         // Capitalize the name
         return {
           ...updatedMenuItem,
-          name: capitalizeName(updatedMenuItem?.name),
+          // name: capitalizeName(updatedMenuItem?.name),
+          name: updatedMenuItem?.name,
         };
       });
     };
