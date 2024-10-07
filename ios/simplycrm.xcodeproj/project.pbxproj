@@ -636,7 +636,7 @@
 				CODE_SIGN_ENTITLEMENTS = simplycrm/simplycrm.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6JWQQD5699;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = simplycrm/Info.plist;
@@ -644,7 +644,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.134;
+				MARKETING_VERSION = 1.135;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -668,14 +668,14 @@
 				CODE_SIGN_ENTITLEMENTS = simplycrm/simplycrmRelease.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6JWQQD5699;
 				INFOPLIST_FILE = simplycrm/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.134;
+				MARKETING_VERSION = 1.135;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
