@@ -185,7 +185,9 @@ const Summery = ({navigation, moduleName, recordId}) => {
           <View
             style={{
               backgroundColor: '#fff',
-              paddingHorizontal: 10,
+              // backgroundColor: 'red',
+              marginHorizontal: 3,
+              // paddingHorizontal: 10,
               paddingVertical: 10,
             }}>
             {item?.fields?.map((field, index) => {
@@ -197,9 +199,11 @@ const Summery = ({navigation, moduleName, recordId}) => {
                 <View
                   key={index}
                   style={{
-                    borderBottomWidth: 0.5,
-                    borderBottomColor: '#d3d2d8',
+                    borderBottomWidth: 2,
+                    // borderBottomColor: '#d3d2d8',
+                    borderBottomColor: generalBgColor,
                     marginBottom: 10,
+                    paddingHorizontal: 10,
                   }}>
                   <Text
                     style={[
@@ -421,7 +425,7 @@ const Summery = ({navigation, moduleName, recordId}) => {
         data={data}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
-          marginHorizontal: 5,
+          // marginHorizontal: 5,
           // backgroundColor: '#000',
           marginTop: 20,
           // marginBottom: 100,

@@ -986,7 +986,9 @@ export default function RecordDetails({route}) {
           borderBottomWidth: item.tabLabel === items ? 2 : 0,
           borderBottomColor:
             item.tabLabel === items ? headerIconColor : textColor,
-          padding: 5,
+          // padding: 5,
+          paddingHorizontal: 5,
+          paddingBottom: 10,
         }}
         onPress={() => setItems(item.tabLabel)}>
         {item.tabLabel === 'SimplyVoice' ? (
@@ -1023,7 +1025,7 @@ export default function RecordDetails({route}) {
 
         <Text
           style={{
-            paddingLeft: 10,
+            paddingLeft: item.tabIcon ? 10 : 0,
             fontFamily:
               item.tabLabel === items ? 'Poppins-Medium' : 'Poppins-Regular',
             color: item.tabLabel === items ? headerIconColor : textColor,
@@ -1249,15 +1251,15 @@ export default function RecordDetails({route}) {
                   width: '25%',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 1,
-                  },
-                  shadowOpacity: 0.22,
-                  shadowRadius: 2.22,
+                  // shadowColor: '#000',
+                  // shadowOffset: {
+                  //   width: 0,
+                  //   height: 1,
+                  // },
+                  // shadowOpacity: 0.22,
+                  // shadowRadius: 2.22,
 
-                  elevation: 3,
+                  // elevation: 3,
                 }}>
                 <TouchableOpacity
                   activeOpacity={0.7}
@@ -1266,7 +1268,6 @@ export default function RecordDetails({route}) {
                     width: 65,
                     borderRadius: 5,
                     overflow: 'hidden',
-                    backgroundColor: '#fff',
                   }}
                   onPress={() => {
                     if (profileImage) {
@@ -1274,11 +1275,12 @@ export default function RecordDetails({route}) {
                     }
                   }}>
                   <Image
-                    source={
-                      profileImage
-                        ? {uri: profileImage}
-                        : require('../../../assets/images/user1.png')
-                    }
+                    source={{uri: profileImage}}
+                    // source={
+                    //   profileImage
+                    //     ? {uri: profileImage}
+                    //     : require('../../../assets/images/user1.png')
+                    // }
                     style={{
                       height: '100%',
                       width: '100%',
@@ -1470,7 +1472,7 @@ export default function RecordDetails({route}) {
       )}
       <View
         style={{
-          height: '7%',
+          // height: '7%',
           backgroundColor: '#fff',
           borderBottomWidth: 0.5,
           borderBottomColor: '#d3d2d8',
