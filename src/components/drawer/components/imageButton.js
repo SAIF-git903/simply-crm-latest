@@ -11,6 +11,7 @@ import {
 import {HOME, CALENDAR} from '../../../variables/constants';
 import {fontStyles} from '../../../styles/common';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import {DynamicIcon} from '../../common/DynamicIcon';
 
 export default function ImageButton({icon, type, label, module}) {
   const {selectedButton} = useSelector((state) => state.drawer);
@@ -51,8 +52,8 @@ export default function ImageButton({icon, type, label, module}) {
           alignItems: 'center',
         }}>
         <View style={{paddingLeft: 15, width: 46}}>
-          <Icon
-            name={icon}
+          <DynamicIcon
+            iconName={icon}
             size={20}
             color={
               selectedButton !== type
@@ -60,6 +61,15 @@ export default function ImageButton({icon, type, label, module}) {
                 : DRAWER_MODULE_BUTTON_TEXT_SELECTED_COLOR
             }
           />
+          {/* <Icon
+            name={icon}
+            size={20}
+            color={
+              selectedButton !== type
+                ? DRAWER_SECTION_HEADER_TEXT_COLOR
+                : DRAWER_MODULE_BUTTON_TEXT_SELECTED_COLOR
+            }
+          /> */}
         </View>
         <Text
           style={[

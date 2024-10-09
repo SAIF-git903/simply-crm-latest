@@ -45,7 +45,7 @@
     "react-native-element-dropdown": "^2.12.1",
     "react-native-fontawesome": "^7.0.0",
     "react-native-gesture-handler": "^2.12.1",
-    "react-native-image-crop-picker": "^0.40.2",
+    "react-native-image-crop-picker": "0.41.2",
     "react-native-image-pan-zoom": "^2.1.12",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-material-dialog": "^0.7.7",

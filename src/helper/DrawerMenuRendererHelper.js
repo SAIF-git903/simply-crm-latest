@@ -82,49 +82,49 @@ const createFixedMenu = (itemNew, homeTitle) => {
   const newArray = itemNew?.map((item, index) => {
     let iconName = '';
 
-    switch (item?.name?.toLowerCase()) {
-      case 'contacts':
-        iconName = 'user';
-        break;
-      case 'accounts':
-        iconName = 'building';
-        break;
-      case 'vendors':
-        iconName = 'shield-alt';
-        break;
-      case 'potentials':
-        iconName = 'handshake';
-        break;
-      case 'calendar':
-        iconName = 'calendar-alt';
-        break;
-      case 'home':
-        iconName = 'home';
-        break;
-      case 'marketing':
-        iconName = 'bullhorn';
+    // switch (item?.name?.toLowerCase()) {
+    //   case 'contacts':
+    //     iconName = 'user';
+    //     break;
+    //   case 'accounts':
+    //     iconName = 'building';
+    //     break;
+    //   case 'vendors':
+    //     iconName = 'shield-alt';
+    //     break;
+    //   case 'potentials':
+    //     iconName = 'handshake';
+    //     break;
+    //   case 'calendar':
+    //     iconName = 'calendar-alt';
+    //     break;
+    //   case 'home':
+    //     iconName = 'home';
+    //     break;
+    //   case 'marketing':
+    //     iconName = 'bullhorn';
 
-      case 'sales':
-        iconName = 'dot-circle';
+    //   case 'sales':
+    //     iconName = 'dot-circle';
 
-      case 'inventory':
-        iconName = 'dolly-flatbed';
+    //   case 'inventory':
+    //     iconName = 'dolly-flatbed';
 
-      case 'support':
-        iconName = 'life-ring';
+    //   case 'support':
+    //     iconName = 'life-ring';
 
-      case 'project':
-        iconName = 'project-diagram';
+    //   case 'project':
+    //     iconName = 'project-diagram';
 
-      case 'tools':
-        iconName = 'wrench';
-      default:
-        iconName = 'folder' || ''; // Use fallback from the iconNames array or an empty string
-    }
+    //   case 'tools':
+    //     iconName = 'wrench';
+    //   default:
+    //     iconName = 'folder' || ''; // Use fallback from the iconNames array or an empty string
+    // }
 
     return {
       ...item,
-      iconName, // Assign the iconName based on the switch case
+      // iconName, // Assign the iconName based on the switch case
     };
   });
 
@@ -149,7 +149,8 @@ const createFixedMenu = (itemNew, homeTitle) => {
           id: val?.id,
         }}
         key={val?.id}
-        icon={val?.iconName}
+        // icon={val?.iconName}
+        icon={val?.icon}
       />,
     );
   });

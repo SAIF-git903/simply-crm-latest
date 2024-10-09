@@ -9,10 +9,12 @@ import {drawerButtonPress} from '../../actions/index';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import {fontStyles} from '../../styles/common';
+import {DynamicIcon} from '../common/DynamicIcon';
 
 const IconButton = ({icon, title, style, onPress}) => {
   return (
     <TouchableOpacity
+      activeOpacity={0.7}
       onPress={onPress}
       style={[
         style,
@@ -22,7 +24,8 @@ const IconButton = ({icon, title, style, onPress}) => {
           minWidth: 60,
         },
       ]}>
-      <Icon name={icon} size={36} color={'#797f8b'} />
+      {/* <Icon name={icon} size={36} color={'#797f8b'} /> */}
+      <DynamicIcon iconName={icon} size={35} color={'#797f8b'} />
       <Text style={[fontStyles.iconButtonLabel, {paddingTop: 10}]}>
         {title}
       </Text>

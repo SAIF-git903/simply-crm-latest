@@ -18,7 +18,11 @@ import ForgotPassword from './screens/ForgotPassword';
 import Calendar from './screens/Calendar';
 import AddRecord from './components/addRecords';
 import ReferenceScreen from './components/addRecords/referenceRecordLister';
-
+import {fab} from '@fortawesome/free-brands-svg-icons';
+import {library} from '@fortawesome/fontawesome-svg-core';
+import {far} from '@fortawesome/free-regular-svg-icons';
+import {fas} from '@fortawesome/free-solid-svg-icons';
+library.add(far, fas, fab);
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 

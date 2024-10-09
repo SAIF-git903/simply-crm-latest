@@ -96,7 +96,8 @@ class DrawerContent extends Component {
               paddingRight: 20,
             }}>
             <Text style={{color: '#d3d3d3'}}>
-              V {this.state.versionNumber} ({this.state.buildNumber})
+              V {this.state.versionNumber}
+              {/* ({this.state.buildNumber}) */}
             </Text>
           </View>
         </View>

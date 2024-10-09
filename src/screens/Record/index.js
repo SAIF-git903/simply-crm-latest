@@ -1275,12 +1275,12 @@ export default function RecordDetails({route}) {
                     }
                   }}>
                   <Image
-                    source={{uri: profileImage}}
-                    // source={
-                    //   profileImage
-                    //     ? {uri: profileImage}
-                    //     : require('../../../assets/images/user1.png')
-                    // }
+                    // source={{uri: profileImage}}
+                    source={
+                      profileImage
+                        ? {uri: profileImage}
+                        : require('../../../assets/images/user.png')
+                    }
                     style={{
                       height: '100%',
                       width: '100%',
