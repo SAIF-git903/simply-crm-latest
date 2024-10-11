@@ -34,7 +34,7 @@ class NumericType extends Component {
               autoGrow={true}
               // placeholderTextColor={'#C5C5C5'}
               placeholderTextColor={'#707070'}
-              placeholder={this.props.validLabel}
+              // placeholder={this.props.validLabel}
               autoCorrect={false}
               autoCapitalize="none"
               style={[

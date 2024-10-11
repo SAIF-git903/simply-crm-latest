@@ -9,12 +9,17 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
+  useWindowDimensions,
 } from 'react-native';
-import React, {createRef, useState} from 'react';
-import {commonStyles, fontStyles} from '../styles/common';
+import React, {createRef, useEffect, useState} from 'react';
+import RenderHTML from 'react-native-render-html';
 import SignatureScreen from 'react-native-signature-canvas';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+
+import {commonStyles, fontStyles} from '../styles/common';
 import {headerIconColor} from '../variables/themeColors';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import DatePicker from 'react-native-date-picker';
+import {API_structure} from '../helper/api';
 
 const RecordModal = ({
   visible,
@@ -23,11 +28,39 @@ const RecordModal = ({
   onSave,
   inputValues,
   setInputValues,
+  popupText,
+  popupWindowText,
+  moduleName,
 }) => {
+  console.log('moduleName', moduleName);
+  const source = {
+    html: `
+ ${popupText}`,
+  };
   const signatureRef = createRef();
+  const {width} = useWindowDimensions();
+
   const [hasSigned, setHasSigned] = useState(false);
+  const [isScrollEnabled, setIsScrollEnabled] = useState(true);
+  const [datePickerVisible, setDatePickerVisible] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [pickListValue, setPickListValue] = useState([]);
   const imgWidth = '100%';
   const imgHeight = 256;
+
+  const getData = async (fieldName) => {
+    try {
+      let res = await API_structure(moduleName);
+      let getFields = res?.result?.structure?.flatMap((block) => block.fields);
+      let filterData = getFields?.filter((val) => val?.name === fieldName);
+      if (filterData) {
+        setPickListValue(filterData[0]?.type?.picklistValues);
+      }
+    } catch (error) {
+      console.log('err', error);
+    }
+  };
+
   const processFieldValue = (field) => {
     let fieldValue;
 
@@ -53,6 +86,20 @@ const RecordModal = ({
     signatureRef.current.clearSignature();
     handleInputChange(fieldName, '');
     setHasSigned(false);
+  };
+
+  const handleCheckboxChange = (fieldName) => {
+    setInputValues((prevValues) => ({
+      ...prevValues,
+      // [fieldName]: !prevValues[fieldName], // Toggle the checkbox value
+      [fieldName]: prevValues[fieldName] === '1' ? '0' : '1',
+    }));
+  };
+
+  const handleDateConfirm = (date, fieldName) => {
+    setDatePickerVisible(false);
+    setSelectedDate(date);
+    handleInputChange(fieldName, date.toISOString().split('T')[0]); // Store date in YYYY-MM-DD format
   };
 
   const handleInputChange = (label, value) => {
@@ -115,34 +162,81 @@ const RecordModal = ({
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 flexDirection: 'row',
-                paddingHorizontal: 20,
+                // paddingHorizontal: 20,
+                alignSelf: 'center',
+                width: '95%',
                 marginTop: 20,
                 paddingBottom: 15,
                 borderBottomWidth: 0.5,
+                // borderWidth: 1,
                 borderBottomColor: '#d3d2d8',
               }}>
-              <TouchableOpacity onPress={onClose}>
+              <TouchableOpacity
+                onPress={onClose}
+                style={{
+                  width: '20%',
+                  alignItems: 'flex-start',
+                  justifyContent: 'center',
+                  // borderWidth: 1,
+                }}>
                 <Text
                   style={{
                     fontFamily: 'Poppins-SemiBold',
                     fontSize: 16,
+                    textAlign: 'left',
                     color: headerIconColor,
                   }}>
                   Cancel
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={onSave}>
+              <View
+                style={
+                  {
+                    // borderWidth: 1
+                  }
+                }>
+                <Text
+                  style={{
+                    fontFamily: 'Poppins-SemiBold',
+                    fontSize: 16,
+                    textAlign: 'center',
+                  }}>
+                  {popupWindowText}
+                </Text>
+              </View>
+              <TouchableOpacity
+                onPress={onSave}
+                style={{
+                  width: '20%',
+                  alignItems: 'flex-end',
+                  justifyContent: 'center',
+                  // borderWidth: 1,
+                }}>
                 <Text
                   style={{
                     fontFamily: 'Poppins-SemiBold',
                     fontSize: 16,
                     color: headerIconColor,
+                    textAlign: 'right',
                   }}>
                   Save
                 </Text>
               </TouchableOpacity>
             </View>
-            <ScrollView scrollEnabled={newArr?.length > 1 ? true : false}>
+            <ScrollView
+              scrollEnabled={isScrollEnabled}
+              showsVerticalScrollIndicator={false}>
+              <View
+                style={{
+                  // marginTop: 15,
+                  marginVertical: 15,
+                  marginLeft: 10,
+
+                  // alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <RenderHTML source={source} contentWidth={width} />
+              </View>
               {newArr.map((val, index) => {
                 const fieldValue = processFieldValue(val);
 
@@ -153,7 +247,7 @@ const RecordModal = ({
                       marginHorizontal: 10,
                       justifyContent: 'center',
                       backgroundColor: '#fff',
-                      marginTop: 10,
+                      // marginTop: 10,
                       paddingBottom: 5,
                     }}>
                     <View>
@@ -182,6 +276,8 @@ const RecordModal = ({
                           onOK={(signature) =>
                             handleSignature(signature, val?.name)
                           }
+                          onBegin={() => setIsScrollEnabled(false)} // Disable scroll on signature interaction
+                          onEnd={() => setIsScrollEnabled(true)} // Re-enable scroll when signature ends
                           backgroundColor="#f0f1f5"
                           penColor={headerIconColor}
                           webStyle={`
@@ -215,7 +311,77 @@ const RecordModal = ({
                           </View>
                         )}
                       </View>
+                    ) : val?.uitype === '5' ? (
+                      <View>
+                        <TouchableOpacity
+                          onPress={() => {
+                            setDatePickerVisible(true);
+                          }}>
+                          <View style={commonStyles.textbox}>
+                            <Text
+                              style={[
+                                commonStyles.text,
+                                fontStyles.fieldValue,
+                              ]}>
+                              {inputValues[val?.name] ||
+                                selectedDate.toISOString().split('T')[0]}
+                            </Text>
+                          </View>
+                        </TouchableOpacity>
+                        <DatePicker
+                          // ref="dateDialog"
+                          modal
+                          open={datePickerVisible}
+                          mode="date"
+                          date={new Date()}
+                          onConfirm={(date) =>
+                            handleDateConfirm(date, val?.name)
+                          }
+                          onCancel={() => {
+                            handleDateConfirm();
+                          }}
+                        />
+                      </View>
+                    ) : val?.uitype === '56' ? (
+                      <TouchableOpacity
+                        activeOpacity={0.5}
+                        onPress={() => handleCheckboxChange(val?.name)}>
+                        <View
+                          style={{
+                            width: 30,
+                            height: 30,
+                            borderColor: '#ddd',
+                            borderWidth: 1,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}>
+                          {inputValues[val?.name] === '1' ? (
+                            <Icon name="check" size={22} color="green" />
+                          ) : null}
+                        </View>
+                      </TouchableOpacity>
+                    ) : val?.uitype === '15' || val?.uitype === '16' ? (
+                      // <TouchableOpacity style={commonStyles.inputHolder}>
+                      <TouchableOpacity
+                        style={{
+                          width: '100%',
+                          backgroundColor: 'rgba(100, 100, 100, 0.2)',
+                          borderRadius: 5,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                        onPress={() => getData(val?.name)}>
+                        <Text
+                          style={{
+                            fontFamily: 'Poppins-Medium',
+                            fontSize: 18,
+                            paddingVertical: 5,
+                          }}>
+                          Select an option
+                        </Text>
+                      </TouchableOpacity>
                     ) : (
+                      // </TouchableOpacity>
                       <View
                         style={{
                           backgroundColor: '#f0f1f5',
@@ -224,11 +390,12 @@ const RecordModal = ({
                         }}>
                         <TextInput
                           placeholderTextColor={'#707070'}
+                          defaultValue={inputValues[val?.name] || fieldValue}
                           style={[fontStyles.fieldValue, {height: 40}]}
                           onChangeText={(text) =>
                             handleInputChange(val?.name, text)
                           }
-                          placeholder={inputValues[val?.name] || fieldValue}
+                          onFocus={() => setIsScrollEnabled(true)}
                         />
                         {/* <Text style={fontStyles.fieldValue}>
                       {fieldValue ? fieldValue : 'N/A'}

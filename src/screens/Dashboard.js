@@ -27,7 +27,8 @@ const styles = StyleSheet.create({
   backgroundStyle: {
     width: '100%',
     flex: 1,
-    backgroundColor: '#f2f3f8',
+    // backgroundColor: '#f2f3f8',
+    backgroundColor: generalBgColor,
   },
   recordListerBackground: {
     flex: 1,

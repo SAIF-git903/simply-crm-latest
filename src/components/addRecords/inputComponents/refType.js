@@ -315,17 +315,19 @@ class RefType extends Component {
                       }
                     });
 
-                    switch (this.state.refTo) {
-                      case 'Timesheets':
-                        recordName = Object.values(result);
-                        break;
-                      case 'Contacts':
-                        recordName = Object.values(result).join(' ');
-                        break;
-                      default:
-                        recordName = Object.values(result);
-                        break;
-                    }
+                    recordName = Object.values(result)?.join(' ');
+
+                    // switch (this.state.refTo) {
+                    //   case 'Timesheets':
+                    //     recordName = Object.values(result);
+                    //     break;
+                    //   case 'Contacts':
+                    //     recordName = Object.values(result).join(' ');
+                    //     break;
+                    //   default:
+                    //     recordName = Object.values(result);
+                    //     break;
+                    // }
 
                     return (
                       <TouchableOpacity

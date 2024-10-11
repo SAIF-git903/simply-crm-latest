@@ -20,6 +20,9 @@ class AddRecords extends Component {
       isDashboard: this.props.route?.params?.isDashboard
         ? this.props.route.params.isDashboard
         : false,
+      parentRecord: this.props?.recordId,
+      // parentModuleName: this.props.moduleName,
+      parentModuleName: this.props?.moduleData?.id,
     };
   }
 
@@ -34,6 +37,7 @@ class AddRecords extends Component {
       lister: this.state.lister,
       isDashboard: this.state.isDashboard,
     });
+    console.log('this', this.props);
   }
 
   callViewer(headerInstance) {
@@ -47,6 +51,8 @@ class AddRecords extends Component {
           headerInstance,
           this.props.dispatch,
           this.state.lister,
+          this.state.parentRecord,
+          this.state.parentModuleName,
         );
       },
     );

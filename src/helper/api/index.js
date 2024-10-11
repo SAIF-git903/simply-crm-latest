@@ -508,12 +508,24 @@ export function API_fetchComments(record) {
   });
 }
 
-export function API_saveRecord(module, values, record) {
+export function API_saveRecord(
+  module,
+  values,
+  record,
+  parentRecord,
+  parentModule,
+) {
+  // parentRecord: parentRecord
+  // ? `{[record:${parentRecord}, relationLabel: ${parentModule}]}`
+  // : parentRecord,
   return makeCall({
     _operation: 'saveRecord',
     module,
     values,
     record,
+    parentRecord: parentRecord
+      ? `[{record:${parentRecord}, relationLabel: ${parentModule}}]`
+      : parentRecord,
   });
 }
 

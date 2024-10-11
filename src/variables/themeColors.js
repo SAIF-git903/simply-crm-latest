@@ -35,3 +35,4 @@ export const headerTextColor = '#131b3c';
 export const generalBgColor = '#f5f8f9';
 export const textColor = '#465a78';
 export const textColor2 = '#131b3c';
+export const menuActive = '#0075ff';

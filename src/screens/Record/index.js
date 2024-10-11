@@ -24,7 +24,7 @@ import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+// import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import axios from 'axios';
@@ -74,6 +74,7 @@ import {
   textColor,
   textColor2,
 } from '../../variables/themeColors';
+import {DynamicIcon} from '../../components/common/DynamicIcon';
 
 // var ScrollableTabView = require('react-native-scrollable-tab-view');
 const icon = <FontAwesome5 name={'comments'} />;
@@ -209,8 +210,11 @@ export default function RecordDetails({route}) {
   const [timeSheetModal, setTimeSheetModal] = useState(false);
   const [profileVisible, setProfileVisible] = useState(false);
   const [saveText, setSaveText] = useState();
+  const [popupText, setPopupText] = useState();
+  const [popupWindowText, setPopupWindowText] = useState();
   const [inputValues, setInputValues] = useState({});
   const [profileImage, setProfileImage] = useState();
+  const [moduleData, setModuleData] = useState();
   let data = [
     {
       id: 1,
@@ -314,9 +318,18 @@ export default function RecordDetails({route}) {
     try {
       let res = await API_describe(moduleName);
 
+      let relatedModules = res?.result?.describe?.relatedModules;
+      const moduleData = relatedModules[moduleName];
+      setModuleData(moduleData);
+
       let filterData = res?.result?.describe?.relatedModules?.filter(
         (val) => val !== 'ModComments',
       );
+
+      // const labelsArray = Object.values(relatedModules).map(
+      //   (module) => module?.lable,
+      // );
+      // console.log('labelsArray', labelsArray);
 
       const new_array = filterData?.map((label, index) => {
         return {
@@ -352,6 +365,7 @@ export default function RecordDetails({route}) {
         ...new_array,
       ]);
     } catch (error) {
+      setNewTabs([tabs[1], tabs[2], tabs[tabs.length - 1]]);
       console.log('err', error);
     }
   };
@@ -1438,6 +1452,8 @@ export default function RecordDetails({route}) {
                           item?.runFunction[0].parameter,
                         );
                         setSaveText(item?.runFunction[0].parameter);
+                        setPopupText(item?.popupText);
+                        setPopupWindowText(item?.popupWindowTitle);
                       } else {
                         setVisible(!visible);
                         setItemFields(item.showModal);
@@ -1446,14 +1462,16 @@ export default function RecordDetails({route}) {
                           fun: item?.runFunction[0].function,
                         });
                         setSaveText(item?.runFunction[0].parameter);
+                        setPopupText(item?.popupText);
+                        setPopupWindowText(item?.popupWindowTitle);
                       }
                     }}>
-                    {/* <DynamicIcon iconName={item?.icon} color={textColor} /> */}
-                    <FontAwesome
+                    <DynamicIcon iconName={item?.icon} color={textColor} />
+                    {/* <FontAwesome
                       name={item?.icon}
                       color={textColor}
                       size={20}
-                    />
+                    /> */}
                     <Text
                       style={{
                         fontFamily: 'Poppins-SemiBold',
@@ -1559,6 +1577,9 @@ export default function RecordDetails({route}) {
         }}
         inputValues={inputValues}
         setInputValues={setInputValues}
+        popupText={popupText}
+        popupWindowText={popupWindowText}
+        moduleName={moduleName}
       />
 
       {/* <Modal
@@ -1643,11 +1664,13 @@ export default function RecordDetails({route}) {
         component={
           <AddRecords
             recordId={recordId}
+            moduleName={moduleName}
             lister={route?.params?.listerInstance}
             isDashboard={false}
             navigation={route?.params?.listerInstance?.props?.navigation}
             isTimesheets={saveText}
             colorsType={colorsType}
+            moduleData={moduleData}
           />
         }
       />

@@ -7,6 +7,8 @@ import {
   DRAWER_MODULE_BUTTON_TEXT_SELECTED_COLOR,
   DRAWER_SECTION_HEADER_TEXT_COLOR,
   DRAWER_SECTION_HEADER_IMAGE_COLOR,
+  headerIconColor,
+  menuActive,
 } from '../../../variables/themeColors';
 import {HOME, CALENDAR} from '../../../variables/constants';
 import {fontStyles} from '../../../styles/common';
@@ -55,10 +57,15 @@ export default function ImageButton({icon, type, label, module}) {
           <DynamicIcon
             iconName={icon}
             size={20}
+            // color={
+            //   selectedButton !== type
+            //     ? DRAWER_SECTION_HEADER_TEXT_COLOR
+            //     : DRAWER_MODULE_BUTTON_TEXT_SELECTED_COLOR
+            // }
             color={
               selectedButton !== type
                 ? DRAWER_SECTION_HEADER_TEXT_COLOR
-                : DRAWER_MODULE_BUTTON_TEXT_SELECTED_COLOR
+                : menuActive
             }
           />
           {/* <Icon
@@ -77,8 +84,12 @@ export default function ImageButton({icon, type, label, module}) {
             {
               color:
                 selectedButton === type
-                  ? DRAWER_MODULE_BUTTON_TEXT_SELECTED_COLOR
+                  ? menuActive
                   : DRAWER_SECTION_HEADER_IMAGE_COLOR,
+              // color:
+              //   selectedButton === type
+              //     ? DRAWER_MODULE_BUTTON_TEXT_SELECTED_COLOR
+              //     : DRAWER_SECTION_HEADER_IMAGE_COLOR,
             },
           ]}>
           {label}

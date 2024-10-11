@@ -150,7 +150,7 @@ const createFixedMenu = (itemNew, homeTitle) => {
         }}
         key={val?.id}
         // icon={val?.iconName}
-        icon={val?.icon}
+        icon={val?.name === 'Home' ? 'home' : val?.icon}
       />,
     );
   });

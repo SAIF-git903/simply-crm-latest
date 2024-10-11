@@ -10,6 +10,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import {fontStyles} from '../../styles/common';
 import {DynamicIcon} from '../common/DynamicIcon';
+import {headerIconColor} from '../../variables/themeColors';
 
 const IconButton = ({icon, title, style, onPress}) => {
   return (
@@ -25,7 +26,7 @@ const IconButton = ({icon, title, style, onPress}) => {
         },
       ]}>
       {/* <Icon name={icon} size={36} color={'#797f8b'} /> */}
-      <DynamicIcon iconName={icon} size={35} color={'#797f8b'} />
+      <DynamicIcon iconName={icon} size={35} color={headerIconColor} />
       <Text style={[fontStyles.iconButtonLabel, {paddingTop: 10}]}>
         {title}
       </Text>
