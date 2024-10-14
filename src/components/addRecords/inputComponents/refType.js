@@ -52,6 +52,8 @@ class RefType extends Component {
       let res;
       if (this.props?.obj?.name === 'assigned_user_id') {
         res = await API_listModuleRecords('Users');
+      } else if (this.props?.obj?.name === 'created_user_id') {
+        res = await API_listModuleRecords('Users');
       } else {
         res = await API_listModuleRecords(
           this.state.refTo,
@@ -89,7 +91,10 @@ class RefType extends Component {
     }
 
     this.setState({isLoadingMore: true});
-    if (this.props?.obj?.name !== 'assigned_user_id') {
+    if (
+      this.props?.obj?.name !== 'assigned_user_id' &&
+      this.props?.obj?.name !== 'created_user_id'
+    ) {
       try {
         const res = await API_listModuleRecords(
           this.state.refTo,
@@ -120,9 +125,10 @@ class RefType extends Component {
     if (!this.state.isLoadingMore) return null; // If not loading, no need to show the footer
     return (
       <View style={{paddingVertical: 20}}>
-        {this.props?.obj?.name !== 'assigned_user_id' && (
-          <ActivityIndicator size="small" color={headerIconColor} />
-        )}
+        {this.props?.obj?.name !== 'assigned_user_id' &&
+          this.props?.obj?.name !== 'created_user_id' && (
+            <ActivityIndicator size="small" color={headerIconColor} />
+          )}
       </View>
     );
   };

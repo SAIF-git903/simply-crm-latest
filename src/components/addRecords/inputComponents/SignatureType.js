@@ -3,6 +3,8 @@ import {Button, Image, Text, View} from 'react-native';
 import SignatureScreen from 'react-native-signature-canvas';
 import {commonStyles} from '../../../styles/common';
 import {headerIconColor} from '../../../variables/themeColors';
+import {isScroll} from '../../../actions';
+import store from '../../../store';
 
 class Signature extends Component {
   constructor(props) {
@@ -17,6 +19,7 @@ class Signature extends Component {
           : this.props.obj.default,
       fieldName: this.props.obj.name,
       hasSigned: false,
+      screensEnabled: true,
     };
   }
 
@@ -74,6 +77,8 @@ class Signature extends Component {
               body,html {
               width: ${imgWidth}px; height: ${imgHeight}px;}
           `}
+          onBegin={() => store.dispatch(isScroll(false))} // Disable scroll on signature interaction
+          onEnd={() => store.dispatch(isScroll(true))} // Re-enable scroll when signature ends
         />
 
         <View

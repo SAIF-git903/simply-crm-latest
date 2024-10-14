@@ -77,6 +77,7 @@ class Viewer extends Component {
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           keyboardVerticalOffset={122}>
           <ScrollView
+            scrollEnabled={this?.props?.isScroll}
             enableResetScrollToCoords={false}
             onScrollBeginDrag={() => {
               if (Platform.OS === 'ios') {
@@ -105,9 +106,10 @@ class Viewer extends Component {
   }
 }
 
-const mapStateToProps = ({drawer}) => {
+const mapStateToProps = ({drawer, scrollReducer}) => {
   const {moduleId} = drawer;
-  return {moduleId};
+  const {isScroll} = scrollReducer;
+  return {moduleId, isScroll};
 };
 
 export default connect(mapStateToProps)(Viewer);

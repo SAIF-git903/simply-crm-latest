@@ -201,3 +201,6 @@ export const isTimeSheetModal = (data) => (dispatch) => {
 export const defaultFilterId = (data) => (dispatch) => {
   dispatch({type: 'defaultFilterId', payload: data});
 };
+export const isScroll = (data) => (dispatch) => {
+  dispatch({type: 'isScroll', payload: data});
+};

@@ -16,6 +16,7 @@ import fieldReducer from './mainfieldReducer';
 import sortOrderReducer from './sortOrderFieldReducer';
 import filterReducer from './filterReducer';
 import timeSheetModalReducer from './TimeSheetReducer';
+import scrollReducer from './scrollReducer';
 import defaultFilterIdReducer from './DefaultFilter';
 
 export default combineReducers({
@@ -33,6 +34,7 @@ export default combineReducers({
   fieldReducer,
   sortOrderReducer,
   filterReducer,
+  scrollReducer,
   timeSheetModalReducer,
   defaultFilterIdReducer,
 });

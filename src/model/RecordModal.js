@@ -10,16 +10,20 @@ import {
   KeyboardAvoidingView,
   Platform,
   useWindowDimensions,
+  FlatList,
 } from 'react-native';
 import React, {createRef, useEffect, useState} from 'react';
 import RenderHTML from 'react-native-render-html';
 import SignatureScreen from 'react-native-signature-canvas';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-
-import {commonStyles, fontStyles} from '../styles/common';
-import {headerIconColor} from '../variables/themeColors';
+import MultiSelect from 'react-native-multiple-select';
 import DatePicker from 'react-native-date-picker';
+
+import {headerIconColor} from '../variables/themeColors';
+import {commonStyles, fontStyles} from '../styles/common';
 import {API_structure} from '../helper/api';
+import IconButton from '../components/IconButton';
+import store from '../store';
 
 const RecordModal = ({
   visible,
@@ -32,19 +36,24 @@ const RecordModal = ({
   popupWindowText,
   moduleName,
 }) => {
-  console.log('moduleName', moduleName);
   const source = {
     html: `
  ${popupText}`,
   };
   const signatureRef = createRef();
   const {width} = useWindowDimensions();
+  const {colorRuducer} = store.getState();
+  // console.log('colorRuducer', colorRuducer);
 
   const [hasSigned, setHasSigned] = useState(false);
   const [isScrollEnabled, setIsScrollEnabled] = useState(true);
   const [datePickerVisible, setDatePickerVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [pickListValue, setPickListValue] = useState([]);
+  const [items, setItems] = useState([]);
+  const [pickListValue, setPickListValue] = useState({data: [], fieldname: ''});
+  const [selectedValues, setSelectedValues] = useState();
+  const [saveValue, setSaveValue] = useState();
+
   const imgWidth = '100%';
   const imgHeight = 256;
 
@@ -53,8 +62,25 @@ const RecordModal = ({
       let res = await API_structure(moduleName);
       let getFields = res?.result?.structure?.flatMap((block) => block.fields);
       let filterData = getFields?.filter((val) => val?.name === fieldName);
+
       if (filterData) {
-        setPickListValue(filterData[0]?.type?.picklistValues);
+        if (fieldName === 'cf_multi_select') {
+          let newItems = [];
+          filterData[0]?.type?.picklistValues.map((item) => {
+            newItems.push({
+              id: item.value,
+              name: item.label,
+              // name: item.value
+            });
+          });
+          console.log('newItems', newItems);
+          setItems(newItems);
+        } else {
+          setPickListValue({
+            data: filterData[0]?.type?.picklistValues,
+            fieldname: fieldName,
+          });
+        }
       }
     } catch (error) {
       console.log('err', error);
@@ -108,6 +134,12 @@ const RecordModal = ({
       [label]: value,
     }));
   };
+
+  const handleSelectedItemsChange = (field, selectedItems) => {
+    setSelectedValues(selectedItems);
+    handleInputChange(field, selectedItems.join(' |##| '));
+  };
+
   return (
     <Modal animationType="slide" transparent={true} visible={visible}>
       <KeyboardAvoidingView
@@ -338,7 +370,8 @@ const RecordModal = ({
                             handleDateConfirm(date, val?.name)
                           }
                           onCancel={() => {
-                            handleDateConfirm();
+                            setDatePickerVisible(false);
+                            // handleDateConfirm();
                           }}
                         />
                       </View>
@@ -363,6 +396,7 @@ const RecordModal = ({
                     ) : val?.uitype === '15' || val?.uitype === '16' ? (
                       // <TouchableOpacity style={commonStyles.inputHolder}>
                       <TouchableOpacity
+                        activeOpacity={0.5}
                         style={{
                           width: '100%',
                           backgroundColor: 'rgba(100, 100, 100, 0.2)',
@@ -377,9 +411,33 @@ const RecordModal = ({
                             fontSize: 18,
                             paddingVertical: 5,
                           }}>
-                          Select an option
+                          {inputValues[val?.name]
+                            ? inputValues[val?.name]
+                            : 'Select an option'}
                         </Text>
                       </TouchableOpacity>
+                    ) : val?.uitype === '33' ? (
+                      <MultiSelect
+                        fontFamily={'Poppins-Regular'}
+                        altFontFamily={'Poppins-Regular'}
+                        itemFontFamily={'Poppins-Regular'}
+                        items={items}
+                        uniqueKey="id"
+                        onSelectedItemsChange={(selectedItems) =>
+                          handleSelectedItemsChange(val?.name, selectedItems)
+                        }
+                        selectedItems={selectedValues}
+                        selectText="Pick Items"
+                        tagRemoveIconColor="#CCC"
+                        tagBorderColor="#CCC"
+                        tagTextColor="#CCC"
+                        selectedItemTextColor="#CCC"
+                        selectedItemIconColor="#CCC"
+                        itemTextColor="#000"
+                        onToggleList={() => {
+                          getData(val?.name);
+                        }}
+                      />
                     ) : (
                       // </TouchableOpacity>
                       <View
@@ -408,6 +466,182 @@ const RecordModal = ({
             </ScrollView>
           </View>
         </View>
+        {pickListValue?.data?.length > 0 && (
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={pickListValue?.data?.length > 0 ? true : false}>
+            <View
+              style={{
+                flex: 1,
+                width: '100%',
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                justifyContent: 'flex-end',
+              }}>
+              <TouchableOpacity
+                style={{flex: 0.1}}
+                onPress={() => {
+                  setPickListValue({data: [], fieldname: ''});
+                }}>
+                <Text></Text>
+              </TouchableOpacity>
+              <View
+                style={{
+                  backgroundColor: '#fff',
+                  width: '100%',
+                  flex: 0.9,
+                  borderTopLeftRadius: 30,
+                  borderTopRightRadius: 30,
+                  paddingHorizontal: 10,
+                  paddingBottom: 10,
+                }}>
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    // paddingVertical: 10,
+                  }}
+                />
+                {/* <TouchableOpacity
+                activeOpacity={0.7}
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  paddingVertical: 10,
+                }}
+                onPress={onClose}>
+                <View
+                  style={{
+                    height: 5,
+                    width: 50,
+                    borderRadius: 10,
+                    backgroundColor: '#000',
+                  }}
+                />
+              </TouchableOpacity> */}
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    flexDirection: 'row',
+                    // paddingHorizontal: 20,
+                    alignSelf: 'center',
+                    width: '95%',
+                    marginTop: 20,
+                    paddingBottom: 15,
+                    borderBottomWidth: 0.5,
+                    // borderWidth: 1,
+                    borderBottomColor: '#d3d2d8',
+                  }}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setPickListValue({data: [], fieldname: ''});
+                    }}
+                    style={{
+                      width: '20%',
+                      alignItems: 'flex-start',
+                      justifyContent: 'center',
+                      // borderWidth: 1,
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: 'Poppins-SemiBold',
+                        fontSize: 16,
+                        textAlign: 'left',
+                        color: headerIconColor,
+                      }}>
+                      Cancel
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                {/* <View
+                  style={{
+                    marginHorizontal: 5,
+                    backgroundColor: '#FFF',
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                    // justifyContent: 'space-between',
+                    borderWidth: 1,
+                    borderRadius: 5,
+                    borderColor: '#dfdfdf',
+                    marginVertical: 10,
+                  }}>
+                  {searchText ? (
+                    <IconButton
+                      icon={'search'}
+                      color={'#707070'}
+                      size={25}
+                      // onPress={() => this.onSearchText()}
+                    />
+                  ) : (
+                    <IconButton
+                      icon={'arrow-back-circle-sharp'}
+                      color={'#007aff'}
+                      size={25}
+                      // onPress={() => this.onSearchText()}
+                    />
+                  )}
+                  <TextInput
+                    autoGrow={true}
+                    autoCorrect={false}
+                    spellCheck={false}
+                    underlineColorAndroid={'transparent'}
+                    style={[
+                      fontStyles.searchBoxLabel,
+                      {
+                        paddingLeft: 10,
+                        width: '80%',
+                      },
+                    ]}
+                    placeholder="Search"
+                    placeholderTextColor="#707070"
+                    defaultValue={searchText}
+                    autoCapitalize="none"
+                    returnKeyType="done"
+                    onChangeText={(text) => {
+                      setSearchText(text);
+                    }}
+                  />
+                </View> */}
+                <FlatList
+                  data={pickListValue?.data}
+                  showsVerticalScrollIndicator={false}
+                  renderItem={({item, index}) => {
+                    return (
+                      <TouchableOpacity
+                        style={{
+                          backgroundColor: '#fff',
+                          paddingVertical: 10,
+                          borderBottomWidth: 0.5,
+                          borderBottomColor: '#d3d2d8',
+                          paddingLeft: 15,
+                        }}
+                        onPress={() => {
+                          handleInputChange(
+                            pickListValue?.fieldname,
+                            item?.value,
+                          );
+                          setPickListValue({
+                            data: [],
+                            fieldname: pickListValue?.fieldname,
+                          });
+                        }}>
+                        <Text
+                          style={{
+                            color: '#000',
+                            fontFamily: 'Poppins-Regular',
+                            fontSize: 18,
+                          }}>
+                          {item?.label}
+                        </Text>
+                      </TouchableOpacity>
+                    );
+                  }}
+                />
+              </View>
+            </View>
+          </Modal>
+        )}
       </KeyboardAvoidingView>
     </Modal>
   );

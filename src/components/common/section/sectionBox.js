@@ -1,10 +1,15 @@
 import React from 'react';
 import {View, StyleSheet, ScrollView} from 'react-native';
+import store from '../../../store';
+import {useSelector} from 'react-redux';
 
 export default function SectionBox({children, style}) {
+  const state = useSelector((state) => state?.scrollReducer?.isScroll);
+
   return (
     <View style={[styles.wrapper, style]}>
       <ScrollView
+        scrollEnabled={state}
         contentContainerStyle={{flexGrow: 1}}
         showsVerticalScrollIndicator={false}>
         {children}
