@@ -75,6 +75,7 @@ import {
   textColor2,
 } from '../../variables/themeColors';
 import {DynamicIcon} from '../../components/common/DynamicIcon';
+import DocumentDetailModal from '../../model/DocumentDetailModal';
 
 // var ScrollableTabView = require('react-native-scrollable-tab-view');
 const icon = <FontAwesome5 name={'comments'} />;
@@ -213,8 +214,11 @@ export default function RecordDetails({route}) {
   const [popupText, setPopupText] = useState();
   const [popupWindowText, setPopupWindowText] = useState();
   const [inputValues, setInputValues] = useState({});
+  const [inputImgFieldval, setInputImgFieldval] = useState({});
   const [profileImage, setProfileImage] = useState();
   const [moduleData, setModuleData] = useState();
+  const [documentDetails, setDocumentDetails] = useState([]);
+  const [docdetailModal, setDocdetailModal] = useState(false);
   let data = [
     {
       id: 1,
@@ -312,6 +316,22 @@ export default function RecordDetails({route}) {
 
   const downloadImage = async () => {
     // console.log('blob', IMG.blob());
+  };
+
+  const getDocumentDetails = async () => {
+    try {
+      let res = await API_describe('Documents');
+
+      if (res?.success === true) {
+        let newData = res?.result?.describe?.fields?.filter(
+          (val) => val?.name === 'filename' || val?.name === 'notecontent',
+        );
+        setDocumentDetails(newData);
+        setDocdetailModal(true);
+      }
+    } catch (error) {
+      console.log('err', err);
+    }
   };
 
   const getRelativeModuleModules = async () => {
@@ -604,6 +624,7 @@ export default function RecordDetails({route}) {
         notes_title: filedata?.name,
         assigned_user_id: '19x' + loginDetails?.userId,
         filename: filedata?.name,
+        inputImgFieldval,
       };
 
       let trimmedUrl = await get_Url();
@@ -615,6 +636,26 @@ export default function RecordDetails({route}) {
         parentRecord,
         parentModule,
       );
+      if (res.success === true) {
+        // Alert.alert('Document added successfully.');
+        setloading(false);
+      } else {
+        // Alert.alert('Document could not be added.');
+        setloading(false);
+      }
+    } catch (error) {
+      console.log('err', error);
+      setloading(false);
+    }
+  };
+  const saveField = async () => {
+    try {
+      setloading(true);
+
+      let modulename = 'Documents';
+
+      let res = await API_saveRecord(modulename, inputImgFieldval, recordId);
+
       if (res.success === true) {
         Alert.alert('Document added successfully.');
         setloading(false);
@@ -652,8 +693,10 @@ export default function RecordDetails({route}) {
           filename: fileName,
           type: image.mime,
         };
-
-        saveFile(file, true);
+        getDocumentDetails();
+        setInputImgFieldval({filename: image?.filename});
+        // saveFile(file, true);
+        setFile(file);
       })
       .catch((err) => console.log('err', err));
   };
@@ -674,6 +717,7 @@ export default function RecordDetails({route}) {
           const filename = pathArray[pathArray.length - 1];
           return filename;
         };
+
         let fileName = getFileName(image.path);
 
         let file = {
@@ -682,8 +726,10 @@ export default function RecordDetails({route}) {
           filename: fileName,
           type: image.mime,
         };
-
-        saveFile(file, true);
+        setInputImgFieldval({filename: image?.filename});
+        getDocumentDetails();
+        setFile(file);
+        // saveFile(file, true);
       })
       .catch((err) => console.log('err', err));
     // try {
@@ -928,7 +974,11 @@ export default function RecordDetails({route}) {
       const res = await DocumentPicker.pick({
         type: [DocumentPicker.types.allFiles],
       });
-      saveFile(res[0], true);
+      getDocumentDetails();
+      setInputImgFieldval({filename: res[0]?.name});
+
+      // saveFile(res[0], true);
+      setFile(file);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         console.log('err', err);
@@ -1558,7 +1608,21 @@ export default function RecordDetails({route}) {
           {tabComponents}
         </ScrollableTabView>
       </View> */}
-
+      <DocumentDetailModal
+        data={documentDetails}
+        docdetailModal={docdetailModal}
+        onClose={() => {
+          // saveFile();
+          setDocdetailModal(false);
+        }}
+        onSave={() => {
+          setDocdetailModal(false);
+          saveFile(file);
+          saveField();
+        }}
+        inputValues={inputImgFieldval}
+        setInputValues={setInputImgFieldval}
+      />
       <RecordModal
         visible={visible}
         newArr={newArr}
