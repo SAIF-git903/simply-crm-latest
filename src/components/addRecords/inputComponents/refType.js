@@ -7,12 +7,15 @@ import {
   TextInput,
   FlatList,
   ActivityIndicator,
+  Dimensions,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {commonStyles, fontStyles} from '../../../styles/common';
 import {API_listModuleRecords} from '../../../helper/api';
 import {generalBgColor, headerIconColor} from '../../../variables/themeColors';
 import IconButton from '../../IconButton';
+import {LOGINDETAILSKEY} from '../../../variables/strings';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class RefType extends Component {
   constructor(props) {
@@ -21,10 +24,13 @@ class RefType extends Component {
       visible: false,
       referenceValue: '',
       searchText: '',
+      refTo: undefined,
+
       refTo:
-        this.props?.obj?.type?.refersTo?.length > 0
+        this.props?.obj?.type?.refersTo?.length === 1
           ? this.props?.obj?.type?.refersTo[0]
           : undefined,
+
       recordData: [],
       nameFields: [],
       referenceValue: this.props?.obj?.type?.picklistValues?.users[
@@ -40,11 +46,14 @@ class RefType extends Component {
       hasMoreData: true, // To track if there's more data to load
       searchText: '',
       isloading: false,
+      refModal: false,
     };
   }
 
   componentDidMount() {
+    console.log('this.', this.props);
     this.getDetails();
+    this.getDetailsCurrentUser();
   }
 
   getDetails = async () => {
@@ -81,6 +90,27 @@ class RefType extends Component {
     } catch (error) {
       console.log('error', error);
       this.setState({isloading: false});
+    }
+  };
+
+  getDetailsCurrentUser = async () => {
+    try {
+      const loginDetails = JSON.parse(
+        await AsyncStorage.getItem(LOGINDETAILSKEY),
+      );
+
+      if (this.state.fieldName === 'assigned_user_id') {
+        this.setState({referenceValue: loginDetails?.username});
+      }
+      if (this.state.fieldName === 'created_user_id') {
+        this.setState({referenceValue: loginDetails?.username});
+      }
+      if (this.state.fieldName === 'related_to') {
+        this.setState({referenceValue: this.props?.recordName});
+        this.setState({saveValue: this.props?.currentId});
+      }
+    } catch (error) {
+      console.log('error', error);
     }
   };
 
@@ -167,7 +197,11 @@ class RefType extends Component {
         <View style={{paddingBottom: 10}}>{this.props.fieldLabelView}</View>
         <TouchableOpacity
           onPress={() => {
-            this.setState({visible: true});
+            if (this.props?.obj?.type?.refersTo) {
+              this.setState({refModal: true});
+            } else {
+              this.setState({visible: true});
+            }
           }}>
           <View style={commonStyles.textbox}>
             <Text
@@ -383,6 +417,85 @@ class RefType extends Component {
                   </Text>
                 </View>
               )}
+            </View>
+          </View>
+        </Modal>
+        <Modal
+          animationType="fade"
+          visible={this.state.refModal}
+          transparent={true}>
+          <View
+            style={{
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+              //  justifyContent: 'flex-end',
+            }}>
+            <View
+              style={{
+                backgroundColor: '#FFF',
+                width: Dimensions.get('screen').width * 0.5,
+                borderRadius: 10,
+              }}>
+              <TouchableOpacity
+                onPress={() => {
+                  this.setState({refModal: false});
+                }}
+                activeOpacity={0.5}
+                style={{
+                  position: 'absolute',
+                  zIndex: 999,
+                  borderRadius: 50,
+                  borderWidth: 1,
+                  borderColor: 'red',
+                  height: 30,
+                  width: 30,
+                  right: -10,
+                  top: -10,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Text
+                  style={{
+                    fontFamily: 'Poppins-SemiBold',
+                    fontSize: 16,
+                    color: 'red',
+                  }}>
+                  X
+                </Text>
+              </TouchableOpacity>
+              {this.props?.obj?.type?.refersTo?.length > 1 &&
+                this.props?.obj?.type?.refersTo?.map((val, index) => {
+                  return (
+                    <TouchableOpacity
+                      onPress={() => {
+                        this.setState({refTo: val});
+                        this.setState({refModal: false});
+                        setTimeout(() => {
+                          this.getDetails();
+                        }, 1000);
+                        setTimeout(() => {
+                          this.setState({visible: true});
+                        }, 1500);
+                      }}
+                      activeOpacity={0.7}
+                      style={{
+                        paddingTop: index === 0 ? 10 : 0,
+                        paddingBottom: 10,
+                        paddingLeft: 10,
+                      }}>
+                      <Text
+                        style={{
+                          color: '#000',
+                          fontFamily: 'Poppins-SemiBold',
+                          fontSize: 16,
+                        }}>
+                        {val}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                })}
             </View>
           </View>
         </Modal>

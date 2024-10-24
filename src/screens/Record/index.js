@@ -96,6 +96,7 @@ export default function RecordDetails({route}) {
 
   const dispatch = useDispatch();
 
+  // console.log('recordName', recordName);
   const {navigation, moduleName, recordId} = recordViewerState;
 
   useEffect(() => {
@@ -219,6 +220,7 @@ export default function RecordDetails({route}) {
   const [moduleData, setModuleData] = useState();
   const [documentDetails, setDocumentDetails] = useState([]);
   const [docdetailModal, setDocdetailModal] = useState(false);
+  const [recordName, setRecordName] = useState();
   let data = [
     {
       id: 1,
@@ -337,6 +339,14 @@ export default function RecordDetails({route}) {
   const getRelativeModuleModules = async () => {
     try {
       let res = await API_describe(moduleName);
+      console.log('res####', res?.result?.describe?.labelFields);
+
+      let recordName = listerInstance?.state?.data?.filter(
+        (val) => val?.id === recordId,
+      );
+      if (recordName) {
+        setRecordName(recordName?.[0]?.[res?.result?.describe?.labelFields]);
+      }
 
       let relatedModules = res?.result?.describe?.relatedModules;
       const moduleData = relatedModules[moduleName];
@@ -1728,6 +1738,7 @@ export default function RecordDetails({route}) {
         component={
           <AddRecords
             recordId={recordId}
+            recordName={recordName}
             moduleName={moduleName}
             lister={route?.params?.listerInstance}
             isDashboard={false}

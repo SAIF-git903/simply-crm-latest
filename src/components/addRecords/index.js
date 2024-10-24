@@ -23,6 +23,8 @@ class AddRecords extends Component {
       parentRecord: this.props?.recordId,
       // parentModuleName: this.props.moduleName,
       parentModuleName: this.props?.moduleData?.id,
+      recordName: this.props?.recordName,
+      currentId: this.props?.recordId,
     };
   }
 
@@ -117,6 +119,8 @@ class AddRecords extends Component {
             moduleId={this.props.moduleId}
             moduleLable={this.props.moduleLable}
             onRef={(ref) => (this.viewer = ref)}
+            recordName={this.state.recordName}
+            currentId={this.state.currentId}
           />
         </View>
         {/* {this.props.isTimesheets ? (

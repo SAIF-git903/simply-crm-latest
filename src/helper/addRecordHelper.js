@@ -89,13 +89,13 @@ export const getRecordStructureHelper = async (currentInstance) => {
             continue;
           }
 
-          // if (
-          //   timeSheetModalReducer?.is_TimeSheetModal &&
-          //   fArr?.quickcreate !== '0' &&
-          //   fArr?.quickcreate !== '2'
-          // ) {
-          //   continue;
-          // }
+          if (
+            timeSheetModalReducer?.is_TimeSheetModal &&
+            fArr?.quickcreate !== '0' &&
+            fArr?.quickcreate !== '2'
+          ) {
+            continue;
+          }
 
           const fieldObj = {
             name: fArr.name,
@@ -229,6 +229,8 @@ export const getRecordStructureHelper = async (currentInstance) => {
                         fieldObj.mandatory,
                         validLabel,
                       )}
+                      recordName={currentInstance?.props?.recordName}
+                      currentId={currentInstance?.props?.currentId}
                       navigation={currentInstance.props.navigation}
                       moduleName={currentInstance.props.moduleName}
                       submodule={currentInstance.props.subModule}
@@ -268,6 +270,8 @@ export const getRecordStructureHelper = async (currentInstance) => {
                     fieldObj.mandatory,
                     validLabel,
                   )}
+                  recordName={currentInstance?.props?.recordName}
+                  currentId={currentInstance?.props?.currentId}
                   navigation={currentInstance.props.navigation}
                   moduleName={currentInstance.props.moduleName}
                   submodule={currentInstance.props.subModule}
