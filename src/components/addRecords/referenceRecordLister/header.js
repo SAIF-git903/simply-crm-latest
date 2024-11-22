@@ -50,7 +50,13 @@ class ReferenceHeader extends Component {
           },
         ]}>
         <SafeAreaView forceInset={{top: 'always', bottom: 'never'}}>
-          <View style={commonStyles.headerContentStyle}>
+          <View
+            style={[
+              commonStyles.headerContentStyle,
+              {
+                paddingBottom: 15,
+              },
+            ]}>
             <View style={{width: 40}}>{this.renderBackButton()}</View>
             <View style={{flex: 1, marginRight: 40}}>
               <Text

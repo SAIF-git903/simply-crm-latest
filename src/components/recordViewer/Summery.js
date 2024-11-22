@@ -113,19 +113,47 @@ const Summery = ({navigation, moduleName, recordId}) => {
         Linking.openURL(`${isHttps ? '' : 'https://'}${website}`);
         break;
 
+      case '1':
+        const query = value.replace(/ /g, '+');
+        if (Platform.OS === 'ios') {
+          //let encodedName = "address" + stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet()) ?? "";
+          Linking.openURL(`http://maps.apple.com/?q=${query}`);
+        } else {
+          Linking.openURL(`geo:0,0?q=${query}`);
+        }
+        break;
+      case '21':
+        const query1 = value.replace(/ /g, '+');
+        if (Platform.OS === 'ios') {
+          //let encodedName = "address" + stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet()) ?? "";
+          Linking.openURL(`http://maps.apple.com/?q=${query1}`);
+        } else {
+          Linking.openURL(`geo:0,0?q=${query1}`);
+        }
+        break;
+      case '16':
+        const q = value.replace(/ /g, '+');
+        if (Platform.OS === 'ios') {
+          //let encodedName = "address" + stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet()) ?? "";
+          Linking.openURL(`http://maps.apple.com/?q=${q}`);
+        } else {
+          Linking.openURL(`geo:0,0?q=${q}`);
+        }
+        break;
+
       default:
         break;
     }
     //process location field for Calendar/Event module
-    if (fieldName === 'location') {
-      const query = value.replace(/ /g, '+');
-      if (Platform.OS === 'ios') {
-        //let encodedName = "address" + stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet()) ?? "";
-        Linking.openURL(`http://maps.apple.com/?q=${query}`);
-      } else {
-        Linking.openURL(`geo:0,0?q=${query}`);
-      }
-    }
+    // if (fieldName === 'location') {
+    //   const query = value.replace(/ /g, '+');
+    //   if (Platform.OS === 'ios') {
+    //     //let encodedName = "address" + stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet()) ?? "";
+    //     Linking.openURL(`http://maps.apple.com/?q=${query}`);
+    //   } else {
+    //     Linking.openURL(`geo:0,0?q=${query}`);
+    //   }
+    // }
   };
 
   // Function to render field values safely

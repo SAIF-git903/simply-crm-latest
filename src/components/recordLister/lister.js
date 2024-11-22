@@ -293,7 +293,7 @@ class Lister extends Component {
         if (this.props.saved === 'saved') {
           this.refreshData();
         }
-        store.dispatch(filterField(null));
+        store.dispatch(filterField(undefined));
       },
     );
   }

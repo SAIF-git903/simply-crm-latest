@@ -339,7 +339,6 @@ export default function RecordDetails({route}) {
   const getRelativeModuleModules = async () => {
     try {
       let res = await API_describe(moduleName);
-      console.log('res####', res?.result?.describe?.labelFields);
 
       let recordName = listerInstance?.state?.data?.filter(
         (val) => val?.id === recordId,
@@ -349,19 +348,20 @@ export default function RecordDetails({route}) {
       }
 
       let relatedModules = res?.result?.describe?.relatedModules;
+
+      let isArry = Array.isArray(relatedModules);
+      let newData = isArry
+        ? relatedModules
+        : Object.values(relatedModules)?.map((module) => module?.label);
+
+      console.log('newData', newData);
+
       const moduleData = relatedModules[moduleName];
       setModuleData(moduleData);
 
-      let filterData = res?.result?.describe?.relatedModules?.filter(
-        (val) => val !== 'ModComments',
-      );
+      const filter_Data = newData?.filter((val) => val !== 'ModComments');
 
-      // const labelsArray = Object.values(relatedModules).map(
-      //   (module) => module?.lable,
-      // );
-      // console.log('labelsArray', labelsArray);
-
-      const new_array = filterData?.map((label, index) => {
+      const new_array = filter_Data?.map((label, index) => {
         return {
           tabLabel: label,
           // tabIcon: '',
@@ -1553,6 +1553,8 @@ export default function RecordDetails({route}) {
           // height: '7%',
           backgroundColor: '#fff',
           borderBottomWidth: 0.5,
+          // marginTop: 10,
+          paddingTop: 10,
           borderBottomColor: '#d3d2d8',
         }}>
         <FlatList
