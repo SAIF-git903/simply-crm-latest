@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import {Provider} from 'react-redux';
-import {AppRegistry, Platform, UIManager} from 'react-native';
+import {AppRegistry, LogBox, Platform, UIManager} from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import {name as appName} from './app.json';
 import Router from './src/router';
 import store from './src/store';
-
+LogBox.ignoreAllLogs();
 console.disableYellowBox = true;
 
 if (Platform.OS === 'android') {

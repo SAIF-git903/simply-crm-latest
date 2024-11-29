@@ -28,6 +28,8 @@ export const renderDrawerContent = (data) => {
   // );
 
   let menu = data?.menu;
+  // let isArry = Array.isArray(newMenu);
+  // let menu = isArry ? newMenu : Object.values(newMenu);
 
   let homeTitle = data?.homeTitle;
 
@@ -56,7 +58,7 @@ export const renderDrawerContent = (data) => {
   //     }
   //   }
   // }
-  const fixedMenuItems = menu.filter((item) => item?.modules?.length === 0);
+  const fixedMenuItems = menu?.filter((item) => item?.modules?.length === 0);
   if (fixedMenuItems.length > 0) {
     return [...createFixedMenu(fixedMenuItems, homeTitle)];
   }

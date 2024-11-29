@@ -44,8 +44,10 @@ class ReferenceType extends Component {
       const loginDetails = JSON.parse(
         await AsyncStorage.getItem(LOGINDETAILSKEY),
       );
-
-      if (this.state.fieldName === 'assigned_user_id') {
+      if (
+        this.state.fieldName === 'assigned_user_id' &&
+        !this.props.obj?.currentValue
+      ) {
         this.setState({referenceValue: loginDetails?.username});
       }
       if (this.state.fieldName === 'created_user_id') {

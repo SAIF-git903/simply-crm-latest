@@ -760,7 +760,7 @@ export default function RecordDetails({route}) {
       navigation.navigate('Edit Record', {
         id: jsonValue,
         lister: listerInstance,
-        isDashboard: false,
+        isDashboard: true,
       });
     } catch (error) {
       console.log('err', error);

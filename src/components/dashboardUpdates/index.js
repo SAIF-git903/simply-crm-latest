@@ -41,6 +41,10 @@ class UpdateWidget extends Component {
     // const findModule = (moduleName, moduleList) => {
     //   return moduleList.find((module) => module?.name === moduleName) || null;
     // };
+    // let isArry = Array.isArray(this.props?.loginDetails?.menu);
+    // let menu = isArry
+    //   ? this.props?.loginDetails?.menu
+    //   : Object.values(this.props?.loginDetails?.menu);
 
     const filterData = this.props?.loginDetails?.menu?.filter(
       (val) => val?.name !== 'Home',
