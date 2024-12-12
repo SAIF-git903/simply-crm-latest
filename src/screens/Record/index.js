@@ -1353,7 +1353,7 @@ export default function RecordDetails({route}) {
                     source={
                       profileImage
                         ? {uri: profileImage}
-                        : require('../../../assets/images/user.png')
+                        : require('../../../assets/images/userProfile.jpg')
                     }
                     style={{
                       height: '100%',
