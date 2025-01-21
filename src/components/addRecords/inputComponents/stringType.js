@@ -50,10 +50,13 @@ class StringType extends Component {
 
   doRender() {
     let keyboardType;
+    let autoCapitalize;
     if (this.props.obj.type.name === 'email') {
       keyboardType = 'email-address';
+      autoCapitalize = 'none';
     } else {
       keyboardType = 'default';
+      autoCapitalize = 'sentences';
     }
     return (
       <View>
@@ -62,7 +65,7 @@ class StringType extends Component {
           autoGrow={true}
           // placeholder={this.props.validLabel}
           autoCorrect={false}
-          autoCapitalize="none"
+          autoCapitalize={autoCapitalize}
           style={[
             commonStyles.label,
             this.props.moduleName === 'Calendar' && commonStyles.textbox,

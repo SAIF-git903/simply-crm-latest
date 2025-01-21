@@ -25,11 +25,13 @@ import {
   DRAWER_INNER_BACKGROUND,
   DRAWER_SECTION_HEADER_TEXT_COLOR,
   DRAWER_SECTION_HEADER_IMAGE_COLOR,
+  DRAWER_MENU_BACKGROUND_COLOR,
 } from '../variables/themeColors';
 import {fontStyles} from '../styles/common';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DeviceInfo from 'react-native-device-info';
+import {API_DebugApp} from '../helper/api';
 
 class DrawerContent extends Component {
   constructor(props) {
@@ -66,6 +68,14 @@ class DrawerContent extends Component {
       {cancelable: true},
     );
   }
+
+  debugApp = async () => {
+    try {
+      await API_DebugApp();
+    } catch (error) {
+      console.log('err', error);
+    }
+  };
 
   signOut() {
     return (
@@ -104,11 +114,43 @@ class DrawerContent extends Component {
       </TouchableOpacity>
     );
   }
+  debugAppView() {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          this.debugApp();
+        }}
+        style={[
+          styles.singOutWrapper,
+          {backgroundColor: DRAWER_MENU_BACKGROUND_COLOR},
+        ]}>
+        <View
+          style={{
+            flexDirection: 'row',
+            flex: 1,
+          }}>
+          <View style={styles.signOut}>
+            <Text
+              style={[
+                styles.textStyle,
+                fontStyles.drawerMenuButtonText,
+                {
+                  color: '#3E4D62FF',
+                },
+              ]}>
+              Send Debug
+            </Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  }
 
   logout = async () => {
     try {
       await AsyncStorage.removeItem('fields');
       await AsyncStorage.removeItem('UID');
+      await API_DebugApp();
     } catch (error) {
       console.log('err', error);
     }
@@ -146,6 +188,7 @@ class DrawerContent extends Component {
             />
           </ScrollView>
         )}
+        {this.debugAppView()}
         {this.signOut()}
       </View>
     );

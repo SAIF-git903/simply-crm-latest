@@ -25,7 +25,7 @@ import {loginUser, loginUserforMslogin} from '../actions/';
 import {assignUrl} from '../helper';
 import {fontStyles} from '../styles/common';
 import {authorize, refresh} from 'react-native-app-auth';
-import {API_locateInstanceformslogin} from '../helper/api';
+import {API_DebugApp, API_locateInstanceformslogin} from '../helper/api';
 
 class LoginForm extends Component {
   static navigationOptions = {
@@ -361,6 +361,14 @@ class LoginForm extends Component {
     return eye;
   }
 
+  debugApp = async () => {
+    try {
+      await API_DebugApp();
+    } catch (error) {
+      console.log('err', error);
+    }
+  };
+
   render() {
     const {password, showPassword} = this.state;
 
@@ -496,6 +504,26 @@ class LoginForm extends Component {
           </View>
 
           <View style={styles.signupSection} />
+          <TouchableOpacity
+            onPress={() => {
+              this.debugApp();
+            }}
+            style={{
+              position: 'absolute',
+              zIndex: 1,
+              alignSelf: 'center',
+              bottom: 30,
+              padding: 10,
+              borderRadius: 5,
+            }}>
+            <Text
+              style={{
+                color: '#339DDF',
+                fontFamily: 'Poppins-SemiBold',
+              }}>
+              Send Debug
+            </Text>
+          </TouchableOpacity>
         </SafeAreaView>
       </View>
     );

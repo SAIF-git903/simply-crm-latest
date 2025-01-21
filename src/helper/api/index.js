@@ -5,6 +5,7 @@ import {addDatabaseKey} from '../DatabaseKeyHelper';
 import {LOGIN_USER_SUCCESS} from '../../actions/types';
 import moment from 'moment';
 import {defaultFilterId, passField, sortField} from '../../actions';
+import DeviceInfo from 'react-native-device-info';
 
 async function makeCall(body, request_url, headers, method = 'POST') {
   const {
@@ -50,6 +51,8 @@ async function makeCall(body, request_url, headers, method = 'POST') {
     orderBy: body.orderBy !== '' ? body.orderBy : undefined,
     sortOrder: body.sortOrder !== '' ? body.sortOrder : undefined,
     mode: body.mode,
+    deviceid: body.deviceid,
+    devicename: body.devicename,
   };
   console.log('body_data', body_data);
   //clear undefined
@@ -605,5 +608,18 @@ export function API_forfetchImageData(record) {
     record,
     module: 'Documents',
     _operation: 'downloadFile',
+  });
+}
+export async function API_DebugApp() {
+  const {auth} = store.getState();
+  const deviceId = DeviceInfo.getDeviceId();
+  const deviceName = await DeviceInfo.getDeviceName();
+
+  return makeCall({
+    _operation: 'debug',
+    password: auth?.loginDetails?.password ? auth?.loginDetails?.password : '',
+    username: auth?.loginDetails?.username ? auth?.loginDetails?.username : '',
+    deviceid: deviceId,
+    devicename: deviceName,
   });
 }

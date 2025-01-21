@@ -35,6 +35,7 @@ export default class Records extends Component {
   }
 
   render() {
+    console.log('this.porps', this.props);
     const {moduleName, moduleLable, moduleId} = this.props.route.params;
 
     return (

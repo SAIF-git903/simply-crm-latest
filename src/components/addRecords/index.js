@@ -33,13 +33,14 @@ class AddRecords extends Component {
   };
 
   componentDidMount() {
+    console.log('this.state', this.state);
+    console.log('this.props', this.props);
     //TODO fixed unserialized values ??
     this.props.navigation.setOptions({
       id: this.state.recordId,
       lister: this.state.lister,
       isDashboard: this.state.isDashboard,
     });
-    console.log('this', this.props);
   }
 
   callViewer(headerInstance) {
@@ -69,7 +70,9 @@ class AddRecords extends Component {
     if (this.state.isDashboard) {
       moduleName = this.state.lister.props.moduleName;
     } else {
-      moduleName = this.props.selectedButton;
+      moduleName = this.props?.route?.params?.selectedButton
+        ? this.props?.route?.params?.selectedButton
+        : this.props?.selectedButton;
     }
     if (moduleName === CALENDAR) {
       let ids = this.state.recordId.split('x');
@@ -96,6 +99,8 @@ class AddRecords extends Component {
           moduleLable={
             this.props?.isTimesheets
               ? this.props.isTimesheets
+              : this.props?.route?.params?.tabLabel
+              ? this.props?.route?.params?.tabLabel
               : this.props.moduleLable
           }
           callViewer={this.callViewer.bind(this)}

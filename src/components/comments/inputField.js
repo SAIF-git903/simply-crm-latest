@@ -100,9 +100,11 @@ export default function InputField(props) {
         <View style={{...styles.inputFieldWrapper}}>
           <TextInput
             editable={!isAddingComment}
-            autoCorrect={false}
+            // autoCorrect={false}
+            autoCorrect={true}
             multiline={true}
-            autoCapitalize="none"
+            // autoCapitalize="none"
+            autoCapitalize="sentences"
             style={{
               ...styles.inputField,
               color: isAddingComment ? 'gray' : 'black',

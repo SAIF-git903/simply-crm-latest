@@ -41,7 +41,7 @@ export default function Comment(props) {
 
   const dispatch = useDispatch();
   const {commentsLoading} = useSelector(
-    state => state.comments,
+    (state) => state.comments,
     (p, n) => {
       return (
         p.comments === n.comments && p.commentsLoading === n.commentsLoading
@@ -49,14 +49,14 @@ export default function Comment(props) {
     },
   );
 
-  const {userId, isAdmin} = useSelector(state => state.auth.loginDetails);
+  const {userId, isAdmin} = useSelector((state) => state.auth.loginDetails);
 
   function checkUserAbility(commentCreator_userid, userId, isAdmin) {
     return getCleanId(commentCreator_userid) === userId || isAdmin;
   }
 
   function renderCommentButtons() {
-    const getRepliesText = length => (length === 1 ? 'reply' : 'replies');
+    const getRepliesText = (length) => (length === 1 ? 'reply' : 'replies');
     return (
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         {item.children.length !== 0 ? (
@@ -208,7 +208,8 @@ export default function Comment(props) {
           <View>
             <Text style={styles.nameText}>{item.creator.label}</Text>
             <Text style={styles.timeText}>
-              {moment(moment.tz(item.createdtime, crmTz).format()).fromNow()}
+              {moment(item.createdtime).format('DD/MM/YYYY')}
+              {/* {moment(moment.tz(item.createdtime, crmTz).format()).fromNow()} */}
             </Text>
           </View>
         </View>

@@ -15,8 +15,17 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {API_comman} from '../../helper/api';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {headerIconColor, textColor} from '../../variables/themeColors';
 
-const CommanView = ({tabLabel, moduleName, recordId, onPress}) => {
+const CommanView = ({
+  lister,
+  tabLabel,
+  moduleName,
+  recordId,
+  navigation,
+  onPress,
+}) => {
   const [data, setData] = useState();
   const [loading, setLoading] = useState();
   const [Blocks, setBlocks] = useState();
@@ -96,12 +105,40 @@ const CommanView = ({tabLabel, moduleName, recordId, onPress}) => {
     }
   };
 
-  useEffect(() => {
-    console.log('test data: ', data);
-  }, [data]);
-
   return (
     <>
+      <TouchableOpacity
+        activeOpacity={0.5}
+        style={{
+          alignItems: 'center',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          marginTop: 15,
+          marginHorizontal: 20,
+          // borderWidth: 1,
+          backgroundColor: '#fff',
+          padding: 10,
+          borderRadius: 5,
+        }}
+        onPress={() => {
+          navigation.navigate('Add Record', {
+            navigation: navigation,
+            selectedButton: tabLabel,
+            tabLabel: tabLabel,
+            lister: lister,
+          });
+        }}>
+        <Text
+          style={{
+            color: headerIconColor,
+            fontFamily: 'Poppins-SemiBold',
+          }}>
+          Add {tabLabel}
+        </Text>
+        <View style={{marginLeft: 15}}>
+          <FontAwesomeIcon icon={'plus'} size={20} color={headerIconColor} />
+        </View>
+      </TouchableOpacity>
       <ScrollView showsVerticalScrollIndicator={false} style={{marginTop: 20}}>
         {loading && (
           <View style={{marginTop: 15}}>

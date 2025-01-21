@@ -367,9 +367,11 @@ export default function RecordDetails({route}) {
           // tabIcon: '',
           component: (
             <CommanView
+              lister={route?.params?.listerInstance}
               tabLabel={label}
               moduleName={moduleName}
               recordId={recordId}
+              navigation={navigation}
               onPress={(data) => {
                 getImageData(data);
               }}

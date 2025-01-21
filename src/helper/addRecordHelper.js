@@ -578,16 +578,16 @@ const doSaveRecord = async (
       // Make sure to use the correct navigation reference
 
       if (listerInstance !== undefined) {
-        //currentInstance.props.navigation.pop();
+        currentInstance.props.navigation.pop();
         listerInstance.refreshData();
-        currentInstance.props.navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [
-              {name: 'Drawer'}, // Navigate to the top-level navigator
-            ],
-          }),
-        );
+        // currentInstance.props.navigation.dispatch(
+        //   CommonActions.reset({
+        //     index: 0,
+        //     routes: [
+        //       {name: 'Drawer'}, // Navigate to the top-level navigator
+        //     ],
+        //   }),
+        // );
       } else {
         dispatch(isTimeSheetModal(false));
       }

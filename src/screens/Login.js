@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {ActivityIndicator, View} from 'react-native';
+import {ActivityIndicator, Text, TouchableOpacity, View} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import SafeAreaView from 'react-native-safe-area-view';
@@ -10,6 +10,8 @@ import LoginForm from '../components/loginForm';
 import {loginUser, loginUserforMslogin} from '../actions/';
 import {LOGINDETAILSKEY, LOADER, LOGINFORM, INTRO} from '../variables/strings';
 import IntroSlide from '../components/introSlide';
+import DeviceInfo from 'react-native-device-info';
+import {API_DebugApp} from '../helper/api';
 
 class Splash extends Component {
   static navigationOptions = {
@@ -18,11 +20,15 @@ class Splash extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {componentToLoad: null};
+    this.state = {componentToLoad: null, buildNumber: '', versionNumber: ''};
   }
 
   componentDidMount() {
     this.getUserCredential();
+    let build = DeviceInfo.getBuildNumber();
+    let version = DeviceInfo.getVersion();
+    this.setState({versionNumber: version});
+    this.setState({buildNumber: build});
   }
 
   getIntroSliders() {
@@ -129,6 +135,14 @@ class Splash extends Component {
     }
   }
 
+  debugApp = async () => {
+    try {
+      await API_DebugApp();
+    } catch (error) {
+      console.log('err', error);
+    }
+  };
+
   renderItem = ({item}) => {
     return <View style={{paddingBottom: 40}}>{item.content()}</View>;
   };
@@ -142,6 +156,29 @@ class Splash extends Component {
     return (
       <SplashComponent>
         <ActivityIndicator color={'white'} />
+        <View style={{marginTop: 20}}>
+          <Text style={{color: '#339DDF'}}>V {this.state.versionNumber}</Text>
+        </View>
+        <TouchableOpacity
+          onPress={() => {
+            this.debugApp();
+          }}
+          style={{
+            position: 'absolute',
+            zIndex: 1,
+            alignSelf: 'center',
+            bottom: 30,
+            padding: 10,
+            borderRadius: 5,
+          }}>
+          <Text
+            style={{
+              color: '#339DDF',
+              fontFamily: 'Poppins-SemiBold',
+            }}>
+            Send Debug
+          </Text>
+        </TouchableOpacity>
       </SplashComponent>
     );
   }
