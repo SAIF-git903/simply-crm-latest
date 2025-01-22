@@ -359,16 +359,21 @@ export default function RecordDetails({route}) {
       const moduleData = relatedModules[moduleName];
       setModuleData(moduleData);
 
-      const filter_Data = newData?.filter((val) => val !== 'ModComments');
+      let newData1 = isArry ? relatedModules : Object.values(relatedModules);
 
-      const new_array = filter_Data?.map((label, index) => {
+      const filter_Data = newData1?.filter(
+        (val) => val?.label !== 'ModComments',
+      );
+
+      const new_array = filter_Data?.map((val, index) => {
         return {
-          tabLabel: label,
+          tabLabel: val?.label,
           // tabIcon: '',
           component: (
             <CommanView
+              tabId={val?.tabid}
               lister={route?.params?.listerInstance}
-              tabLabel={label}
+              tabLabel={val?.label}
               moduleName={moduleName}
               recordId={recordId}
               navigation={navigation}

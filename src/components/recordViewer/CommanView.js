@@ -19,6 +19,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {headerIconColor, textColor} from '../../variables/themeColors';
 
 const CommanView = ({
+  tabId,
   lister,
   tabLabel,
   moduleName,
@@ -26,6 +27,8 @@ const CommanView = ({
   navigation,
   onPress,
 }) => {
+  // console.log('tabId', tabId);
+  // console.log('tabLabel', tabLabel);
   const [data, setData] = useState();
   const [loading, setLoading] = useState();
   const [Blocks, setBlocks] = useState();
@@ -107,38 +110,119 @@ const CommanView = ({
 
   return (
     <>
-      <TouchableOpacity
-        activeOpacity={0.5}
-        style={{
-          alignItems: 'center',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          marginTop: 15,
-          marginHorizontal: 20,
-          // borderWidth: 1,
-          backgroundColor: '#fff',
-          padding: 10,
-          borderRadius: 5,
-        }}
-        onPress={() => {
-          navigation.navigate('Add Record', {
-            navigation: navigation,
-            selectedButton: tabLabel,
-            tabLabel: tabLabel,
-            lister: lister,
-          });
-        }}>
-        <Text
+      {tabId === '9' ? (
+        <View
           style={{
-            color: headerIconColor,
-            fontFamily: 'Poppins-SemiBold',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-around',
           }}>
-          Add {tabLabel}
-        </Text>
-        <View style={{marginLeft: 15}}>
-          <FontAwesomeIcon icon={'plus'} size={20} color={headerIconColor} />
+          <TouchableOpacity
+            activeOpacity={0.5}
+            style={{
+              alignItems: 'center',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginTop: 15,
+              backgroundColor: '#fff',
+              padding: 10,
+              borderRadius: 5,
+            }}
+            onPress={() => {
+              navigation.navigate('Add Record', {
+                submodule: 'Events',
+                navigation: navigation,
+                selectedButton: 'Events',
+                tabLabel: 'Events',
+                lister: lister,
+              });
+            }}>
+            <Text
+              style={{
+                color: headerIconColor,
+                fontFamily: 'Poppins-SemiBold',
+              }}>
+              Add Event
+            </Text>
+            <View style={{marginLeft: 15}}>
+              <FontAwesomeIcon
+                icon={'plus'}
+                size={20}
+                color={headerIconColor}
+              />
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            style={{
+              alignItems: 'center',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginTop: 15,
+              backgroundColor: '#fff',
+              padding: 10,
+              borderRadius: 5,
+            }}
+            onPress={() => {
+              navigation.navigate('Add Record', {
+                submodule: 'Tasks',
+                navigation: navigation,
+                selectedButton: 'Calendar',
+                tabLabel: 'Tasks',
+                lister: lister,
+              });
+            }}>
+            <Text
+              style={{
+                color: headerIconColor,
+                fontFamily: 'Poppins-SemiBold',
+              }}>
+              Add Task
+            </Text>
+            <View style={{marginLeft: 15}}>
+              <FontAwesomeIcon
+                icon={'plus'}
+                size={20}
+                color={headerIconColor}
+              />
+            </View>
+          </TouchableOpacity>
         </View>
-      </TouchableOpacity>
+      ) : (
+        <TouchableOpacity
+          activeOpacity={0.5}
+          style={{
+            alignItems: 'center',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginTop: 15,
+            marginHorizontal: 20,
+            // borderWidth: 1,
+            backgroundColor: '#fff',
+            padding: 10,
+            borderRadius: 5,
+          }}
+          onPress={() => {
+            navigation.navigate('Add Record', {
+              navigation: navigation,
+              selectedButton: tabLabel,
+              tabLabel: tabLabel,
+              lister: lister,
+            });
+          }}>
+          <Text
+            style={{
+              color: headerIconColor,
+              fontFamily: 'Poppins-SemiBold',
+            }}>
+            Add {tabLabel}
+          </Text>
+          <View style={{marginLeft: 15}}>
+            <FontAwesomeIcon icon={'plus'} size={20} color={headerIconColor} />
+          </View>
+        </TouchableOpacity>
+      )}
+
       <ScrollView showsVerticalScrollIndicator={false} style={{marginTop: 20}}>
         {loading && (
           <View style={{marginTop: 15}}>
