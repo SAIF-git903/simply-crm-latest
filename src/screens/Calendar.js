@@ -240,7 +240,11 @@ export default function Calendar(props) {
         recordId: recordId,
       },
     });
-    navigation.navigate('Record Details');
+    navigation.navigate('Record Details', {
+      listerInstance: {
+        refreshData: () => fetchData(true),
+      },
+    });
   }
 
   function onEdit(item) {

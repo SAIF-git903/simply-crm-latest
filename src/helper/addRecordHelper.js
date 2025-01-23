@@ -375,6 +375,7 @@ export const saveRecordHelper = async (
   listerInstance,
   parentRecord,
   parentModule,
+  parentId,
 ) => {
   const formInstance = currentInstance.state.inputInstance;
   const jsonObj = {};
@@ -430,6 +431,7 @@ export const saveRecordHelper = async (
     listerInstance,
     parentRecord,
     parentModule,
+    parentId,
   );
 };
 
@@ -441,9 +443,9 @@ const doSaveRecord = async (
   listerInstance,
   parentRecord,
   parentModule,
+  parentId,
 ) => {
   const calanderType = currentInstance.props.subModule;
-
   let newobj = jsonObj;
 
   if (
@@ -533,6 +535,9 @@ const doSaveRecord = async (
     //   return;
     // }
   }
+  if (parentId) {
+    jsonObj.parent_id = parentId;
+  }
 
   try {
     for (const field of currentInstance.state.inputInstance) {
@@ -552,13 +557,14 @@ const doSaveRecord = async (
     // also
     // Event and Task records have trouble on saving 'Related To' block (in mobileapp it's string, but in mastercopy - Contact module records picklist)
     // this also affects to String field 'contact_id', which will be object '{"label": "", "value": ""}' in saveValue instead of string
-    console.log('currentInstance', currentInstance);
+
     const responseJson = await API_saveRecord(
       calanderType === 'Events' ? 'Events' : currentInstance.props.moduleName,
       JSON.stringify(jsonObj),
       currentInstance.state.recordId,
       parentRecord,
       parentModule,
+      // parentId,
     );
     if (responseJson.success) {
       headerInstance.setState({loading: false});

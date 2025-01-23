@@ -21,8 +21,9 @@ class AddRecords extends Component {
         ? this.props.route.params.isDashboard
         : false,
       parentRecord: this.props?.recordId,
-      // parentModuleName: this.props.moduleName,
-      parentModuleName: this.props?.moduleData?.id,
+      parentModuleName: this.props.moduleName,
+      parentId: this.props?.route?.params?.parentId,
+      // parentModuleName: this.props?.moduleData?.id,
       recordName: this.props?.recordName,
       currentId: this.props?.recordId,
     };
@@ -33,8 +34,6 @@ class AddRecords extends Component {
   };
 
   componentDidMount() {
-    console.log('this.state', this.state);
-    console.log('this.props', this.props);
     //TODO fixed unserialized values ??
     this.props.navigation.setOptions({
       id: this.state.recordId,
@@ -56,6 +55,7 @@ class AddRecords extends Component {
           this.state.lister,
           this.state.parentRecord,
           this.state.parentModuleName,
+          this.state.parentId,
         );
       },
     );

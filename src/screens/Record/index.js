@@ -28,7 +28,8 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import axios from 'axios';
-import RNFetchBlob from 'rn-fetch-blob';
+// import RNFetchBlob from 'rn-fetch-blob';
+import FileViewer from 'react-native-file-viewer';
 // import NfcManager, {Ndef, NfcEvents, NfcTech} from 'react-native-nfc-manager';
 // import LottieView from 'lottie-react-native';
 // import * as SolidIcons from '@fortawesome/free-solid-svg-icons';
@@ -76,6 +77,7 @@ import {
 } from '../../variables/themeColors';
 import {DynamicIcon} from '../../components/common/DynamicIcon';
 import DocumentDetailModal from '../../model/DocumentDetailModal';
+import RNFetchBlob from 'rn-fetch-blob';
 
 // var ScrollableTabView = require('react-native-scrollable-tab-view');
 const icon = <FontAwesome5 name={'comments'} />;
@@ -308,6 +310,7 @@ export default function RecordDetails({route}) {
           responseType: 'blob',
         },
       );
+      console.log('res', res?.data);
       let imgUrl = URL.createObjectURL(res.data);
       setIMG(imgUrl);
       setImageModel(true);
@@ -316,8 +319,48 @@ export default function RecordDetails({route}) {
     }
   };
 
-  const downloadImage = async () => {
-    // console.log('blob', IMG.blob());
+  const openFile = async (data, fileName) => {
+    console.log('data', data);
+    let record = data[0]?.record;
+    const localPath = `${RNFetchBlob.fs.dirs.DocumentDir}/${fileName}`;
+    let url = await get_Url();
+
+    try {
+      let res = await axios.post(
+        `${url}/modules/Mobile/api.php`,
+        {
+          record,
+          module: 'Documents',
+          _operation: 'downloadFile',
+        },
+        {
+          responseType: 'blob',
+        },
+      );
+
+      console.log('res', res?.data);
+
+      RNFetchBlob.fs
+        .writeFile(localPath, res?.data._data.blobId, 'base64') // Save blob as base64
+        .then(() => {
+          // Open the file
+          FileViewer.open(localPath, {
+            showOpenWithDialog: true,
+            showAppsSuggestions: true,
+          })
+            .then(() => {
+              console.log('File opened successfully!');
+            })
+            .catch((err) => {
+              console.error('Error opening file:', err);
+            });
+        })
+        .catch((err) => {
+          console.error('Error saving file:', err);
+        });
+    } catch (error) {
+      console.log('err', error);
+    }
   };
 
   const getDocumentDetails = async () => {
@@ -350,11 +393,11 @@ export default function RecordDetails({route}) {
       let relatedModules = res?.result?.describe?.relatedModules;
 
       let isArry = Array.isArray(relatedModules);
-      let newData = isArry
-        ? relatedModules
-        : Object.values(relatedModules)?.map((module) => module?.label);
+      // let newData = isArry
+      //   ? relatedModules
+      //   : Object.values(relatedModules)?.map((module) => module?.label);
 
-      console.log('newData', newData);
+      // console.log('newData', newData);
 
       const moduleData = relatedModules[moduleName];
       setModuleData(moduleData);
@@ -379,6 +422,9 @@ export default function RecordDetails({route}) {
               navigation={navigation}
               onPress={(data) => {
                 getImageData(data);
+              }}
+              openFile={(data, fileName) => {
+                openFile(data, fileName);
               }}
             />
           ),

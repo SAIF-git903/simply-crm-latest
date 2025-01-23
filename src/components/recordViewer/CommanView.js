@@ -11,8 +11,8 @@ import {
   Image,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {API_comman} from '../../helper/api';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -26,6 +26,7 @@ const CommanView = ({
   recordId,
   navigation,
   onPress,
+  openFile,
 }) => {
   // console.log('tabId', tabId);
   // console.log('tabLabel', tabLabel);
@@ -41,8 +42,13 @@ const CommanView = ({
 
   const getData = async () => {
     try {
+      console.log('tabID', tabId);
       setLoading(true);
-      const res = await API_comman(recordId, moduleName, tabLabel);
+      const res = await API_comman(
+        recordId,
+        moduleName,
+        tabId === '9' ? 'Calendar' : tabLabel,
+      );
 
       let labelFields = res?.result?.records[0]?.labelFields;
       let blockResults = [];
@@ -135,6 +141,7 @@ const CommanView = ({
                 selectedButton: 'Events',
                 tabLabel: 'Events',
                 lister: lister,
+                parentId: recordId,
               });
             }}>
             <Text
@@ -170,6 +177,7 @@ const CommanView = ({
                 selectedButton: 'Calendar',
                 tabLabel: 'Tasks',
                 lister: lister,
+                parentId: recordId,
               });
             }}>
             <Text
@@ -208,6 +216,7 @@ const CommanView = ({
               selectedButton: tabLabel,
               tabLabel: tabLabel,
               lister: lister,
+              parentId: recordId,
             });
           }}>
           <Text
@@ -259,6 +268,10 @@ const CommanView = ({
           {tabLabel === 'Documents' ? (
             <View>
               {data?.map((val, ind) => {
+                const filenameField = val?.blocks
+                  .flatMap((block) => block.fields) // Combine all `fields` arrays
+                  .find((field) => field.name === 'filename');
+
                 return (
                   <View
                     style={{
@@ -279,38 +292,61 @@ const CommanView = ({
                         style={{
                           paddingLeft: 15,
                         }}>
-                        {Object.entries(val?.values).map(([key, value]) => (
-                          <View key={key}>
-                            <Text
-                              style={{
-                                fontFamily: 'Poppins-Medium',
-                                color: '#000',
-                                fontSize: 16,
-                              }}>
-                              {value.length > 22
-                                ? `${value.substring(0, 22)}...`
-                                : value}
-                            </Text>
-                          </View>
-                        ))}
+                        {Object.entries(val?.values).map(([key, value]) => {
+                          return (
+                            <View key={key}>
+                              <Text
+                                style={{
+                                  fontFamily: 'Poppins-Medium',
+                                  color: '#000',
+                                  fontSize: 16,
+                                }}>
+                                {value.length > 22
+                                  ? `${value.substring(0, 22)}...`
+                                  : value}
+                              </Text>
+                            </View>
+                          );
+                        })}
                       </View>
                       <View
                         style={{
                           flexDirection: 'row',
                           marginRight: 15,
                         }}>
-                        {val?.downloadData[0]?.type?.includes('image/') && (
+                        {val?.downloadData[0]?.type?.includes('image/') ? (
                           <TouchableOpacity
                             activeOpacity={0.7}
-                            style={{marginHorizontal: 5}}
+                            style={{marginHorizontal: 10}}
                             onPress={() => onPress(val.downloadData)}>
-                            <EvilIcons name="image" size={30} />
+                            <FontAwesomeIcon
+                              icon={'fa-regular fa-image'}
+                              size={25}
+                              color={headerIconColor}
+                            />
                           </TouchableOpacity>
-                        )}
+                        ) : val?.downloadData[0]?.type ? (
+                          <TouchableOpacity
+                            activeOpacity={0.7}
+                            style={{marginHorizontal: 10}}
+                            onPress={() =>
+                              openFile(val.downloadData, filenameField?.value)
+                            }>
+                            <FontAwesomeIcon
+                              icon={'fa-regular fa-file'}
+                              size={25}
+                              color={headerIconColor}
+                            />
+                          </TouchableOpacity>
+                        ) : null}
                         <TouchableOpacity
                           activeOpacity={0.7}
                           onPress={() => setDataandModel(val?.blocks)}>
-                          <EvilIcons name="eye" size={30} />
+                          <FontAwesomeIcon
+                            icon={'fa-regular fa-eye'}
+                            size={25}
+                            color={headerIconColor}
+                          />
                         </TouchableOpacity>
                       </View>
                     </View>
