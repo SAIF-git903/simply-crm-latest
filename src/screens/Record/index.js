@@ -29,6 +29,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import axios from 'axios';
 // import RNFetchBlob from 'rn-fetch-blob';
+import RNFS from 'react-native-fs';
 import FileViewer from 'react-native-file-viewer';
 // import NfcManager, {Ndef, NfcEvents, NfcTech} from 'react-native-nfc-manager';
 // import LottieView from 'lottie-react-native';
@@ -77,7 +78,6 @@ import {
 } from '../../variables/themeColors';
 import {DynamicIcon} from '../../components/common/DynamicIcon';
 import DocumentDetailModal from '../../model/DocumentDetailModal';
-import RNFetchBlob from 'rn-fetch-blob';
 
 // var ScrollableTabView = require('react-native-scrollable-tab-view');
 const icon = <FontAwesome5 name={'comments'} />;
@@ -310,7 +310,7 @@ export default function RecordDetails({route}) {
           responseType: 'blob',
         },
       );
-      console.log('res', res?.data);
+
       let imgUrl = URL.createObjectURL(res.data);
       setIMG(imgUrl);
       setImageModel(true);
@@ -320,9 +320,8 @@ export default function RecordDetails({route}) {
   };
 
   const openFile = async (data, fileName) => {
-    console.log('data', data);
     let record = data[0]?.record;
-    const localPath = `${RNFetchBlob.fs.dirs.DocumentDir}/${fileName}`;
+
     let url = await get_Url();
 
     try {
@@ -338,29 +337,44 @@ export default function RecordDetails({route}) {
         },
       );
 
-      console.log('res', res?.data);
-
-      RNFetchBlob.fs
-        .writeFile(localPath, res?.data._data.blobId, 'base64') // Save blob as base64
-        .then(() => {
-          // Open the file
-          FileViewer.open(localPath, {
-            showOpenWithDialog: true,
-            showAppsSuggestions: true,
-          })
-            .then(() => {
-              console.log('File opened successfully!');
-            })
-            .catch((err) => {
-              console.error('Error opening file:', err);
-            });
-        })
-        .catch((err) => {
-          console.error('Error saving file:', err);
-        });
+      let imgUrl = URL.createObjectURL(res.data);
+      openBlobFile(imgUrl, fileName);
     } catch (error) {
       console.log('err', error);
     }
+  };
+
+  const openBlobFile = async (blobUrl, fileName) => {
+    try {
+      // Define the path to save the file locally
+      const filePath = `${RNFS.DocumentDirectoryPath}/${fileName}.pdf`;
+
+      // Fetch the blob data
+      const response = await fetch(blobUrl);
+      const blob = await response.blob();
+
+      // Convert blob to base64
+      const base64Data = await blobToBase64(blob);
+
+      // Write the file locally
+      await RNFS.writeFile(filePath, base64Data, 'base64');
+
+      // Open the file with react-native-file-viewer
+      await FileViewer.open(filePath);
+
+      console.log('File opened successfully');
+    } catch (error) {
+      console.error('Error opening file:', error);
+    }
+  };
+
+  const blobToBase64 = (blob) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result.split(',')[1]);
+      reader.onerror = (error) => reject(error);
+      reader.readAsDataURL(blob);
+    });
   };
 
   const getDocumentDetails = async () => {

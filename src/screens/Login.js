@@ -1,6 +1,12 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {ActivityIndicator, Text, TouchableOpacity, View} from 'react-native';
+import {
+  ActivityIndicator,
+  StatusBar,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import SafeAreaView from 'react-native-safe-area-view';
@@ -12,6 +18,8 @@ import {LOGINDETAILSKEY, LOADER, LOGINFORM, INTRO} from '../variables/strings';
 import IntroSlide from '../components/introSlide';
 import DeviceInfo from 'react-native-device-info';
 import {API_DebugApp} from '../helper/api';
+import Popover from 'react-native-popover-view';
+import store from '../store';
 
 class Splash extends Component {
   static navigationOptions = {
@@ -20,7 +28,14 @@ class Splash extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {componentToLoad: null, buildNumber: '', versionNumber: ''};
+    this.state = {
+      componentToLoad: null,
+      buildNumber: '',
+      versionNumber: '',
+      visible: false,
+      user_name: '',
+      session_id: '',
+    };
   }
 
   componentDidMount() {
@@ -159,26 +174,50 @@ class Splash extends Component {
         <View style={{marginTop: 20}}>
           <Text style={{color: '#339DDF'}}>V {this.state.versionNumber}</Text>
         </View>
-        <TouchableOpacity
-          onPress={() => {
-            this.debugApp();
-          }}
-          style={{
-            position: 'absolute',
-            zIndex: 1,
-            alignSelf: 'center',
-            bottom: 30,
-            padding: 10,
-            borderRadius: 5,
-          }}>
-          <Text
-            style={{
-              color: '#339DDF',
-              fontFamily: 'Poppins-SemiBold',
-            }}>
-            Send Debug
-          </Text>
-        </TouchableOpacity>
+
+        <Popover
+          isVisible={this.state.visible}
+          verticalOffset={
+            Platform.OS === 'android' ? -StatusBar.currentHeight : 0
+          }
+          onRequestClose={() => this.setState({visible: false})}
+          from={
+            <TouchableOpacity
+              onPress={async () => {
+                this.debugApp();
+                this.setState({visible: true});
+
+                const loginDetails = JSON.parse(
+                  await AsyncStorage.getItem(LOGINDETAILSKEY),
+                );
+
+                this.setState({
+                  user_name: loginDetails?.username,
+                  session_id: loginDetails?.session,
+                });
+              }}
+              style={{
+                position: 'absolute',
+                zIndex: 1,
+                alignSelf: 'center',
+                bottom: 30,
+                padding: 10,
+                borderRadius: 5,
+              }}>
+              <Text
+                style={{
+                  color: '#339DDF',
+                  fontFamily: 'Poppins-SemiBold',
+                }}>
+                Send Debug
+              </Text>
+            </TouchableOpacity>
+          }>
+          <View>
+            <Text>{this.state.user_name}</Text>
+            <Text>{this.state.session_id}</Text>
+          </View>
+        </Popover>
       </SplashComponent>
     );
   }

@@ -539,6 +539,10 @@ const doSaveRecord = async (
     jsonObj.parent_id = parentId;
   }
 
+  if (calanderType === 'Tasks') {
+    jsonObj.activitytype = 'Task';
+  }
+
   try {
     for (const field of currentInstance.state.inputInstance) {
       if (field.state.error) {

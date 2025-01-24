@@ -9,6 +9,7 @@ import {
   Platform,
   LayoutAnimation,
   Image,
+  RefreshControl,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
@@ -31,7 +32,8 @@ const CommanView = ({
   // console.log('tabId', tabId);
   // console.log('tabLabel', tabLabel);
   const [data, setData] = useState();
-  const [loading, setLoading] = useState();
+  const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const [Blocks, setBlocks] = useState();
   const [visible, setVisible] = useState(false);
   const [index, setIndex] = useState();
@@ -43,7 +45,9 @@ const CommanView = ({
   const getData = async () => {
     try {
       console.log('tabID', tabId);
-      setLoading(true);
+      if (!refreshing) {
+        setLoading(true);
+      }
       const res = await API_comman(
         recordId,
         moduleName,
@@ -87,10 +91,11 @@ const CommanView = ({
 
       setData(blockResults);
       console.log('blockResults', blockResults);
-
+      setRefreshing(false);
       setLoading(false);
     } catch (error) {
       setLoading(false);
+      setRefreshing(false);
       console.log('err', error);
     }
   };
@@ -111,6 +116,14 @@ const CommanView = ({
     } else {
       // If none of the above, return a default value or handle as needed
       return 'N/A'; // You can adjust this based on your requirements
+    }
+  };
+  const onRefresh = async () => {
+    try {
+      setRefreshing(true);
+      await getData();
+    } catch (error) {
+      console.error('Error refreshing data:', error);
     }
   };
 
@@ -232,12 +245,21 @@ const CommanView = ({
         </TouchableOpacity>
       )}
 
-      <ScrollView showsVerticalScrollIndicator={false} style={{marginTop: 20}}>
-        {loading && (
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={headerIconColor}
+          />
+        }
+        style={{marginTop: 20, flexGrow: 0.98}}>
+        {loading && !refreshing && (
           <View style={{marginTop: 15}}>
             <ActivityIndicator
               animating={loading}
-              color={'#000'}
+              color={headerIconColor}
               size="large"
             />
           </View>
