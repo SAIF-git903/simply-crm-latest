@@ -31,6 +31,22 @@ const CommanView = ({
 }) => {
   // console.log('tabId', tabId);
   // console.log('tabLabel', tabLabel);
+
+  const fileIcons = {
+    pdf: 'fa-regular fa-file-pdf',
+    jpg: 'fa-regular fa-image',
+    jpeg: 'fa-regular fa-image',
+    png: 'fa-regular fa-file-image',
+    doc: 'fa-regular fa-file-word',
+    docx: 'fa-regular fa-file-word',
+    xls: 'fa-regular fa-file-excel',
+    xlsx: 'fa-regular fa-file-excel',
+    ppt: 'fa-regular fa-file-powerpoint',
+    pptx: 'fa-regular fa-file-powerpoint',
+    txt: 'fa-regular fa-file-alt',
+    default: 'fa-regular fa-file', // Default icon for unknown file types
+  };
+
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
@@ -44,7 +60,6 @@ const CommanView = ({
 
   const getData = async () => {
     try {
-      console.log('tabID', tabId);
       if (!refreshing) {
         setLoading(true);
       }
@@ -90,7 +105,7 @@ const CommanView = ({
       });
 
       setData(blockResults);
-      console.log('blockResults', blockResults);
+
       setRefreshing(false);
       setLoading(false);
     } catch (error) {
@@ -126,6 +141,13 @@ const CommanView = ({
       console.error('Error refreshing data:', error);
     }
   };
+
+  const getFileIcon = (filename) => {
+    const extension = getFileExtension(filename);
+    return fileIcons[extension] || fileIcons?.default;
+  };
+  const getFileExtension = (filename) =>
+    filename?.split('.')?.pop()?.toLowerCase();
 
   return (
     <>
@@ -276,23 +298,14 @@ const CommanView = ({
             </Text>
           </View>
         )}
-        <View
-          style={{
-            shadowColor: '#000',
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
-            elevation: 5,
-          }}>
+        <View>
           {tabLabel === 'Documents' ? (
             <View>
               {data?.map((val, ind) => {
                 const filenameField = val?.blocks
                   .flatMap((block) => block.fields) // Combine all `fields` arrays
                   .find((field) => field.name === 'filename');
+                let icoName = getFileIcon(filenameField?.value);
 
                 return (
                   <View
@@ -301,7 +314,8 @@ const CommanView = ({
                       alignSelf: 'center',
                       justifyContent: 'center',
                       backgroundColor: '#fff',
-                      borderRadius: 5,
+                      borderRadius: 3,
+                      marginBottom: 3,
                     }}>
                     <View
                       style={{
@@ -340,9 +354,13 @@ const CommanView = ({
                           <TouchableOpacity
                             activeOpacity={0.7}
                             style={{marginHorizontal: 10}}
-                            onPress={() => onPress(val.downloadData)}>
+                            onPress={() => {
+                              // onPress(val.downloadData)
+                              openFile(val.downloadData, filenameField?.value);
+                            }}>
                             <FontAwesomeIcon
-                              icon={'fa-regular fa-image'}
+                              // icon={'fa-regular fa-image'}
+                              icon={icoName ? icoName : 'fa-regular fa-image'}
                               size={25}
                               color={headerIconColor}
                             />
@@ -355,7 +373,8 @@ const CommanView = ({
                               openFile(val.downloadData, filenameField?.value)
                             }>
                             <FontAwesomeIcon
-                              icon={'fa-regular fa-file'}
+                              // icon={'fa-regular fa-file'}
+                              icon={icoName ? icoName : 'fa-regular fa-file'}
                               size={25}
                               color={headerIconColor}
                             />
@@ -372,12 +391,12 @@ const CommanView = ({
                         </TouchableOpacity>
                       </View>
                     </View>
-                    <View
+                    {/* <View
                       style={{
                         borderWidth: ind === data.length - 1 ? 0 : 0.5,
                         borderColor: '#707070',
                       }}
-                    />
+                    /> */}
                   </View>
                 );
               })}
@@ -393,6 +412,8 @@ const CommanView = ({
                       alignSelf: 'center',
                       justifyContent: 'center',
                       backgroundColor: '#fff',
+                      borderRadius: 3,
+                      marginBottom: 3,
                     }}
                     onPress={() => {
                       setDataandModel(val?.blocks);
@@ -424,12 +445,12 @@ const CommanView = ({
                     .join(', ')}
                 </Text>
               </View> */}
-                    <View
+                    {/* <View
                       style={{
                         borderWidth: ind === data.length - 1 ? 0 : 0.5,
                         borderColor: '#707070',
                       }}
-                    />
+                    /> */}
                   </TouchableOpacity>
                 );
               })}

@@ -337,8 +337,8 @@ export default function RecordDetails({route}) {
         },
       );
 
-      let imgUrl = URL.createObjectURL(res.data);
-      openBlobFile(imgUrl, fileName);
+      // let imgUrl = URL.createObjectURL(res.data);
+      openBlobFile(res.data, fileName);
     } catch (error) {
       console.log('err', error);
     }
@@ -347,14 +347,14 @@ export default function RecordDetails({route}) {
   const openBlobFile = async (blobUrl, fileName) => {
     try {
       // Define the path to save the file locally
-      const filePath = `${RNFS.DocumentDirectoryPath}/${fileName}.pdf`;
+      const filePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
 
       // Fetch the blob data
-      const response = await fetch(blobUrl);
-      const blob = await response.blob();
+      // const response = await fetch(blobUrl);
+      // const blob = await response.blob();
 
       // Convert blob to base64
-      const base64Data = await blobToBase64(blob);
+      const base64Data = await blobToBase64(blobUrl);
 
       // Write the file locally
       await RNFS.writeFile(filePath, base64Data, 'base64');
@@ -1180,7 +1180,7 @@ export default function RecordDetails({route}) {
 
   return (
     <View style={{flex: 1, backgroundColor: generalBgColor}}>
-      {imageModel && (
+      {/* {imageModel && (
         <View
           style={{
             position: 'absolute',
@@ -1210,7 +1210,7 @@ export default function RecordDetails({route}) {
               // flexDirection: 'row',
               marginHorizontal: 20,
             }}>
-            {/* <TouchableOpacity
+            <TouchableOpacity
               activeOpacity={0.7}
               style={{
                 backgroundColor: '#5699E6',
@@ -1230,7 +1230,7 @@ export default function RecordDetails({route}) {
                 }}>
                 Download
               </Text>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
             <TouchableOpacity
               activeOpacity={0.7}
               style={{
@@ -1254,7 +1254,7 @@ export default function RecordDetails({route}) {
             </TouchableOpacity>
           </View>
         </View>
-      )}
+      )} */}
       <Header
         title={'Record Details'}
         showBackButton
