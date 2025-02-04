@@ -715,6 +715,7 @@ export default function RecordDetails({route}) {
       );
       if (res.success === true) {
         // Alert.alert('Document added successfully.');
+        saveField(res?.result?.record?.id);
         setloading(false);
       } else {
         // Alert.alert('Document could not be added.');
@@ -725,13 +726,13 @@ export default function RecordDetails({route}) {
       setloading(false);
     }
   };
-  const saveField = async () => {
+  const saveField = async (record_id) => {
     try {
       setloading(true);
 
       let modulename = 'Documents';
 
-      let res = await API_saveRecord(modulename, inputImgFieldval, recordId);
+      let res = await API_saveRecord(modulename, inputImgFieldval, record_id);
 
       if (res.success === true) {
         Alert.alert('Document added successfully.');
@@ -1697,7 +1698,6 @@ export default function RecordDetails({route}) {
         onSave={() => {
           setDocdetailModal(false);
           saveFile(file);
-          saveField();
         }}
         inputValues={inputImgFieldval}
         setInputValues={setInputImgFieldval}

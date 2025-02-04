@@ -1,11 +1,16 @@
 import store from '../../store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-simple-toast';
 import {LOGINDETAILSKEY} from '../../variables/strings';
-import {addDatabaseKey} from '../DatabaseKeyHelper';
+import {addDatabaseKey, removeAllDatabase} from '../DatabaseKeyHelper';
 import {LOGIN_USER_SUCCESS} from '../../actions/types';
 import moment from 'moment';
 import {defaultFilterId, passField, sortField} from '../../actions';
 import DeviceInfo from 'react-native-device-info';
+import {reset} from '../../NavigationService';
+import {Alert} from 'react-native';
+
+global.sessionRemove = null;
 
 async function makeCall(body, request_url, headers, method = 'POST') {
   const {
@@ -307,45 +312,131 @@ async function doFetchForFileUpload(request_url, method, headers, body_data) {
   return responseJson;
 }
 
+// async function doFetch(request_url, method, headers, body_data) {
+//   console.log(`### ${method} API CALL ###: ${request_url}`);
+//   console.log(body_data);
+//   const response = await fetch(request_url, {
+//     method: method,
+//     headers: headers,
+//     body: method === 'POST' ? JSON.stringify(body_data) : null,
+//   });
+
+//   //if fetch() will rejected, then error will thrown
+//   //if fetch() will resolved, then 'response' will be filled with response data
+//   let responseJson = await response.json().catch(function (error) {
+//     console.log('JSON parse failed on:');
+//     console.log('response', response);
+//     throw error;
+//   });
+//   console.log('responseJson---->', responseJson);
+
+//   if (responseJson?.result?.describe?.defaultFilterId) {
+//     store.dispatch(
+//       defaultFilterId(responseJson?.result?.describe?.defaultFilterId),
+//     );
+//   }
+
+//   if (responseJson?.result?.headers) {
+//     store.dispatch(sortField(responseJson?.result?.headers));
+//     try {
+//       const jsonValue = JSON.stringify(responseJson?.result?.headers);
+//       await AsyncStorage.setItem('fields', jsonValue);
+//     } catch (error) {
+//       console.log('err', error);
+//     }
+//   }
+
+//   if (responseJson?.result?.nameFields?.length > 0) {
+//     store.dispatch(passField(responseJson?.result?.nameFields));
+//   }
+
+//   return responseJson;
+// }
+
 async function doFetch(request_url, method, headers, body_data) {
   console.log(`### ${method} API CALL ###: ${request_url}`);
   console.log(body_data);
-  const response = await fetch(request_url, {
-    method: method,
-    headers: headers,
-    body: method === 'POST' ? JSON.stringify(body_data) : null,
-  });
 
-  //if fetch() will rejected, then error will thrown
-  //if fetch() will resolved, then 'response' will be filled with response data
-  let responseJson = await response.json().catch(function (error) {
-    console.log('JSON parse failed on:');
-    console.log('response', response);
-    throw error;
-  });
-  console.log('responseJson---->', responseJson);
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 14000); // 7-second timeout
 
-  if (responseJson?.result?.describe?.defaultFilterId) {
-    store.dispatch(
-      defaultFilterId(responseJson?.result?.describe?.defaultFilterId),
-    );
-  }
+  try {
+    const timeoutValue = moment();
+    const response = await Promise.race([
+      fetch(request_url, {
+        method: method,
+        headers: headers,
+        body: method === 'POST' ? JSON.stringify(body_data) : null,
+        signal: controller.signal,
+      }),
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Request timed out')), 14000),
+      ),
+    ]);
 
-  if (responseJson?.result?.headers) {
-    store.dispatch(sortField(responseJson?.result?.headers));
-    try {
-      const jsonValue = JSON.stringify(responseJson?.result?.headers);
-      await AsyncStorage.setItem('fields', jsonValue);
-    } catch (error) {
-      console.log('err', error);
+    clearTimeout(timeoutId);
+
+    // console.log("header", response.headers.get('date'))
+    // const timeoutValue = response.headers.get('date');
+
+    const targetDate = moment(timeoutValue);
+    const currentDate = moment();
+    const timeout = currentDate.diff(targetDate, 'milliseconds');
+
+    if (timeout >= 7000 && timeout < 14000) {
+      Toast.show('This is taking longer than usual');
     }
-  }
 
-  if (responseJson?.result?.nameFields?.length > 0) {
-    store.dispatch(passField(responseJson?.result?.nameFields));
-  }
+    let responseJson = await response.json().catch((error) => {
+      console.log('JSON parse failed on:', response);
+      throw error;
+    });
 
-  return responseJson;
+    console.log('responseJson---->', responseJson);
+
+    if (responseJson?.result?.describe?.defaultFilterId) {
+      store.dispatch(
+        defaultFilterId(responseJson?.result?.describe?.defaultFilterId),
+      );
+    }
+
+    if (responseJson?.result?.headers) {
+      store.dispatch(sortField(responseJson?.result?.headers));
+      try {
+        const jsonValue = JSON.stringify(responseJson?.result?.headers);
+        await AsyncStorage.setItem('fields', jsonValue);
+      } catch (error) {
+        console.log('err', error);
+      }
+    }
+
+    if (responseJson?.result?.nameFields?.length > 0) {
+      store.dispatch(passField(responseJson?.result?.nameFields));
+    }
+    return responseJson;
+  } catch (error) {
+    console.log('Fetch error:', error?.message);
+
+    if (error?.message === 'Request timed out') {
+      if (global.sessionRemove === 1) {
+        Alert.alert(
+          'Session Expired',
+          'Your request timed out. Please log in again.',
+        );
+        await AsyncStorage.removeItem('fields');
+        await AsyncStorage.removeItem('UID');
+        removeAllDatabase();
+        setTimeout(() => {
+          reset([{name: 'Login'}]); // Use the global reset function
+        }, 1000);
+      }
+
+      if (global) {
+        global.sessionRemove = global.sessionRemove + 1;
+      }
+    }
+    throw error;
+  }
 }
 
 export function API_locateInstance(email, password) {

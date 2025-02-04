@@ -22,6 +22,7 @@ import {fab} from '@fortawesome/free-brands-svg-icons';
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {far} from '@fortawesome/free-regular-svg-icons';
 import {fas} from '@fortawesome/free-solid-svg-icons';
+import {navigationRef} from './NavigationService';
 library.add(far, fas, fab);
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -90,7 +91,9 @@ export default class Router extends Component {
   render() {
     return (
       <SafeAreaProvider>
-        <NavigationContainer>{this.createLoginStack()}</NavigationContainer>
+        <NavigationContainer ref={navigationRef}>
+          {this.createLoginStack()}
+        </NavigationContainer>
       </SafeAreaProvider>
     );
   }
