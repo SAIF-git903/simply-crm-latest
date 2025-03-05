@@ -247,19 +247,21 @@ const getDataFromInternet = async (
       //TODO search will not work for vt6
     } else {
       //TODO 'listModuleRecords' have 500 http error code on getting Currency list (for Invoice and SalesOrder)
-      responseJson = await API_listModuleRecords(
-        listerInstance.props.moduleName,
-        listerInstance.state.pageToTake,
-        specialFields_values,
-        limit,
-        searchText,
-        filterid,
-        orderBy,
-        sortOrder,
-      );
+      if (listerInstance?.props?.moduleName) {
+        responseJson = await API_listModuleRecords(
+          listerInstance.props.moduleName,
+          listerInstance.state.pageToTake,
+          specialFields_values,
+          limit,
+          searchText,
+          filterid,
+          orderBy,
+          sortOrder,
+        );
+      }
     }
 
-    if (responseJson.success) {
+    if (responseJson?.success) {
       await getAndSaveDataVtiger(
         responseJson,
         listerInstance,
