@@ -7,10 +7,11 @@ import {LOGIN_USER_SUCCESS} from '../../actions/types';
 import moment from 'moment';
 import {defaultFilterId, passField, sortField} from '../../actions';
 import DeviceInfo from 'react-native-device-info';
-import {reset} from '../../NavigationService';
+import NetInfo from '@react-native-community/netinfo';
+import {navigationRef, reset} from '../../NavigationService';
 import {Alert} from 'react-native';
 
-global.sessionRemove = null;
+let alertShown = false;
 
 async function makeCall(body, request_url, headers, method = 'POST') {
   const {
@@ -59,6 +60,8 @@ async function makeCall(body, request_url, headers, method = 'POST') {
     mode: body.mode,
     deviceid: body.deviceid,
     devicename: body.devicename,
+    url: body.url,
+    networktype: body.networktype,
   };
   console.log('body_data', body_data);
   //clear undefined
@@ -386,11 +389,30 @@ async function doFetch(request_url, method, headers, body_data) {
     if (timeout >= 7000 && timeout < 14000) {
       Toast.show('This is taking longer than usual');
     }
+    // **Persist API logs across requests**
 
     let responseJson = await response.json().catch((error) => {
       console.log('JSON parse failed on:', response);
       throw error;
     });
+
+    let requestLog = JSON.parse(await AsyncStorage.getItem('requestLog')) || [];
+
+    // Ensure we don't exceed 25 records
+    if (requestLog.length >= 25) {
+      requestLog.shift(); // Remove the oldest record (first element)
+    }
+
+    requestLog.push({
+      operation: body_data?._operation,
+      bodyData: JSON.stringify(body_data),
+      requesturl: request_url,
+      method: method,
+      status: response?.status,
+      time: new Date().toISOString(),
+      responseJson: JSON.stringify(responseJson),
+    });
+    await AsyncStorage.setItem('requestLog', JSON.stringify(requestLog));
 
     console.log('responseJson---->', responseJson);
 
@@ -418,25 +440,29 @@ async function doFetch(request_url, method, headers, body_data) {
     console.log('Fetch error:', error?.message);
 
     if (error?.message === 'Request timed out') {
-      if (global.sessionRemove === 1) {
+      if (!alertShown) {
+        alertShown = true;
         Alert.alert(
           'Session Expired',
           'Your request timed out. Please log in again.',
+          [
+            {
+              text: 'OK',
+              onPress: () => {
+                alertShown = false;
+                reset([{name: 'Login'}]);
+              },
+            },
+          ],
         );
-        await AsyncStorage.removeItem('fields');
-        await AsyncStorage.removeItem('UID');
-        removeAllDatabase();
-        setTimeout(() => {
-          reset([{name: 'Login'}]); // Use the global reset function
-        }, 1000);
       }
-
-      if (global) {
-        global.sessionRemove = global.sessionRemove + 1;
-      }
+      await AsyncStorage.removeItem('fields');
+      await AsyncStorage.removeItem('UID');
+      removeAllDatabase();
     }
-    throw error;
   }
+  throw error;
+  // }
 }
 
 export function API_locateInstance(email, password) {
@@ -709,11 +735,14 @@ export async function API_DebugApp() {
   const deviceId = DeviceInfo.getDeviceId();
   const deviceName = await DeviceInfo.getDeviceName();
 
+  const {type} = await NetInfo.fetch();
+
   return makeCall({
     _operation: 'debug',
     password: auth?.loginDetails?.password ? auth?.loginDetails?.password : '',
     username: auth?.loginDetails?.username ? auth?.loginDetails?.username : '',
     deviceid: deviceId,
     devicename: deviceName,
+    networktype: type,
   });
 }

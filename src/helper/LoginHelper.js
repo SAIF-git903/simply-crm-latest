@@ -2,7 +2,12 @@ import {Alert} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // import { NavigationActions } from 'react-navigation';
 import Toast from 'react-native-simple-toast';
-import {LOGINDETAILSKEY, LOGINFORM, URLDETAILSKEY} from '../variables/strings';
+import {
+  KEEPUSERINFO,
+  LOGINDETAILSKEY,
+  LOGINFORM,
+  URLDETAILSKEY,
+} from '../variables/strings';
 import {LOGIN_USER_SUCCESS} from '../actions/types';
 import {addDatabaseKey} from '.';
 import {fetchUserData} from '../actions/userActions';
@@ -254,6 +259,7 @@ export const doUserLogin = async (
         .dispatch(fetchUserData(loginDetails))
         .then(async () => {
           AsyncStorage.setItem(LOGINDETAILSKEY, JSON.stringify(loginDetails));
+          AsyncStorage.setItem(KEEPUSERINFO, JSON.stringify(loginDetails));
           await addDatabaseKey(LOGINDETAILSKEY);
           loginUserSuccess(dispatch, loginDetails, navigation);
         })
@@ -359,6 +365,7 @@ export const doUserLoginForMSLogin = async (
         .dispatch(fetchUserData(loginDetails))
         .then(async () => {
           AsyncStorage.setItem(LOGINDETAILSKEY, JSON.stringify(loginDetails));
+          AsyncStorage.setItem(KEEPUSERINFO, JSON.stringify(loginDetails));
           await addDatabaseKey(LOGINDETAILSKEY);
           loginUserSuccess(dispatch, loginDetails, navigation);
         })

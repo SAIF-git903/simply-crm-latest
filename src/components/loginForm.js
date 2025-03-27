@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   Platform,
   Keyboard,
+  Dimensions,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Picker} from '@react-native-picker/picker';
@@ -18,15 +19,15 @@ import ModalDropdown from 'react-native-modal-dropdown';
 import SafeAreaView from 'react-native-safe-area-view';
 import IconButton from '../components/IconButton';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import {URLDETAILSKEY, LOGINDETAILSKEY} from '../variables/strings';
 import {loginUser, loginUserforMslogin} from '../actions/';
 import {assignUrl} from '../helper';
 import {fontStyles} from '../styles/common';
 import {authorize, refresh} from 'react-native-app-auth';
-import {API_DebugApp, API_locateInstanceformslogin} from '../helper/api';
-
+import DebugPopover from './common/DebugPopover';
+const screenHeight = Dimensions.get('screen').height;
+const screenWidth = Dimensions.get('screen').width;
 class LoginForm extends Component {
   static navigationOptions = {
     header: null,
@@ -361,13 +362,13 @@ class LoginForm extends Component {
     return eye;
   }
 
-  debugApp = async () => {
-    try {
-      await API_DebugApp();
-    } catch (error) {
-      console.log('err', error);
-    }
-  };
+  // debugApp = async () => {
+  //   try {
+  //     await API_DebugApp();
+  //   } catch (error) {
+  //     console.log('err', error);
+  //   }
+  // };
 
   render() {
     const {password, showPassword} = this.state;
@@ -504,7 +505,7 @@ class LoginForm extends Component {
           </View>
 
           <View style={styles.signupSection} />
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => {
               this.debugApp();
             }}
@@ -523,7 +524,15 @@ class LoginForm extends Component {
               }}>
               Send Debug
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+          <DebugPopover
+            screenWidth={screenWidth}
+            screenHeight={screenHeight}
+            alignSelf={'center'}
+            position={'absolute'}
+            bottom={30}
+            sendDebugColor={'#339DDF'}
+          />
         </SafeAreaView>
       </View>
     );
