@@ -79,7 +79,7 @@ class DebugPopover extends Component {
             <TouchableOpacity
               activeOpacity={0.7}
               onPress={() => this.setState({visible: false})}>
-              <Ionicons name="close-circle-sharp" size={30} />
+              <Ionicons name="close-circle-sharp" size={30} color="#000" />
             </TouchableOpacity>
           </View>
           <ScrollView
@@ -130,9 +130,11 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 15,
     fontFamily: 'Poppins-SemiBold',
+    color: '#000',
   },
   lbl: {
     fontSize: 13,
     fontFamily: 'Poppins-Regular',
+    color: '#000',
   },
 });

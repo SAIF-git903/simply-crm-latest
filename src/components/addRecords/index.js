@@ -16,7 +16,9 @@ class AddRecords extends Component {
       recordId: this.props.route?.params?.id
         ? this.props.route?.params?.id
         : '',
-      lister: this.props.route?.params?.lister,
+      lister: this.props.route?.params?.lister
+        ? this.props.route?.params?.lister
+        : '',
       isDashboard: this.props.route?.params?.isDashboard
         ? this.props.route.params.isDashboard
         : false,
@@ -68,7 +70,9 @@ class AddRecords extends Component {
   render() {
     let moduleName;
     if (this.state.isDashboard) {
-      moduleName = this.state.lister.props.moduleName;
+      moduleName = this.state.lister.props?.moduleName
+        ? this.state.lister.props?.moduleName
+        : this.state.lister?.moduleName;
     } else {
       moduleName = this.props?.route?.params?.selectedButton
         ? this.props?.route?.params?.selectedButton

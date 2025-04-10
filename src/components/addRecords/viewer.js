@@ -10,6 +10,8 @@ import {
 } from 'react-native';
 import {getRecordStructureHelper, copyPriceDetails} from '../../helper';
 import {generalBgColor} from '../../variables/themeColors';
+import store from '../../store';
+import {isSession} from '../../actions';
 
 class Viewer extends Component {
   constructor(props) {
@@ -26,6 +28,14 @@ class Viewer extends Component {
   componentDidMount() {
     this.props.onRef(this);
     this.onFetchCall();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.isSession) {
+      this.props.onRef(this);
+      this.onFetchCall();
+      store.dispatch(isSession(false));
+    }
   }
 
   // componentWillUnmount() {
@@ -106,10 +116,11 @@ class Viewer extends Component {
   }
 }
 
-const mapStateToProps = ({drawer, scrollReducer}) => {
+const mapStateToProps = ({drawer, scrollReducer, sessionReducer}) => {
   const {moduleId} = drawer;
   const {isScroll} = scrollReducer;
-  return {moduleId, isScroll};
+  const {isSession} = sessionReducer;
+  return {moduleId, isScroll, isSession};
 };
 
 export default connect(mapStateToProps)(Viewer);

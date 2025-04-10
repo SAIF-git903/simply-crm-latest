@@ -204,3 +204,6 @@ export const defaultFilterId = (data) => (dispatch) => {
 export const isScroll = (data) => (dispatch) => {
   dispatch({type: 'isScroll', payload: data});
 };
+export const isSession = (data) => (dispatch) => {
+  dispatch({type: 'isSession', payload: data});
+};

@@ -51,7 +51,6 @@ class RefType extends Component {
   }
 
   componentDidMount() {
-    console.log('this.', this.props);
     this.getDetails();
     this.getDetailsCurrentUser();
   }

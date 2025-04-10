@@ -91,6 +91,7 @@ export const getRecordStructureHelper = async (currentInstance) => {
 
           if (
             timeSheetModalReducer?.is_TimeSheetModal &&
+            // currentInstance.props.moduleName === 'Timesheets' &&
             fArr?.quickcreate !== '0' &&
             fArr?.quickcreate !== '2'
           ) {

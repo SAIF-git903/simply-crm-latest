@@ -1,6 +1,6 @@
 {
   "name": "RNVectorIcons",
-  "version": "10.0.3",
+  "version": "10.2.0",
   "summary": "Customizable Icons for React Native with support for NavBar/TabBar, image source and full styling.",
   "description": "Customizable Icons for React Native with support for NavBar/TabBar, image source and full styling.",
   "homepage": "https://github.com/oblador/react-native-vector-icons",
@@ -10,11 +10,12 @@
   },
   "platforms": {
     "ios": "12.0",
-    "tvos": "9.0"
+    "tvos": "9.0",
+    "visionos": "1.0"
   },
   "source": {
     "git": "git://github.com/oblador/react-native-vector-icons.git",
-    "tag": "v10.0.3"
+    "tag": "v10.2.0"
   },
   "source_files": "RNVectorIconsManager/**/*.{h,m,mm,swift}",
   "resources": "Fonts/*.ttf",

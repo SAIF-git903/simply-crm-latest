@@ -429,7 +429,9 @@ const loginUserSuccess = (dispatch, loginDetails, navigation) => {
   //     ]
   // });
 
-  navigation.replace('Drawer');
+  navigation.replace('Drawer', {
+    screen: 'Dashboard',
+  });
 };
 
 export const resetPassword = async (email, forgotPasswordInstance) => {

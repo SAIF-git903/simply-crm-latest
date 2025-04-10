@@ -5,13 +5,21 @@ import {LOGINDETAILSKEY} from '../../variables/strings';
 import {addDatabaseKey, removeAllDatabase} from '../DatabaseKeyHelper';
 import {LOGIN_USER_SUCCESS} from '../../actions/types';
 import moment from 'moment';
-import {defaultFilterId, passField, sortField} from '../../actions';
+import {defaultFilterId, isSession, passField, sortField} from '../../actions';
 import DeviceInfo from 'react-native-device-info';
 import NetInfo from '@react-native-community/netinfo';
-import {navigationRef, reset} from '../../NavigationService';
+import {
+  getCurrentRouteName,
+  navigationRef,
+  reset,
+} from '../../NavigationService';
 import {Alert} from 'react-native';
+import axios from 'axios';
 
 let alertShown = false;
+let count = 0;
+let maxtimeout = 14000;
+let mintimeout = 7000;
 
 async function makeCall(body, request_url, headers, method = 'POST') {
   const {
@@ -361,7 +369,7 @@ async function doFetch(request_url, method, headers, body_data) {
   console.log(body_data);
 
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 14000); // 7-second timeout
+  const timeoutId = setTimeout(() => controller.abort(), maxtimeout); // 7-second timeout
 
   try {
     const timeoutValue = moment();
@@ -373,7 +381,7 @@ async function doFetch(request_url, method, headers, body_data) {
         signal: controller.signal,
       }),
       new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('Request timed out')), 14000),
+        setTimeout(() => reject(new Error('Request timed out')), maxtimeout),
       ),
     ]);
 
@@ -386,8 +394,8 @@ async function doFetch(request_url, method, headers, body_data) {
     const currentDate = moment();
     const timeout = currentDate.diff(targetDate, 'milliseconds');
 
-    if (timeout >= 7000 && timeout < 14000) {
-      Toast.show('This is taking longer than usual');
+    if (timeout >= mintimeout && timeout < maxtimeout) {
+      Toast.show('This is taking a little longer than usual, retrying');
     }
     // **Persist API logs across requests**
 
@@ -442,23 +450,21 @@ async function doFetch(request_url, method, headers, body_data) {
     if (error?.message === 'Request timed out') {
       if (!alertShown) {
         alertShown = true;
-        Alert.alert(
-          'Session Expired',
-          'Your request timed out. Please log in again.',
-          [
-            {
-              text: 'OK',
-              onPress: () => {
-                alertShown = false;
-                reset([{name: 'Login'}]);
-              },
+        Alert.alert('Session Expired', 'Try again.', [
+          {
+            text: 'Retry',
+            onPress: () => {
+              alertShown = false;
+              store.dispatch(isSession(true));
+              API_DebugApp();
+              // reset([{name: 'Login'}]);
             },
-          ],
-        );
+          },
+        ]);
       }
-      await AsyncStorage.removeItem('fields');
-      await AsyncStorage.removeItem('UID');
-      removeAllDatabase();
+      // await AsyncStorage.removeItem('fields');
+      // await AsyncStorage.removeItem('UID');
+      // removeAllDatabase();
     }
   }
   throw error;
@@ -731,18 +737,40 @@ export function API_forfetchImageData(record) {
   });
 }
 export async function API_DebugApp() {
-  const {auth} = store.getState();
   const deviceId = DeviceInfo.getDeviceId();
   const deviceName = await DeviceInfo.getDeviceName();
-
   const {type} = await NetInfo.fetch();
 
-  return makeCall({
-    _operation: 'debug',
-    password: auth?.loginDetails?.password ? auth?.loginDetails?.password : '',
-    username: auth?.loginDetails?.username ? auth?.loginDetails?.username : '',
-    deviceid: deviceId,
-    devicename: deviceName,
-    networktype: type,
-  });
+  try {
+    const {
+      auth: {loginDetails},
+    } = store.getState();
+    const {url, password, username} = loginDetails;
+
+    const request_url = `${url}/modules/Mobile/api.php`;
+    console.log(`### API CALL ###: ${request_url}`);
+
+    const headers = {
+      'cache-control': 'no-cache',
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    };
+
+    const body = {
+      _operation: 'debug',
+      password: password || '',
+      username: username || '',
+      deviceid: deviceId,
+      devicename: deviceName,
+      networktype: type,
+      message: 'the session was lost?',
+    };
+
+    const res = await axios.post(request_url, body, {headers});
+
+    console.log('Debug API response:', res.data);
+    return res.data;
+  } catch (error) {
+    console.log('Debug API Error:', error);
+  }
 }

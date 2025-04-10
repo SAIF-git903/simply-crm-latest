@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "288604688877",
+    "project_id": "simply-mobile-push-messages",
+    "storage_bucket": "simply-mobile-push-messages.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:288604688877:android:683715cbe9155c925cd7e4",
+        "android_client_info": {
+          "package_name": "com.simplycrm.mobileappnew"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALilTLS_AJH1inO7jcf2ymbuxx9D7ohqs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

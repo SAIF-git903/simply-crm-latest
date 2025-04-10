@@ -18,6 +18,7 @@ import filterReducer from './filterReducer';
 import timeSheetModalReducer from './TimeSheetReducer';
 import scrollReducer from './scrollReducer';
 import defaultFilterIdReducer from './DefaultFilter';
+import sessionReducer from './sessionReducer';
 
 export default combineReducers({
   auth: AuthReducer,
@@ -37,4 +38,5 @@ export default combineReducers({
   scrollReducer,
   timeSheetModalReducer,
   defaultFilterIdReducer,
+  sessionReducer,
 });

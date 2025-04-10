@@ -47,6 +47,7 @@ import {
 import RecordItem from '../components/recordLister/recordItem';
 import ReferenceRecordItem from '../components/addRecords/referenceRecordLister/referenceRecordItem';
 import {filterField} from '../actions';
+import {formatCurrency} from '../components/common/FormatCurrency';
 
 const moment = require('moment-timezone');
 
@@ -395,7 +396,8 @@ function getListerModifiedRecord(
         delete modifiedRecord.lastname;
         break;
       case OPPORTUNITIES:
-        modifiedRecord.amount = Number(modifiedRecord.amount).toFixed(2);
+        // modifiedRecord.amount = Number(modifiedRecord.amount).toFixed(2);
+        modifiedRecord.amount = formatCurrency(modifiedRecord.amount);
         break;
       case PRODUCTS:
         modifiedRecord.qtyinstock = Number(modifiedRecord.qtyinstock).toFixed(

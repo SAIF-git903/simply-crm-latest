@@ -5,12 +5,14 @@ import {connect} from 'react-redux';
 import Header from './Header';
 import Viewer from './Viewer';
 import {drawerButtonPress} from '../../actions/index';
-
+import messaging from '@react-native-firebase/messaging';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import {fontStyles} from '../../styles/common';
 import {DynamicIcon} from '../common/DynamicIcon';
 import {headerIconColor} from '../../variables/themeColors';
+import store from '../../store';
+import {API_saveRecord} from '../../helper/api';
 
 const IconButton = ({icon, title, style, onPress}) => {
   return (
@@ -35,6 +37,24 @@ const IconButton = ({icon, title, style, onPress}) => {
 };
 
 class UpdateWidget extends Component {
+  async componentDidMount() {
+    const token = await messaging().getToken();
+    const updatedUserData = this.removeId(this.props.userData);
+    if (token) {
+      let body_data = {
+        ...updatedUserData,
+        push_notification_tkn: token,
+      };
+      await API_saveRecord('Users', body_data, this.props.userData?.id);
+    }
+  }
+
+  removeId = (userData) => {
+    let newUserData = {...userData}; // Create a copy to avoid mutating the original object
+    delete newUserData.id;
+    return newUserData;
+  };
+
   render() {
     const {navigation} = this.props;
 
@@ -279,9 +299,10 @@ const styles = {
   },
 };
 
-const mapStateToProps = ({auth}) => {
+const mapStateToProps = ({auth, UserReducer}) => {
   const {loginDetails} = auth;
-  return {loginDetails};
+  const {userData} = UserReducer;
+  return {loginDetails, userData};
 };
 
 export default connect(mapStateToProps)(UpdateWidget);

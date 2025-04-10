@@ -262,6 +262,7 @@ const getAndSaveData = async (
                 }
 
                 if (uiType === 7 || uiType === 72) {
+                  // value = formatNumber(field.value);
                   value = formatNumber(field.value);
                 }
               } catch (error) {

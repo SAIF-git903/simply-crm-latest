@@ -22,6 +22,7 @@ import {
   getNextPageRecord,
   passValue,
   filterField,
+  isSession,
 } from '../../actions';
 import {recordListRendererHelper} from '../../helper';
 import {
@@ -80,6 +81,16 @@ class Lister extends Component {
       this.getRecords();
     });
   }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.isSession) {
+      this.getFilters();
+      this.getColors();
+      this.getRecords();
+      store.dispatch(isSession(false));
+    }
+  }
+
   componentWillUnmount() {
     if (this._unsubscribe) {
       this._unsubscribe();
@@ -771,11 +782,12 @@ class Lister extends Component {
   }
 }
 
-const mapStateToProps = ({event, recordViewer, drawer}) => {
+const mapStateToProps = ({event, recordViewer, drawer, sessionReducer}) => {
   const {isPortrait, width, height} = event;
   const {saved} = recordViewer;
   const {moduleId} = drawer;
-  return {isPortrait, width, height, saved, moduleId};
+  const {isSession} = sessionReducer;
+  return {isPortrait, width, height, saved, moduleId, isSession};
 };
 
 export default connect(mapStateToProps, null, null, {forwardRef: true})(Lister);
