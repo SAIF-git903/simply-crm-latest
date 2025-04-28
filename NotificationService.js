@@ -45,12 +45,8 @@ export async function onDisplayNotification(title, body, data) {
 // Foreground Notification
 export function handleForegroundNotifications() {
   messaging().onMessage(async (remoteMessage) => {
-    // const {title, body} = remoteMessage.notification;
-    onDisplayNotification(
-      remoteMessage?.data?.title,
-      remoteMessage.data?.body,
-      remoteMessage.data,
-    );
+    const {title, body} = remoteMessage.notification;
+    onDisplayNotification(title, body, remoteMessage.data);
   });
 }
 

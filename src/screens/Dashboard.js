@@ -25,11 +25,6 @@ export default function Dashboard() {
           .getInitialNotification()
           .then(async (remoteMessage) => {
             if (remoteMessage) {
-              console.log(
-                'Notification caused app to open from quit state:',
-                remoteMessage,
-              );
-
               if (remoteMessage?.data) {
                 if (remoteMessage?.data?.moduleName) {
                   if (remoteMessage?.data?.recordId) {

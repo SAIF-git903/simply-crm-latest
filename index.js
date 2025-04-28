@@ -5,13 +5,12 @@ import {name as appName} from './app.json';
 import Router from './src/router';
 import store from './src/store';
 import messaging from '@react-native-firebase/messaging';
+import {onDisplayNotification} from './NotificationService';
 
 LogBox.ignoreAllLogs();
 console.disableYellowBox = true;
 
 messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-  console.log('remoteMessage', remoteMessage);
-  // const {title, body} = remoteMessage.notification;
   onDisplayNotification(
     remoteMessage?.data?.title,
     remoteMessage?.data?.body,

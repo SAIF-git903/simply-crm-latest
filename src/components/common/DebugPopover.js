@@ -31,12 +31,15 @@ class DebugPopover extends Component {
     const loginDetails = JSON.parse(await AsyncStorage.getItem(KEEPUSERINFO));
     let request_Log =
       JSON.parse(await AsyncStorage.getItem('requestLog')) || [];
+
+    let oppositeArry = request_Log?.reverse();
     const {type} = await NetInfo.fetch();
     this.setState({
       user_name: loginDetails?.username,
       session_id: loginDetails?.session,
       networktype: type,
-      requestLog: request_Log,
+      // requestLog: request_Log,
+      requestLog: oppositeArry,
       visible: true,
     });
   };

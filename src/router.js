@@ -86,7 +86,6 @@ export default class Router extends Component {
     // Listen to foreground notification events
     this.foregroundListener = notifee.onForegroundEvent(
       async ({type, detail}) => {
-        console.log('detail', detail);
         switch (type) {
           case EventType.DISMISSED:
             await notifee.cancelNotification(detail.notification.id);
