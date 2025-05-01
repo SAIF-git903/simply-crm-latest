@@ -32,7 +32,41 @@ class DebugPopover extends Component {
     let request_Log =
       JSON.parse(await AsyncStorage.getItem('requestLog')) || [];
 
-    let oppositeArry = request_Log?.reverse();
+    let new_data = request_Log?.map((val) => {
+      let bodydata =
+        typeof val.bodyData === 'string'
+          ? JSON.parse(val.bodyData)
+          : val.bodyData;
+      let response =
+        typeof val.responseJson === 'string'
+          ? JSON.parse(val.responseJson)
+          : val.responseJson;
+
+      if (bodydata?.values) {
+        if ('user_password' in bodydata.values) {
+          bodydata.values.user_password = '*****';
+        }
+        if ('confirm_password' in bodydata.values) {
+          bodydata.values.confirm_password = '*****';
+        }
+      }
+      if (response?.result?.record) {
+        if ('user_password' in response.result.record) {
+          response.result.record.user_password = '*****';
+        }
+        if ('confirm_password' in response.result.record) {
+          response.result.record.confirm_password = '*****';
+        }
+      }
+
+      return {
+        ...val,
+        responseJson: JSON.stringify(response),
+        bodyData: JSON.stringify(bodydata),
+      };
+    });
+
+    let oppositeArry = new_data?.reverse();
     const {type} = await NetInfo.fetch();
     this.setState({
       user_name: loginDetails?.username,

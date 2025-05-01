@@ -412,20 +412,20 @@ async function doFetch(request_url, method, headers, body_data) {
     }
 
     // Parse response JSON safely
-    let parsedResponse =
-      typeof responseJson === 'string'
-        ? JSON.parse(responseJson)
-        : responseJson;
+    // let parsedResponse =
+    //   typeof responseJson === 'string'
+    //     ? JSON.parse(responseJson)
+    //     : responseJson;
 
     // Mask sensitive fields if they exist
-    if (parsedResponse?.result?.record) {
-      if ('user_password' in parsedResponse.result.record) {
-        parsedResponse.result.record.user_password = '*****';
-      }
-      if ('confirm_password' in parsedResponse.result.record) {
-        parsedResponse.result.record.confirm_password = '*****';
-      }
-    }
+    // if (parsedResponse?.result?.record) {
+    //   if ('user_password' in parsedResponse.result.record) {
+    //     parsedResponse.result.record.user_password = '*****';
+    //   }
+    //   if ('confirm_password' in parsedResponse.result.record) {
+    //     parsedResponse.result.record.confirm_password = '*****';
+    //   }
+    // }
 
     requestLog.push({
       operation: body_data?._operation,
