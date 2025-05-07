@@ -13,7 +13,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 import SplashScreen from 'react-native-splash-screen';
 import notifee, {EventType} from '@notifee/react-native';
-
+import Geolocation from 'react-native-geolocation-service';
 import DrawerContent from './components/drawerContent';
 // Screens
 import Login from './screens/Login';
@@ -35,6 +35,12 @@ import {
   requestUserPermission,
 } from '../NotificationService';
 import {refreshRecordData} from './actions';
+import DeviceInfo from 'react-native-device-info';
+import moment from 'moment';
+import store from './store';
+import {API_saveRecord} from './helper/api';
+import {getLocationAndSave} from './components/common/Common';
+import {requestLocationPermission} from './components/common/commonFunctions';
 library.add(far, fas, fab);
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -65,6 +71,7 @@ StatusBar.setTranslucent(true);
 StatusBar.setBarStyle('light-content', true);
 
 export default class Router extends Component {
+  intervalId = null;
   async componentDidMount() {
     // do stuff while splash screen is shown
     // After having done stuff (such as async tasks) hide the splash screen
@@ -72,6 +79,7 @@ export default class Router extends Component {
     setTimeout(() => {
       SplashScreen.hide();
     }, 1000);
+    requestLocationPermission();
     if (Platform.OS === 'ios') {
       requestUserPermission();
     } else {
@@ -130,6 +138,17 @@ export default class Router extends Component {
     // messaging().onNotificationOpenedApp((remoteMessage) => {
     //   console.log('Notification caused app to open:', remoteMessage);
     // });
+    // Start location tracking every 5 minutes
+    getLocationAndSave();
+    this.intervalId = setInterval(() => {
+      getLocationAndSave();
+    }, 300000); // 5 minutes = 300,000 ms
+  }
+
+  componentWillUnmount() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
   }
 
   componentWillUnmount() {

@@ -1,5 +1,11 @@
-import React, {useEffect, useMemo} from 'react';
-import {View, StyleSheet, StatusBar, SafeAreaView} from 'react-native';
+import React, {useEffect, useMemo, useRef} from 'react';
+import {
+  View,
+  StyleSheet,
+  StatusBar,
+  SafeAreaView,
+  AppState,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import UpdateWidget from '../components/dashboardUpdates';
 import Header from '../components/common/Header';
@@ -10,9 +16,37 @@ import messaging from '@react-native-firebase/messaging';
 import {navigationRef, reset} from '../NavigationService';
 import notifee from '@notifee/react-native';
 import {isSession, refreshRecordData} from '../actions';
+import {getLocationAndSave} from '../components/common/Common';
 
 export default function Dashboard() {
   const is_Session = useSelector((state) => state?.sessionReducer?.isSession);
+
+  const appState = useRef(AppState.currentState);
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', (nextAppState) => {
+      if (
+        appState.current.match(/inactive|background/) &&
+        nextAppState === 'active'
+      ) {
+        console.log('App has come to the foreground!');
+        getLocationAndSave();
+      } else if (nextAppState === 'background') {
+        console.log('App has gone to the background.');
+        // getLocationAndSave();
+      } else if (nextAppState === 'inactive') {
+        console.log('App is inactive (possibly being closed).');
+        getLocationAndSave();
+      }
+
+      appState.current = nextAppState;
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
   const MyComponent = () => {
     const navigation = useNavigation();
     const dispatch = useDispatch();

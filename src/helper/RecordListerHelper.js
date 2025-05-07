@@ -908,7 +908,7 @@ const getItem = (listerInstance, item, index, isDashboard, isRefRecord) => {
     if (!fields.includes(key) && count < loopCount) {
       // Push the label into the remainingLabels array
       remainingLabels.push(
-        typeof item[key] === 'object' ? item[key].label : item[key],
+        typeof item[key] === 'object' ? item[key]?.label : item[key],
       );
       count++;
     }

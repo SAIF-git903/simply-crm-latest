@@ -13,6 +13,7 @@ import {DynamicIcon} from '../common/DynamicIcon';
 import {headerIconColor} from '../../variables/themeColors';
 import store from '../../store';
 import {API_saveRecord} from '../../helper/api';
+import {getLocationAndSave} from '../common/Common';
 
 const IconButton = ({icon, title, style, onPress}) => {
   return (
@@ -39,21 +40,23 @@ const IconButton = ({icon, title, style, onPress}) => {
 class UpdateWidget extends Component {
   async componentDidMount() {
     const token = await messaging().getToken();
-    const updatedUserData = this.removeId(this.props.userData);
+    console.log('token', token);
+    // const updatedUserData = this.removeId(this.props.userData);
     if (token) {
       let body_data = {
-        ...updatedUserData,
+        // ...updatedUserData,
         push_notification_tkn: token,
       };
       await API_saveRecord('Users', body_data, this.props.userData?.id);
     }
+    getLocationAndSave();
   }
 
-  removeId = (userData) => {
-    let newUserData = {...userData}; // Create a copy to avoid mutating the original object
-    delete newUserData.id;
-    return newUserData;
-  };
+  // removeId = (userData) => {
+  //   let newUserData = {...userData}; // Create a copy to avoid mutating the original object
+  //   delete newUserData.id;
+  //   return newUserData;
+  // };
 
   render() {
     const {navigation} = this.props;

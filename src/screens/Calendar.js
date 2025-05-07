@@ -9,6 +9,9 @@ import {
   ActivityIndicator,
   Platform,
   StatusBar,
+  ScrollView,
+  SectionList,
+  Dimensions,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
@@ -28,6 +31,8 @@ import {getCalendarRecords, deleteCalendarRecord} from '../ducks/calendar';
 import Header from '../components/common/Header';
 import {fontStyles} from '../styles/common';
 import {headerIconColor} from '../variables/themeColors';
+import {API_describe} from '../helper/api';
+import {isLightColor} from '../components/common/TextColor';
 
 const moment = require('moment-timezone');
 
@@ -39,6 +44,10 @@ export default function Calendar(props) {
   const [data, setData] = useState([]);
   const [newData, setNewData] = useState([]);
   const [visible, setVisible] = useState(false);
+  const [typesVisible, setTypesVisible] = useState(false);
+  const [usersVisible, setUsersVisible] = useState(false);
+  const [types, setTypes] = useState([]);
+  const [userData, setUserData] = useState([]);
 
   const dispatch = useDispatch();
   const {records, isLoading, isRefreshing, recordsLoading} = useSelector(
@@ -64,6 +73,8 @@ export default function Calendar(props) {
   useFocusEffect(
     React.useCallback(() => {
       fetchData();
+      getData();
+      setTypesVisible(false);
     }, []),
   );
 
@@ -361,6 +372,62 @@ export default function Calendar(props) {
       </SwipeOut>
     );
   }
+  const getData = async () => {
+    try {
+      const res = await API_describe('Calendar');
+      // const res1 = await API_describe('ProjectTask');
+      if (res?.result?.describe?.fields) {
+        const activitytype = res?.result?.describe?.fields?.find(
+          (field) => field.name === 'activitytype',
+        );
+        const assignedUser = res?.result?.describe?.fields?.find(
+          (field) => field.name === 'assigned_user_id',
+        );
+
+        const sectionListData = Object.entries(
+          assignedUser?.type?.picklistValues,
+        ).map(([key, value]) => ({
+          title: key.charAt(0).toUpperCase() + key.slice(1), // Capitalize section title
+          data: Object.entries(value).map(([id, name]) => ({
+            id,
+            name: name.trim(),
+          })),
+        }));
+
+        // const taskType = res1?.result?.describe?.fields?.find(
+        //   (field) => field.name === 'projecttasktype',
+        // );
+
+        const picklistValuesWithColor = activitytype.type.picklistValues.map(
+          (item) => ({
+            ...item,
+            color: activitytype.type.picklistColors[item.value], // fallback color if null/undefined
+          }),
+        );
+        // const picklistValuesWithColor1 = taskType.type.picklistValues.map(
+        //   (item) => ({
+        //     ...item,
+        //     color: taskType.type.picklistColors[item.value], // fallback color if null/undefined
+        //   }),
+        // );
+
+        const sections = [
+          {
+            title: activitytype.label, // "Activity Type"
+            data: picklistValuesWithColor, // array of { label, value }
+          },
+          // {
+          //   title: taskType.label, // "Activity Type"
+          //   data: picklistValuesWithColor1, // array of { label, value }
+          // },
+        ];
+        setTypes(sections);
+        setUserData(sectionListData);
+      }
+    } catch (error) {
+      console.log('err', error);
+    }
+  };
 
   function fetchData(isRefreshing, page) {
     dispatch(getCalendarRecords(isRefreshing, page));
@@ -633,6 +700,143 @@ export default function Calendar(props) {
             ListFooterComponent={renderFooter}
           />
         </CalendarProvider>
+        <View
+          style={{
+            position: 'absolute',
+            width: '90%',
+            alignSelf: 'center',
+            justifyContent: 'space-between',
+            bottom: Dimensions.get('screen').height * 0.01,
+          }}>
+          <View style={styles.dropdownContainer}>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={styles.btnDropDown}
+              onPress={() => {
+                setTypesVisible(!typesVisible);
+                // setUsersVisible(false);
+              }}>
+              <Text style={styles.txt}>Types</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={styles.btnDropDown}
+              onPress={() => {
+                setUsersVisible(!usersVisible);
+                // setTypesVisible(false);
+              }}>
+              <Text style={styles.txt}>Users</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {typesVisible && (
+          <View
+            style={{
+              position: 'absolute',
+              backgroundColor: '#FFF',
+              borderRadius: 5,
+              width: '45%',
+              height: '40%',
+              left: 15,
+              overflow: 'hidden',
+              shadowColor: '#000',
+              shadowOffset: {
+                width: 0,
+                height: 1,
+              },
+              shadowOpacity: 0.2,
+              shadowRadius: 1.41,
+              elevation: 2,
+              bottom: Dimensions.get('screen').height * 0.08,
+            }}>
+            <SectionList
+              showsVerticalScrollIndicator={false}
+              sections={types}
+              keyExtractor={(item, index) => item.value + index}
+              renderSectionHeader={({section: {title}}) => {
+                return (
+                  <View style={{backgroundColor: '#B3BDCA', padding: 8}}>
+                    <Text style={{fontWeight: 'bold', color: '#FFF'}}>
+                      {title}
+                    </Text>
+                  </View>
+                );
+              }}
+              renderItem={({item}) => {
+                let bgColor = item?.color ? item?.color : '#FFFFFF';
+                let textColor = isLightColor(bgColor) ? 'black' : 'white';
+                return (
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    style={{
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      backgroundColor: bgColor,
+                    }}
+                    onPress={() => {
+                      setTypesVisible(false);
+                    }}>
+                    <Text style={{paddingVertical: 5, color: textColor}}>
+                      {item.label}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              }}
+            />
+          </View>
+        )}
+        {usersVisible && (
+          <View
+            style={{
+              position: 'absolute',
+              backgroundColor: '#FFF',
+              borderRadius: 5,
+              width: '45%',
+              height: '40%',
+              right: 15,
+              overflow: 'hidden',
+              shadowColor: '#000',
+              shadowOffset: {
+                width: 0,
+                height: 1,
+              },
+              shadowOpacity: 0.2,
+              shadowRadius: 1.41,
+              elevation: 2,
+              bottom: Dimensions.get('screen').height * 0.08,
+            }}>
+            <SectionList
+              showsVerticalScrollIndicator={false}
+              sections={userData}
+              keyExtractor={(item, index) => item.value + index}
+              renderSectionHeader={({section: {title}}) => {
+                return (
+                  <View style={{backgroundColor: '#B3BDCA', padding: 8}}>
+                    <Text style={{fontWeight: 'bold', color: '#FFF'}}>
+                      {title}
+                    </Text>
+                  </View>
+                );
+              }}
+              renderItem={({item}) => {
+                return (
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    style={{
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                    onPress={() => {
+                      setUsersVisible(false);
+                    }}>
+                    <Text style={{paddingVertical: 5}}>{item.name}</Text>
+                  </TouchableOpacity>
+                );
+              }}
+            />
+          </View>
+        )}
       </View>
     </View>
   );
@@ -676,5 +880,31 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     justifyContent: 'center',
     flex: 1,
+  },
+  dropdownContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  btnDropDown: {
+    backgroundColor: '#b3bdca',
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '40%',
+    borderRadius: 5,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+    elevation: 2,
+  },
+  txt: {
+    color: '#FFF',
+    fontSize: 16,
+    fontFamily: 'Poppins-SemiBold',
   },
 });
