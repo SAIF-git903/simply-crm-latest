@@ -8,6 +8,8 @@ import {
   FlatList,
   ActivityIndicator,
   Dimensions,
+  Pressable,
+  StyleSheet,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {commonStyles, fontStyles} from '../../../styles/common';
@@ -215,121 +217,99 @@ class RefType extends Component {
           transparent={true}
           visible={this.state.visible}
           onRequestClose={() => this.setState({visible: false})}>
-          <View
-            activeOpacity={1}
-            style={{
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-              flex: 1,
-              justifyContent: 'flex-end',
-            }}>
+          <Pressable
+            style={styles.backdrop}
+            onPress={() => {
+              this.setState({visible: false});
+            }}
+          />
+
+          <View style={styles.sheetContainer}>
             <TouchableOpacity
-              style={{flex: 0.1}}
+              style={{
+                paddingBottom: 16,
+                borderBottomWidth: 0.5,
+                justifyContent: 'center',
+                borderBottomColor: '#d3d2d8',
+              }}
               onPress={() => {
                 this.setState({visible: false});
               }}>
-              <Text></Text>
+              <Text
+                style={{
+                  fontFamily: 'Poppins-SemiBold',
+                  fontSize: 16,
+                  color: headerIconColor,
+                }}>
+                Cancel
+              </Text>
             </TouchableOpacity>
+
             <View
               style={{
-                overflow: 'hidden',
-                // backgroundColor: '#fff',
-                backgroundColor: generalBgColor,
-                width: '100%',
-                flex: 0.9,
-                alignSelf: 'center',
-                borderTopLeftRadius: 30,
-                borderTopRightRadius: 30,
+                marginTop: 12,
+                marginBottom: 16,
+                backgroundColor: '#FFF',
+                alignItems: 'center',
+                flexDirection: 'row',
+                borderWidth: 1,
+                borderRadius: 5,
+                borderColor: '#dfdfdf',
               }}>
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  flexDirection: 'row',
-                  paddingHorizontal: 20,
-                  marginTop: 20,
-                  marginBottom: 10,
-                  paddingBottom: 15,
-                  borderBottomWidth: 0.5,
-                  borderBottomColor: '#d3d2d8',
-                }}>
+              {this.state.searchText ? (
+                <IconButton
+                  icon={'search'}
+                  color={'#707070'}
+                  size={25}
+                  style={{marginRight: 5}}
+                  onPress={() => this.onSearchText()}
+                />
+              ) : (
+                <IconButton
+                  icon={'arrow-back-circle-sharp'}
+                  color={'#007aff'}
+                  size={25}
+                  onPress={() => this.onSearchText()}
+                />
+              )}
+              <TextInput
+                autoGrow={true}
+                autoCorrect={false}
+                spellCheck={false}
+                underlineColorAndroid={'transparent'}
+                style={[
+                  fontStyles.searchBoxLabel,
+                  {
+                    paddingLeft: 10,
+                    width: '80%',
+                  },
+                ]}
+                placeholder="Search"
+                placeholderTextColor="#707070"
+                ref="searchbox"
+                defaultValue={this.state.searchText}
+                autoCapitalize="none"
+                returnKeyType="done"
+                onChangeText={(text) => {
+                  this.setState({searchText: text});
+                }}
+              />
+              {this.state.searchText && (
                 <TouchableOpacity
                   onPress={() => {
-                    this.setState({visible: false});
+                    this.setState({
+                      searchText: '',
+                      isloading: true,
+                    });
+                    setTimeout(() => {
+                      this.getDetails();
+                    }, 1000);
                   }}>
-                  <Text
-                    style={{
-                      fontFamily: 'Poppins-SemiBold',
-                      fontSize: 16,
-                      color: headerIconColor,
-                    }}>
-                    Cancel
-                  </Text>
+                  <Ionicons name="close-circle" size={25} color={'#707070'} />
                 </TouchableOpacity>
-              </View>
-              <View
-                style={{
-                  marginHorizontal: 15,
-                  backgroundColor: '#FFF',
-                  alignItems: 'center',
-                  flexDirection: 'row',
-                  // justifyContent: 'space-between',
-                  borderWidth: 1,
-                  borderRadius: 5,
-                  borderColor: '#dfdfdf',
-                }}>
-                {this.state.searchText ? (
-                  <IconButton
-                    icon={'search'}
-                    color={'#707070'}
-                    size={25}
-                    onPress={() => this.onSearchText()}
-                  />
-                ) : (
-                  <IconButton
-                    icon={'arrow-back-circle-sharp'}
-                    color={'#007aff'}
-                    size={25}
-                    onPress={() => this.onSearchText()}
-                  />
-                )}
-                <TextInput
-                  autoGrow={true}
-                  autoCorrect={false}
-                  spellCheck={false}
-                  underlineColorAndroid={'transparent'}
-                  style={[
-                    fontStyles.searchBoxLabel,
-                    {
-                      paddingLeft: 10,
-                      width: '80%',
-                    },
-                  ]}
-                  placeholder="Search"
-                  placeholderTextColor="#707070"
-                  ref="searchbox"
-                  defaultValue={this.state.searchText}
-                  autoCapitalize="none"
-                  returnKeyType="done"
-                  onChangeText={(text) => {
-                    this.setState({searchText: text});
-                  }}
-                />
-                {this.state.searchText && (
-                  <TouchableOpacity
-                    onPress={() => {
-                      this.setState({
-                        searchText: '',
-                        isloading: true,
-                      });
-                      setTimeout(() => {
-                        this.getDetails();
-                      }, 1000);
-                    }}>
-                    <Ionicons name="close-circle" size={25} color={'#707070'} />
-                  </TouchableOpacity>
-                )}
-              </View>
-
+              )}
+            </View>
+            <View style={{height: Dimensions.get('screen').height * 0.71}}>
               {this.state.isloading ? (
                 <View style={{paddingVertical: 20}}>
                   <ActivityIndicator size="small" color={headerIconColor} />
@@ -338,8 +318,7 @@ class RefType extends Component {
                 <FlatList
                   contentContainerStyle={{
                     flexGrow: 1,
-                    marginHorizontal: 15,
-                    marginTop: 10,
+                    marginHorizontal: 10,
                   }}
                   showsVerticalScrollIndicator={false}
                   data={this.state.recordData}
@@ -504,3 +483,24 @@ class RefType extends Component {
 }
 
 export default RefType;
+
+const styles = StyleSheet.create({
+  backdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+  },
+  sheetContainer: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    backgroundColor: generalBgColor,
+    padding: 16,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: -3},
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 10,
+  },
+});

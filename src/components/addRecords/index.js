@@ -1,5 +1,11 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  Dimensions,
+} from 'react-native';
 import {connect} from 'react-redux';
 import Header from './header';
 import Viewer from './viewer';
@@ -116,7 +122,7 @@ class AddRecords extends Component {
         <View
           style={{
             width: '100%',
-            height: '100%',
+            height: Dimensions.get('screen').height * 0.85,
           }}>
           <Viewer
             recordId={this.state.recordId}

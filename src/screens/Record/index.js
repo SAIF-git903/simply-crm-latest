@@ -607,7 +607,7 @@ export default function RecordDetails({route}) {
         setloading(true);
 
         let trimmedUrl = await get_Url();
-        let res = await API_fetchButtons(trimmedUrl, modulename);
+        let res = await API_fetchButtons(trimmedUrl, modulename, recordId);
         if (res?.result?.buttons !== null) {
           res?.result?.buttons.map((val) => {
             // if (val.location === 'top') {

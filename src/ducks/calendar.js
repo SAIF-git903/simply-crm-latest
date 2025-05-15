@@ -73,128 +73,139 @@ export default function reducer(state = initialState, action = {}) {
   }
 }
 
-export const getCalendarRecords = (isRefreshing, page) => async (dispatch) => {
-  const getCalendarRecordsFulfilled = (records) => {
-    return {
-      type: GET_CALENDAR_RECORDS_FULFILLED,
-      payload: records,
+export const getCalendarRecords =
+  (isRefreshing, page, searchValues) => async (dispatch) => {
+    const getCalendarRecordsFulfilled = (records) => {
+      return {
+        type: GET_CALENDAR_RECORDS_FULFILLED,
+        payload: records,
+      };
     };
-  };
 
-  const getCalendarRecordsRejected = () => {
-    return {
-      type: GET_CALENDAR_RECORDS_REJECTED,
+    const getCalendarRecordsRejected = () => {
+      return {
+        type: GET_CALENDAR_RECORDS_REJECTED,
+      };
     };
-  };
 
-  dispatch({
-    type: GET_CALENDAR_RECORDS,
-    payload: isRefreshing,
-  });
-
-  try {
-    const response = await API_listModuleRecords('Calendar', page);
-    const calendarRecords = response.result?.records || [];
-
-    let eventIds = [];
-    let taskIds = [];
-
-    for (const record of calendarRecords) {
-      let ids = record.id.split('x');
-      if (record.type === 'Event') {
-        eventIds.push(ids[1]);
-      } else {
-        taskIds.push(ids[1]);
-      }
-    }
-
-    eventIds = eventIds.map((x) => `18x${x}`);
-    taskIds = taskIds.map((x) => `9x${x}`);
-
-    let eventsResponse;
-    let tasksResponse;
-
-    if (eventIds?.length)
-      eventsResponse = await API_fetchRecordsWithGrouping('Events', eventIds);
-    if (taskIds?.length)
-      tasksResponse = await API_fetchRecordsWithGrouping('Calendar', taskIds);
-
-    const success = eventsResponse || tasksResponse;
-
-    // if (!success) {
-    //   dispatch(getCalendarRecordsRejected());
-    //   return;
-    // }
-
-    const eventRecords = eventsResponse?.result.records?.map((x) => ({
-      ...x,
-      type: 'Event',
-    }));
-
-    const taskRecords = tasksResponse?.result.records?.map((x) => ({
-      ...x,
-      type: 'Task',
-    }));
-
-    let records = [
-      ...(Array.isArray(eventRecords) ? eventRecords : []),
-      ...(Array.isArray(taskRecords) ? taskRecords : []),
-    ];
-    let mappedRecords = [];
-
-    // Fields that we filter out from the record
-    const requiredFields = [
-      'date_start',
-      'time_start',
-      'time_end',
-      'taskstatus',
-      'type',
-      'id',
-    ];
-
-    for (let record of records) {
-      const taskDetailsFields = record.blocks[0].fields;
-      taskDetailsFields.push({name: 'type', value: record.type});
-      taskDetailsFields.push({name: 'id', value: record.id});
-
-      mappedRecords.push(
-        taskDetailsFields.filter((x) => requiredFields.includes(x.name)),
-      );
-    }
-
-    mappedRecords = mappedRecords.map((x) => {
-      let item = {};
-      for (const field of x) {
-        item[field.name] = field.value;
-      }
-      return item;
+    dispatch({
+      type: GET_CALENDAR_RECORDS,
+      payload: isRefreshing,
     });
-    matchAndAddSubject(calendarRecords, mappedRecords);
 
-    function matchAndAddSubject(calendarRecords, mappedRecords) {
-      // Create a map to quickly access the subject from calendarRecords by id
-      const calendarMap = new Map();
+    try {
+      const response = await API_listModuleRecords(
+        'Calendar',
+        page,
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        searchValues,
+      );
+      const calendarRecords = response.result?.records || [];
 
-      calendarRecords.forEach((record) => {
-        const id = record.id.split('x')[1]; // Extract the part after '9x'
-        calendarMap.set(id, record.subject);
-      });
+      let eventIds = [];
+      let taskIds = [];
 
-      // Add subject to mappedRecords if the id matches
-      mappedRecords.forEach((record) => {
-        const id = record.id.split('x')[1]; // Extract the part after '18x'
-        if (calendarMap.has(id)) {
-          record.subject = calendarMap.get(id);
+      for (const record of calendarRecords) {
+        let ids = record.id.split('x');
+        if (record.type === 'Event') {
+          eventIds.push(ids[1]);
+        } else {
+          taskIds.push(ids[1]);
         }
-      });
-    }
+      }
 
-    dispatch(getCalendarRecordsFulfilled(mappedRecords));
-  } catch (e) {
-    console.log(e);
-    dispatch(getCalendarRecordsRejected());
-  }
-};
+      eventIds = eventIds.map((x) => `18x${x}`);
+      taskIds = taskIds.map((x) => `9x${x}`);
+
+      let eventsResponse;
+      let tasksResponse;
+
+      if (eventIds?.length)
+        eventsResponse = await API_fetchRecordsWithGrouping('Events', eventIds);
+      if (taskIds?.length)
+        tasksResponse = await API_fetchRecordsWithGrouping('Calendar', taskIds);
+
+      const success = eventsResponse || tasksResponse;
+
+      // if (!success) {
+      //   dispatch(getCalendarRecordsRejected());
+      //   return;
+      // }
+
+      const eventRecords = eventsResponse?.result.records?.map((x) => ({
+        ...x,
+        type: 'Event',
+      }));
+
+      const taskRecords = tasksResponse?.result.records?.map((x) => ({
+        ...x,
+        type: 'Task',
+      }));
+
+      let records = [
+        ...(Array.isArray(eventRecords) ? eventRecords : []),
+        ...(Array.isArray(taskRecords) ? taskRecords : []),
+      ];
+      let mappedRecords = [];
+
+      // Fields that we filter out from the record
+      const requiredFields = [
+        'date_start',
+        'time_start',
+        'time_end',
+        'taskstatus',
+        'type',
+        'id',
+      ];
+
+      for (let record of records) {
+        const taskDetailsFields = record.blocks[0].fields;
+        taskDetailsFields.push({name: 'type', value: record.type});
+        taskDetailsFields.push({name: 'id', value: record.id});
+
+        mappedRecords.push(
+          taskDetailsFields.filter((x) => requiredFields.includes(x.name)),
+        );
+      }
+
+      mappedRecords = mappedRecords.map((x) => {
+        let item = {};
+        for (const field of x) {
+          item[field.name] = field.value;
+        }
+        return item;
+      });
+      matchAndAddSubject(calendarRecords, mappedRecords);
+
+      function matchAndAddSubject(calendarRecords, mappedRecords) {
+        // Create a map to quickly access the subject from calendarRecords by id
+        const calendarMap = new Map();
+
+        calendarRecords.forEach((record) => {
+          const id = record.id.split('x')[1]; // Extract the part after '9x'
+          calendarMap.set(id, record.subject);
+        });
+
+        // Add subject to mappedRecords if the id matches
+        mappedRecords.forEach((record) => {
+          const id = record.id.split('x')[1]; // Extract the part after '18x'
+          if (calendarMap.has(id)) {
+            record.subject = calendarMap.get(id);
+          }
+        });
+      }
+
+      dispatch(getCalendarRecordsFulfilled(mappedRecords));
+    } catch (e) {
+      console.log(e);
+      dispatch(getCalendarRecordsRejected());
+    }
+  };
 
 export const deleteCalendarRecord = (recordId) => async (dispatch) => {
   const deleteCalendarRecordFulfilled = (recordId) => {

@@ -67,3 +67,22 @@ export const getLocationAndSave = async () => {
     },
   );
 };
+
+export function getCommaSeparatedNames(items) {
+  const names = items?.map((item) => item.name);
+  return names.join(',');
+}
+
+// Common function to filter sectioned data based on search text
+export const filterSectionedData = (data, searchText) => {
+  if (!searchText.trim()) return data; // Return original data if search is empty
+
+  return data
+    .map((section) => {
+      const filteredData = section.data.filter((item) =>
+        item.name.toLowerCase().includes(searchText.toLowerCase()),
+      );
+      return filteredData.length > 0 ? {...section, data: filteredData} : null;
+    })
+    .filter(Boolean); // Remove null sections
+};

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -17,6 +17,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Feather from 'react-native-vector-icons/Feather';
 import {
   WeekCalendar,
   CalendarProvider,
@@ -33,10 +34,18 @@ import {fontStyles} from '../styles/common';
 import {headerIconColor} from '../variables/themeColors';
 import {API_describe} from '../helper/api';
 import {isLightColor} from '../components/common/TextColor';
+import store from '../store';
+import DualDropdown from '../components/common/DualDropdown';
+import TypeList from '../components/common/TypeList';
+import UserList from '../components/common/UserList';
+import {getCommaSeparatedNames} from '../components/common/Common';
 
 const moment = require('moment-timezone');
 
 export default function Calendar(props) {
+  const {UserReducer} = store.getState();
+  const userID = UserReducer?.userData?.id;
+
   let moduleTitle = props?.route?.params?.moduleLable;
   const [currentDate, setCurrentDate] = useState(new moment());
   const [showCalendar, setShowCalendar] = useState(false);
@@ -44,15 +53,20 @@ export default function Calendar(props) {
   const [data, setData] = useState([]);
   const [newData, setNewData] = useState([]);
   const [visible, setVisible] = useState(false);
+  const [selectedUsers, setSelectedUsers] = useState([]);
   const [typesVisible, setTypesVisible] = useState(false);
   const [usersVisible, setUsersVisible] = useState(false);
   const [types, setTypes] = useState([]);
   const [userData, setUserData] = useState([]);
+  const [assignedUser, setAssignUsers] = useState();
+  const [activitytype, setActivitytype] = useState();
 
   const dispatch = useDispatch();
   const {records, isLoading, isRefreshing, recordsLoading} = useSelector(
     (state) => state.calendar,
   );
+
+  // console.log('records', records);
 
   const navigation = useNavigation();
 
@@ -72,19 +86,74 @@ export default function Calendar(props) {
 
   useFocusEffect(
     React.useCallback(() => {
-      fetchData();
+      // fetchData();
       getData();
       setTypesVisible(false);
+      setUsersVisible(false);
     }, []),
   );
 
   useEffect(() => {
-    if (records.length >= 0) {
-      if (data != null && data != undefined) {
-        setData([...data, ...records]);
-      } else {
-        setData(records);
+    if (userData && userID) {
+      const allUsersAndGroups = userData.flatMap((section) => section.data);
+      const currentUser = allUsersAndGroups.find((val) => val.id === userID);
+      if (currentUser) {
+        const result = getCommaSeparatedNames([currentUser]);
+        setAssignUsers(result);
+        setSelectedUsers((prev) => {
+          const alreadySelected = prev.some(
+            (user) => user.id === currentUser.id,
+          );
+          if (!alreadySelected) {
+            return [...prev, currentUser];
+          }
+          return prev;
+        });
       }
+    }
+  }, [userData, userID]);
+
+  const searchValues = useMemo(() => {
+    const values = [];
+
+    if (activitytype) {
+      values.push(['activitytype', 'c', activitytype]);
+    }
+
+    if (assignedUser) {
+      values.push(['assigned_user_id', 'c', assignedUser]);
+    }
+
+    return values;
+  }, [activitytype, assignedUser]);
+
+  useEffect(() => {
+    const shouldApplyFilter = activitytype || assignedUser;
+
+    const timeout = setTimeout(() => {
+      fetchData(true, 1, shouldApplyFilter ? searchValues : undefined);
+    }, 500); // reduced delay
+
+    return () => clearTimeout(timeout);
+  }, [searchValues]);
+
+  // useEffect(() => {
+  //   console.log('records', records);
+  //   if (records.length > 0) {
+  //     if (data != null && data != undefined) {
+  //       setData([...data, ...records]);
+  //     } else {
+  //       setData(records);
+  //     }
+  //   } else {
+  //     setData([]);
+  //   }
+  // }, [records]);
+  useEffect(() => {
+    if (records.length > 0) {
+      setData(records);
+    } else {
+      setData([]);
     }
   }, [records]);
 
@@ -392,6 +461,7 @@ export default function Calendar(props) {
             id,
             name: name.trim(),
           })),
+          field: assignedUser?.name,
         }));
 
         // const taskType = res1?.result?.describe?.fields?.find(
@@ -415,6 +485,7 @@ export default function Calendar(props) {
           {
             title: activitytype.label, // "Activity Type"
             data: picklistValuesWithColor, // array of { label, value }
+            field: activitytype.name,
           },
           // {
           //   title: taskType.label, // "Activity Type"
@@ -429,8 +500,8 @@ export default function Calendar(props) {
     }
   };
 
-  function fetchData(isRefreshing, page) {
-    dispatch(getCalendarRecords(isRefreshing, page));
+  function fetchData(isRefreshing, page, searchValues) {
+    dispatch(getCalendarRecords(isRefreshing, page, searchValues));
   }
 
   // function mapItemsToAgendaList(items) {
@@ -700,142 +771,51 @@ export default function Calendar(props) {
             ListFooterComponent={renderFooter}
           />
         </CalendarProvider>
-        <View
-          style={{
-            position: 'absolute',
-            width: '90%',
-            alignSelf: 'center',
-            justifyContent: 'space-between',
-            bottom: Dimensions.get('screen').height * 0.01,
-          }}>
-          <View style={styles.dropdownContainer}>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={styles.btnDropDown}
-              onPress={() => {
-                setTypesVisible(!typesVisible);
-                // setUsersVisible(false);
-              }}>
-              <Text style={styles.txt}>Types</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={styles.btnDropDown}
-              onPress={() => {
-                setUsersVisible(!usersVisible);
-                // setTypesVisible(false);
-              }}>
-              <Text style={styles.txt}>Users</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+        <DualDropdown
+          onTypesPress={() => {
+            setTypesVisible(!typesVisible);
+            setUsersVisible(false);
+          }}
+          onUsersPress={() => {
+            setUsersVisible(!usersVisible);
+            setTypesVisible(false);
+          }}
+        />
 
         {typesVisible && (
-          <View
-            style={{
-              position: 'absolute',
-              backgroundColor: '#FFF',
-              borderRadius: 5,
-              width: '45%',
-              height: '40%',
-              left: 15,
-              overflow: 'hidden',
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 0,
-                height: 1,
-              },
-              shadowOpacity: 0.2,
-              shadowRadius: 1.41,
-              elevation: 2,
-              bottom: Dimensions.get('screen').height * 0.08,
-            }}>
-            <SectionList
-              showsVerticalScrollIndicator={false}
-              sections={types}
-              keyExtractor={(item, index) => item.value + index}
-              renderSectionHeader={({section: {title}}) => {
-                return (
-                  <View style={{backgroundColor: '#B3BDCA', padding: 8}}>
-                    <Text style={{fontWeight: 'bold', color: '#FFF'}}>
-                      {title}
-                    </Text>
-                  </View>
-                );
-              }}
-              renderItem={({item}) => {
-                let bgColor = item?.color ? item?.color : '#FFFFFF';
-                let textColor = isLightColor(bgColor) ? 'black' : 'white';
-                return (
-                  <TouchableOpacity
-                    activeOpacity={0.7}
-                    style={{
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      backgroundColor: bgColor,
-                    }}
-                    onPress={() => {
-                      setTypesVisible(false);
-                    }}>
-                    <Text style={{paddingVertical: 5, color: textColor}}>
-                      {item.label}
-                    </Text>
-                  </TouchableOpacity>
-                );
-              }}
-            />
-          </View>
+          <TypeList
+            data={types}
+            position="left"
+            activitytype={activitytype}
+            onClose={() => {
+              setTypesVisible(false);
+            }}
+            onItemPress={(item) => {
+              setActivitytype(item?.value);
+              setTypesVisible(false);
+            }}
+          />
         )}
         {usersVisible && (
-          <View
-            style={{
-              position: 'absolute',
-              backgroundColor: '#FFF',
-              borderRadius: 5,
-              width: '45%',
-              height: '40%',
-              right: 15,
-              overflow: 'hidden',
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 0,
-                height: 1,
-              },
-              shadowOpacity: 0.2,
-              shadowRadius: 1.41,
-              elevation: 2,
-              bottom: Dimensions.get('screen').height * 0.08,
-            }}>
-            <SectionList
-              showsVerticalScrollIndicator={false}
-              sections={userData}
-              keyExtractor={(item, index) => item.value + index}
-              renderSectionHeader={({section: {title}}) => {
-                return (
-                  <View style={{backgroundColor: '#B3BDCA', padding: 8}}>
-                    <Text style={{fontWeight: 'bold', color: '#FFF'}}>
-                      {title}
-                    </Text>
-                  </View>
-                );
-              }}
-              renderItem={({item}) => {
-                return (
-                  <TouchableOpacity
-                    activeOpacity={0.7}
-                    style={{
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                    onPress={() => {
-                      setUsersVisible(false);
-                    }}>
-                    <Text style={{paddingVertical: 5}}>{item.name}</Text>
-                  </TouchableOpacity>
-                );
-              }}
-            />
-          </View>
+          <UserList
+            data={userData}
+            selectedIds={selectedUsers}
+            setSelectedIds={setSelectedUsers}
+            onDonePress={(items) => {
+              const result = getCommaSeparatedNames(items);
+              setAssignUsers(result);
+              setUsersVisible(false);
+            }}
+            onClosePress={() => {
+              setUsersVisible(false);
+              setAssignUsers();
+              // fetchData(true);
+            }}
+            position="right"
+            headerIconColor="#1E90FF"
+            usersVisible={usersVisible}
+            setUsersVisible={setUsersVisible}
+          />
         )}
       </View>
     </View>
@@ -881,27 +861,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
   },
-  dropdownContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  btnDropDown: {
-    backgroundColor: '#b3bdca',
-    height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '40%',
-    borderRadius: 5,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
-    elevation: 2,
-  },
+
   txt: {
     color: '#FFF',
     fontSize: 16,

@@ -20,6 +20,7 @@ import {fontStyles, commonStyles} from '../styles/common';
 import moment from 'moment';
 import Signature from '../components/addRecords/inputComponents/SignatureType';
 import RefType from '../components/addRecords/inputComponents/refType';
+import OptionType from '../components/addRecords/inputComponents/OptionType';
 
 export const getRecordStructureHelper = async (currentInstance) => {
   const calanderType = currentInstance.props.subModule;
@@ -158,7 +159,13 @@ export const getRecordStructureHelper = async (currentInstance) => {
                 ComponentName = Signature;
                 break;
               case 'picklist':
-                ComponentName = PickerForm;
+                // ComponentName = PickerForm;
+                ComponentName = OptionType;
+                // if (timeSheetModalReducer?.is_TimeSheetModal) {
+                //   ComponentName = OptionType;
+                // } else {
+                //   ComponentName = PickerForm;
+                // }
                 break;
               case 'phone':
               case 'currency':

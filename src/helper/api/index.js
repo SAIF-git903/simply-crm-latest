@@ -70,6 +70,7 @@ async function makeCall(body, request_url, headers, method = 'POST') {
     devicename: body.devicename,
     url: body.url,
     networktype: body.networktype,
+    searchValues: body.searchValues,
   };
   console.log('body_data', body_data);
   //clear undefined
@@ -557,6 +558,7 @@ export function API_listModuleRecords(
   filterid,
   orderBy,
   sortOrder,
+  searchValues,
 ) {
   if (module === 'Users') {
     return makeCall({
@@ -581,6 +583,7 @@ export function API_listModuleRecords(
       filterid,
       orderBy,
       sortOrder,
+      searchValues,
     });
   }
 }
@@ -708,11 +711,12 @@ export async function API_fetchFilters(trimmedUrl, module) {
   );
 }
 
-export async function API_fetchButtons(trimmedUrl, module) {
+export async function API_fetchButtons(trimmedUrl, module, record) {
   return makeCall(
     {
       _operation: 'fetchButtons',
       module,
+      record,
     },
     `${trimmedUrl}/modules/Mobile/api.php`,
   );
