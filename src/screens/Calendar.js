@@ -44,7 +44,8 @@ const moment = require('moment-timezone');
 
 export default function Calendar(props) {
   const {UserReducer} = store.getState();
-  const userID = UserReducer?.userData?.id;
+  const user_ID = UserReducer?.userData?.id;
+  const username = UserReducer?.userData?.user_name;
 
   let moduleTitle = props?.route?.params?.moduleLable;
   const [currentDate, setCurrentDate] = useState(new moment());
@@ -58,7 +59,8 @@ export default function Calendar(props) {
   const [usersVisible, setUsersVisible] = useState(false);
   const [types, setTypes] = useState([]);
   const [userData, setUserData] = useState([]);
-  const [assignedUser, setAssignUsers] = useState();
+  const [assignedUser, setAssignUsers] = useState(username);
+  const [userID, setuserID] = useState(user_ID);
   const [activitytype, setActivitytype] = useState();
 
   const dispatch = useDispatch();
@@ -92,26 +94,6 @@ export default function Calendar(props) {
       setUsersVisible(false);
     }, []),
   );
-
-  useEffect(() => {
-    if (userData && userID) {
-      const allUsersAndGroups = userData.flatMap((section) => section.data);
-      const currentUser = allUsersAndGroups.find((val) => val.id === userID);
-      if (currentUser) {
-        const result = getCommaSeparatedNames([currentUser]);
-        setAssignUsers(result);
-        setSelectedUsers((prev) => {
-          const alreadySelected = prev.some(
-            (user) => user.id === currentUser.id,
-          );
-          if (!alreadySelected) {
-            return [...prev, currentUser];
-          }
-          return prev;
-        });
-      }
-    }
-  }, [userData, userID]);
 
   const searchValues = useMemo(() => {
     const values = [];
@@ -798,6 +780,8 @@ export default function Calendar(props) {
         )}
         {usersVisible && (
           <UserList
+            userID={userID}
+            setuserID={setuserID}
             data={userData}
             selectedIds={selectedUsers}
             setSelectedIds={setSelectedUsers}
@@ -808,7 +792,7 @@ export default function Calendar(props) {
             }}
             onClosePress={() => {
               setUsersVisible(false);
-              setAssignUsers();
+              // setAssignUsers();
               // fetchData(true);
             }}
             position="right"

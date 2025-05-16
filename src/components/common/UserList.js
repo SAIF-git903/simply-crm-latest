@@ -15,11 +15,14 @@ import {filterSectionedData} from './Common';
 import {
   DRAWER_BORDER_COLOR,
   generalBgColor,
+  textColor,
   textColor2,
 } from '../../variables/themeColors';
 import {bottomStyles} from './bottomSheetContainer';
 
 const UserList = ({
+  userID,
+  setuserID,
   visible,
   onClosePress,
   data,
@@ -30,6 +33,23 @@ const UserList = ({
 }) => {
   const [searchText, setSearchText] = useState('');
   const [filterData, setFilterData] = useState(data);
+  useEffect(() => {
+    if (userID) {
+      // Flatten the sectioned data
+      const allItems = data.flatMap((section) => section.data);
+      const matchedUser = allItems.find((item) => item.id === userID);
+
+      if (matchedUser) {
+        setSelectedIds((prev) => {
+          const alreadySelected = prev.some((u) => u.id === matchedUser.id);
+          if (!alreadySelected) {
+            return [...prev, matchedUser];
+          }
+          return prev;
+        });
+      }
+    }
+  }, []);
 
   // Toggle selection logic
   const toggleSelection = (item) => {
@@ -41,6 +61,7 @@ const UserList = ({
       setSelectedIds((prev) =>
         prev.filter((selected) => selected.id !== item.id),
       );
+      setuserID([]);
     } else {
       setSelectedIds((prev) => [...prev, item]);
     }
@@ -143,6 +164,7 @@ const UserList = ({
             bottomStyles.sectionListContainer,
             {
               borderWidth: 0.5,
+              height: Dimensions.get('screen').height * 0.61,
             },
           ]}
           keyExtractor={(item, index) => item.id + index} // Use item.id for uniqueness
@@ -188,6 +210,32 @@ const UserList = ({
             </View>
           }
         />
+        <View
+          style={{
+            height: Dimensions.get('screen').height * 0.1,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <TouchableOpacity
+            onPress={() => {
+              setSelectedIds([]);
+              setuserID([]);
+            }}
+            activeOpacity={0.7}
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                fontFamily: 'Poppins-SemiBold',
+                color: textColor,
+                fontSize: 16,
+              }}>
+              Clear all
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </Modal>
   );

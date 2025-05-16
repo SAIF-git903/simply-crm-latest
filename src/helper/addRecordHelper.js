@@ -21,6 +21,7 @@ import moment from 'moment';
 import Signature from '../components/addRecords/inputComponents/SignatureType';
 import RefType from '../components/addRecords/inputComponents/refType';
 import OptionType from '../components/addRecords/inputComponents/OptionType';
+import mutiTypeList from '../components/addRecords/inputComponents/mutiTypeList';
 
 export const getRecordStructureHelper = async (currentInstance) => {
   const calanderType = currentInstance.props.subModule;
@@ -183,7 +184,8 @@ export const getRecordStructureHelper = async (currentInstance) => {
                 ComponentName = DateForm;
                 break;
               case 'multipicklist':
-                ComponentName = MultiPickerForm;
+                // ComponentName = MultiPickerForm;
+                ComponentName = mutiTypeList;
                 break;
               case 'reference':
               case 'owner':

@@ -23,7 +23,6 @@ import {bottomStyles} from './bottomSheetContainer';
 const SCREEN_HEIGHT = Dimensions.get('screen').height;
 
 const TypeList = ({data, visible, onClose, onItemPress, activitytype}) => {
-  console.log('data', data);
   const [searchText, setSearchText] = useState('');
 
   const filteredData = data
