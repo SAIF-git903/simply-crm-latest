@@ -447,6 +447,7 @@ export default function RecordDetails({route}) {
             component: (
               <CommanView
                 tabId={val?.tabid}
+                tabModulename={val?.moduleName}
                 lister={route?.params?.listerInstance}
                 tabLabel={val?.label}
                 moduleName={moduleName}

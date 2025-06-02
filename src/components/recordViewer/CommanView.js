@@ -21,6 +21,7 @@ import {headerIconColor, textColor} from '../../variables/themeColors';
 
 const CommanView = ({
   tabId,
+  tabModulename,
   lister,
   tabLabel,
   moduleName,
@@ -66,7 +67,7 @@ const CommanView = ({
       const res = await API_comman(
         recordId,
         moduleName,
-        tabId === '9' ? 'Calendar' : tabLabel,
+        tabId === '9' ? 'Calendar' : tabModulename,
       );
 
       let labelFields = res?.result?.records[0]?.labelFields;
@@ -86,7 +87,7 @@ const CommanView = ({
             Object.keys(currentValues).length === labelFields.length;
 
           if (allFieldsPresent) {
-            if (tabLabel === 'Documents') {
+            if (tabModulename === 'Documents') {
               blockResults.push({
                 blockId: record.id,
                 values: currentValues,
@@ -248,7 +249,7 @@ const CommanView = ({
           onPress={() => {
             navigation.navigate('Add Record', {
               navigation: navigation,
-              selectedButton: tabLabel,
+              selectedButton: tabModulename,
               tabLabel: tabLabel,
               lister: lister,
               parentId: recordId,
@@ -299,7 +300,7 @@ const CommanView = ({
           </View>
         )}
         <View>
-          {tabLabel === 'Documents' ? (
+          {tabModulename === 'Documents' ? (
             <View>
               {data?.map((val, ind) => {
                 const filenameField = val?.blocks
