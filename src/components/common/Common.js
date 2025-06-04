@@ -86,3 +86,12 @@ export const filterSectionedData = (data, searchText) => {
     })
     .filter(Boolean); // Remove null sections
 };
+
+export const findValueByKey = (obj, key) => {
+  for (const category in obj) {
+    if (obj[category][key]) {
+      return obj[category][key];
+    }
+  }
+  return null;
+};

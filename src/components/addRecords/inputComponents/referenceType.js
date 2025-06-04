@@ -6,6 +6,7 @@ import {fontStyles, commonStyles} from '../../../styles/common';
 import {getUserName, getAddressDetails, getPriceDetails} from '../../../helper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {LOGINDETAILSKEY} from '../../../variables/strings';
+import {findValueByKey} from '../../common/Common';
 
 class ReferenceType extends Component {
   constructor(props) {
@@ -48,10 +49,19 @@ class ReferenceType extends Component {
         this.state.fieldName === 'assigned_user_id' &&
         !this.props.obj?.currentValue
       ) {
-        this.setState({referenceValue: loginDetails?.username});
+        const value = findValueByKey(
+          this.props.obj.type?.picklistValues,
+          `19x${loginDetails?.userId}`,
+        );
+
+        this.setState({referenceValue: value});
       }
       if (this.state.fieldName === 'created_user_id') {
-        this.setState({referenceValue: loginDetails?.username});
+        const value = findValueByKey(
+          this.props.obj.type?.picklistValues,
+          `19x${loginDetails?.userId}`,
+        );
+        this.setState({referenceValue: value});
       }
     } catch (error) {
       console.log('error', error);
