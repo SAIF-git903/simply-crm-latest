@@ -4,6 +4,7 @@ import Geolocation from 'react-native-geolocation-service';
 import store from '../../store';
 import {API_saveRecord} from '../../helper/api';
 import moment from 'moment';
+import 'moment-timezone';
 
 // Function to open phone dialer
 export const makePhoneCall = (phoneNumber) => {
@@ -95,3 +96,19 @@ export const findValueByKey = (obj, key) => {
   }
   return null;
 };
+
+export function convertToUserTimezone(start_time, end_time, userTimezone) {
+  // Parse the event times in the system timezone
+  const startTime = moment.tz(`${start_time}`, 'HH:mm', 'UTC');
+  const endTime = moment.tz(`${end_time}`, 'HH:mm', 'UTC');
+
+  // Convert to user’s timezone
+  const startTimeInUserTz = startTime.clone().tz(userTimezone);
+  const endTimeInUserTz = endTime.clone().tz(userTimezone);
+
+  // Format for display (e.g., "14:00" for UTC+1)
+  return {
+    time_start: startTimeInUserTz.format('hh:mm A'),
+    time_end: endTimeInUserTz.format('hh:mm A'),
+  };
+}

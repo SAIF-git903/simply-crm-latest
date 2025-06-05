@@ -38,7 +38,12 @@ import store from '../store';
 import DualDropdown from '../components/common/DualDropdown';
 import TypeList from '../components/common/TypeList';
 import UserList from '../components/common/UserList';
-import {getCommaSeparatedNames} from '../components/common/Common';
+import {
+  convertToUserTimezone,
+  getCommaSeparatedNames,
+} from '../components/common/Common';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {LOGINDETAILSKEY} from '../variables/strings';
 
 const moment = require('moment-timezone');
 
@@ -46,6 +51,8 @@ export default function Calendar(props) {
   const {UserReducer} = store.getState();
   const user_ID = UserReducer?.userData?.id;
   const username = UserReducer?.userData?.user_name;
+  const time_zone = UserReducer?.userData?.time_zone;
+  // console.log('time_zone', time_zone);
 
   let moduleTitle = props?.route?.params?.moduleLable;
   const [currentDate, setCurrentDate] = useState(new moment());
@@ -62,6 +69,7 @@ export default function Calendar(props) {
   const [assignedUser, setAssignUsers] = useState(username);
   const [userID, setuserID] = useState(user_ID);
   const [activitytype, setActivitytype] = useState();
+  const [adminData, setAdminData] = useState();
 
   const dispatch = useDispatch();
   const {records, isLoading, isRefreshing, recordsLoading} = useSelector(
@@ -340,10 +348,14 @@ export default function Calendar(props) {
 
   function renderItem(props) {
     const {item} = props;
-
+    const mofdiyTime = convertToUserTimezone(
+      item?.time_start,
+      item?.time_end,
+      time_zone,
+    );
     let timeFrame =
-      item.time_start +
-      (item.time_end?.length !== 0 ? '-' + item.time_end : '');
+      mofdiyTime.time_start +
+      (mofdiyTime.time_end?.length !== 0 ? '-' + mofdiyTime.time_end : '');
 
     const swipeOutButtons = [
       {
