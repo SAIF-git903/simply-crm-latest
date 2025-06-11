@@ -348,14 +348,22 @@ export default function Calendar(props) {
 
   function renderItem(props) {
     const {item} = props;
-    const mofdiyTime = convertToUserTimezone(
-      item?.time_start,
-      item?.time_end,
-      time_zone,
-    );
+
     let timeFrame =
-      mofdiyTime.time_start +
-      (mofdiyTime.time_end?.length !== 0 ? '-' + mofdiyTime.time_end : '');
+      item.time_start +
+      (item.time_end?.length !== 0 ? '-' + item.time_end : '');
+
+    // RollBack
+
+    // const mofdiyTime = convertToUserTimezone(
+    //   item?.time_start,
+    //   item?.time_end,
+    //   time_zone,
+    // );
+
+    // let timeFrame =
+    //   mofdiyTime.time_start +
+    //   (mofdiyTime.time_end?.length !== 0 ? '-' + mofdiyTime.time_end : '');
 
     const swipeOutButtons = [
       {
