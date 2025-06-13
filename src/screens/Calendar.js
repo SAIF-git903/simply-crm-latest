@@ -42,16 +42,17 @@ import {
   convertToUserTimezone,
   getCommaSeparatedNames,
 } from '../components/common/Common';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {LOGINDETAILSKEY} from '../variables/strings';
+import {fetchRecord} from '../actions';
 
 const moment = require('moment-timezone');
 
 export default function Calendar(props) {
   const {UserReducer} = store.getState();
+  // const userdata=null
+
   const user_ID = UserReducer?.userData?.id;
   const username = UserReducer?.userData?.user_name;
-  const time_zone = UserReducer?.userData?.time_zone;
+  // const time_zone = UserReducer?.userData?.time_zone;
   // console.log('time_zone', time_zone);
 
   let moduleTitle = props?.route?.params?.moduleLable;
@@ -88,7 +89,7 @@ export default function Calendar(props) {
   modifyData = new_Data.filter((val) => val.title >= date);
   // modifyData = new_Data.filter((val) => val.title <= date);
 
-  const dates = modifyData.sort((a, b) => {
+  const dates = new_Data.sort((a, b) => {
     const dateA = new Date(a.title);
     const dateB = new Date(b.title);
     return dateA - dateB;
@@ -107,7 +108,7 @@ export default function Calendar(props) {
     const values = [];
 
     if (activitytype) {
-      values.push(['activitytype', 'c', activitytype]);
+      values.push([`${activitytype?.fieldType}`, 'c', activitytype?.value]);
     }
 
     if (assignedUser) {
@@ -299,14 +300,14 @@ export default function Calendar(props) {
     );
   }
 
-  function onRecordPress(recordId) {
+  function onRecordPress(recordId, moduleFromCalender) {
     dispatch({
       type: UPDATE_RECORD_VIEWER,
       payload: {
         navigation,
-        moduleName: 'Calendar',
+        moduleName: moduleFromCalender ? moduleFromCalender : 'Calendar',
         showBackButton: true,
-        moduleLable: 'Calendar',
+        moduleLable: moduleFromCalender ? moduleFromCalender : 'Calendar',
         recordId: recordId,
       },
     });
@@ -320,6 +321,7 @@ export default function Calendar(props) {
   function onEdit(item) {
     navigation.navigate('Edit Record', {
       id: item.id,
+      moduleFromCalender: item?.moduleFromCalender,
       lister: {
         refreshData: () => fetchData(true),
       },
@@ -335,7 +337,7 @@ export default function Calendar(props) {
         {
           text: 'Yes',
           onPress: () => {
-            dispatch(deleteCalendarRecord(item.id));
+            dispatch(deleteCalendarRecord(item.id, item?.moduleFromCalender));
             let newdatas = dates.filter((val) => val.id !== item.Id);
             setData(newdatas);
             fetchData(true);
@@ -412,7 +414,7 @@ export default function Calendar(props) {
             ...styles.itemWrapper,
             paddingTop: props.index === 0 ? 10 : 0,
           }}
-          onPress={() => onRecordPress(item.id)}>
+          onPress={() => onRecordPress(item.id, item?.moduleFromCalender)}>
           <View
             style={{
               ...styles.item,
@@ -443,60 +445,75 @@ export default function Calendar(props) {
       </SwipeOut>
     );
   }
+
   const getData = async () => {
     try {
-      const res = await API_describe('Calendar');
-      // const res1 = await API_describe('ProjectTask');
-      if (res?.result?.describe?.fields) {
-        const activitytype = res?.result?.describe?.fields?.find(
-          (field) => field.name === 'activitytype',
-        );
-        const assignedUser = res?.result?.describe?.fields?.find(
-          (field) => field.name === 'assigned_user_id',
-        );
+      const {auth} = store.getState();
+      const modules = auth?.loginDetails?.login?.calendarModules || []; // ['Calendar', 'ProjectTask']
+      const moduleFieldMap =
+        auth?.loginDetails?.login?.calendarModuleTypeField || []; // [{ Calendar: 'activitytype' }, { ProjectTask: 'projecttasktype' }]
 
-        const sectionListData = Object.entries(
-          assignedUser?.type?.picklistValues,
-        ).map(([key, value]) => ({
-          title: key.charAt(0).toUpperCase() + key.slice(1), // Capitalize section title
-          data: Object.entries(value).map(([id, name]) => ({
-            id,
-            name: name.trim(),
-          })),
-          field: assignedUser?.name,
-        }));
+      // Fetch data for all modules concurrently
+      const responses = await Promise.all(
+        modules.map((module) => API_describe(module)),
+      );
 
-        // const taskType = res1?.result?.describe?.fields?.find(
-        //   (field) => field.name === 'projecttasktype',
-        // );
+      const sections = [];
+      const sectionListData = [];
 
-        const picklistValuesWithColor = activitytype.type.picklistValues.map(
-          (item) => ({
-            ...item,
-            color: activitytype.type.picklistColors[item.value], // fallback color if null/undefined
-          }),
-        );
-        // const picklistValuesWithColor1 = taskType.type.picklistValues.map(
-        //   (item) => ({
-        //     ...item,
-        //     color: taskType.type.picklistColors[item.value], // fallback color if null/undefined
-        //   }),
-        // );
+      responses.forEach((res, index) => {
+        const module = modules[index];
+        const fieldName = moduleFieldMap.find((item) => item[module])?.[module]; // Get field name for the module (e.g., 'activitytype' or 'projecttasktype')
 
-        const sections = [
-          {
-            title: activitytype.label, // "Activity Type"
-            data: picklistValuesWithColor, // array of { label, value }
-            field: activitytype.name,
-          },
-          // {
-          //   title: taskType.label, // "Activity Type"
-          //   data: picklistValuesWithColor1, // array of { label, value }
-          // },
-        ];
-        setTypes(sections);
-        setUserData(sectionListData);
-      }
+        if (res?.result?.describe?.fields && fieldName) {
+          // Find the field (e.g., 'activitytype' or 'projecttasktype')
+          const field = res.result.describe.fields.find(
+            (f) => f.name === fieldName,
+          );
+
+          // Find assigned_user_id field for user data
+          const assignedUser = res.result.describe.fields.find(
+            (f) => f.name === 'assigned_user_id',
+          );
+
+          // Process assigned_user_id picklist values for sectionListData
+          if (assignedUser?.type?.picklistValues) {
+            const userData = Object.entries(
+              assignedUser.type.picklistValues,
+            ).map(([key, value]) => ({
+              title: key.charAt(0).toUpperCase() + key.slice(1), // Capitalize section title
+              data: Object.entries(value).map(([id, name]) => ({
+                id,
+                name: name.trim(),
+              })),
+              field: assignedUser.name,
+              module,
+            }));
+            sectionListData.push(...userData);
+          }
+
+          // Process picklist values for the field with colors
+          if (field?.type?.picklistValues) {
+            const picklistValuesWithColor = field.type.picklistValues.map(
+              (item) => ({
+                ...item,
+                color: field.type.picklistColors[item.value] || '#FFFFFF', // Fallback color if null/undefined
+                fieldType: fieldName,
+              }),
+            );
+
+            sections.push({
+              title: field.label, // Field label (e.g., "Activity Type")
+              data: picklistValuesWithColor, // Array of { label, value, color }
+              field: field.name,
+            });
+          }
+        }
+      });
+
+      // Set state with the dynamically generated data
+      setTypes(sections);
+      setUserData(sectionListData);
     } catch (error) {
       console.log('err', error);
     }
@@ -550,13 +567,14 @@ export default function Calendar(props) {
     const uniqueDates = new Set();
 
     const sortedItems = items.sort((a, b) => {
-      let aNumber = a.date_start.replace(/-/g, '');
-      let bNumber = b.date_start.replace(/-/g, '');
+      let aNumber = a?.date_start?.replace(/-/g, '');
+      let bNumber = b?.date_start?.replace(/-/g, '');
       return aNumber - bNumber;
     });
 
     for (const item of sortedItems) {
-      const {date_start, subject, type, time_start, time_end, id} = item;
+      const {date_start, subject, type, time_start, time_end, id, module} =
+        item;
 
       const itemData = {
         title: date_start,
@@ -565,6 +583,7 @@ export default function Calendar(props) {
         time_start,
         time_end,
         id,
+        moduleFromCalender: module,
       };
 
       // Check if the date is already in uniqueDates
@@ -793,7 +812,7 @@ export default function Calendar(props) {
               setTypesVisible(false);
             }}
             onItemPress={(item) => {
-              setActivitytype(item?.value);
+              setActivitytype({fieldType: item?.fieldType, value: item?.value});
               setTypesVisible(false);
             }}
           />

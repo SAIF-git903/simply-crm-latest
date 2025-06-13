@@ -74,7 +74,7 @@ export default function reducer(state = initialState, action = {}) {
 }
 
 export const getCalendarRecords =
-  (isRefreshing, page, searchValues) => async (dispatch) => {
+  (isRefreshing, page, searchValues) => async (dispatch, getState) => {
     const getCalendarRecordsFulfilled = (records) => {
       return {
         type: GET_CALENDAR_RECORDS_FULFILLED,
@@ -94,110 +94,163 @@ export const getCalendarRecords =
     });
 
     try {
-      const response = await API_listModuleRecords(
+      const {auth} = getState();
+      const modules = auth?.loginDetails?.login?.calendarModules || [
         'Calendar',
-        page,
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        searchValues,
-      );
-      const calendarRecords = response.result?.records || [];
-
-      let eventIds = [];
-      let taskIds = [];
-
-      for (const record of calendarRecords) {
-        let ids = record.id.split('x');
-        if (record.type === 'Event') {
-          eventIds.push(ids[1]);
-        } else {
-          taskIds.push(ids[1]);
-        }
-      }
-
-      eventIds = eventIds.map((x) => `18x${x}`);
-      taskIds = taskIds.map((x) => `9x${x}`);
-
-      let eventsResponse;
-      let tasksResponse;
-
-      if (eventIds?.length)
-        eventsResponse = await API_fetchRecordsWithGrouping('Events', eventIds);
-      if (taskIds?.length)
-        tasksResponse = await API_fetchRecordsWithGrouping('Calendar', taskIds);
-
-      const success = eventsResponse || tasksResponse;
-
-      // if (!success) {
-      //   dispatch(getCalendarRecordsRejected());
-      //   return;
-      // }
-
-      const eventRecords = eventsResponse?.result.records?.map((x) => ({
-        ...x,
-        type: 'Event',
-      }));
-
-      const taskRecords = tasksResponse?.result.records?.map((x) => ({
-        ...x,
-        type: 'Task',
-      }));
-
-      let records = [
-        ...(Array.isArray(eventRecords) ? eventRecords : []),
-        ...(Array.isArray(taskRecords) ? taskRecords : []),
       ];
       let mappedRecords = [];
 
-      // Fields that we filter out from the record
-      const requiredFields = [
-        'date_start',
-        'time_start',
-        'time_end',
-        'taskstatus',
-        'type',
-        'id',
-      ];
+      for (const module of modules) {
+        if (module === 'Calendar') {
+          const response = await API_listModuleRecords(
+            'Calendar',
+            page,
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            searchValues,
+          );
+          const calendarRecords = response.result?.records || [];
 
-      for (let record of records) {
-        const taskDetailsFields = record.blocks[0].fields;
-        taskDetailsFields.push({name: 'type', value: record.type});
-        taskDetailsFields.push({name: 'id', value: record.id});
+          let eventIds = [];
+          let taskIds = [];
 
-        mappedRecords.push(
-          taskDetailsFields.filter((x) => requiredFields.includes(x.name)),
-        );
-      }
-
-      mappedRecords = mappedRecords.map((x) => {
-        let item = {};
-        for (const field of x) {
-          item[field.name] = field.value;
-        }
-        return item;
-      });
-      matchAndAddSubject(calendarRecords, mappedRecords);
-
-      function matchAndAddSubject(calendarRecords, mappedRecords) {
-        // Create a map to quickly access the subject from calendarRecords by id
-        const calendarMap = new Map();
-
-        calendarRecords.forEach((record) => {
-          const id = record.id.split('x')[1]; // Extract the part after '9x'
-          calendarMap.set(id, record.subject);
-        });
-
-        // Add subject to mappedRecords if the id matches
-        mappedRecords.forEach((record) => {
-          const id = record.id.split('x')[1]; // Extract the part after '18x'
-          if (calendarMap.has(id)) {
-            record.subject = calendarMap.get(id);
+          for (const record of calendarRecords) {
+            let ids = record.id.split('x');
+            if (record.type === 'Event') {
+              eventIds.push(ids[1]);
+            } else {
+              taskIds.push(ids[1]);
+            }
           }
-        });
+
+          eventIds = eventIds.map((x) => `18x${x}`);
+          taskIds = taskIds.map((x) => `9x${x}`);
+
+          let eventsResponse;
+          let tasksResponse;
+
+          if (eventIds?.length)
+            eventsResponse = await API_fetchRecordsWithGrouping(
+              'Events',
+              eventIds,
+            );
+          if (taskIds?.length)
+            tasksResponse = await API_fetchRecordsWithGrouping(
+              'Calendar',
+              taskIds,
+            );
+
+          const success = eventsResponse || tasksResponse;
+
+          // if (!success) {
+          //   dispatch(getCalendarRecordsRejected());
+          //   return;
+          // }
+
+          const eventRecords = eventsResponse?.result.records?.map((x) => ({
+            ...x,
+            type: 'Event',
+          }));
+
+          const taskRecords = tasksResponse?.result.records?.map((x) => ({
+            ...x,
+            type: 'Task',
+          }));
+
+          let records = [
+            ...(Array.isArray(eventRecords) ? eventRecords : []),
+            ...(Array.isArray(taskRecords) ? taskRecords : []),
+          ];
+          // let mappedRecords = [];
+
+          // Fields that we filter out from the record
+          const requiredFields = [
+            'date_start',
+            'time_start',
+            'time_end',
+            'taskstatus',
+            'type',
+            'id',
+          ];
+
+          for (let record of records) {
+            const taskDetailsFields = record.blocks[0].fields;
+            taskDetailsFields.push({name: 'type', value: record.type});
+            taskDetailsFields.push({name: 'id', value: record.id});
+
+            mappedRecords.push(
+              taskDetailsFields.filter((x) => requiredFields.includes(x.name)),
+            );
+          }
+
+          mappedRecords = mappedRecords.map((x) => {
+            let item = {};
+            for (const field of x) {
+              item[field.name] = field.value;
+            }
+            return item;
+          });
+          matchAndAddSubject(calendarRecords, mappedRecords);
+
+          function matchAndAddSubject(calendarRecords, mappedRecords) {
+            // Create a map to quickly access the subject from calendarRecords by id
+            const calendarMap = new Map();
+
+            calendarRecords.forEach((record) => {
+              const id = record.id.split('x')[1]; // Extract the part after '9x'
+              calendarMap.set(id, record.subject);
+            });
+
+            // Add subject to mappedRecords if the id matches
+            mappedRecords.forEach((record) => {
+              const id = record.id.split('x')[1]; // Extract the part after '18x'
+              if (calendarMap.has(id)) {
+                record.subject = calendarMap.get(id);
+              }
+            });
+          }
+        } else {
+          const response = await API_listModuleRecords(
+            module,
+            page,
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            searchValues,
+          );
+
+          // const requiredFields = [
+          //   'startdate',
+          //   'projecttaskprogress',
+          //   'projecttasktype',
+          //   'id',
+          // ];
+
+          let records = response?.result?.records || [];
+
+          for (let record of records) {
+            // Create an object directly with required fields
+            const mappedRecord = {
+              date_start: record.startdate || '',
+              time_start: '', // Not present in task records
+              time_end: '', // Not present in task records
+              taskstatus: record.projecttaskprogress || '',
+              type: record.projecttasktype || '',
+              id: record.id || '',
+              subject: record.projecttaskname || '', // Map projecttaskname to subject
+              module: module,
+            };
+
+            mappedRecords.push(mappedRecord);
+          }
+        }
       }
 
       dispatch(getCalendarRecordsFulfilled(mappedRecords));
@@ -207,36 +260,48 @@ export const getCalendarRecords =
     }
   };
 
-export const deleteCalendarRecord = (recordId) => async (dispatch) => {
-  const deleteCalendarRecordFulfilled = (recordId) => {
-    return {
-      type: DELETE_CALENDAR_RECORD_FULFILLED,
-      payload: recordId,
+export const deleteCalendarRecord =
+  (recordId, moduleFromCalender) => async (dispatch) => {
+    const deleteCalendarRecordFulfilled = (recordId) => {
+      return {
+        type: DELETE_CALENDAR_RECORD_FULFILLED,
+        payload: recordId,
+      };
     };
-  };
 
-  const deleteCalendarRecordRejected = (recordId) => {
-    return {
-      type: DELETE_CALENDAR_RECORD_REJECTED,
-      payload: recordId,
+    const deleteCalendarRecordRejected = (recordId) => {
+      return {
+        type: DELETE_CALENDAR_RECORD_REJECTED,
+        payload: recordId,
+      };
     };
+
+    dispatch({
+      type: DELETE_CALENDAR_RECORD,
+      payload: recordId,
+    });
+
+    try {
+      const recordIdClean = recordId.toString().replace(/.*(?=x)+x/, '');
+      if (moduleFromCalender) {
+        const response = await API_deleteRecord(
+          moduleFromCalender,
+          recordIdClean,
+        );
+        if (!response.success)
+          throw Error('Failed to delete record: ' + response);
+        dispatch(deleteCalendarRecordFulfilled(recordId));
+      } else {
+        const response = await API_deleteRecord('Calendar', recordIdClean);
+        if (!response.success)
+          throw Error('Failed to delete record: ' + response);
+        dispatch(deleteCalendarRecordFulfilled(recordId));
+      }
+    } catch (e) {
+      console.log(e);
+      dispatch(deleteCalendarRecordRejected());
+    }
   };
-
-  dispatch({
-    type: DELETE_CALENDAR_RECORD,
-    payload: recordId,
-  });
-
-  try {
-    const recordIdClean = recordId.toString().replace(/.*(?=x)+x/, '');
-    const response = await API_deleteRecord('Calendar', recordIdClean);
-    if (!response.success) throw Error('Failed to delete record: ' + response);
-    dispatch(deleteCalendarRecordFulfilled(recordId));
-  } catch (e) {
-    console.log(e);
-    dispatch(deleteCalendarRecordRejected());
-  }
-};
 
 // Utils
 const cloneArrayAndPush = (array, item) => {

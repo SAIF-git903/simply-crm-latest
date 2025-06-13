@@ -42,6 +42,7 @@ class AddRecords extends Component {
   };
 
   componentDidMount() {
+    console.log('this', this.props);
     //TODO fixed unserialized values ??
     this.props.navigation.setOptions({
       id: this.state.recordId,
@@ -79,6 +80,8 @@ class AddRecords extends Component {
       moduleName = this.state.lister.props?.moduleName
         ? this.state.lister.props?.moduleName
         : this.state.lister?.moduleName;
+    } else if (this.props?.route?.params?.moduleFromCalender) {
+      moduleName = this.props?.route?.params?.moduleFromCalender;
     } else {
       moduleName = this.props?.route?.params?.selectedButton
         ? this.props?.route?.params?.selectedButton

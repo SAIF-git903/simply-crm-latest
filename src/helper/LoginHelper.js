@@ -242,6 +242,7 @@ export const doUserLogin = async (
         username,
         password,
         url: trimmedUrl,
+        login: responseJson?.result?.login,
         session: responseJson?.result?.login?.session,
         userTz: responseJson?.result?.login?.user_tz,
         crmTz: responseJson?.result?.login?.crm_tz,
