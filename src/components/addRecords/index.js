@@ -42,7 +42,6 @@ class AddRecords extends Component {
   };
 
   componentDidMount() {
-    console.log('this', this.props);
     //TODO fixed unserialized values ??
     this.props.navigation.setOptions({
       id: this.state.recordId,

@@ -89,7 +89,7 @@ export default function Calendar(props) {
   modifyData = new_Data.filter((val) => val.title >= date);
   // modifyData = new_Data.filter((val) => val.title <= date);
 
-  const dates = new_Data.sort((a, b) => {
+  const dates = modifyData.sort((a, b) => {
     const dateA = new Date(a.title);
     const dateB = new Date(b.title);
     return dateA - dateB;
@@ -224,7 +224,9 @@ export default function Calendar(props) {
             setVisible(false);
             navigation.navigate('Add Record', {
               lister: {
-                refreshData: () => fetchData(),
+                // refreshData: () => fetchData(),
+                refreshData: () =>
+                  fetchData(true, 1, [['assigned_user_id', 'c', assignedUser]]),
               },
               submodule: 'Events',
             });
@@ -259,7 +261,11 @@ export default function Calendar(props) {
             setVisible(false);
             navigation.navigate('Add Record', {
               lister: {
-                refreshData: () => fetchData(),
+                // refreshData: () => fetchData(),
+                refreshData: () =>
+                  fetchData(true, 1, [
+                    ['assigned_user_id', 'c', [assignedUser]],
+                  ]),
               },
               submodule: 'Tasks',
             });
@@ -313,7 +319,9 @@ export default function Calendar(props) {
     });
     navigation.navigate('Record Details', {
       listerInstance: {
-        refreshData: () => fetchData(true),
+        // refreshData: () => fetchData(true),
+        refreshData: () =>
+          fetchData(true, 1, [['assigned_user_id', 'c', [assignedUser]]]),
       },
     });
   }
@@ -323,7 +331,9 @@ export default function Calendar(props) {
       id: item.id,
       moduleFromCalender: item?.moduleFromCalender,
       lister: {
-        refreshData: () => fetchData(true),
+        // refreshData: () => fetchData(true),
+        refreshData: () =>
+          fetchData(true, 1, [['assigned_user_id', 'c', [assignedUser]]]),
       },
     });
   }
@@ -340,7 +350,8 @@ export default function Calendar(props) {
             dispatch(deleteCalendarRecord(item.id, item?.moduleFromCalender));
             let newdatas = dates.filter((val) => val.id !== item.Id);
             setData(newdatas);
-            fetchData(true);
+            // fetchData(true);
+            fetchData(true, 1, [['assigned_user_id', 'c', [assignedUser]]]);
           },
         },
       ],
