@@ -33,9 +33,9 @@ const UserList = ({
 }) => {
   const [searchText, setSearchText] = useState('');
   const [filterData, setFilterData] = useState(data);
+
   useEffect(() => {
     if (userID) {
-      // Flatten the sectioned data
       const allItems = data.flatMap((section) => section.data);
       const matchedUser = allItems.find((item) => item.id === userID);
 
@@ -67,15 +67,28 @@ const UserList = ({
     }
   };
 
+  // Toggle between Clear All and Select All
+  const toggleAll = () => {
+    if (selectedIds.length > 0) {
+      // Clear all
+      setSelectedIds([]);
+      setuserID([]);
+    } else {
+      // Select all
+      const allItems = filterData.flatMap((section) => section.data);
+      setSelectedIds(allItems);
+    }
+  };
+
   // Filter logic
   useEffect(() => {
     if (searchText.trim()) {
       const filteredUserData = filterSectionedData(data, searchText);
       setFilterData(filteredUserData);
     } else {
-      setFilterData(data); // Reset to original data when search is empty
+      setFilterData(data);
     }
-  }, [searchText, data]); // Include data in dependencies to handle prop changes
+  }, [searchText, data]);
 
   return (
     <Modal
@@ -83,7 +96,6 @@ const UserList = ({
       transparent={true}
       visible={visible}
       onRequestClose={onClosePress}>
-      {/* Backdrop */}
       <Pressable
         style={{
           position: 'absolute',
@@ -96,9 +108,7 @@ const UserList = ({
         onPress={onClosePress}
       />
 
-      {/* Bottom Sheet Container */}
       <View style={bottomStyles.bottomSheetContainer}>
-        {/* Cancel / Close Button */}
         <View
           style={{
             flexDirection: 'row',
@@ -109,24 +119,17 @@ const UserList = ({
             borderBottomColor: '#d3d2d8',
           }}>
           <TouchableOpacity
-            style={{
-              justifyContent: 'center',
-            }}
+            style={{justifyContent: 'center'}}
             onPress={onClosePress}>
             <Text style={bottomStyles.headertxt}>Cancel</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={{
-              justifyContent: 'center',
-            }}
-            onPress={() => {
-              onDonePress(selectedIds);
-            }}>
+            style={{justifyContent: 'center'}}
+            onPress={() => onDonePress(selectedIds)}>
             <Text style={bottomStyles.headertxt}>Save</Text>
           </TouchableOpacity>
         </View>
 
-        {/* Search Box */}
         <View style={bottomStyles.searchBox}>
           <Ionicons
             name="search"
@@ -157,7 +160,6 @@ const UserList = ({
           )}
         </View>
 
-        {/* Section List */}
         <SectionList
           sections={filterData}
           style={[
@@ -167,7 +169,7 @@ const UserList = ({
               height: Dimensions.get('screen').height * 0.61,
             },
           ]}
-          keyExtractor={(item, index) => item.id + index} // Use item.id for uniqueness
+          keyExtractor={(item, index) => item.id + index}
           showsVerticalScrollIndicator={false}
           renderItem={({item}) => {
             const isSelected = selectedIds.some(
@@ -217,10 +219,7 @@ const UserList = ({
             justifyContent: 'center',
           }}>
           <TouchableOpacity
-            onPress={() => {
-              setSelectedIds([]);
-              setuserID([]);
-            }}
+            onPress={toggleAll}
             activeOpacity={0.7}
             style={{
               alignItems: 'center',
@@ -232,7 +231,7 @@ const UserList = ({
                 color: textColor,
                 fontSize: 16,
               }}>
-              Clear all
+              {selectedIds.length > 0 ? 'Clear All' : 'Select All'}
             </Text>
           </TouchableOpacity>
         </View>

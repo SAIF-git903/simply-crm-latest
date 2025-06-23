@@ -122,7 +122,12 @@ export default function Calendar(props) {
     const shouldApplyFilter = activitytype || assignedUser;
 
     const timeout = setTimeout(() => {
-      fetchData(true, 1, shouldApplyFilter ? searchValues : undefined);
+      fetchData(
+        true,
+        1,
+        shouldApplyFilter ? searchValues : undefined,
+        activitytype?.fieldType,
+      );
     }, 500); // reduced delay
 
     return () => clearTimeout(timeout);
@@ -514,7 +519,7 @@ export default function Calendar(props) {
             );
 
             sections.push({
-              title: field.label, // Field label (e.g., "Activity Type")
+              title: module, // Field label (e.g., "Activity Type")
               data: picklistValuesWithColor, // Array of { label, value, color }
               field: field.name,
             });
@@ -530,8 +535,8 @@ export default function Calendar(props) {
     }
   };
 
-  function fetchData(isRefreshing, page, searchValues) {
-    dispatch(getCalendarRecords(isRefreshing, page, searchValues));
+  function fetchData(isRefreshing, page, searchValues, type) {
+    dispatch(getCalendarRecords(isRefreshing, page, searchValues, type));
   }
 
   // function mapItemsToAgendaList(items) {

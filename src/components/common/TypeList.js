@@ -85,12 +85,17 @@ const TypeList = ({data, visible, onClose, onItemPress, activitytype}) => {
             bottomStyles.sectionListContainer,
             {
               backgroundColor: generalBgColor,
-              borderRadius: 0,
+              borderRadius: 5,
             },
           ]}
           showsVerticalScrollIndicator={false}
           sections={filteredData}
           keyExtractor={(item, index) => item.value + index}
+          renderSectionHeader={({section: {title}}) => (
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionHeaderText}>{title}</Text>
+            </View>
+          )}
           renderItem={({item, index, section}) => {
             const bgColor = item?.color ? item?.color : '#FFFFFF';
             const textColor = isLightColor?.(bgColor) ? 'black' : 'white';
@@ -100,12 +105,12 @@ const TypeList = ({data, visible, onClose, onItemPress, activitytype}) => {
                   styles.itemContainer,
                   {
                     backgroundColor: bgColor,
-                    borderTopRightRadius: index === 0 ? 5 : 0,
-                    borderTopLeftRadius: index === 0 ? 5 : 0,
-                    borderBottomRightRadius:
-                      data[0].data?.length - 1 === index ? 5 : 0,
-                    borderBottomLeftRadius:
-                      data[0].data?.length - 1 === index ? 5 : 0,
+                    // borderTopRightRadius: index === 0 ? 5 : 0,
+                    // borderTopLeftRadius: index === 0 ? 5 : 0,
+                    // borderBottomRightRadius:
+                    //   data[0].data?.length - 1 === index ? 5 : 0,
+                    // borderBottomLeftRadius:
+                    //   data[0].data?.length - 1 === index ? 5 : 0,
                   },
                 ]}
                 activeOpacity={0.7}
