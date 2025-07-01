@@ -9,7 +9,7 @@ import {
   URLDETAILSKEY,
 } from '../variables/strings';
 import {LOGIN_USER_SUCCESS} from '../actions/types';
-import {addDatabaseKey} from '.';
+import {addDatabaseKey, removeAllDatabase} from '.';
 import {fetchUserData} from '../actions/userActions';
 import store from '../store';
 import {
@@ -189,6 +189,129 @@ export const assignUrl = async (
   }
 };
 
+export const timeoutPromise = (timeoutMs) => {
+  return new Promise((_, reject) => {
+    setTimeout(() => {
+      reject(new Error('Request timed out'));
+    }, timeoutMs);
+  });
+};
+
+// export const doUserLogin = async (
+//   username,
+//   password,
+//   token,
+//   url,
+//   navigation,
+//   loginInstance,
+//   dispatch,
+// ) => {
+//   try {
+//     let trimmedUrl = url.replace(/ /g, '').replace(/\/$/, '');
+//     trimmedUrl =
+//       trimmedUrl.indexOf('://') === -1 ? 'https://' + trimmedUrl : trimmedUrl;
+//     if (url.includes('www.')) {
+//       trimmedUrl = trimmedUrl.replace('www.', '');
+//     }
+//     if (url.includes('http://')) {
+//       trimmedUrl = trimmedUrl.replace('http://', 'https://');
+//     }
+//     let responseJson = null;
+//     if (token) {
+//       responseJson = await API_loginAndFetchModulesforMSlogin(
+//         trimmedUrl,
+//         username,
+//         token,
+//       );
+//     } else {
+//       responseJson = await API_loginAndFetchModules(
+//         trimmedUrl,
+//         username,
+//         password,
+//       );
+//     }
+//     if (responseJson.success) {
+//       let vtiger_version =
+//         responseJson?.result?.login?.vtiger_version?.charAt(0);
+//       let simply_version =
+//         responseJson?.result?.login?.simply_version?.charAt(0);
+//       let new_version = null;
+//       if (
+//         (vtiger_version != null && vtiger_version !== undefined) ||
+//         (simply_version !== null && simply_version !== undefined)
+//       ) {
+//         if (vtiger_version) {
+//           new_version = vtiger_version;
+//         } else {
+//           new_version = simply_version;
+//         }
+//       }
+//       const loginDetails = {
+//         username,
+//         password,
+//         url: trimmedUrl,
+//         login: responseJson?.result?.login,
+//         session: responseJson?.result?.login?.session,
+//         userTz: responseJson?.result?.login?.user_tz,
+//         crmTz: responseJson?.result?.login?.crm_tz,
+//         vtigerVersion: new_version,
+//         dateFormat: responseJson?.result?.login?.date_format,
+//         modules: responseJson?.result?.modules,
+//         menu: responseJson?.result?.menu,
+//         mobileapp_settings: responseJson?.result?.mobileapp_settings,
+//         userId: responseJson?.result?.login?.userid,
+//         isAdmin: responseJson?.result.login.isAdmin,
+//         token: token ? token : null,
+//       };
+// store
+//   .dispatch(fetchUserData(loginDetails))
+//   .then(async () => {
+//     AsyncStorage.setItem(LOGINDETAILSKEY, JSON.stringify(loginDetails));
+//     AsyncStorage.setItem(KEEPUSERINFO, JSON.stringify(loginDetails));
+//     await addDatabaseKey(LOGINDETAILSKEY);
+//     loginUserSuccess(dispatch, loginDetails, navigation);
+//   })
+//   .catch((e) => {
+//     console.log(e);
+//     loginInstance.setState({
+//       loading: false,
+//       showUrlList: false,
+//       componentToLoad: LOGINFORM,
+//     });
+//     Alert.alert(
+//       'Authentication failed',
+//       'Something went wrong, please try again later',
+//       [{text: 'Ok', onPress: () => {}}],
+//       {cancelable: true},
+//     );
+//   });
+//     } else {
+//       loginInstance.setState({loading: false, showUrlList: false});
+//       Alert.alert(
+//         'Authentication failed',
+//         'Check your username and password',
+//         [{text: 'Ok', onPress: () => {}}],
+//         {cancelable: true},
+//       );
+//     }
+//   } catch (error) {
+//     console.log(error);
+//     try {
+//       const loginDetails = JSON.parse(
+//         await AsyncStorage.getItem(LOGINDETAILSKEY),
+//       );
+//       if (loginDetails !== null) {
+//         loginUserSuccess(dispatch, loginDetails, navigation);
+//       } else {
+//         showNetworkError(loginInstance);
+//       }
+//     } catch (error) {
+//       console.log(error);
+//       showNetworkError(loginInstance);
+//     }
+//   }
+// };
+
 export const doUserLogin = async (
   username,
   password,
@@ -256,28 +379,106 @@ export const doUserLogin = async (
         token: token ? token : null,
       };
 
-      store
-        .dispatch(fetchUserData(loginDetails))
-        .then(async () => {
-          AsyncStorage.setItem(LOGINDETAILSKEY, JSON.stringify(loginDetails));
-          AsyncStorage.setItem(KEEPUSERINFO, JSON.stringify(loginDetails));
-          await addDatabaseKey(LOGINDETAILSKEY);
-          loginUserSuccess(dispatch, loginDetails, navigation);
-        })
-        .catch((e) => {
+      const tryFetchUserData = (timeoutMs) =>
+        Promise.race([
+          store.dispatch(fetchUserData(loginDetails)),
+          timeoutPromise(timeoutMs),
+        ]);
+
+      try {
+        // First attempt with 7-second timeout
+        await tryFetchUserData(7000);
+        // Success: Store data and proceed
+        await AsyncStorage.setItem(
+          LOGINDETAILSKEY,
+          JSON.stringify(loginDetails),
+        );
+        await AsyncStorage.setItem(KEEPUSERINFO, JSON.stringify(loginDetails));
+        await addDatabaseKey(LOGINDETAILSKEY);
+        loginUserSuccess(dispatch, loginDetails, navigation);
+      } catch (e) {
+        if (e.message === 'Request timed out') {
+          // Show alert prompting user to retry
+          Alert.alert(
+            'Request Timed Out',
+            'The request took too long. Would you like to try again?',
+            [
+              {
+                text: 'Cancel',
+                style: 'cancel',
+                onPress: async () => {
+                  // Clear storage and reset UI
+                  await AsyncStorage.removeItem('fields');
+                  await AsyncStorage.removeItem('UID');
+                  await removeAllDatabase();
+                  loginInstance.setState({
+                    loading: false,
+                    showUrlList: false,
+                    componentToLoad: LOGINFORM,
+                  });
+                },
+              },
+              {
+                text: 'Retry',
+                onPress: async () => {
+                  try {
+                    // Retry with 10-second timeout
+                    await tryFetchUserData(10000);
+                    // Success: Store data and proceed
+                    await AsyncStorage.setItem(
+                      LOGINDETAILSKEY,
+                      JSON.stringify(loginDetails),
+                    );
+                    await AsyncStorage.setItem(
+                      KEEPUSERINFO,
+                      JSON.stringify(loginDetails),
+                    );
+                    await addDatabaseKey(LOGINDETAILSKEY);
+                    loginUserSuccess(dispatch, loginDetails, navigation);
+                  } catch (retryError) {
+                    // Retry failed
+                    console.log(retryError);
+                    await AsyncStorage.removeItem('fields');
+                    await AsyncStorage.removeItem('UID');
+                    await removeAllDatabase();
+                    loginInstance.setState({
+                      loading: false,
+                      showUrlList: false,
+                      componentToLoad: LOGINFORM,
+                    });
+                    Alert.alert(
+                      'Authentication Failed',
+                      retryError.message === 'Request timed out'
+                        ? 'Request timed out, please try again'
+                        : 'Something went wrong, please try again later',
+                      [{text: 'Ok', onPress: () => {}}],
+                      {cancelable: true},
+                    );
+                  }
+                },
+              },
+            ],
+            {cancelable: false},
+          );
+        } else {
+          // Non-timeout error
           console.log(e);
+          await AsyncStorage.removeItem('fields');
+          await AsyncStorage.removeItem('UID');
+          await removeAllDatabase();
           loginInstance.setState({
             loading: false,
             showUrlList: false,
             componentToLoad: LOGINFORM,
           });
           Alert.alert(
-            'Authentication failed',
+            'Authentication Failed',
             'Something went wrong, please try again later',
             [{text: 'Ok', onPress: () => {}}],
             {cancelable: true},
           );
-        });
+        }
+      }
     } else {
       loginInstance.setState({loading: false, showUrlList: false});
       Alert.alert(
@@ -304,6 +505,7 @@ export const doUserLogin = async (
     }
   }
 };
+
 export const doUserLoginForMSLogin = async (
   username,
   password,
