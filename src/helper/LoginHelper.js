@@ -480,11 +480,20 @@ export const doUserLogin = async (
         }
       }
     } else {
-      loginInstance.setState({loading: false, showUrlList: false});
+      loginInstance.setState({
+        loading: false,
+        showUrlList: false,
+        componentToLoad: LOGINFORM,
+      });
       Alert.alert(
         'Authentication failed',
         'Check your username and password',
-        [{text: 'Ok', onPress: () => {}}],
+        [
+          {
+            text: 'Ok',
+            onPress: () => {},
+          },
+        ],
         {cancelable: true},
       );
     }
@@ -587,7 +596,11 @@ export const doUserLoginForMSLogin = async (
           );
         });
     } else {
-      loginInstance.setState({loading: false, showUrlList: false});
+      loginInstance.setState({
+        loading: false,
+        showUrlList: false,
+        componentToLoad: LOGINFORM,
+      });
       Alert.alert(
         'Authentication failed',
         'Check your username and password',
