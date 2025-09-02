@@ -6,7 +6,7 @@ export function formatCurrency(value) {
   let decimalSeparator = userData?.currency_decimal_separator;
   let groupingSeparator = userData?.currency_grouping_separator;
   // Convert the value to a number
-  let numberValue = parseFloat(value.toString().replace(/,/g, ''));
+  let numberValue = parseFloat(value?.toString().replace(/,/g, ''));
   if (isNaN(numberValue)) return 'Invalid amount';
 
   // Format the number
