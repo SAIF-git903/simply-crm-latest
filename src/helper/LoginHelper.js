@@ -55,6 +55,7 @@ export const getInstancesList = async (
             password,
             username: output[0].username,
             dispatch,
+            componentToLoad: LOGINFORM,
           });
         } else if (output.length === 1) {
           // single url
@@ -71,10 +72,10 @@ export const getInstancesList = async (
           //no urls
 
           Toast.show('No Url Found');
-          loginInstance.setState({loading: false});
+          loginInstance.setState({loading: false, componentToLoad: LOGINFORM});
         }
       } else {
-        loginInstance.setState({loading: false});
+        loginInstance.setState({loading: false, componentToLoad: LOGINFORM});
         Alert.alert(
           'Login failed',
           'Please check your email and password',
@@ -123,6 +124,7 @@ export const getInstancesListforMSlogin = async (
             password,
             username: output[0].username,
             dispatch,
+            componentToLoad: LOGINFORM,
           });
         } else if (output.length === 1) {
           // single url
@@ -138,10 +140,10 @@ export const getInstancesListforMSlogin = async (
         } else {
           //no urls
           Toast.show('No Url Found');
-          loginInstance.setState({loading: false});
+          loginInstance.setState({loading: false, componentToLoad: LOGINFORM});
         }
       } else {
-        loginInstance.setState({loading: false});
+        loginInstance.setState({loading: false, componentToLoad: LOGINFORM});
         Alert.alert(
           'Login failed',
           'Please check your email and password',
@@ -627,7 +629,11 @@ export const doUserLoginForMSLogin = async (
 };
 
 const showNetworkError = (loginInstance) => {
-  loginInstance.setState({loading: false, showUrlList: false});
+  loginInstance.setState({
+    loading: false,
+    showUrlList: false,
+    componentToLoad: LOGINFORM,
+  });
   Alert.alert(
     'Wrong url or Network error',
     'Check your internet connection and your url.',

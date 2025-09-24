@@ -108,6 +108,7 @@ class UpdateWidget extends Component {
     return (
       <View style={styles.container}>
         <View
+          // key={}
           style={{
             flexDirection: 'row',
             paddingTop: newData?.length > 0 ? 30 : 0,
@@ -169,7 +170,7 @@ class UpdateWidget extends Component {
             return (
               <>
                 {val?.name === 'Calendar' ? (
-                  <View style={styles.iconButtonContainer}>
+                  <View style={styles.iconButtonContainer} key={val?.id}>
                     <IconButton
                       icon={'calendar'}
                       title={val?.label}
