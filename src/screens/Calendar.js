@@ -97,7 +97,7 @@ export default function Calendar(props) {
 
   useFocusEffect(
     React.useCallback(() => {
-      // fetchData();
+      fetchData();
       getData();
       setTypesVisible(false);
       setUsersVisible(false);
@@ -111,8 +111,17 @@ export default function Calendar(props) {
       values.push([`${activitytype?.fieldType}`, 'c', activitytype?.value]);
     }
 
-    if (assignedUser) {
-      values.push(['assigned_user_id', 'c', assignedUser]);
+    if (assignedUser && typeof assignedUser === "string") {
+      const arr = assignedUser.split(',').map(item => item.trim()).filter(Boolean);
+    
+      if (arr.length > 1) {
+        // multiple values → push as array of arrays
+        const innerArray = arr.map(item => ["assigned_user_id", "c", item, "or"]);
+    values.push(innerArray);
+      } else if (arr.length === 1) {
+        // single value → push as single array
+        values.push(["assigned_user_id", "c", arr[0], "or"]);
+      }
     }
 
     return values;
@@ -337,8 +346,7 @@ export default function Calendar(props) {
       moduleFromCalender: item?.moduleFromCalender,
       lister: {
         // refreshData: () => fetchData(true),
-        refreshData: () =>
-          fetchData(true, 1, [['assigned_user_id', 'c', [assignedUser]]]),
+        refreshData: () => fetchData(true, 1, []),
       },
     });
   }
@@ -356,7 +364,7 @@ export default function Calendar(props) {
             let newdatas = dates.filter((val) => val.id !== item.Id);
             setData(newdatas);
             // fetchData(true);
-            fetchData(true, 1, [['assigned_user_id', 'c', [assignedUser]]]);
+            fetchData(true, 1, []);
           },
         },
       ],

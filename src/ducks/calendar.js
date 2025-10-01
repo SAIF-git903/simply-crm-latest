@@ -248,9 +248,9 @@ export const getCalendarRecords =
               for (let record of records) {
                 // Create an object directly with required fields
                 const mappedRecord = {
-                  date_start: record.startdate || '',
-                  time_start: '', // Not present in task records
-                  time_end: '', // Not present in task records
+                  date_start: record.date_start || '',
+                  time_start: record.time_start, // Not present in task records
+                  time_end: record.time_end, // Not present in task records
                   taskstatus: record.projecttaskprogress || '',
                   type: record.projecttasktype || '',
                   id: record.id || '',
@@ -268,7 +268,7 @@ export const getCalendarRecords =
           for (const module of modules) {
             if (module === 'Calendar') {
               const response = await API_listModuleRecords(
-                'Calendar',
+                module,
                 page,
                 '',
                 '',
@@ -405,9 +405,9 @@ export const getCalendarRecords =
               for (let record of records) {
                 // Create an object directly with required fields
                 const mappedRecord = {
-                  date_start: record.startdate || '',
-                  time_start: '', // Not present in task records
-                  time_end: '', // Not present in task records
+                  date_start: record.date_start|| '',
+                  time_start: record.time_start, // Not present in task records
+                  time_end: record.time_end, // Not present in task records
                   taskstatus: record.projecttaskprogress || '',
                   type: record.projecttasktype || '',
                   id: record.id || '',
