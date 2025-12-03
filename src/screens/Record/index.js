@@ -14,6 +14,7 @@ import {
   Dimensions,
 } from 'react-native';
 import {CommonActions} from '@react-navigation/native';
+import * as Progress from 'react-native-progress';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch, useSelector} from 'react-redux';
 // import FontAwesome, {parseIconFromClassName} from 'react-native-fontawesome';
@@ -239,6 +240,15 @@ export default function RecordDetails({route}) {
     const [documentDetails, setDocumentDetails] = useState([]);
     const [docdetailModal, setDocdetailModal] = useState(false);
     const [recordName, setRecordName] = useState();
+    const [uploadProgress, setUploadProgress] = useState({
+      current: 0,
+      total: 0,
+    });
+    const progress =
+      uploadProgress.total > 0
+        ? uploadProgress.current / uploadProgress.total
+        : 0;
+
     let data = [
       {
         id: 1,
@@ -404,7 +414,7 @@ export default function RecordDetails({route}) {
             (val) => val?.name === 'filename' || val?.name === 'notecontent',
           );
           setDocumentDetails(newData);
-          setDocdetailModal(true);
+          // setDocdetailModal(true);
         }
       } catch (error) {
         console.log('err', err);
@@ -720,10 +730,11 @@ export default function RecordDetails({route}) {
           notes_title: filedata?.name,
           assigned_user_id: '19x' + loginDetails?.userId,
           filename: filedata?.name,
-          inputImgFieldval,
+          inputImgFieldval: filedata?.name,
         };
 
         let trimmedUrl = await get_Url();
+        console.log('trimmedUrl', trimmedUrl);
         let res = await API_saveFile(
           trimmedUrl,
           modulename,
@@ -734,7 +745,9 @@ export default function RecordDetails({route}) {
         );
         if (res.success === true) {
           // Alert.alert('Document added successfully.');
-          saveField(res?.result?.record?.id);
+          console.log('Document added successfully.', res?.result?.record?.id);
+
+          await saveField(res?.result?.record?.id, filedata?.name);
           setloading(false);
         } else {
           // Alert.alert('Document could not be added.');
@@ -745,16 +758,16 @@ export default function RecordDetails({route}) {
         setloading(false);
       }
     };
-    const saveField = async (record_id) => {
+    const saveField = async (record_id, name) => {
       try {
         setloading(true);
 
         let modulename = 'Documents';
 
-        let res = await API_saveRecord(modulename, inputImgFieldval, record_id);
+        let res = await API_saveRecord(modulename, {filename: name}, record_id);
 
         if (res.success === true) {
-          Alert.alert('Document added successfully.');
+          // Alert.alert('Document added successfully.');
           setloading(false);
         } else {
           Alert.alert('Document could not be added.');
@@ -767,77 +780,166 @@ export default function RecordDetails({route}) {
     };
 
     const opencamera = async () => {
-      ImageCropPicker.openCamera({
-        width: 300,
-        height: 400,
-        mediaType: 'photo',
-        includeBase64: true,
-        // useFrontCamera: true,
-        cropping: true,
-      })
-        .then((image) => {
-          const getFileName = (filePath) => {
-            // Use react-native-fs to extract filename from path
-            const pathArray = filePath.split('/');
-            const filename = pathArray[pathArray.length - 1];
-            return filename;
-          };
-          let fileName = getFileName(image.path);
+      try {
+        const image = await ImageCropPicker.openCamera({
+          mediaType: 'photo',
+          cropping: true,
+          includeBase64: true,
+          freeStyleCropEnabled: true, // user can resize crop area
+          compressImageQuality: 1, // no unnecessary compression
+          compressImageMaxWidth: 6000,
+          compressImageMaxHeight: 6000,
+          includeExif: true,
+        });
 
-          let file = {
-            uri: image.path,
-            name: fileName,
-            filename: fileName,
-            type: image.mime,
-          };
-          getDocumentDetails();
-          setInputImgFieldval({filename: image?.filename});
-          // saveFile(file, true);
-          setFile(file);
-        })
-        .catch((err) => console.log('err', err));
+        const getFileName = (filePath) => {
+          // Use react-native-fs to extract filename from path
+          const pathArray = filePath.split('/');
+          const filename = pathArray[pathArray.length - 1];
+          return filename;
+        };
+        let fileName = getFileName(image.path);
+
+        let file = {
+          uri: image.path,
+          name: fileName,
+          filename: fileName,
+          type: image.mime,
+        };
+
+        setUploadProgress({
+          current: 0,
+          total: 1,
+        });
+
+        console.log('save file called');
+        await saveFile(file);
+
+        setUploadProgress({
+          current: 0,
+          total: 0,
+        });
+        Alert.alert('Document added successfully.');
+        console.log('✅ Image saved successfully');
+      } catch (err) {
+        console.log('❌ opencamera error:', err);
+        setUploadProgress({
+          current: 0,
+          total: 0,
+        });
+      }
     };
 
+    // const openimagelib = async () => {
+    //   ImageCropPicker.openPicker({
+    //     mediaType: 'photo',
+    //     cropping: true,
+    //     multiple:true,
+    //     includeBase64: true,
+    //     freeStyleCropEnabled: true, // user can resize crop area
+    //     compressImageQuality: 1, // no unnecessary compression
+    //     compressImageMaxWidth: 6000,
+    //     compressImageMaxHeight: 6000,
+    //     includeExif: true,
+    //   })
+    //     .then((images) => {
+
+    //       const getFileName = (filePath) => {
+    //         // Use react-native-fs to extract filename from path
+    //         const pathArray = filePath.split('/');
+    //         const filename = pathArray[pathArray.length - 1];
+    //         return filename;
+    //       };
+    //       for (const image of images) {
+    //         const fileName = getFileName(image.path);
+    //         const file = {
+    //           uri: image.path,
+    //           name: fileName,
+    //           filename: fileName,
+    //           type: image.mime,
+    //         };
+
+    //         // optional UI update
+    //         setInputImgFieldval({ filename: image?.filename });
+
+    //         // ⏳ wait until current file upload finishes before moving to next
+    //         await saveFile(file);
+    //       }
+    //       // let fileName = getFileName(image.path);
+
+    //       // let file = {
+    //       //   uri: image.path,
+    //       //   name: fileName,
+    //       //   filename: fileName,
+    //       //   type: image.mime,
+    //       // };
+    //       // setInputImgFieldval({filename: image?.filename});
+    //     // getDocumentDetails();
+    //       // setFile(file);
+
+    //     })
+    //     .catch((err) => console.log('err', err));
+    //   // try {
+    //   //   const res = await DocumentPicker.pick({
+    //   //     type: [DocumentPicker.types.images],
+    //   //   });
+
+    //   //   saveFile(res[0], true);
+    //   // } catch (err) {
+    //   //   console.log('err', err);
+    //   // }
+    // };
+
     const openimagelib = async () => {
-      ImageCropPicker.openPicker({
-        width: 300,
-        height: 400,
-        mediaType: 'photo',
-        includeBase64: true,
-        // useFrontCamera: true,
-        cropping: true,
-      })
-        .then((image) => {
-          const getFileName = (filePath) => {
-            // Use react-native-fs to extract filename from path
-            const pathArray = filePath.split('/');
-            const filename = pathArray[pathArray.length - 1];
-            return filename;
-          };
+      try {
+        const images = await ImageCropPicker.openPicker({
+          mediaType: 'photo',
+          cropping: true,
+          multiple: true,
+          includeBase64: true,
+          freeStyleCropEnabled: true,
+          compressImageQuality: 1,
+          compressImageMaxWidth: 6000,
+          compressImageMaxHeight: 6000,
+          includeExif: true,
+        });
 
-          let fileName = getFileName(image.path);
-
-          let file = {
+        const getFileName = (filePath) => {
+          const pathArray = filePath.split('/');
+          return pathArray[pathArray.length - 1];
+        };
+        setUploadProgress({
+          current: 0,
+          total: images.length ? images.length : 1,
+        });
+        // Process each image sequentially
+        for (const image of images) {
+          const fileName = await getFileName(image.path);
+          const file = {
             uri: image.path,
             name: fileName,
             filename: fileName,
             type: image.mime,
           };
-          setInputImgFieldval({filename: image?.filename});
-          getDocumentDetails();
-          setFile(file);
-          // saveFile(file, true);
-        })
-        .catch((err) => console.log('err', err));
-      // try {
-      //   const res = await DocumentPicker.pick({
-      //     type: [DocumentPicker.types.images],
-      //   });
 
-      //   saveFile(res[0], true);
-      // } catch (err) {
-      //   console.log('err', err);
-      // }
+          // setInputImgFieldval({ filename: image?.filename });
+          console.log('save file called');
+          // Wait until current file is saved before moving to next
+          await saveFile(file);
+          setUploadProgress((prev) => ({
+            ...prev,
+            current: prev.current + 1,
+          }));
+        }
+        setUploadProgress({
+          current: 0,
+          total: 0,
+        });
+        Alert.alert('Document added successfully.');
+        console.log('✅ All images saved sequentially');
+      } catch (err) {
+        console.log('❌ openimagelib error:', err);
+      }
     };
 
     const onEdit = async () => {
@@ -848,6 +950,7 @@ export default function RecordDetails({route}) {
           id: jsonValue,
           lister: listerInstance,
           isDashboard: true,
+          moduleName: moduleName, // Pass moduleName to ensure correct module is used
         });
       } catch (error) {
         console.log('err', error);
@@ -860,6 +963,7 @@ export default function RecordDetails({route}) {
         let jsonValue = JSON.parse(res);
         navigation.navigate('Edit Record', {
           id: jsonValue,
+          moduleName: moduleName,
         });
       } catch (error) {
         console.log('err', error);
@@ -927,76 +1031,6 @@ export default function RecordDetails({route}) {
         {cancelable: true},
       );
     }
-
-    // const checkIsSupported = async () => {
-    //   const deviceIsSupported = await NfcManager.isSupported();
-    //   const deviceIsEnable = await NfcManager.isEnabled();
-
-    //   if (deviceIsSupported === false) {
-    //     Alert.alert('NFC functionality is not supported on this device.');
-    //   } else if (deviceIsEnable === false) {
-    //     if (Platform.OS === 'ios') {
-    //       Alert.alert('To use NFC, enable it in your device settings.');
-    //     } else {
-    //       Alert.alert('Please enable NFC to proceed.');
-    //     }
-    //   } else {
-    //     await readNdef();
-    //   }
-    // };
-
-    // async function readNdef() {
-    //   try {
-    //     if (Platform.OS === 'android') {
-    //       setNFCModel(true);
-    //     }
-    //     await NfcManager.requestTechnology(NfcTech.Ndef);
-    //     const tag = await NfcManager.getTag();
-
-    //     if (
-    //       tag?.ndefMessage &&
-    //       tag?.ndefMessage[0] &&
-    //       tag.ndefMessage[0].payload?.length === 0
-    //     ) {
-    //       Alert.alert('Invalid or empty tag');
-    //       setNFCModel(false);
-    //       return;
-    //     }
-
-    //     if (tag?.ndefMessage[0]?.payload?.length > 0) {
-    //       setNFCModel(false);
-
-    //       let payloadData = tag?.ndefMessage[0]?.payload;
-    //       // Convert numeric values to Uint8Array
-    //       // const uint8Array = new Uint8Array(payloadData);
-
-    //       // Decode the Uint8Array into a string
-    //       // const decoder = new TextDecoder('utf-8');
-    //       // const resultString = decoder.decode(uint8Array);
-
-    //       const resultString = String.fromCharCode.apply(null, payloadData);
-    //       const modifiedString = resultString.replace(/en/g, '');
-
-    //       if (nfcText) {
-    //         if (modifiedString === nfcText) {
-    //           setIsCompare(true);
-    //           setNFCText();
-    //         } else {
-    //           setIsWrong(true);
-    //           setNFCText();
-    //         }
-    //       } else {
-    //         setSaveTextModel(true);
-    //         setNFCText(modifiedString);
-    //       }
-    //     }
-    //   } catch (ex) {
-    //     console.log('Oops!', ex);
-    //   } finally {
-    //     // stop the nfc scanning
-    //     NfcManager.cancelTechnologyRequest();
-    //   }
-    // }
 
     const handlePress = (itemId) => {
       switch (itemId) {
@@ -1071,44 +1105,40 @@ export default function RecordDetails({route}) {
         const res = await DocumentPicker.pick({
           type: [DocumentPicker.types.allFiles],
         });
-        getDocumentDetails();
-        setInputImgFieldval({filename: res[0]?.name});
 
-        // saveFile(res[0], true);
-        setFile(file);
+        const file = {
+          uri: res[0]?.uri,
+          name: res[0]?.name,
+          filename: res[0]?.name,
+          type: res[0]?.type,
+        };
+
+        setUploadProgress({
+          current: 0,
+          total: 1,
+        });
+
+        console.log('save file called');
+        await saveFile(file);
+
+        setUploadProgress({
+          current: 0,
+          total: 0,
+        });
+        Alert.alert('Document added successfully.');
+        console.log('✅ File saved successfully');
       } catch (err) {
         if (DocumentPicker.isCancel(err)) {
-          console.log('err', err);
+          console.log('User cancelled file picker');
         } else {
-          console.log('err', err);
-          // Alert.alert('Unknown error: ' + JSON.stringify(err));
+          console.log('❌ pickFile error:', err);
+          setUploadProgress({
+            current: 0,
+            total: 0,
+          });
         }
       }
     };
-
-    // const uploadFile = async () => {
-    //   if (file) {
-    //     const formData = new FormData();
-    //     formData.append('file', {
-    //       uri: file.uri,
-    //       type: file.type,
-    //       name: file.name,
-    //     });
-
-    //     try {
-    //       const response = await axios.post('YOUR_SERVER_URL/upload', formData, {
-    //         headers: {
-    //           'Content-Type': 'multipart/form-data',
-    //         },
-    //       });
-    //       Alert.alert('File uploaded successfully');
-    //     } catch (err) {
-    //       Alert.alert('File upload failed: ' + JSON.stringify(err));
-    //     }
-    //   } else {
-    //     Alert.alert('Please select a file first');
-    //   }
-    // };
 
     const updateData = async () => {
       try {
@@ -1200,81 +1230,6 @@ export default function RecordDetails({route}) {
 
     return (
       <View style={{flex: 1, backgroundColor: generalBgColor}}>
-        {/* {imageModel && (
-        <View
-          style={{
-            position: 'absolute',
-            height: '100%',
-            width: '100%',
-            backgroundColor: 'rgba(52,52,52,0.3)',
-            zIndex: 1,
-            justifyContent: 'center',
-          }}>
-          <View
-            style={{
-              height: height - 120,
-              width: width - 40,
-              alignSelf: 'center',
-            }}>
-            <Image
-              resizeMode="contain"
-              style={{height: '100%', width: '100%'}}
-              source={{uri: IMG}}
-            />
-          </View>
-          <View
-            style={{
-              alignItems: 'center',
-              // justifyContent: 'space-between',
-              justifyContent: 'center',
-              // flexDirection: 'row',
-              marginHorizontal: 20,
-            }}>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={{
-                backgroundColor: '#5699E6',
-                paddingHorizontal: 25,
-                paddingVertical: 8,
-                justifyContent: 'center',
-                borderRadius: 5,
-              }}
-              onPress={() => downloadImage()}>
-              <Text
-                style={{
-                  textAlign: 'center',
-                  color: '#fff',
-                  fontWeight: '700',
-                  fontFamily: 'Poppins-SemiBold',
-                  fontSize: 16,
-                }}>
-                Download
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={{
-                backgroundColor: '#EE4B2B',
-                paddingHorizontal: 25,
-                paddingVertical: 8,
-                justifyContent: 'center',
-                borderRadius: 5,
-              }}
-              onPress={() => setImageModel(false)}>
-              <Text
-                style={{
-                  textAlign: 'center',
-                  color: '#fff',
-                  fontWeight: '700',
-                  fontFamily: 'Poppins-SemiBold',
-                  fontSize: 16,
-                }}>
-                Close
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      )} */}
         <Header
           title={'Record Details'}
           showBackButton
@@ -1283,24 +1238,49 @@ export default function RecordDetails({route}) {
             setdocumentModal(!documentModal);
           }}
         />
-        {loading && (
-          <View
-            style={{
-              position: 'absolute',
-              height: '100%',
-              width: '100%',
-              alignItems: 'center',
-              justifyContent: 'center',
-              zIndex: 1,
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            }}>
-            <ActivityIndicator
-              animating={loading}
-              size={'large'}
-              color={'#fff'}
-            />
-          </View>
-        )}
+        {loading &&
+          (uploadProgress.total == 0 ? (
+            <View
+              style={{
+                position: 'absolute',
+                height: '100%',
+                width: '100%',
+                alignItems: 'center',
+                justifyContent: 'center',
+                zIndex: 1,
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              }}>
+              <ActivityIndicator
+                animating={loading}
+                size={'large'}
+                color={'#fff'}
+              />
+            </View>
+          ) : (
+            <View
+              style={{
+                position: 'absolute',
+                height: '100%',
+                width: '100%',
+                alignItems: 'center',
+                justifyContent: 'center',
+                zIndex: 1,
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              }}>
+              <Progress.Bar
+                progress={progress}
+                width={250}
+                height={10}
+                borderRadius={5}
+                color="#4CAF50"
+                unfilledColor="rgba(255,255,255,0.2)"
+                borderWidth={0}
+              />
+              <Text style={{color: 'white', marginTop: 10, fontSize: 16}}>
+                Uploading {uploadProgress.current}/{uploadProgress.total}
+              </Text>
+            </View>
+          ))}
 
         {documentModal && (
           <Modal

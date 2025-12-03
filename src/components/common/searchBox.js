@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, createRef} from 'react';
 import {View, StyleSheet, TextInput, Platform} from 'react-native';
 import {fontStyles} from '../../styles/common';
 import IconButton from '../../components/IconButton';
@@ -7,6 +7,7 @@ import {connect} from 'react-redux';
 class SearchBox extends Component {
   constructor(props) {
     super(props);
+    this.searchboxRef = createRef();
     this.state = {
       data: [],
       moduleName: this.props.moduleName,
@@ -22,7 +23,7 @@ class SearchBox extends Component {
       return;
     }
 
-    this.refs.searchbox.blur();
+    this.searchboxRef.current?.blur();
     this.props.doSearch(this.props.searchText);
   }
 
@@ -52,7 +53,7 @@ class SearchBox extends Component {
           ]}
           placeholder="Search"
           placeholderTextColor="#707070"
-          ref="searchbox"
+          ref={this.searchboxRef}
           onSubmitEditing={() => this.onSubmit()}
           autoCapitalize="none"
           returnKeyType="done"

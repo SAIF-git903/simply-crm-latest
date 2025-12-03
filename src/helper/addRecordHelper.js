@@ -25,7 +25,7 @@ import mutiTypeList from '../components/addRecords/inputComponents/mutiTypeList'
 
 export const getRecordStructureHelper = async (currentInstance) => {
   const calanderType = currentInstance.props.subModule;
-
+console.log('calanderTypecalanderType',currentInstance.props)
   // const calanderType = currentInstance.props
 
   const {auth, colorRuducer, timeSheetModalReducer} = store.getState();
@@ -33,11 +33,73 @@ export const getRecordStructureHelper = async (currentInstance) => {
   const loginDetails = auth.loginDetails;
   const vtigerSeven = loginDetails.vtigerVersion > 6;
 
+  // Ensure moduleName is defined
+  // PRIORITY 1: If we have recordId, determine from recordId format FIRST (most reliable)
+  let moduleName = null;
+  if (currentInstance.state.recordId && currentInstance.state.recordId.includes('x')) {
+    let ids = currentInstance.state.recordId.split('x');
+    const moduleId = parseInt(ids[0], 10);
+    switch (moduleId) {
+      case 18:
+        moduleName = 'Events';
+        break;
+      case 9:
+        moduleName = 'Calendar';
+        break;
+      default:
+        // Try to find module by ID in the modules list
+        const {auth} = store.getState();
+        const modules = auth?.loginDetails?.modules || [];
+        const foundModule = modules.find((mod) => mod?.id === moduleId.toString());
+        if (foundModule?.name) {
+          moduleName = foundModule.name;
+        }
+        break;
+    }
+  }
+  
+  // PRIORITY 2: Check moduleFromCalender FIRST (before props.moduleName) - this is critical for Calendar screen edits
+  // This should take precedence over props.moduleName to ensure correct module is used
+  if (!moduleName && currentInstance.props?.moduleFromCalender) {
+    moduleName = currentInstance.props.moduleFromCalender;
+  }
+  
+  // PRIORITY 3: Use props.moduleName if not determined from recordId or moduleFromCalender, but ignore 'Home'
+  // props.moduleName should already be set correctly by AddRecords component from route params
+  if (!moduleName || moduleName === 'Home') {
+    const propsModuleName = currentInstance.props.moduleName;
+    if (propsModuleName && propsModuleName !== 'Home') {
+      moduleName = propsModuleName;
+    }
+  }
+  
+  if (!moduleName) {
+    console.error('getRecordStructureHelper: Unable to determine moduleName', {
+      recordId: currentInstance.state.recordId,
+      propsModuleName: currentInstance.props.moduleName,
+    });
+    currentInstance.setState({
+      loading: false,
+      statusText: 'Module name is missing. Please try again.',
+      statusTextColor: 'red',
+    });
+    return;
+  }
+
   try {
+    console.log('getRecordStructureHelper: Starting fetch for module:', moduleName, 'recordId:', currentInstance.state.recordId);
+    
     //get empty inputs
     const responseJson = await API_structure(
-      calanderType === 'Events' ? 'Events' : currentInstance.props.moduleName,
+      calanderType === 'Events' ? 'Events' : moduleName,
     );
+    
+    console.log('getRecordStructureHelper: Structure API response:', {
+      success: responseJson?.success,
+      hasStructure: !!responseJson?.result?.structure,
+      structureLength: responseJson?.result?.structure?.length,
+    });
+    
     let dataResponseJson;
 
     //edit record - request data for inputs
@@ -48,11 +110,18 @@ export const getRecordStructureHelper = async (currentInstance) => {
         module: vtigerSeven
           ? calanderType === 'Events'
             ? 'Events'
-            : currentInstance.props.moduleName
+            : moduleName
           : undefined,
       };
+      console.log('getRecordStructureHelper: Fetching record data with params:', param);
       dataResponseJson = await API_fetchRecord(param);
-      if (!responseJson.success) {
+      console.log('getRecordStructureHelper: Record data response:', {
+        success: dataResponseJson?.success,
+        hasRecord: !!dataResponseJson?.result?.record,
+      });
+      
+      if (!dataResponseJson || !dataResponseJson.success) {
+        console.error('getRecordStructureHelper: Failed to fetch record data');
         throw new Error('Cant get data for record');
       }
     }
@@ -63,6 +132,8 @@ export const getRecordStructureHelper = async (currentInstance) => {
       for (let k = 0; k < structures.length; k++) {
         const structure = structures[k];
         const {fields, label, visible, sequence} = structure;
+    
+
         const formArray = [];
 
         for (let i = 0; i < fields.length; i++) {
@@ -115,11 +186,11 @@ export const getRecordStructureHelper = async (currentInstance) => {
 
           const dataField = dataResponseJson?.result?.record[fArr.name];
 
-          // console.log('----line----');
-          // console.log('fArr.name');
-          // console.log(fArr.name);
-          // console.log('dataField');
-          // console.log(dataField);
+          console.log('----line----');
+          console.log('fArr.name');
+          console.log(fArr.name);
+          console.log('dataField');
+          console.log(dataField);
           if (dataField !== undefined) {
             // console.log('fArr.type.name');
             // console.log(fArr.type.name);
@@ -200,11 +271,11 @@ export const getRecordStructureHelper = async (currentInstance) => {
                 }
                 break;
               case 'time':
-                // ComponentName = TimeForm;
-                ComponentName =
-                  currentInstance?.props?.moduleName === 'Timesheets'
-                    ? TimeForm
-                    : DateForm;
+                ComponentName = TimeForm;
+                // ComponentName =
+                //   currentInstance?.props?.moduleName === 'Timesheets'
+                //     ? TimeForm
+                //     : DateForm;
                 break;
               case 'string':
               case 'text':
@@ -335,10 +406,11 @@ export const getRecordStructureHelper = async (currentInstance) => {
           </FormSection>,
         );
       }
-
+console.log('contentcontentcontentcontent',content)
       // Sort sections
       content.sort((a, b) => a.props.sequence - b.props.sequence);
 
+      console.log('getRecordStructureHelper: Setting form with', content.length, 'sections');
       currentInstance.setState({
         inputForm: content,
         loading: false,
@@ -349,12 +421,21 @@ export const getRecordStructureHelper = async (currentInstance) => {
       Alert.alert('Api error', 'Api response error. Vtiger is modified');
     }
   } catch (error) {
-    console.log(error);
+    console.log('getRecordStructureHelper error:', error);
     currentInstance.setState({loading: false});
-    Alert.alert(
-      'No network connection',
-      'Please check your internet connection and try again',
-    );
+    
+    // Check if it's a module name issue
+    if (!moduleName) {
+      Alert.alert(
+        'Error',
+        'Unable to determine module. Please try again.',
+      );
+    } else {
+      Alert.alert(
+        'No network connection',
+        'Please check your internet connection and try again',
+      );
+    }
   }
 };
 

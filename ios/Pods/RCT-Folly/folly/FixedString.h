@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-// @author: Eric Niebler (eniebler)
 // Fixed-size string type, for constexpr string handling.
 
 #pragma once
@@ -25,6 +24,7 @@
 #include <iosfwd>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 #include <type_traits>
 #include <utility>
 
@@ -35,10 +35,6 @@
 #include <folly/lang/Exception.h>
 #include <folly/lang/Ordering.h>
 #include <folly/portability/Constexpr.h>
-
-#if FOLLY_HAS_STRING_VIEW
-#include <string_view>
-#endif
 
 namespace folly {
 
@@ -58,9 +54,6 @@ struct FixedStringBase_ {
   static constexpr std::size_t npos = static_cast<std::size_t>(-1);
 };
 
-template <class Void>
-constexpr std::size_t FixedStringBase_<Void>::npos;
-
 using FixedStringBase = FixedStringBase_<>;
 
 // Intentionally NOT constexpr. By making this not constexpr, we make
@@ -68,7 +61,7 @@ using FixedStringBase = FixedStringBase_<>;
 // it's testing for fails. In this way, precondition violations are reported
 // at compile-time instead of at runtime.
 [[noreturn]] inline void assertOutOfBounds() {
-  assert(!"Array index out of bounds in BasicFixedString");
+  assert(false && "Array index out of bounds in BasicFixedString");
   throw_exception<std::out_of_range>(
       "Array index out of bounds in BasicFixedString");
 }
@@ -89,7 +82,9 @@ constexpr std::size_t checkOverflowIfDebug(std::size_t i, std::size_t size) {
 
 // Intentionally NOT constexpr. See note above for assertOutOfBounds
 [[noreturn]] inline void assertNotNullTerminated() noexcept {
-  assert(!"Non-null terminated string used to initialize a BasicFixedString");
+  assert(
+      false &&
+      "Non-null terminated string used to initialize a BasicFixedString");
   std::terminate(); // Fail hard, fail fast.
 }
 
@@ -162,12 +157,17 @@ constexpr Char char_at_(
     std::size_t right_pos,
     std::size_t right_count,
     std::size_t i) noexcept {
+  FOLLY_PUSH_WARNING
+#if defined(__GNUC__) && !defined(__clang__) && __GNUC__ <= 13
+#pragma GCC diagnostic ignored "-Warray-bounds"
+#endif
   return i < left_pos
       ? left[i]
       : (i < right_count + left_pos ? right[i - left_pos + right_pos]
                                     : (i < left_size - left_count + right_count
                                            ? left[i - right_count + left_count]
                                            : Char(0)));
+  FOLLY_POP_WARNING
 }
 
 template <class Left, class Right>
@@ -391,10 +391,6 @@ struct ReverseIterator {
 
 } // namespace fixedstring
 } // namespace detail
-
-// Defined in folly/hash/Hash.h
-std::uint32_t hsieh_hash32_buf_constexpr(
-    const unsigned char* buf, std::size_t len);
 
 /** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** *
  * \class BasicFixedString
@@ -669,7 +665,6 @@ class BasicFixedString : private detail::fixedstring::FixedStringBase {
       : BasicFixedString{
             that, detail::fixedstring::checkOverflow(count, N), Indices{}} {}
 
-#if FOLLY_HAS_STRING_VIEW
   /** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
    * Construct from a `std::basic_string_view<Char>`
    * \param that The source basic_string_view
@@ -682,7 +677,6 @@ class BasicFixedString : private detail::fixedstring::FixedStringBase {
   constexpr /* implicit */ BasicFixedString(
       std::basic_string_view<Char> that) noexcept(false)
       : BasicFixedString{that.data(), that.size()} {}
-#endif
 
   /** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
    * Construct an BasicFixedString that contains `count` characters, all
@@ -794,7 +788,6 @@ class BasicFixedString : private detail::fixedstring::FixedStringBase {
     return std::basic_string<Char>{begin(), end()};
   }
 
-#if FOLLY_HAS_STRING_VIEW
   /** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
    * Conversion to std::basic_string_view<Char>
    * \return `std::basic_string_view<Char>{begin(), end()}`
@@ -802,7 +795,6 @@ class BasicFixedString : private detail::fixedstring::FixedStringBase {
   /* implicit */ constexpr operator std::basic_string_view<Char>() const {
     return std::basic_string_view<Char>{begin(), size()};
   }
-#endif
 
   // Think hard about whether this is a good idea. It's certainly better than
   // an implicit conversion to `const Char*` since `delete "hi"_fs` will fail
@@ -1041,10 +1033,6 @@ class BasicFixedString : private detail::fixedstring::FixedStringBase {
    * \return `N`.
    */
   static constexpr std::size_t max_size() noexcept { return N; }
-
-  constexpr std::uint32_t hash() const noexcept {
-    return folly::hsieh_hash32_buf_constexpr(data_, size_);
-  }
 
   /**
    * \note `at(size())` is allowed will return `Char(0)`.
@@ -2912,7 +2900,7 @@ constexpr const std::size_t& npos = detail::fixedstring::FixedStringBase::npos;
  *   `FixedString<8>`, `FixedString<16>`, etc.
  */
 template <class Char, Char... Cs>
-constexpr BasicFixedString<Char, sizeof...(Cs)> operator"" _fs() noexcept {
+constexpr BasicFixedString<Char, sizeof...(Cs)> operator""_fs() noexcept {
   const Char a[] = {Cs..., Char(0)};
   return {+a, sizeof...(Cs)};
 }
@@ -2920,8 +2908,9 @@ constexpr BasicFixedString<Char, sizeof...(Cs)> operator"" _fs() noexcept {
 #pragma GCC diagnostic pop
 #endif
 
+#ifndef NO_FIXED_STR_UDL
 #define FOLLY_DEFINE_FIXED_STRING_UDL(N)                     \
-  constexpr FixedString<N> operator"" _fs##N(                \
+  constexpr FixedString<N> operator""_fs##N(                 \
       const char* that, std::size_t count) noexcept(false) { \
     return {that, count};                                    \
   }                                                          \
@@ -2936,6 +2925,7 @@ FOLLY_DEFINE_FIXED_STRING_UDL(64)
 FOLLY_DEFINE_FIXED_STRING_UDL(128)
 
 #undef FOLLY_DEFINE_FIXED_STRING_UDL
+#endif
 } // namespace string_literals
 } // namespace literals
 

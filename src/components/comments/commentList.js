@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createRef } from 'react';
 import {
     FlatList
 } from 'react-native';
@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 
 const CommentList = (props) => {
     const { crmTz } = useSelector(state => state.auth.loginDetails)
-    let scrollViewRef = React.createRef();
+    let scrollViewRef = createRef();
 
     const {
         comments,

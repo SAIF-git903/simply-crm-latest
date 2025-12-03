@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,19 +60,20 @@
 #endif
 
 /* FOLLY_SANITIZE_ADDRESS is defined to 1 if the current compilation unit
- * is being compiled with ASAN enabled.
+ * is being compiled with ASAN or HWASAN enabled.
  *
  * Beware when using this macro in a header file: this macro may change values
- * across compilation units if some libraries are built with ASAN enabled
- * and some built with ASAN disabled.  For instance, this may occur, if folly
- * itself was compiled without ASAN but a downstream project that uses folly is
- * compiling with ASAN enabled.
+ * across compilation units if some libraries are built with ASAN/HWASAN enabled
+ * and some built with ASAN/HWSAN disabled. For instance, this may occur, if
+ * folly itself was compiled without ASAN/HWSAN but a downstream project that
+ * uses folly is compiling with ASAN/HWSAN enabled.
  *
  * Use FOLLY_LIBRARY_SANITIZE_ADDRESS (defined in folly-config.h) to check if
  * folly itself was compiled with ASAN enabled.
  */
 #ifndef FOLLY_SANITIZE_ADDRESS
-#if FOLLY_HAS_FEATURE(address_sanitizer) || __SANITIZE_ADDRESS__
+#if FOLLY_HAS_FEATURE(address_sanitizer) || defined(__SANITIZE_ADDRESS__) || \
+    FOLLY_HAS_FEATURE(hwaddress_sanitizer)
 #define FOLLY_SANITIZE_ADDRESS 1
 #endif
 #endif
@@ -83,8 +84,9 @@
 #ifdef FOLLY_SANITIZE_ADDRESS
 #if defined(__clang__)
 #if __has_attribute(__no_sanitize__)
-#define FOLLY_DISABLE_ADDRESS_SANITIZER \
-  __attribute__((__no_sanitize__("address"), __noinline__))
+#define FOLLY_DISABLE_ADDRESS_SANITIZER                     \
+  __attribute__((__no_sanitize__("address"), __noinline__)) \
+  __attribute__((__no_sanitize__("hwaddress"), __noinline__))
 #elif __has_attribute(__no_address_safety_analysis__)
 #define FOLLY_DISABLE_ADDRESS_SANITIZER \
   __attribute__((__no_address_safety_analysis__, __noinline__))
@@ -95,6 +97,8 @@
 #elif defined(__GNUC__)
 #define FOLLY_DISABLE_ADDRESS_SANITIZER \
   __attribute__((__no_address_safety_analysis__, __noinline__))
+#elif defined(_MSC_VER)
+#define FOLLY_DISABLE_ADDRESS_SANITIZER __declspec(no_sanitize_address)
 #endif
 #endif
 #ifndef FOLLY_DISABLE_ADDRESS_SANITIZER
@@ -104,12 +108,12 @@
 /* Define a convenience macro to test when thread sanitizer is being used
  * across the different compilers (e.g. clang, gcc) */
 #ifndef FOLLY_SANITIZE_THREAD
-#if FOLLY_HAS_FEATURE(thread_sanitizer) || __SANITIZE_THREAD__
+#if FOLLY_HAS_FEATURE(thread_sanitizer) || defined(__SANITIZE_THREAD__)
 #define FOLLY_SANITIZE_THREAD 1
 #endif
 #endif
 
-#if FOLLY_SANITIZE_THREAD
+#ifdef FOLLY_SANITIZE_THREAD
 #define FOLLY_DISABLE_THREAD_SANITIZER \
   __attribute__((no_sanitize_thread, noinline))
 #else
@@ -121,12 +125,12 @@
  * across the different compilers (e.g. clang, gcc)
  */
 #ifndef FOLLY_SANITIZE_MEMORY
-#if FOLLY_HAS_FEATURE(memory_sanitizer) || __SANITIZE_MEMORY__
+#if FOLLY_HAS_FEATURE(memory_sanitizer) || defined(__SANITIZE_MEMORY__)
 #define FOLLY_SANITIZE_MEMORY 1
 #endif
 #endif
 
-#if FOLLY_SANITIZE_MEMORY
+#ifdef FOLLY_SANITIZE_MEMORY
 #define FOLLY_DISABLE_MEMORY_SANITIZER \
   __attribute__((no_sanitize_memory, noinline))
 #else
@@ -134,26 +138,57 @@
 #endif
 
 /**
- * Define a convenience macro to test when ASAN, UBSAN, TSAN or MSAN sanitizer
- * are being used
+ * Define a convenience macro to test when dataflow sanitizer is being used
+ * across the different compilers (e.g. clang, gcc)
  */
-#ifndef FOLLY_SANITIZE
-#if defined(FOLLY_SANITIZE_ADDRESS) || defined(FOLLY_SANITIZE_THREAD) || \
-    defined(FOLLY_SANITIZE_MEMORY)
-#define FOLLY_SANITIZE 1
+#ifndef FOLLY_SANITIZE_DATAFLOW
+#if FOLLY_HAS_FEATURE(dataflow_sanitizer) || defined(__SANITIZE_DATAFLOW__)
+#define FOLLY_SANITIZE_DATAFLOW 1
 #endif
 #endif
 
-#if FOLLY_SANITIZE
+#ifdef FOLLY_SANITIZE_DATAFLOW
+#define FOLLY_DISABLE_DATAFLOW_SANITIZER \
+  __attribute__((no_sanitize_dataflow, noinline))
+#else
+#define FOLLY_DISABLE_DATAFLOW_SANITIZER
+#endif
+
+/**
+ * Define a convenience macro to test when undefined-behavior sanitizer is being
+ * used across the different compilers (e.g. clang, gcc)
+ */
+#ifndef FOLLY_SANITIZE_UNDEFINED_BEHAVIOR
+#if FOLLY_HAS_FEATURE(undefined_behavior_sanitizer) || \
+    defined(__SANITIZER_UNDEFINED__)
+#define FOLLY_SANITIZE_UNDEFINED_BEHAVIOR(...) 1
+#endif
+#endif
+
+#ifdef FOLLY_SANITIZE_UNDEFINED_BEHAVIOR
 #define FOLLY_DISABLE_UNDEFINED_BEHAVIOR_SANITIZER(...) \
   __attribute__((no_sanitize(__VA_ARGS__)))
 #else
 #define FOLLY_DISABLE_UNDEFINED_BEHAVIOR_SANITIZER(...)
-#endif // FOLLY_SANITIZE
+#endif
 
-#define FOLLY_DISABLE_SANITIZERS                                 \
-  FOLLY_DISABLE_ADDRESS_SANITIZER FOLLY_DISABLE_THREAD_SANITIZER \
-      FOLLY_DISABLE_UNDEFINED_BEHAVIOR_SANITIZER("undefined")
+/**
+ * Define a convenience macro to test when ASAN, UBSAN, TSAN or MSAN sanitizer
+ * are being used
+ */
+#ifndef FOLLY_SANITIZE
+#if defined(FOLLY_SANITIZE_ADDRESS) || defined(FOLLY_SANITIZE_THREAD) ||  \
+    defined(FOLLY_SANITIZE_MEMORY) || defined(FOLLY_SANITIZE_DATAFLOW) || \
+    defined(FOLLY_SANITIZE_UNDEFINED_BEHAVIOR)
+#define FOLLY_SANITIZE 1
+#endif
+#endif
+
+#define FOLLY_DISABLE_SANITIZERS  \
+  FOLLY_DISABLE_ADDRESS_SANITIZER \
+  FOLLY_DISABLE_THREAD_SANITIZER  \
+  FOLLY_DISABLE_MEMORY_SANITIZER  \
+  FOLLY_DISABLE_UNDEFINED_BEHAVIOR_SANITIZER("undefined")
 
 /**
  * Macro for marking functions as having public visibility.
@@ -167,6 +202,9 @@
 // noinline
 #ifdef _MSC_VER
 #define FOLLY_NOINLINE __declspec(noinline)
+#elif defined(__HIP_PLATFORM_HCC__)
+// HIP software stack defines its own __noinline__ macro.
+#define FOLLY_NOINLINE __attribute__((noinline))
 #elif defined(__GNUC__)
 #define FOLLY_NOINLINE __attribute__((__noinline__))
 #else
@@ -205,6 +243,17 @@
 #endif
 #endif
 
+// FOLLY_NAME_RESOLVABLE
+//
+// An attribute that marks a function or variable as needing to be resolvable
+// by name. This generally is needed if inline assembly refers to the variable
+// by string name.
+#ifdef __roar__
+#define FOLLY_NAME_RESOLVABLE __attribute__((roar_resolvable_by_name))
+#else
+#define FOLLY_NAME_RESOLVABLE
+#endif
+
 //  FOLLY_ERASE
 //
 //  A conceptual attribute/syntax combo for erasing a function from the build
@@ -213,6 +262,12 @@
 //
 //  Semantically includes the inline specifier.
 #define FOLLY_ERASE FOLLY_ALWAYS_INLINE FOLLY_ATTR_VISIBILITY_HIDDEN
+
+//  FOLLY_ERASE_NOINLINE
+//
+//  Like FOLLY_ERASE, but also noinline. The naming similarity with FOLLY_ERASE
+//  is specifically desirable.
+#define FOLLY_ERASE_NOINLINE FOLLY_NOINLINE FOLLY_ATTR_VISIBILITY_HIDDEN
 
 //  FOLLY_ERASE_HACK_GCC
 //
@@ -239,4 +294,56 @@
 #define FOLLY_ERASE_TRYCATCH inline
 #else
 #define FOLLY_ERASE_TRYCATCH FOLLY_ERASE
+#endif
+
+// Generalize warning push/pop.
+#if defined(__GNUC__) || defined(__clang__)
+// Clang & GCC
+#define FOLLY_PUSH_WARNING _Pragma("GCC diagnostic push")
+#define FOLLY_POP_WARNING _Pragma("GCC diagnostic pop")
+#define FOLLY_GNU_DISABLE_WARNING_INTERNAL2(warningName) #warningName
+#define FOLLY_GNU_DISABLE_WARNING(warningName) \
+  _Pragma(                                     \
+      FOLLY_GNU_DISABLE_WARNING_INTERNAL2(GCC diagnostic ignored warningName))
+#ifdef __clang__
+#define FOLLY_CLANG_DISABLE_WARNING(warningName) \
+  FOLLY_GNU_DISABLE_WARNING(warningName)
+#define FOLLY_GCC_DISABLE_WARNING(warningName)
+#else
+#define FOLLY_CLANG_DISABLE_WARNING(warningName)
+#define FOLLY_GCC_DISABLE_WARNING(warningName) \
+  FOLLY_GNU_DISABLE_WARNING(warningName)
+#endif
+#define FOLLY_MSVC_DISABLE_WARNING(warningNumber)
+#elif defined(_MSC_VER)
+#define FOLLY_PUSH_WARNING __pragma(warning(push))
+#define FOLLY_POP_WARNING __pragma(warning(pop))
+// Disable the GCC warnings.
+#define FOLLY_GNU_DISABLE_WARNING(warningName)
+#define FOLLY_GCC_DISABLE_WARNING(warningName)
+#define FOLLY_CLANG_DISABLE_WARNING(warningName)
+#define FOLLY_MSVC_DISABLE_WARNING(warningNumber) \
+  __pragma(warning(disable : warningNumber))
+#else
+#define FOLLY_PUSH_WARNING
+#define FOLLY_POP_WARNING
+#define FOLLY_GNU_DISABLE_WARNING(warningName)
+#define FOLLY_GCC_DISABLE_WARNING(warningName)
+#define FOLLY_CLANG_DISABLE_WARNING(warningName)
+#define FOLLY_MSVC_DISABLE_WARNING(warningNumber)
+#endif
+
+#ifdef FOLLY_HAVE_SHADOW_LOCAL_WARNINGS
+#define FOLLY_GCC_DISABLE_NEW_SHADOW_WARNINGS            \
+  FOLLY_GNU_DISABLE_WARNING("-Wshadow-compatible-local") \
+  FOLLY_GNU_DISABLE_WARNING("-Wshadow-local")            \
+  FOLLY_GNU_DISABLE_WARNING("-Wshadow")
+#else
+#define FOLLY_GCC_DISABLE_NEW_SHADOW_WARNINGS /* empty */
+#endif
+
+#if defined(_MSC_VER)
+#define FOLLY_MSVC_DECLSPEC(...) __declspec(__VA_ARGS__)
+#else
+#define FOLLY_MSVC_DECLSPEC(...)
 #endif

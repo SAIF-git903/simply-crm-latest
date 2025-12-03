@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,3 +65,13 @@ FOLLY_POP_WARNING
 #else
 #define FOLLY_PORT_WIN32_OPEN_BINARY 0
 #endif
+
+namespace folly {
+namespace fileops {
+#ifdef _WIN32
+using portability::fcntl::open;
+#else
+using ::open;
+#endif
+} // namespace fileops
+} // namespace folly

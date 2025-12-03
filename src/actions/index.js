@@ -73,7 +73,6 @@ export const drawerButtonPress =
   };
 
 // export const openMenu = ()
-
 const validData = (username, password, url) => {
   if (username.replace(/ /g, '') === '' || password.replace(/ /g, '') === '') {
     Alert.alert(

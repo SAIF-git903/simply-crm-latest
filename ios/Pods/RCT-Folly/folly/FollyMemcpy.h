@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-// @author: Logan Evans <lpe@fb.com>
+#include <cstddef>
 
-#include <stdlib.h>
+namespace folly {
 
-extern "C" {
-void* __folly_memcpy(
-    void* __restrict dst, const void* __restrict src, size_t size);
-}
+extern "C" void* __folly_memcpy(void* dst, const void* src, std::size_t size);
+
+} // namespace folly

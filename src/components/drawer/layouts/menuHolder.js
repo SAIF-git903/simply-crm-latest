@@ -15,7 +15,7 @@ import {
 import {fontStyles} from '../../../styles/common';
 
 export default function MenuHolder(props) {
-  const {module} = props;
+  const {module, navigation: propNavigation} = props;
 
   // Ephemeral state
   const [iconName, setIconName] = useState('file-invoice-dollar');
@@ -24,7 +24,9 @@ export default function MenuHolder(props) {
   const dispatch = useDispatch();
   const selectedButton = useSelector((state) => state.drawer.selectedButton);
 
-  const navigation = useNavigation();
+  const hookNavigation = useNavigation();
+  // Use navigation prop if provided (from drawerContent), otherwise use hook
+  const navigation = propNavigation || hookNavigation;
 
   useEffect(() => {
     assignIcons();
@@ -108,7 +110,24 @@ export default function MenuHolder(props) {
   function onButtonPress() {
     dispatch(drawerButtonPress(module.name, module.label, module.id));
 
-    navigation.navigate(module.name === 'Calendar' ? 'Calendar' : 'Records', {
+    // Use the navigation prop (drawer navigator) if provided
+    let drawerNavigation = navigation;
+    if (!propNavigation) {
+      try {
+        const parent = navigation.getParent();
+        if (parent) {
+          drawerNavigation = parent;
+        }
+      } catch (e) {
+        // If getParent fails, use current navigation
+      }
+    }
+
+    if (drawerNavigation.closeDrawer) {
+      drawerNavigation.closeDrawer();
+    }
+
+    drawerNavigation.navigate(module.name === 'Calendar' ? 'Calendar' : 'Records', {
       moduleName: module.name,
       moduleLable: module.label,
       moduleId: module.id,

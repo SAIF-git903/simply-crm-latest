@@ -14,6 +14,7 @@ import {CALENDAR} from '../../variables/constants';
 import timeSheetModalReducer from '../../reducers/TimeSheetReducer';
 import {isTimeSheetModal} from '../../actions';
 import {generalBgColor} from '../../variables/themeColors';
+import store from '../../store';
 
 class AddRecords extends Component {
   constructor(props) {
@@ -75,17 +76,81 @@ class AddRecords extends Component {
 
   render() {
     let moduleName;
-    if (this.state.isDashboard) {
-      moduleName = this.state.lister.props?.moduleName
-        ? this.state.lister.props?.moduleName
-        : this.state.lister?.moduleName;
-    } else if (this.props?.route?.params?.moduleFromCalender) {
-      moduleName = this.props?.route?.params?.moduleFromCalender;
-    } else {
-      moduleName = this.props?.route?.params?.selectedButton
-        ? this.props?.route?.params?.selectedButton
-        : this.props?.selectedButton;
+    
+    // First, try to get from Redux state (most reliable for Dashboard)
+    const {dashboardUpdate} = store.getState();
+    
+    // PRIORITY 1: If we have a recordId, determine moduleName from recordId format FIRST
+    // This is the most reliable source for edit mode
+    if (this.state.recordId && this.state.recordId.includes('x')) {
+      let ids = this.state.recordId.split('x');
+      const moduleId = parseInt(ids[0], 10);
+      switch (moduleId) {
+        case 18:
+          moduleName = 'Events';
+          break;
+        case 9:
+          moduleName = 'Calendar';
+          break;
+        // Add more module mappings as needed
+        default:
+          // For other modules, we'll try other sources below
+          break;
+      }
     }
+    
+    // PRIORITY 2: Check moduleFromCalender FIRST (before other sources) - this is critical for Calendar screen edits
+    // This should take precedence over Redux state or other fallbacks
+    if (!moduleName && this.props?.route?.params?.moduleFromCalender) {
+      moduleName = this.props.route.params.moduleFromCalender;
+    }
+    
+    // PRIORITY 3: Check moduleName from route params (for Records screen edits - Organizations, Tasks, etc.)
+    // This should be checked BEFORE Dashboard logic to ensure correct module from source screen
+    if (!moduleName && this.props?.route?.params?.moduleName) {
+      moduleName = this.props.route.params.moduleName;
+    }
+    
+    // PRIORITY 4: If moduleName not determined yet, try other sources
+    if (!moduleName) {
+      if (this.state.isDashboard) {
+        // Try multiple sources for moduleName when coming from Dashboard
+        // Priority: selectedButton > Redux state > lister props > fallback
+        moduleName = this.props?.route?.params?.selectedButton
+          ? this.props.route.params.selectedButton
+          : dashboardUpdate?.moduleName && dashboardUpdate.moduleName !== 'Home'
+          ? dashboardUpdate.moduleName // Only use if it's not 'Home'
+          : this.state.lister?.props?.moduleName
+          ? this.state.lister.props.moduleName
+          : this.state.lister?.moduleName
+          ? this.state.lister.moduleName
+          : this.props?.selectedButton;
+      } else {
+        // For non-Dashboard edits (Records screen), check selectedButton as fallback
+        moduleName = this.props?.route?.params?.selectedButton
+          ? this.props?.route?.params?.selectedButton
+          : this.props?.selectedButton;
+      }
+    }
+    
+    // PRIORITY 5: If still no moduleName and we have recordId, try to get from modules list
+    if (!moduleName && this.state.recordId && this.state.recordId.includes('x')) {
+      let ids = this.state.recordId.split('x');
+      const moduleId = parseInt(ids[0], 10);
+      // Try to find module by ID in the modules list
+      const {auth} = store.getState();
+      const modules = auth?.loginDetails?.modules || [];
+      const foundModule = modules.find((mod) => mod?.id === moduleId.toString());
+      if (foundModule?.name) {
+        moduleName = foundModule.name;
+      }
+    }
+    
+    // PRIORITY 6: Last resort - try Redux state (but ignore 'Home')
+    if (!moduleName && dashboardUpdate?.moduleName && dashboardUpdate.moduleName !== 'Home') {
+      moduleName = dashboardUpdate.moduleName;
+    }
+    
     if (moduleName === CALENDAR) {
       let ids = this.state.recordId.split('x');
       switch (parseInt(ids[0], 10)) {
@@ -97,6 +162,51 @@ class AddRecords extends Component {
           //no need to change, it works fine
           break;
       }
+    }
+    
+    // Get moduleLable from modules list if moduleName is available
+    let moduleLable = this.props.moduleLable;
+    if (moduleName && !this.props?.isTimesheets) {
+      const {auth} = store.getState();
+      const modules = auth?.loginDetails?.modules || [];
+      const foundModule = modules.find(
+        (mod) => mod?.name?.toLowerCase() === moduleName?.toLowerCase(),
+      );
+      if (foundModule?.label) {
+        moduleLable = foundModule.label;
+      } else if (this.props?.route?.params?.tabLabel) {
+        moduleLable = this.props.route.params.tabLabel;
+      }
+    }
+    
+    // Debug logging
+    console.log('AddRecords moduleName determination:', {
+      isDashboard: this.state.isDashboard,
+      routeParams: this.props?.route?.params,
+      moduleName,
+      moduleLable,
+      dashboardUpdateModuleName: dashboardUpdate?.moduleName,
+      recordId: this.state.recordId,
+    });
+
+    // Don't render if moduleName is still not determined (for Edit mode)
+    if (!moduleName && this.state.recordId) {
+      return (
+        <View style={styles.backgroundStyle}>
+          <Header
+            recordId={this.state.recordId}
+            navigation={this.props.navigation}
+            moduleName=""
+            moduleId={this.props.moduleId}
+            moduleLable="Loading..."
+          />
+          <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <Text style={{color: 'red'}}>
+              Unable to determine module. Please go back and try again.
+            </Text>
+          </View>
+        </View>
+      );
     }
 
     return (
@@ -111,9 +221,7 @@ class AddRecords extends Component {
           moduleLable={
             this.props?.isTimesheets
               ? this.props.isTimesheets
-              : this.props?.route?.params?.tabLabel
-              ? this.props?.route?.params?.tabLabel
-              : this.props.moduleLable
+              : moduleLable || this.props.moduleLable || moduleName || 'Edit Record'
           }
           callViewer={this.callViewer.bind(this)}
           showCopyOptions={this.showCopyOptions.bind(this)}
@@ -138,6 +246,7 @@ class AddRecords extends Component {
             onRef={(ref) => (this.viewer = ref)}
             recordName={this.state.recordName}
             currentId={this.state.currentId}
+            moduleFromCalender={this.props.route?.params?.moduleFromCalender}
           />
         </View>
         {/* {this.props.isTimesheets ? (

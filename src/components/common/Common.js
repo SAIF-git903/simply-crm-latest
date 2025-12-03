@@ -26,6 +26,27 @@ export const getLocationAndSave = async () => {
   const mobile_os = Platform.OS;
   const mobile_version = DeviceInfo.getVersion();
 
+  const data = store.getState();
+  const userId = data?.UserReducer?.userData?.id;
+  const location_meta_data = data?.UserReducer?.userData?.meta_data
+ function getDistanceFromLatLonInMeters(lat1, lon1, lat2, lon2) {
+  console.warn(
+    'getDistanceFromLatLonInMeters: invalid input(s)',
+    { lat1, lon1, lat2, lon2 })
+    const R = 6371e3; // meters
+    const φ1 = (lat1 * Math.PI) / 180;
+    const φ2 = (lat2 * Math.PI) / 180;
+    const Δφ = ((lat2 - lat1) * Math.PI) / 180;
+    const Δλ = ((lon2 - lon1) * Math.PI) / 180;
+  
+    const a =
+      Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+      Math.cos(φ1) * Math.cos(φ2) *
+      Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  
+    return R * c; // distance in meters
+  }
   Geolocation.getCurrentPosition(
     async (position) => {
       if (position) {
@@ -33,6 +54,24 @@ export const getLocationAndSave = async () => {
         const timestamp = moment(position.timestamp).format(
           'YYYY-MM-DD hh:mm:ss A',
         );
+        const parsed = JSON.parse(location_meta_data);
+        console.log(parsed.loc_lat); // ✅ "37.785834"
+
+
+          // Skip if same as last location (difference less than ~10 meters)
+      if (location_meta_data) {
+        const distance = getDistanceFromLatLonInMeters(
+          parsed.loc_lat,
+          parsed.loc_long,
+          latitude,
+          longitude
+        );
+        console.log('distancedistance',distance)
+        if (distance < 10) {
+          console.log('Location unchanged — no API update needed.');
+          return;
+        }
+      }
 
         const metadata = {
           loc_lat: latitude,
@@ -43,8 +82,6 @@ export const getLocationAndSave = async () => {
           mobile_version,
         };
 
-        const data = store.getState();
-        const userId = data?.UserReducer?.userData?.id;
 
         if (userId) {
           const body_data = {

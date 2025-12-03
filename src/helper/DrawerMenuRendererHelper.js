@@ -21,7 +21,7 @@ import MenuHolder from '../components/drawer/layouts/menuHolder';
 
 const hiddenModules = ['RecycleBin', 'EmailTemplates', 'Reports'];
 
-export const renderDrawerContent = (data) => {
+export const renderDrawerContent = (data, navigation) => {
   // console.log(
   //   'data',
   //   data?.mobileapp_settings?.visibility?.visibility?.defaultMenuNames,
@@ -43,7 +43,7 @@ export const renderDrawerContent = (data) => {
 
   // const moduleNames = data?.mobileapp_settings?.visibility?.visibility
   //   ?.defaultMenuNames
-  //   ? data?.mobileapp_settings?.visibility?.visibility?.defaultMenuNames
+  //   ? data?.mobileapp_settings?.visibility?.defaultMenuNames
   //   : data?.mobileapp_settings?.visibility?.defaultMenuNames
   //   ? data?.mobileapp_settings?.visibility?.defaultMenuNames
   //   : [];
@@ -60,15 +60,15 @@ export const renderDrawerContent = (data) => {
   // }
   const fixedMenuItems = menu?.filter((item) => item?.modules?.length === 0);
   if (fixedMenuItems.length > 0) {
-    return [...createFixedMenu(fixedMenuItems, homeTitle)];
+    return [...createFixedMenu(fixedMenuItems, homeTitle, navigation)];
   }
 
   // Otherwise, create the dynamic menu with the original menu items
-  return [...createDynamicMenu(menu)];
+  return [...createDynamicMenu(menu, navigation)];
   // return [...createFixedMenu(itemNew, homeTitle), ...createDynamicMenu(menu)];
 };
 
-const createFixedMenu = (itemNew, homeTitle) => {
+const createFixedMenu = (itemNew, homeTitle, navigation) => {
   // let iconNames = [
   //   'user',
   //   'building',
@@ -141,6 +141,37 @@ const createFixedMenu = (itemNew, homeTitle) => {
   // );
 
   let mainMenu = newArray.map((val) => {
+    // Set default icons based on module name
+    let defaultIcon = 'circle';
+    switch (val?.name) {
+      case 'Home':
+        defaultIcon = 'home';
+        break;
+      case 'Calendar':
+        defaultIcon = 'calendar';
+        break;
+      case 'Tasks':
+        defaultIcon = 'tasks';
+        break;
+      case 'Accounts':
+        defaultIcon = 'building';
+        break;
+      case 'Contacts':
+        defaultIcon = 'user';
+        break;
+      case 'Deals':
+        defaultIcon = 'handshake';
+        break;
+      case 'Sales':
+        defaultIcon = 'dollar-sign';
+        break;
+      case 'Projects':
+        defaultIcon = 'diagram-project';
+        break;
+      default:
+        defaultIcon = 'circle';
+    }
+
     return wrapButtonInMenuComponent(
       <ImageButton
         type={val?.name}
@@ -151,8 +182,8 @@ const createFixedMenu = (itemNew, homeTitle) => {
           id: val?.id,
         }}
         key={val?.id}
-        // icon={val?.iconName}
-        icon={val?.name === 'Home' ? 'home' : val?.icon}
+        icon={val?.icon || defaultIcon}
+        navigation={navigation}
       />,
     );
   });
@@ -161,13 +192,13 @@ const createFixedMenu = (itemNew, homeTitle) => {
   return [mainMenu];
 };
 
-const createDynamicMenu = (menu) => {
+const createDynamicMenu = (menu, navigation) => {
   let isArry = Array.isArray(menu);
   let newMenu = isArry ? menu : Object.values(menu);
   const sectionViews = [];
   // for (const section of menu) {
   for (const section of newMenu) {
-    const moduleButtonViews = createModuleButtonViews(section);
+    const moduleButtonViews = createModuleButtonViews(section, navigation);
     const newSection = (
       <Section
         drawerMenu={true}
@@ -181,7 +212,7 @@ const createDynamicMenu = (menu) => {
         headerName={section.label}
         imageName={section.label}
         headerImage
-        content={createModuleButtonViews(section)}
+        content={createModuleButtonViews(section, navigation)}
         contentHeight={moduleButtonViews.length * DRAWER_COLUMN_TOTAL_HEIGHT}
         key={section.name + '_section'}
       />
@@ -197,7 +228,7 @@ const createDynamicMenu = (menu) => {
   return sectionViews;
 };
 
-const createModuleButtonViews = (section) => {
+const createModuleButtonViews = (section, navigation) => {
   const moduleButtonViews = [];
   for (let module of section.modules) {
     if (hiddenModules.includes(module.name)) continue;
@@ -205,7 +236,7 @@ const createModuleButtonViews = (section) => {
     // TEMP
     if (module.name === 'Potentials' && module.id === '2') module.id = '13';
 
-    moduleButtonViews.push(<MenuHolder key={module.name} module={module} />);
+    moduleButtonViews.push(<MenuHolder key={module.name} module={module} navigation={navigation} />);
   }
 
   return moduleButtonViews;

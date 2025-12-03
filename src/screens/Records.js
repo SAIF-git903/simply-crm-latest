@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, createRef} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -9,7 +9,7 @@ import {generalBgColor, headerIconColor} from '../variables/themeColors';
 export default class Records extends Component {
   constructor(props) {
     super(props);
-    this.lister = React.createRef();
+    this.lister = createRef();
   }
 
   renderAddRecordButton() {

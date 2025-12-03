@@ -157,7 +157,7 @@ class TimeType extends Component {
                 modal
                 open={this.state.visible}
                 mode="time"
-                date={new Date()}
+                date={this.state.saveValue?new Date(moment(this.state.saveValue, 'HH:mm:ss').toDate()): new Date()}
                 onConfirm={(date) => {
                   this.setState({
                     saveValue: moment(new Date(date)).format('HH:mm'),

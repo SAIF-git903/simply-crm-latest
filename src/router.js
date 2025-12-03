@@ -149,9 +149,6 @@ export default class Router extends Component {
     if (this.intervalId) {
       clearInterval(this.intervalId);
     }
-  }
-
-  componentWillUnmount() {
     // Remove the event listener to avoid memory leaks
     if (this.foregroundListener) {
       this.foregroundListener();
@@ -173,16 +170,18 @@ export default class Router extends Component {
     </Stack.Navigator>
   );
 
-  createDrawer = () => (
-    <Drawer.Navigator
-      screenOptions={{headerShown: false}}
-      drawerType={'front'}
-      drawerContent={(props) => <DrawerContent {...props} />}>
-      <Drawer.Screen name="Dashboard" component={Dashboard} />
-      <Drawer.Screen name="Records" component={Records} />
-      <Drawer.Screen name="Calendar" component={Calendar} />
-    </Drawer.Navigator>
-  );
+  createDrawer = () => {
+    return (
+      <Drawer.Navigator
+        screenOptions={{headerShown: false}}
+        drawerType={'front'}
+        drawerContent={(props) => <DrawerContent {...props} />}>
+        <Drawer.Screen name="Dashboard" component={Dashboard} />
+        <Drawer.Screen name="Records" component={Records} />
+        <Drawer.Screen name="Calendar" component={Calendar} />
+      </Drawer.Navigator>
+    );
+  };
 
   render() {
     return (

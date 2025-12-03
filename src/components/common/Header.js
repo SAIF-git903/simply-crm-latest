@@ -33,8 +33,8 @@ export default function Header(props) {
   function renderMenuButton() {
     return (
       <TouchableOpacity onPress={onMenuButtonPress}>
-        {/* <Icon name="bars" size={25} color={headerIconColor} /> */}
-        <Ionicons name="menu-outline" size={30} color={headerIconColor} />
+          <Icon name="bars" size={25} color={headerIconColor} />
+        {/* <Ionicons name="menu-outline" size={30} color={headerIconColor} /> */}
       </TouchableOpacity>
     );
   }
@@ -47,7 +47,8 @@ export default function Header(props) {
           width: 28,
         }}>
         {/* <Icon name="arrow-left" size={28} color={headerIconColor} /> */}
-        <MaterialIcons name="arrow-back" size={30} color={headerIconColor} />
+         <MaterialIcons name="arrow-back" size={30} color={headerIconColor} /> 
+         {/* <Ionicons name="menu-outline" size={30} color={headerIconColor} /> */}
       </TouchableOpacity>
     );
   }

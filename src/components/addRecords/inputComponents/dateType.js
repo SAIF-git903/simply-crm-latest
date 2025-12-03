@@ -339,7 +339,6 @@ class DateType extends Component {
               </View>
             </TouchableOpacity>
             <DatePicker
-              ref="dateDialog"
               modal
               open={this.state.visible}
               mode="date"

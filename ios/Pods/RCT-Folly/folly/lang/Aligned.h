@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ class aligned {
   template <
       typename... A,
       std::enable_if_t<std::is_constructible<T, A...>::value, int> = 0>
-  explicit aligned(in_place_t, A&&... a) noexcept(
+  explicit aligned(std::in_place_t, A&&... a) noexcept(
       std::is_nothrow_constructible<T, A...>::value)
       : value_(static_cast<A&&>(a)...) {}
 

@@ -1112,11 +1112,19 @@ const getItem = (listerInstance, item, index, isDashboard, isRefRecord) => {
 
   if (isRefRecord) {
     ComponentName = ReferenceRecordItem;
+    console.log('ComponentName', ComponentName);
   } else {
-    ComponentName = RecordItem;
+    if (!RecordItem) {
+      console.error('RecordItem is undefined! Check import at line 47. Falling back to ReferenceRecordItem.');
+      ComponentName = ReferenceRecordItem;
+    } else {
+      ComponentName = RecordItem;
+    }
   }
 
   return (
+
+    
     <ComponentName
       index={index}
       selectedIndex={listerInstance.state.selectedIndex}

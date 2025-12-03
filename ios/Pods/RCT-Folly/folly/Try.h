@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,12 +35,97 @@ namespace folly {
 class FOLLY_EXPORT TryException : public std::logic_error {
  public:
   using std::logic_error::logic_error;
+  TryException() : std::logic_error{""} {}
 };
 
 class FOLLY_EXPORT UsingUninitializedTry : public TryException {
  public:
-  UsingUninitializedTry() : TryException("Using uninitialized try") {}
+  UsingUninitializedTry() = default;
+  char const* what() const noexcept override {
+    return "Using uninitialized try";
+  }
 };
+
+template <class T>
+class Try;
+
+namespace detail {
+template <class T>
+class TryBase {
+ protected:
+  enum class Contains {
+    VALUE,
+    EXCEPTION,
+    NOTHING,
+  };
+
+ public:
+  /*
+   * Construct an empty Try
+   */
+  TryBase() noexcept : contains_(Contains::NOTHING) {}
+
+  /*
+   * Construct a Try with a value by copy
+   *
+   * @param v The value to copy in
+   */
+  explicit TryBase(const T& v) noexcept(
+      std::is_nothrow_copy_constructible<T>::value)
+      : contains_(Contains::VALUE), value_(v) {}
+
+  /*
+   * Construct a Try with a value by move
+   *
+   * @param v The value to move in
+   */
+  explicit TryBase(T&& v) noexcept(std::is_nothrow_move_constructible<T>::value)
+      : contains_(Contains::VALUE), value_(std::move(v)) {}
+
+  template <typename... Args>
+  explicit TryBase(std::in_place_t, Args&&... args) noexcept(
+      std::is_nothrow_constructible<T, Args&&...>::value)
+      : contains_(Contains::VALUE), value_(static_cast<Args&&>(args)...) {}
+
+  /// Implicit conversion from Try<void> to Try<Unit>
+  template <class T2 = T>
+  /* implicit */ TryBase(typename std::enable_if<
+                         std::is_same<Unit, T2>::value,
+                         Try<void> const&>::type t) noexcept;
+
+  /*
+   * Construct a Try with an exception_wrapper
+   *
+   * @param e The exception_wrapper
+   */
+  explicit TryBase(exception_wrapper e) noexcept
+      : contains_(Contains::EXCEPTION), e_(std::move(e)) {}
+
+  ~TryBase();
+
+  // Move constructor
+  TryBase(TryBase&& t) noexcept(std::is_nothrow_move_constructible<T>::value);
+  // Move assigner
+  TryBase& operator=(TryBase&& t) noexcept(
+      std::is_nothrow_move_constructible<T>::value);
+
+  // Copy constructor
+  TryBase(const TryBase& t) noexcept(
+      std::is_nothrow_copy_constructible<T>::value);
+  // Copy assigner
+  TryBase& operator=(const TryBase& t) noexcept(
+      std::is_nothrow_copy_constructible<T>::value);
+
+ protected:
+  void destroy() noexcept;
+
+  Contains contains_;
+  union {
+    T value_;
+    exception_wrapper e_;
+  };
+};
+} // namespace detail
 
 /*
  * Try<T> is a wrapper that contains either an instance of T, an exception, or
@@ -50,76 +135,21 @@ class FOLLY_EXPORT UsingUninitializedTry : public TryException {
  * To represent success or a captured exception, use Try<Unit>.
  */
 template <class T>
-class Try {
+class Try : detail::TryBase<T>,
+            moveonly_::EnableCopyMove<
+                std::is_copy_constructible<T>::value,
+                std::is_move_constructible<T>::value> {
   static_assert(
       !std::is_reference<T>::value, "Try may not be used with reference types");
-
-  enum class Contains {
-    VALUE,
-    EXCEPTION,
-    NOTHING,
-  };
+  using typename detail::TryBase<T>::Contains;
 
  public:
+  using detail::TryBase<T>::TryBase;
+
   /*
    * The value type for the Try
    */
-  typedef T element_type;
-
-  /*
-   * Construct an empty Try
-   */
-  Try() noexcept : contains_(Contains::NOTHING) {}
-
-  /*
-   * Construct a Try with a value by copy
-   *
-   * @param v The value to copy in
-   */
-  explicit Try(const T& v) noexcept(
-      std::is_nothrow_copy_constructible<T>::value)
-      : contains_(Contains::VALUE), value_(v) {}
-
-  /*
-   * Construct a Try with a value by move
-   *
-   * @param v The value to move in
-   */
-  explicit Try(T&& v) noexcept(std::is_nothrow_move_constructible<T>::value)
-      : contains_(Contains::VALUE), value_(std::move(v)) {}
-
-  template <typename... Args>
-  explicit Try(in_place_t, Args&&... args) noexcept(
-      std::is_nothrow_constructible<T, Args&&...>::value)
-      : contains_(Contains::VALUE), value_(static_cast<Args&&>(args)...) {}
-
-  /// Implicit conversion from Try<void> to Try<Unit>
-  template <class T2 = T>
-  /* implicit */
-  Try(typename std::enable_if<std::is_same<Unit, T2>::value, Try<void> const&>::
-          type t) noexcept;
-
-  /*
-   * Construct a Try with an exception_wrapper
-   *
-   * @param e The exception_wrapper
-   */
-  explicit Try(exception_wrapper e) noexcept
-      : contains_(Contains::EXCEPTION), e_(std::move(e)) {}
-
-  // Move constructor
-  Try(Try<T>&& t) noexcept(std::is_nothrow_move_constructible<T>::value);
-  // Move assigner
-  Try& operator=(Try<T>&& t) noexcept(
-      std::is_nothrow_move_constructible<T>::value);
-
-  // Copy constructor
-  Try(const Try& t) noexcept(std::is_nothrow_copy_constructible<T>::value);
-  // Copy assigner
-  Try& operator=(const Try& t) noexcept(
-      std::is_nothrow_copy_constructible<T>::value);
-
-  ~Try();
+  using element_type = T;
 
   /*
    * In-place construct the value in the Try object.
@@ -241,57 +271,59 @@ class Try {
   /*
    * @returns True if the Try contains a value, false otherwise
    */
-  bool hasValue() const { return contains_ == Contains::VALUE; }
+  bool hasValue() const noexcept { return this->contains_ == Contains::VALUE; }
   /*
    * @returns True if the Try contains an exception, false otherwise
    */
-  bool hasException() const { return contains_ == Contains::EXCEPTION; }
+  bool hasException() const noexcept {
+    return this->contains_ == Contains::EXCEPTION;
+  }
 
   /*
    * @returns True if the Try contains an exception of type Ex, false otherwise
    */
   template <class Ex>
-  bool hasException() const {
-    return hasException() && e_.is_compatible_with<Ex>();
+  bool hasException() const noexcept {
+    return hasException() && this->e_.template is_compatible_with<Ex>();
   }
 
   exception_wrapper& exception() & {
     if (!hasException()) {
       throw_exception<TryException>("Try does not contain an exception");
     }
-    return e_;
+    return this->e_;
   }
 
   exception_wrapper&& exception() && {
     if (!hasException()) {
       throw_exception<TryException>("Try does not contain an exception");
     }
-    return std::move(e_);
+    return std::move(this->e_);
   }
 
   const exception_wrapper& exception() const& {
     if (!hasException()) {
       throw_exception<TryException>("Try does not contain an exception");
     }
-    return e_;
+    return this->e_;
   }
 
   const exception_wrapper&& exception() const&& {
     if (!hasException()) {
       throw_exception<TryException>("Try does not contain an exception");
     }
-    return std::move(e_);
+    return std::move(this->e_);
   }
 
   /*
    * @returns a pointer to the `std::exception` held by `*this`, if one is held;
    *          otherwise, returns `nullptr`.
    */
-  std::exception* tryGetExceptionObject() {
-    return hasException() ? e_.get_exception() : nullptr;
+  std::exception* tryGetExceptionObject() noexcept {
+    return hasException() ? this->e_.get_exception() : nullptr;
   }
-  std::exception const* tryGetExceptionObject() const {
-    return hasException() ? e_.get_exception() : nullptr;
+  std::exception const* tryGetExceptionObject() const noexcept {
+    return hasException() ? this->e_.get_exception() : nullptr;
   }
 
   /*
@@ -299,13 +331,13 @@ class Try {
    *          type `From` permits `std::is_convertible<From*, Ex*>`; otherwise,
    *          returns `nullptr`.
    */
-  template <class E>
-  E* tryGetExceptionObject() {
-    return hasException() ? e_.get_exception<E>() : nullptr;
+  template <class Ex>
+  Ex* tryGetExceptionObject() noexcept {
+    return hasException() ? this->e_.template get_exception<Ex>() : nullptr;
   }
-  template <class E>
-  E const* tryGetExceptionObject() const {
-    return hasException() ? e_.get_exception<E>() : nullptr;
+  template <class Ex>
+  Ex const* tryGetExceptionObject() const noexcept {
+    return hasException() ? this->e_.template get_exception<Ex>() : nullptr;
   }
 
   /*
@@ -320,14 +352,14 @@ class Try {
     if (!hasException()) {
       return false;
     }
-    return e_.with_exception<Ex>(std::move(func));
+    return this->e_.template with_exception<Ex>(std::move(func));
   }
   template <class Ex, class F>
   bool withException(F func) const {
     if (!hasException()) {
       return false;
     }
-    return e_.with_exception<Ex>(std::move(func));
+    return this->e_.template with_exception<Ex>(std::move(func));
   }
 
   /*
@@ -343,14 +375,14 @@ class Try {
     if (!hasException()) {
       return false;
     }
-    return e_.with_exception(std::move(func));
+    return this->e_.with_exception(std::move(func));
   }
   template <class F>
   bool withException(F func) const {
     if (!hasException()) {
       return false;
     }
-    return e_.with_exception(std::move(func));
+    return this->e_.with_exception(std::move(func));
   }
 
   template <bool isTry, typename R>
@@ -362,15 +394,6 @@ class Try {
   typename std::enable_if<!isTry, R>::type get() {
     return std::forward<R>(value());
   }
-
- private:
-  void destroy() noexcept;
-
-  Contains contains_;
-  union {
-    T value_;
-    exception_wrapper e_;
-  };
 };
 
 /*
@@ -454,13 +477,13 @@ class Try<void> {
   inline void throwUnlessValue() const;
 
   // @returns False if the Try contains an exception, true otherwise
-  bool hasValue() const { return hasValue_; }
+  bool hasValue() const noexcept { return hasValue_; }
   // @returns True if the Try contains an exception, false otherwise
-  bool hasException() const { return !hasValue_; }
+  bool hasException() const noexcept { return !hasValue_; }
 
   // @returns True if the Try contains an exception of type Ex, false otherwise
   template <class Ex>
-  bool hasException() const {
+  bool hasException() const noexcept {
     return hasException() && e_.is_compatible_with<Ex>();
   }
 
@@ -501,10 +524,10 @@ class Try<void> {
    * @returns a pointer to the `std::exception` held by `*this`, if one is held;
    *          otherwise, returns `nullptr`.
    */
-  std::exception* tryGetExceptionObject() {
+  std::exception* tryGetExceptionObject() noexcept {
     return hasException() ? e_.get_exception() : nullptr;
   }
-  std::exception const* tryGetExceptionObject() const {
+  std::exception const* tryGetExceptionObject() const noexcept {
     return hasException() ? e_.get_exception() : nullptr;
   }
 
@@ -514,11 +537,11 @@ class Try<void> {
    *          returns `nullptr`.
    */
   template <class E>
-  E* tryGetExceptionObject() {
+  E* tryGetExceptionObject() noexcept {
     return hasException() ? e_.get_exception<E>() : nullptr;
   }
   template <class E>
-  E const* tryGetExceptionObject() const {
+  E const* tryGetExceptionObject() const noexcept {
     return hasException() ? e_.get_exception<E>() : nullptr;
   }
 
@@ -594,7 +617,7 @@ template <typename F>
 typename std::enable_if<
     !std::is_same<invoke_result_t<F>, void>::value,
     Try<invoke_result_t<F>>>::type
-makeTryWithNoUnwrap(F&& f);
+makeTryWithNoUnwrap(F&& f) noexcept;
 
 /*
  * Specialization of makeTryWith for void return
@@ -606,7 +629,7 @@ makeTryWithNoUnwrap(F&& f);
 template <typename F>
 typename std::
     enable_if<std::is_same<invoke_result_t<F>, void>::value, Try<void>>::type
-    makeTryWithNoUnwrap(F&& f);
+    makeTryWithNoUnwrap(F&& f) noexcept;
 
 /*
  * @param f a function to execute and capture the result of (value or exception)
@@ -616,7 +639,7 @@ typename std::
 template <typename F>
 typename std::
     enable_if<!isTry<invoke_result_t<F>>::value, Try<invoke_result_t<F>>>::type
-    makeTryWith(F&& f);
+    makeTryWith(F&& f) noexcept;
 
 /*
  * Specialization of makeTryWith for functions that return Try<T>
@@ -630,7 +653,7 @@ typename std::
 template <typename F>
 typename std::enable_if<isTry<invoke_result_t<F>>::value, invoke_result_t<F>>::
     type
-    makeTryWith(F&& f);
+    makeTryWith(F&& f) noexcept;
 
 /*
  * Try to in-place construct a new value from the specified arguments.
@@ -696,6 +719,9 @@ auto unwrapTryTuple(Tuple&&);
  */
 template <typename T>
 void tryAssign(Try<T>& t, Try<T>&& other) noexcept;
+
+template <typename T>
+Try(T&&) -> Try<std::decay_t<T>>;
 
 } // namespace folly
 

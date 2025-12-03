@@ -1,0 +1,45 @@
+diff --git a/node_modules/@react-native-community/datetimepicker/ios/RNDateTimePickerShadowView.m b/node_modules/@react-native-community/datetimepicker/ios/RNDateTimePickerShadowView.m
+index c139440..4ff3362 100644
+--- a/node_modules/@react-native-community/datetimepicker/ios/RNDateTimePickerShadowView.m
++++ b/node_modules/@react-native-community/datetimepicker/ios/RNDateTimePickerShadowView.m
+@@ -41,7 +41,7 @@ - (void)setTimeZoneName:(NSString *)timeZoneName {
+   YGNodeMarkDirty(self.yogaNode);
+ }
+ 
+-static YGSize RNDateTimePickerShadowViewMeasure(YGNodeRef node, float width, YGMeasureMode widthMode, float height, YGMeasureMode heightMode)
++static YGSize RNDateTimePickerShadowViewMeasure(YGNodeConstRef node, float width, YGMeasureMode widthMode, float height, YGMeasureMode heightMode)
+ {
+   RNDateTimePickerShadowView *shadowPickerView = (__bridge RNDateTimePickerShadowView *)YGNodeGetContext(node);
+ 
+diff --git a/node_modules/@react-native-community/datetimepicker/ios/fabric/cpp/react/renderer/components/RNDateTimePicker/ComponentDescriptors.h b/node_modules/@react-native-community/datetimepicker/ios/fabric/cpp/react/renderer/components/RNDateTimePicker/ComponentDescriptors.h
+index 4a1a8e2..f5db9ef 100644
+--- a/node_modules/@react-native-community/datetimepicker/ios/fabric/cpp/react/renderer/components/RNDateTimePicker/ComponentDescriptors.h
++++ b/node_modules/@react-native-community/datetimepicker/ios/fabric/cpp/react/renderer/components/RNDateTimePicker/ComponentDescriptors.h
+@@ -18,20 +18,19 @@ class RNDateTimePickerComponentDescriptor final : public ConcreteComponentDescri
+   public:
+     using ConcreteComponentDescriptor::ConcreteComponentDescriptor;
+ 
+-    void adopt(ShadowNode::Unshared const &shadowNode) const override {
+-      react_native_assert(std::dynamic_pointer_cast<RNDateTimePickerShadowNode>(shadowNode));
+-      auto pickerShadowNode = std::static_pointer_cast<RNDateTimePickerShadowNode>(shadowNode);
++    void adopt(ShadowNode& shadowNode) const override {
++      auto& pickerShadowNode = static_cast<RNDateTimePickerShadowNode&>(shadowNode);
+ 
+       react_native_assert(
+-        std::dynamic_pointer_cast<YogaLayoutableShadowNode>(pickerShadowNode));
+-      auto layoutableShadowNode =
+-        std::static_pointer_cast<YogaLayoutableShadowNode>(pickerShadowNode);
++        dynamic_cast<YogaLayoutableShadowNode*>(&pickerShadowNode));
++      auto& layoutableShadowNode =
++        static_cast<YogaLayoutableShadowNode&>(pickerShadowNode);
+ 
+-      auto state = std::static_pointer_cast<const RNDateTimePickerShadowNode::ConcreteState>(shadowNode->getState());
++      auto state = std::static_pointer_cast<const RNDateTimePickerShadowNode::ConcreteState>(pickerShadowNode.getState());
+       auto stateData = state->getData();
+         
+       if(stateData.frameSize.width != 0 && stateData.frameSize.height != 0) {
+-        layoutableShadowNode->setSize(Size{stateData.frameSize.width, stateData.frameSize.height});
++        layoutableShadowNode.setSize(Size{stateData.frameSize.width, stateData.frameSize.height});
+       }
+ 
+       ConcreteComponentDescriptor::adopt(shadowNode);

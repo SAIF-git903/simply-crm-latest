@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import SwipeOut from 'react-native-swipeout';
+import {SwipeRow} from 'react-native-swipe-list-view';
 import {deleteRecord, filterField} from '../../actions';
 import {RECORD_COLOR, RECORD_SELECTED_COLOR} from '../../variables/themeColors';
 import {commonStyles, fontStyles} from '../../styles/common';
@@ -48,47 +48,25 @@ class RecordItem extends Component {
     this.setState({labelColorsObject: picklistColorsObject});
   }
 
-  getActions() {
-    return [
-      {
-        component: (
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: '#f2f3f8',
-              borderColor: 'white',
-              borderRightWidth: 1,
-            }}>
-            <Icon name="pencil-alt" solid size={30} color="black" />
-          </View>
-        ),
-        onPress: this.onEdit.bind(this),
-      },
-      {
-        component: (
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: '#f2f3f8',
-            }}>
-            <Icon name="trash-alt" solid size={30} color="black" />
-          </View>
-        ),
-        onPress: this.onDelete.bind(this),
-      },
-    ];
-  }
-
   onEdit() {
     //TODO Non-serializable values were found in the navigation state. Use navigation.setOption() instead
-    this.props.navigation.navigate('Edit Record', {
+    // Get the parent Stack Navigator if we're in a Drawer Navigator
+    const stackNavigation = this.props.navigation.getParent() || this.props.navigation;
+    
+    // Get moduleName from listerInstance props (for Dashboard) or from navigation params
+    let moduleName = this.props.listerInstance?.props?.moduleName;
+    if (!moduleName && this.props.isDashboard) {
+      // Try to get from Redux state if available
+      const {dashboardUpdate} = store.getState();
+      moduleName = dashboardUpdate?.moduleName;
+    }
+    
+    stackNavigation.navigate('Edit Record', {
       id: this.props.id,
       lister: this.props.listerInstance,
       isDashboard: this.props.isDashboard,
+      selectedButton: moduleName, // Pass moduleName as selectedButton for fallback
+      moduleName: moduleName, // Also pass as moduleName
     });
   }
 
@@ -224,36 +202,60 @@ class RecordItem extends Component {
       no_tittle_style = commonStyles.no_tittle;
     }
     return (
-      <View>
-        <SwipeOut buttonWidth={70} right={this.getActions()} autoClose>
+      <SwipeRow rightOpenValue={-140} disableRightSwipe>
+        <View style={{flexDirection: 'row', alignItems: 'center', flex: 1, justifyContent: 'flex-end'}}>
           <TouchableOpacity
-            onPress={() => {
-              this.props.onRecordSelect(this.props.id, this.props.index);
+            onPress={this.onEdit.bind(this)}
+            style={{
+              width: 70,
+              height: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: '#f2f3f8',
+              borderColor: 'white',
+              borderRightWidth: 1,
             }}>
-            <View
-              style={[
-                styles.backgroundStyle,
-                {
-                  borderTopWidth: this.props.index === 0 ? 1 : 0,
-                  backgroundColor:
-                    this.props.selectedIndex === this.props.index
-                      ? RECORD_SELECTED_COLOR
-                      : RECORD_COLOR,
-                },
-              ]}>
-              <Text
-                key={1}
-                numberOfLines={1}
-                style={[fontStyles.dashboardRecordLabelBig, no_tittle_style]}>
-                {recordName}
-              </Text>
-              {this.props.labels
-                ? this.renderLabels(this.props.labels, labelColorsObject)
-                : null}
-            </View>
+            <Icon name="pencil-alt" solid size={30} color="black" />
           </TouchableOpacity>
-        </SwipeOut>
-      </View>
+          <TouchableOpacity
+            onPress={this.onDelete.bind(this)}
+            style={{
+              width: 70,
+              height: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: '#f2f3f8',
+            }}>
+            <Icon name="trash-alt" solid size={30} color="black" />
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity
+          onPress={() => {
+            this.props.onRecordSelect(this.props.id, this.props.index);
+          }}>
+          <View
+            style={[
+              styles.backgroundStyle,
+              {
+                borderTopWidth: this.props.index === 0 ? 1 : 0,
+                backgroundColor:
+                  this.props.selectedIndex === this.props.index
+                    ? RECORD_SELECTED_COLOR
+                    : RECORD_COLOR,
+              },
+            ]}>
+            <Text
+              key={1}
+              numberOfLines={1}
+              style={[fontStyles.dashboardRecordLabelBig, no_tittle_style]}>
+              {recordName}
+            </Text>
+            {this.props.labels
+              ? this.renderLabels(this.props.labels, labelColorsObject)
+              : null}
+          </View>
+        </TouchableOpacity>
+      </SwipeRow>
     );
   }
 

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, createRef} from 'react';
 import {Button, Image, Text, View} from 'react-native';
 import SignatureScreen from 'react-native-signature-canvas';
 import {commonStyles} from '../../../styles/common';
@@ -9,7 +9,7 @@ import store from '../../../store';
 class Signature extends Component {
   constructor(props) {
     super(props);
-    this.signatureRef = React.createRef();
+    this.signatureRef = createRef(null);
 
     // Declare state
     this.state = {

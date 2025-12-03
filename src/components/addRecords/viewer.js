@@ -27,7 +27,10 @@ class Viewer extends Component {
 
   componentDidMount() {
     this.props.onRef(this);
-    this.onFetchCall();
+    // Only fetch if moduleName is available
+    if (this.props.moduleName) {
+      this.onFetchCall();
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -35,6 +38,19 @@ class Viewer extends Component {
       this.props.onRef(this);
       this.onFetchCall();
       store.dispatch(isSession(false));
+    }
+    // Re-fetch if moduleName changed from undefined/null to a value, or recordId changed
+    const moduleNameChanged = prevProps.moduleName !== this.props.moduleName;
+    const recordIdChanged = prevProps.recordId !== this.props.recordId;
+    const moduleNameNowAvailable = !prevProps.moduleName && this.props.moduleName;
+    
+    if (
+      (moduleNameChanged || recordIdChanged || moduleNameNowAvailable) &&
+      this.props.moduleName &&
+      !this.state.loading
+    ) {
+      console.log('Viewer: Props changed, re-fetching. moduleName:', this.props.moduleName);
+      this.onFetchCall();
     }
   }
 
@@ -52,6 +68,13 @@ class Viewer extends Component {
   // }
 
   onFetchCall() {
+    // Don't fetch if moduleName is not available
+    if (!this.props.moduleName) {
+      console.log('Viewer: moduleName not available, skipping fetch');
+      return;
+    }
+    
+    console.log('Viewer: Fetching with moduleName:', this.props.moduleName, 'recordId:', this.props.recordId);
     this.setState(
       {
         loading: true,
@@ -67,6 +90,13 @@ class Viewer extends Component {
   }
 
   doRender() {
+    console.log('Viewer doRender:', {
+      loading: this.state.loading,
+      inputFormLength: this.state.inputForm?.length,
+      moduleName: this.props.moduleName,
+      recordId: this.props.recordId,
+    });
+    
     let view;
     if (this.state.loading) {
       view = (

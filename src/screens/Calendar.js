@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -24,7 +24,7 @@ import {
   AgendaList,
   CalendarList,
 } from 'react-native-calendars';
-import SwipeOut from 'react-native-swipeout';
+import {SwipeRow} from 'react-native-swipe-list-view';
 import Popover from 'react-native-popover-view';
 
 import {UPDATE_RECORD_VIEWER} from '../actions/types';
@@ -76,7 +76,36 @@ export default function Calendar(props) {
   const {records, isLoading, isRefreshing, recordsLoading} = useSelector(
     (state) => state.calendar,
   );
+  const getweekdays = () => {
+    const todaydate = new Date(currentDate);
 
+    // helper: format as DD-MM-YYYY
+    const formatDate = (date) => {
+      const dd = String(date.getDate()).padStart(2, '0');
+      const mm = String(date.getMonth() + 1).padStart(2, '0');
+      const yyyy = date.getFullYear();
+      return `${dd}-${mm}-${yyyy}`;
+    };
+
+    // get current weekday (0=Sun, 1=Mon, ... 6=Sat)
+    const day = todaydate.getDay();
+
+    // number of days to subtract to reach Monday
+    const diffToMonday = (day + 6) % 7;
+
+    // week start = Monday of this week
+    const weekStartDate = new Date(todaydate);
+    weekStartDate.setDate(todaydate.getDate() - diffToMonday);
+
+    // week end = Sunday of this week (6 days after Monday)
+    const weekEndDate = new Date(weekStartDate);
+    weekEndDate.setDate(weekStartDate.getDate() + 6);
+
+    return {
+      weekStart: formatDate(weekStartDate),
+      weekEnd: formatDate(weekEndDate),
+    };
+  };
   // console.log('records', records);
 
   const navigation = useNavigation();
@@ -86,8 +115,14 @@ export default function Calendar(props) {
   let modifyData = [];
 
   let date = moment(new Date()).format('YYYY-MM-DD');
-  modifyData = new_Data.filter((val) => val.title >= date);
-  // modifyData = new_Data.filter((val) => val.title <= date);
+
+  modifyData = new_Data;
+  // modifyData = new_Data.filter((val) => val.title >= date);
+
+  //  modifyData = new_Data.filter((val) => {
+  //   const eventDate = moment(val.title); // or val.date if your date field is different
+  //   return eventDate.isBetween(weekStart, weekEnd, 'day', '[]'); // [] means inclusive
+  // });
 
   const dates = modifyData.sort((a, b) => {
     const dateA = new Date(a.title);
@@ -97,7 +132,8 @@ export default function Calendar(props) {
 
   useFocusEffect(
     React.useCallback(() => {
-      fetchData();
+      // fetchData();
+      fetchData(true, 1, [['assigned_user_id', 'c', assignedUser]]);
       getData();
       setTypesVisible(false);
       setUsersVisible(false);
@@ -111,21 +147,29 @@ export default function Calendar(props) {
       values.push([`${activitytype?.fieldType}`, 'c', activitytype?.value]);
     }
 
-    if (assignedUser && typeof assignedUser === "string") {
-      const arr = assignedUser.split(',').map(item => item.trim()).filter(Boolean);
-    
-      if (arr.length > 1) {
-        // multiple values → push as array of arrays
-        const innerArray = arr.map(item => ["assigned_user_id", "c", item, "or"]);
-    values.push(innerArray);
-      } else if (arr.length === 1) {
-        // single value → push as single array
-        values.push(["assigned_user_id", "c", arr[0], "or"]);
-      }
+    if (assignedUser) {
+      const arr = assignedUser.split(',');
+      // arr.forEach((item) => values.push(["assigned_user_id", "c", item, "or"]));
+      arr.forEach((item, index) => {
+        const isLast = index === arr.length - 1;
+        const condition = arr.length === 1 || isLast ? 'and' : 'or';
+        values.push(['assigned_user_id', 'c', item, condition]);
+      });
     }
 
-    return values;
+    // ✅ get current week range
+    const {weekStart, weekEnd} = getweekdays();
+
+    return [
+      [
+        ...values,
+        ['date_start', 'bw', `${weekStart},${weekEnd}`, 'and'],
+        ['due_date', 'bw', `${weekStart},${weekEnd}`],
+      ],
+    ];
   }, [activitytype, assignedUser]);
+
+  console.log('searchValuessearchValuessearchValuessearchValues', searchValues);
 
   useEffect(() => {
     const shouldApplyFilter = activitytype || assignedUser;
@@ -203,98 +247,101 @@ export default function Calendar(props) {
 
       //     // backgroundColor: 'red',
       //   }}>
-      <Popover
-        isVisible={visible}
-        verticalOffset={
-          Platform.OS === 'android' ? -StatusBar.currentHeight : 0
-        }
-        onRequestClose={() => setVisible(false)}
-        from={
-          <TouchableOpacity
-            // style={{marginRight: 10}}
-            onPress={() => setVisible(true)}>
-            <View
-              style={{
-                backgroundColor: 'rgba(255,255,255,0.2)',
-                width: 27,
-                height: 27,
-                borderRadius: 3,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              {/* <Icon name="plus" size={25} color={headerIconColor} /> */}
-              <Ionicons name="add-outline" size={30} color={headerIconColor} />
-            </View>
-          </TouchableOpacity>
-        }>
+      <>
         <TouchableOpacity
-          style={{
-            height: 35,
-            width: 110,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-          onPress={() => {
-            setVisible(false);
-            navigation.navigate('Add Record', {
-              lister: {
-                // refreshData: () => fetchData(),
-                refreshData: () =>
-                  fetchData(true, 1, [['assigned_user_id', 'c', assignedUser]]),
-              },
-              submodule: 'Events',
-            });
-          }}>
-          <Text
+          // style={{marginRight: 10}}
+          onPress={() => setVisible(true)}>
+          <View
             style={{
-              textAlign: 'center',
-              color: '#EE4B2B',
-              fontWeight: '700',
-              fontFamily: 'Poppins-SemiBold',
+              backgroundColor: 'rgba(255,255,255,0.2)',
+              width: 27,
+              height: 27,
+              borderRadius: 3,
+              justifyContent: 'center',
+              alignItems: 'center',
             }}>
-            Add Event
-          </Text>
+            {/* <Icon name="plus" size={25} color={headerIconColor} /> */}
+            <Ionicons name="add-outline" size={30} color={headerIconColor} />
+          </View>
         </TouchableOpacity>
-        <View
-          style={{
-            borderWidth: 0.5,
-            width: '70%',
-            borderColor: '#707070',
-            alignSelf: 'center',
-          }}
-        />
-        <TouchableOpacity
-          style={{
-            width: 110,
 
-            height: 35,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-          onPress={() => {
-            setVisible(false);
-            navigation.navigate('Add Record', {
-              lister: {
-                // refreshData: () => fetchData(),
-                refreshData: () =>
-                  fetchData(true, 1, [
-                    ['assigned_user_id', 'c', [assignedUser]],
-                  ]),
-              },
-              submodule: 'Tasks',
-            });
-          }}>
-          <Text
+        <Popover
+          isVisible={visible}
+          verticalOffset={
+            Platform.OS === 'android' ? -StatusBar.currentHeight : 0
+          }
+          onRequestClose={() => setVisible(false)}>
+          <TouchableOpacity
             style={{
-              textAlign: 'center',
-              color: '#5699E6',
-              fontWeight: 'bold',
-              fontFamily: 'Poppins-SemiBold',
+              height: 35,
+              width: 110,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            onPress={() => {
+              setVisible(false);
+              navigation.navigate('Add Record', {
+                lister: {
+                  // refreshData: () => fetchData(),
+                  refreshData: () =>
+                    fetchData(true, 1, [
+                      ['assigned_user_id', 'c', assignedUser],
+                    ]),
+                },
+                submodule: 'Events',
+              });
             }}>
-            Add Task
-          </Text>
-        </TouchableOpacity>
-      </Popover>
+            <Text
+              style={{
+                textAlign: 'center',
+                color: '#EE4B2B',
+                fontWeight: '700',
+                fontFamily: 'Poppins-SemiBold',
+              }}>
+              Add Event
+            </Text>
+          </TouchableOpacity>
+          <View
+            style={{
+              borderWidth: 0.5,
+              width: '70%',
+              borderColor: '#707070',
+              alignSelf: 'center',
+            }}
+          />
+          <TouchableOpacity
+            style={{
+              width: 110,
+
+              height: 35,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() => {
+              setVisible(false);
+              navigation.navigate('Add Record', {
+                lister: {
+                  // refreshData: () => fetchData(),
+                  refreshData: () =>
+                    fetchData(true, 1, [
+                      ['assigned_user_id', 'c', [assignedUser]],
+                    ]),
+                },
+                submodule: 'Tasks',
+              });
+            }}>
+            <Text
+              style={{
+                textAlign: 'center',
+                color: '#5699E6',
+                fontWeight: 'bold',
+                fontFamily: 'Poppins-SemiBold',
+              }}>
+              Add Task
+            </Text>
+          </TouchableOpacity>
+        </Popover>
+      </>
 
       // <TouchableOpacity
       //   onPress={() =>
@@ -341,7 +388,9 @@ export default function Calendar(props) {
   }
 
   function onEdit(item) {
-    navigation.navigate('Edit Record', {
+    // Get the parent Stack Navigator if we're in a Drawer Navigator
+    const stackNavigation = navigation.getParent() || navigation;
+    stackNavigation.navigate('Edit Record', {
       id: item.id,
       moduleFromCalender: item?.moduleFromCalender,
       lister: {
@@ -391,12 +440,25 @@ export default function Calendar(props) {
     //   mofdiyTime.time_start +
     //   (mofdiyTime.time_end?.length !== 0 ? '-' + mofdiyTime.time_end : '');
 
-    const swipeOutButtons = [
-      {
-        component: (
-          <View
+    return (
+      <SwipeRow
+        rightOpenValue={-140}
+        disableRightSwipe
+        style={{
+          backgroundColor: 'transparent',
+        }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            flex: 1,
+            justifyContent: 'flex-end',
+          }}>
+          <TouchableOpacity
+            onPress={() => onEdit(item)}
             style={{
-              flex: 1,
+              width: 70,
+              height: '100%',
               justifyContent: 'center',
               alignItems: 'center',
               backgroundColor: '#f2f3f8',
@@ -404,34 +466,19 @@ export default function Calendar(props) {
               borderRightWidth: 1,
             }}>
             <Icon name="pencil-alt" solid size={30} color="black" />
-          </View>
-        ),
-        onPress: () => onEdit(item),
-      },
-      {
-        component: (
-          <View
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => onDelete(item)}
             style={{
-              flex: 1,
+              width: 70,
+              height: '100%',
               justifyContent: 'center',
               alignItems: 'center',
               backgroundColor: '#f2f3f8',
             }}>
             <Icon name="trash-alt" solid size={30} color="black" />
-          </View>
-        ),
-        onPress: () => onDelete(item),
-      },
-    ];
-
-    return (
-      <SwipeOut
-        style={{
-          backgroundColor: 'transparent',
-        }}
-        buttonWidth={70}
-        right={swipeOutButtons}
-        autoClose>
+          </TouchableOpacity>
+        </View>
         <TouchableOpacity
           activeOpacity={0.7}
           style={{
@@ -466,7 +513,7 @@ export default function Calendar(props) {
             />
           ) : null}
         </TouchableOpacity>
-      </SwipeOut>
+      </SwipeRow>
     );
   }
 
@@ -767,7 +814,9 @@ export default function Calendar(props) {
           date={currentDate.format('YYYY-MM-DD')}
           disabledOpacity={0.6}
           showTodayButton
-          onDateChanged={(date) => setCurrentDate(new moment(date))}
+          onDateChanged={(date) => {
+            setCurrentDate(new moment(date));
+          }}
           //TODO set me ?? for prevent width: 100%
           // todayButtonStyle={}
         >
@@ -802,17 +851,6 @@ export default function Calendar(props) {
               textTransform: 'uppercase',
             }}
             ListEmptyComponent={renderEmpty()}
-            // refreshControl={
-            //   <RefreshControl
-            //     refreshing={records.length > 0 ? false : true}
-            //     title={'Getting records'}
-            //     titleColor={'gray'}
-            //     onRefresh={() => fetchData()}
-            //   />
-            // }
-            // ListHeaderComponent={renderlistHeader}
-            // onEndReached={loadmoredata}
-            // onEndReachedThreshold={0.1}
             ListFooterComponent={renderFooter}
           />
         </CalendarProvider>

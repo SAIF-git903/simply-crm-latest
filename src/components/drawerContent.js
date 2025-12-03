@@ -182,7 +182,7 @@ class DrawerContent extends Component {
           <ActivityIndicator />
         ) : (
           <ScrollView style={{backgroundColor: DRAWER_BACKGROUND}}>
-            {renderDrawerContent(this.props.loginDetails)}
+            {renderDrawerContent(this.props.loginDetails, this.props.navigation)}
             <View
               style={{
                 width: '100%',

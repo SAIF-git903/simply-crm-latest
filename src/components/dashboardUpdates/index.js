@@ -41,7 +41,6 @@ class UpdateWidget extends Component {
   async componentDidMount() {
     const token = await messaging().getToken();
     console.log('token', token);
-    // const updatedUserData = this.removeId(this.props.userData);
     if (token) {
       let body_data = {
         // ...updatedUserData,
@@ -101,6 +100,15 @@ class UpdateWidget extends Component {
 
     const newData = modifiedMenu?.filter((val) => val?.id !== undefined);
 
+    // Debug logging
+    console.log('Dashboard Icons Debug:', {
+      filterData: filterData?.length,
+      firstThree: firstThree?.length,
+      modifiedMenu: modifiedMenu?.length,
+      newData: newData?.length,
+      newDataItems: newData,
+    });
+
     // const organizationModule = findModule('Accounts', modules);
     // const contactModule = findModule('Contacts', modules);
     // const calendarModule = findModule('Calendar', modules);
@@ -125,6 +133,12 @@ class UpdateWidget extends Component {
                 break;
               case 'Contacts':
                 iconName = val?.icon ? val?.icon : 'user';
+                break;
+              case 'Calendar':
+                iconName = val?.icon ? val?.icon : 'calendar';
+                break;
+              case 'Tasks':
+                iconName = val?.icon ? val?.icon : 'list-check';
                 break;
               case 'Project':
                 iconName = val?.icon ? val?.icon : 'diagram-project';
@@ -163,14 +177,14 @@ class UpdateWidget extends Component {
                 iconName = val?.icon ? val?.icon : 'user-check';
                 break;
               default:
-                iconName = val?.icon;
+                iconName = val?.icon || 'circle';
                 break;
             }
 
             return (
-              <>
+              <React.Fragment key={val?.id || val?.name}>
                 {val?.name === 'Calendar' ? (
-                  <View style={styles.iconButtonContainer} key={val?.id}>
+                  <View style={styles.iconButtonContainer}>
                     <IconButton
                       icon={'calendar'}
                       title={val?.label}
@@ -188,9 +202,10 @@ class UpdateWidget extends Component {
                     />
                   </View>
                 ) : (
+                  
                   <View style={styles.iconButtonContainer}>
                     <IconButton
-                      icon={iconName}
+                      icon={val?.label==="Tasks"?'list-check':iconName}
                       title={val?.label}
                       onPress={() => {
                         this.props.dispatch(
@@ -206,7 +221,7 @@ class UpdateWidget extends Component {
                     />
                   </View>
                 )}
-              </>
+              </React.Fragment>
             );
           })}
           {/* {organizationModule && (
@@ -278,11 +293,11 @@ class UpdateWidget extends Component {
               />
             </View>
           )} */}
-          {/* 
-                    <IconButton
-                        icon={'tasks'}
+        
+                    {/* <IconButton
+                        icon={'list-check'}
                         title={'Tasks'}
-                    /> */}
+                    />  */}
         </View>
         <View style={{padding: 10, paddingBottom: 0}}>
           <Header modules={this.props.loginDetails.modules} menu={newData} />

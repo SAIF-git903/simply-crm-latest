@@ -15,20 +15,49 @@ import {fontStyles} from '../../../styles/common';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {DynamicIcon} from '../../common/DynamicIcon';
 
-export default function ImageButton({icon, type, label, module}) {
+export default function ImageButton({icon, type, label, module, navigation: propNavigation}) {
   const {selectedButton} = useSelector((state) => state.drawer);
   const dispatch = useDispatch();
-  const navigation = useNavigation();
+  const hookNavigation = useNavigation();
+  // Use navigation prop if provided (from drawerContent), otherwise use hook
+  const navigation = propNavigation || hookNavigation;
+  
+  console.log('ImageButton render:', {icon, type, label});
 
   function onButtonPress() {
+    // Use the navigation prop (drawer navigator) if provided, otherwise try to get it
+    let drawerNavigation = navigation;
+    
+    // If we got navigation from prop, it's already the drawer navigator
+    // Otherwise, try to get the drawer navigator
+    if (!propNavigation) {
+      try {
+        // In drawerContent, useNavigation() should return the drawer navigator
+        // But if not, try getParent
+        const parent = navigation.getParent();
+        if (parent) {
+          drawerNavigation = parent;
+        }
+      } catch (e) {
+        // If getParent fails, use current navigation
+      }
+    }
+    
     switch (type) {
       case HOME:
         dispatch(drawerButtonPress(type));
-        navigation.navigate('Dashboard');
+        // Close drawer and navigate to Dashboard
+        if (drawerNavigation.closeDrawer) {
+          drawerNavigation.closeDrawer();
+        }
+        drawerNavigation.navigate('Dashboard');
         break;
       case CALENDAR:
         dispatch(drawerButtonPress(module.name, module.label, module.id));
-        navigation.navigate('Calendar', {
+        if (drawerNavigation.closeDrawer) {
+          drawerNavigation.closeDrawer();
+        }
+        drawerNavigation.navigate('Calendar', {
           moduleName: module.name,
           moduleLable: module.label,
           moduleId: module.id,
@@ -36,7 +65,10 @@ export default function ImageButton({icon, type, label, module}) {
         break;
       default:
         dispatch(drawerButtonPress(module.name, module.label, module.id));
-        navigation.navigate('Records', {
+        if (drawerNavigation.closeDrawer) {
+          drawerNavigation.closeDrawer();
+        }
+        drawerNavigation.navigate('Records', {
           moduleName: module.name,
           moduleLable: module.label,
           moduleId: module.id,
@@ -55,7 +87,7 @@ export default function ImageButton({icon, type, label, module}) {
         }}>
         <View style={{paddingLeft: 15, width: 46}}>
           <DynamicIcon
-            iconName={icon}
+            iconName={label==="Calendar"?'calendar':label==="Tasks"?"tasks":label==="Sales"?'dollar-sign':label==="Projects"?'diagram-project':icon}
             size={20}
             // color={
             //   selectedButton !== type
