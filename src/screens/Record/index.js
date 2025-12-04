@@ -980,13 +980,10 @@ export default function RecordDetails({route}) {
       try {
         const images = await ImageCropPicker.openPicker({
           mediaType: 'photo',
-          cropping: true,
+          cropping: false,
           multiple: true,
           includeBase64: true,
-          freeStyleCropEnabled: true,
           compressImageQuality: 1,
-          compressImageMaxWidth: 6000,
-          compressImageMaxHeight: 6000,
           includeExif: true,
         });
 
