@@ -19,6 +19,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch, useSelector} from 'react-redux';
 // import FontAwesome, {parseIconFromClassName} from 'react-native-fontawesome';
 import ImageCropPicker from 'react-native-image-crop-picker';
+import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
+import DeviceInfo from 'react-native-device-info';
 import DocumentPicker from 'react-native-document-picker';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -781,6 +783,65 @@ export default function RecordDetails({route}) {
 
     const opencamera = async () => {
       try {
+        // Check if running on iOS Simulator (cameras don't work on simulators)
+        if (Platform.OS === 'ios') {
+          const isEmulator = await DeviceInfo.isEmulator();
+          
+          if (isEmulator) {
+            Alert.alert(
+              'Camera Not Available',
+              'Camera functionality is not available on iOS Simulator. Please test on a physical iOS device.',
+              [{text: 'OK'}]
+            );
+            return;
+          }
+        }
+        
+        // Request camera permission for iOS before opening camera
+        if (Platform.OS === 'ios') {
+          const cameraPermission = PERMISSIONS.IOS.CAMERA;
+          let checkResult = await check(cameraPermission);
+          
+          console.log('Camera permission status:', checkResult);
+          
+          if (checkResult === RESULTS.DENIED) {
+            const requestResult = await request(cameraPermission);
+            console.log('Camera permission request result:', requestResult);
+            if (requestResult !== RESULTS.GRANTED) {
+              Alert.alert(
+                'Camera Permission Required',
+                'Please grant camera permission to take photos.',
+                [{text: 'OK'}]
+              );
+              return;
+            }
+            // Permission was just granted, wait a moment for system to register
+            await new Promise(resolve => setTimeout(resolve, 500));
+          } else if (checkResult === RESULTS.BLOCKED) {
+            Alert.alert(
+              'Camera Permission Blocked',
+              'Camera permission is blocked. Please enable it in Settings.',
+              [
+                {text: 'Cancel', style: 'cancel'},
+                {text: 'Open Settings', onPress: () => Linking.openSettings()},
+              ]
+            );
+            return;
+          } else if (checkResult !== RESULTS.GRANTED) {
+            // Handle UNAVAILABLE or other cases
+            console.log('Camera permission not available:', checkResult);
+            Alert.alert(
+              'Camera Unavailable',
+              'Camera is not available on this device.',
+              [{text: 'OK'}]
+            );
+            return;
+          }
+        }
+
+        console.log('Opening camera with ImageCropPicker...');
+        
+        // Open camera - ensure permission is granted before calling
         const image = await ImageCropPicker.openCamera({
           mediaType: 'photo',
           cropping: true,
@@ -791,6 +852,12 @@ export default function RecordDetails({route}) {
           compressImageMaxHeight: 6000,
           includeExif: true,
         });
+        
+        if (!image || !image.path) {
+          throw new Error('Camera returned invalid image data');
+        }
+        
+        console.log('Camera opened successfully, image:', image);
 
         const getFileName = (filePath) => {
           // Use react-native-fs to extract filename from path
@@ -823,6 +890,25 @@ export default function RecordDetails({route}) {
         console.log('✅ Image saved successfully');
       } catch (err) {
         console.log('❌ opencamera error:', err);
+        console.log('Error details:', JSON.stringify(err, null, 2));
+        
+        // Handle user cancellation gracefully
+        if (err.code === 'E_PICKER_CANCELLED' || err.message?.includes('cancel')) {
+          console.log('User cancelled camera');
+          setUploadProgress({
+            current: 0,
+            total: 0,
+          });
+          return;
+        }
+        
+        // Show error to user
+        Alert.alert(
+          'Camera Error',
+          err.message || 'Failed to open camera. Please try again.',
+          [{text: 'OK'}]
+        );
+        
         setUploadProgress({
           current: 0,
           total: 0,

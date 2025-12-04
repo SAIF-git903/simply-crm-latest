@@ -21,9 +21,13 @@
     "ios/*.{h,mm}",
     "ios/LocationAlways/*.{h,mm}",
     "ios/LocationWhenInUse/*.{h,mm}",
+    "ios/Camera/*.{h,mm}",
     "ios/LocationAccuracy/*.{h,mm}"
   ],
-  "frameworks": "CoreLocation",
+  "frameworks": [
+    "CoreLocation",
+    "AVFoundation"
+  ],
   "compiler_flags": "-DRCT_NEW_ARCH_ENABLED=1 -DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -DFOLLY_CFG_NO_COROUTINES=1 -DFOLLY_HAVE_CLOCK_GETTIME=1 -Wno-comma -Wno-shorten-64-to-32",
   "dependencies": {
     "React-Core": [],
