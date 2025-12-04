@@ -786,24 +786,24 @@ export default function RecordDetails({route}) {
         // Check if running on iOS Simulator (cameras don't work on simulators)
         if (Platform.OS === 'ios') {
           const isEmulator = await DeviceInfo.isEmulator();
-          
+
           if (isEmulator) {
             Alert.alert(
               'Camera Not Available',
               'Camera functionality is not available on iOS Simulator. Please test on a physical iOS device.',
-              [{text: 'OK'}]
+              [{text: 'OK'}],
             );
             return;
           }
         }
-        
+
         // Request camera permission for iOS before opening camera
         if (Platform.OS === 'ios') {
           const cameraPermission = PERMISSIONS.IOS.CAMERA;
           let checkResult = await check(cameraPermission);
-          
+
           console.log('Camera permission status:', checkResult);
-          
+
           if (checkResult === RESULTS.DENIED) {
             const requestResult = await request(cameraPermission);
             console.log('Camera permission request result:', requestResult);
@@ -811,12 +811,12 @@ export default function RecordDetails({route}) {
               Alert.alert(
                 'Camera Permission Required',
                 'Please grant camera permission to take photos.',
-                [{text: 'OK'}]
+                [{text: 'OK'}],
               );
               return;
             }
             // Permission was just granted, wait a moment for system to register
-            await new Promise(resolve => setTimeout(resolve, 500));
+            await new Promise((resolve) => setTimeout(resolve, 500));
           } else if (checkResult === RESULTS.BLOCKED) {
             Alert.alert(
               'Camera Permission Blocked',
@@ -824,7 +824,7 @@ export default function RecordDetails({route}) {
               [
                 {text: 'Cancel', style: 'cancel'},
                 {text: 'Open Settings', onPress: () => Linking.openSettings()},
-              ]
+              ],
             );
             return;
           } else if (checkResult !== RESULTS.GRANTED) {
@@ -833,30 +833,27 @@ export default function RecordDetails({route}) {
             Alert.alert(
               'Camera Unavailable',
               'Camera is not available on this device.',
-              [{text: 'OK'}]
+              [{text: 'OK'}],
             );
             return;
           }
         }
 
         console.log('Opening camera with ImageCropPicker...');
-        
+
         // Open camera - ensure permission is granted before calling
         const image = await ImageCropPicker.openCamera({
           mediaType: 'photo',
-          cropping: true,
+          cropping: false,
           includeBase64: true,
-          freeStyleCropEnabled: true, // user can resize crop area
-          compressImageQuality: 1, // no unnecessary compression
-          compressImageMaxWidth: 6000,
-          compressImageMaxHeight: 6000,
+          compressImageQuality: 1,
           includeExif: true,
         });
-        
+
         if (!image || !image.path) {
           throw new Error('Camera returned invalid image data');
         }
-        
+
         console.log('Camera opened successfully, image:', image);
 
         const getFileName = (filePath) => {
@@ -891,9 +888,12 @@ export default function RecordDetails({route}) {
       } catch (err) {
         console.log('❌ opencamera error:', err);
         console.log('Error details:', JSON.stringify(err, null, 2));
-        
+
         // Handle user cancellation gracefully
-        if (err.code === 'E_PICKER_CANCELLED' || err.message?.includes('cancel')) {
+        if (
+          err.code === 'E_PICKER_CANCELLED' ||
+          err.message?.includes('cancel')
+        ) {
           console.log('User cancelled camera');
           setUploadProgress({
             current: 0,
@@ -901,14 +901,14 @@ export default function RecordDetails({route}) {
           });
           return;
         }
-        
+
         // Show error to user
         Alert.alert(
           'Camera Error',
           err.message || 'Failed to open camera. Please try again.',
-          [{text: 'OK'}]
+          [{text: 'OK'}],
         );
-        
+
         setUploadProgress({
           current: 0,
           total: 0,
