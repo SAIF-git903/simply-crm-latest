@@ -85,8 +85,8 @@ android {
         applicationId "com.simplycrm.mobileappnew"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 55
-        versionName "25.12"
+        versionCode 58
+        versionName "8.23"
         
         manifestPlaceholders = [
             appAuthRedirectScheme: 'graph-simplycrm'

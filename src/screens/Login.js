@@ -1,6 +1,12 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {ActivityIndicator, Dimensions, Text, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Dimensions,
+  Text,
+  View,
+  TouchableOpacity,
+} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import SafeAreaView from 'react-native-safe-area-view';
@@ -162,6 +168,11 @@ class Splash extends Component {
     this.setState({componentToLoad: LOGINFORM});
   };
 
+  handleResetSettings = () => {
+    AsyncStorage.clear();
+    this.setState({componentToLoad: LOGINFORM});
+  };
+
   renderSplashLoader() {
     return (
       <SplashComponent>
@@ -174,9 +185,27 @@ class Splash extends Component {
           screenHeight={screenHeight}
           alignSelf={'center'}
           position={'absolute'}
-          bottom={30}
+          bottom={80}
           sendDebugColor={'#339DDF'}
         />
+        <TouchableOpacity
+          style={{
+            position: 'absolute',
+            bottom: 50,
+            left: 0,
+            right: 0,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          onPress={this.handleResetSettings}>
+          <Text
+            style={{
+              color: '#339DDF',
+              fontFamily: 'Poppins-SemiBold',
+            }}>
+            Reset Settings
+          </Text>
+        </TouchableOpacity>
       </SplashComponent>
     );
   }

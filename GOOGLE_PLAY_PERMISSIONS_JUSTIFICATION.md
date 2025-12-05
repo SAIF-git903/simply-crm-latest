@@ -21,11 +21,12 @@ Our CRM app requires camera access to allow users to take photos and attach them
 The camera is only accessed when users explicitly choose to take a photo through our in-app camera interface. We do not access the camera automatically or in the background.
 ```
 
-### 2. READ_MEDIA_IMAGES / READ_EXTERNAL_STORAGE Permissions
+### 2. READ_EXTERNAL_STORAGE Permission
 **Why it's needed:**
-- Users can select existing photos from their gallery to attach to CRM records
+- Users can select existing photos from their gallery to attach to CRM records (Android 10-12 only)
 - This allows users to attach photos they've already taken or received
 - Essential for importing business documents, product images, and other media into CRM records
+- Note: For Android 13+, the app uses the system photo picker which does not require READ_MEDIA_IMAGES permission
 
 **Justification Text for Play Console:**
 ```
@@ -34,7 +35,7 @@ Our CRM app requires access to photos from the device gallery to allow users to 
 - Importing images received via email or messaging apps into CRM records
 - Better documentation and collaboration through visual attachments
 
-We only access photos when users explicitly choose to select images from their gallery through our in-app image picker. We do not access photos automatically or scan the entire gallery.
+We only access photos when users explicitly choose to select images from their gallery through our in-app image picker. We do not access photos automatically or scan the entire gallery. For Android 13+, we use the system photo picker which does not require additional permissions.
 ```
 
 ### 3. ACCESS_MEDIA_LOCATION Permission
@@ -81,7 +82,7 @@ The app uses:
 - Gallery access: `ImageCropPicker.openPicker()` - only called when user taps gallery button
 - EXIF data: `includeExif: true` - preserves metadata from selected photos
 
-All permissions are declared in `android/app/src/main/AndroidManifest.xml` with proper version-specific declarations.
+All permissions are declared in `android/app/src/main/AndroidManifest.xml` with proper version-specific declarations. Note: READ_MEDIA_IMAGES and READ_MEDIA_VIDEO permissions have been removed as the app uses the system photo picker for Android 13+.
 
 
 

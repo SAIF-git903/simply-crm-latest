@@ -6,8 +6,6 @@
   <uses-permission android:name="android.permission.CAMERA"/>
   
   <!-- Photo library permissions: Required for selecting images from gallery to attach to CRM records -->
-  <!-- For Android 13+ (API 33+), use READ_MEDIA_IMAGES -->
-  <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
   <!-- For Android 10-12 (API 29-32), use READ_EXTERNAL_STORAGE -->
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
   
