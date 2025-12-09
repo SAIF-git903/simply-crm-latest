@@ -41,6 +41,7 @@ import UserList from '../components/common/UserList';
 import {
   convertToUserTimezone,
   getCommaSeparatedNames,
+  getCommaSeparatedIds,
 } from '../components/common/Common';
 import {fetchRecord} from '../actions';
 
@@ -67,7 +68,7 @@ export default function Calendar(props) {
   const [usersVisible, setUsersVisible] = useState(false);
   const [types, setTypes] = useState([]);
   const [userData, setUserData] = useState([]);
-  const [assignedUser, setAssignUsers] = useState(username);
+  const [assignedUser, setAssignUsers] = useState(user_ID); // Store user ID instead of username
   const [userID, setuserID] = useState(user_ID);
   const [activitytype, setActivitytype] = useState();
   const [adminData, setAdminData] = useState();
@@ -133,7 +134,7 @@ export default function Calendar(props) {
   useFocusEffect(
     React.useCallback(() => {
       // fetchData();
-      fetchData(true, 1, [['assigned_user_id', 'c', assignedUser]]);
+      fetchData(true, 1, [['assigned_user_id', 'e', assignedUser]]);
       getData();
       setTypesVisible(false);
       setUsersVisible(false);
@@ -149,11 +150,11 @@ export default function Calendar(props) {
 
     if (assignedUser) {
       const arr = assignedUser.split(',');
-      // arr.forEach((item) => values.push(["assigned_user_id", "c", item, "or"]));
+      // arr.forEach((item) => values.push(["assigned_user_id", "e", item, "or"]));
       arr.forEach((item, index) => {
         const isLast = index === arr.length - 1;
         const condition = arr.length === 1 || isLast ? 'and' : 'or';
-        values.push(['assigned_user_id', 'c', item, condition]);
+        values.push(['assigned_user_id', 'e', item.trim(), condition]); // Use 'e' for exact match and trim whitespace
       });
     }
 
@@ -285,7 +286,7 @@ export default function Calendar(props) {
                   // refreshData: () => fetchData(),
                   refreshData: () =>
                     fetchData(true, 1, [
-                      ['assigned_user_id', 'c', assignedUser],
+                      ['assigned_user_id', 'e', assignedUser],
                     ]),
                 },
                 submodule: 'Events',
@@ -324,7 +325,7 @@ export default function Calendar(props) {
                   // refreshData: () => fetchData(),
                   refreshData: () =>
                     fetchData(true, 1, [
-                      ['assigned_user_id', 'c', [assignedUser]],
+                      ['assigned_user_id', 'e', assignedUser],
                     ]),
                 },
                 submodule: 'Tasks',
@@ -382,7 +383,7 @@ export default function Calendar(props) {
       listerInstance: {
         // refreshData: () => fetchData(true),
         refreshData: () =>
-          fetchData(true, 1, [['assigned_user_id', 'c', [assignedUser]]]),
+          fetchData(true, 1, [['assigned_user_id', 'e', assignedUser]]),
       },
     });
   }
@@ -887,7 +888,7 @@ export default function Calendar(props) {
             selectedIds={selectedUsers}
             setSelectedIds={setSelectedUsers}
             onDonePress={(items) => {
-              const result = getCommaSeparatedNames(items);
+              const result = getCommaSeparatedIds(items); // Use IDs instead of names
               setAssignUsers(result);
               setUsersVisible(false);
             }}

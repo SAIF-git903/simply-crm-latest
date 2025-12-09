@@ -111,6 +111,11 @@ export function getCommaSeparatedNames(items) {
   return names.join(',');
 }
 
+export function getCommaSeparatedIds(items) {
+  const ids = items?.map((item) => item.id);
+  return ids.join(',');
+}
+
 // Common function to filter sectioned data based on search text
 export const filterSectionedData = (data, searchText) => {
   if (!searchText.trim()) return data; // Return original data if search is empty

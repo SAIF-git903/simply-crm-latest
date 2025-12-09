@@ -5,7 +5,27 @@ import store from './store';
 import messaging from '@react-native-firebase/messaging';
 import Router from './router';
 // import {onDisplayNotification} from '../NotificationService';
-    
+
+// Initialize Flipper for network debugging (only in development)
+// react-native-flipper should auto-configure the network interceptor
+if (__DEV__) {
+  try {
+    // Import react-native-flipper to ensure it's initialized
+    // It should automatically configure network interception
+    require('react-native-flipper');
+  } catch (e) {
+    // Flipper not available, continue without it
+    console.warn('react-native-flipper not available:', e);
+  }
+  
+  // Enable network logger for additional debugging
+  try {
+    require('react-native-network-logger');
+  } catch (e) {
+    // Network logger not critical, continue without it
+  }
+}
+
 LogBox.ignoreAllLogs();
 console.disableYellowBox = true;
  

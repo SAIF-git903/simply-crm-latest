@@ -14,6 +14,11 @@ import com.facebook.soloader.SoLoader
 
 class MainApplication : Application(), ReactApplication {
 
+  companion object {
+    @JvmStatic
+    var networkFlipperPlugin: com.facebook.flipper.plugins.network.NetworkFlipperPlugin? = null
+  }
+
   override val reactNativeHost: ReactNativeHost =
       object : DefaultReactNativeHost(this) {
         override fun getPackages(): List<ReactPackage> =
@@ -36,10 +41,21 @@ class MainApplication : Application(), ReactApplication {
   override fun onCreate() {
     super.onCreate()
     SoLoader.init(this, OpenSourceMergedSoMapping)
+
+    // Initialize Flipper (network + inspector) only for debug builds
+    if (BuildConfig.DEBUG) {
+      try {
+        ReactNativeFlipper.initializeFlipper(this, reactNativeHost.reactInstanceManager)
+      } catch (_: Exception) {
+        // Flipper is non-critical; ignore failures to keep app running
+      }
+    }
+  
     if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
       // If you opted-in for the New Architecture, we load the native entry point for this app.
       load()
     }
   }
+  
 }
 
