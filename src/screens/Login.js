@@ -180,32 +180,38 @@ class Splash extends Component {
         <View style={{marginTop: 20}}>
           <Text style={{color: '#339DDF'}}>V {this.state.versionNumber}</Text>
         </View>
+        <TouchableOpacity
+          style={{
+            position: 'absolute',
+            bottom: 100,
+            left: 30,
+            right: 30,
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: 50,
+            borderRadius: 3,
+            backgroundColor: '#339DDF',
+            borderWidth: 1,
+            borderColor: 'rgba(0, 0, 0, 0.2)',
+          }}
+          onPress={this.handleResetSettings}>
+          <Text
+            style={{
+              color: 'black',
+              fontFamily: 'Poppins-SemiBold',
+              fontSize: 16,
+            }}>
+            Taking too long? Restart login
+          </Text>
+        </TouchableOpacity>
         <DebugPopover
           screenWidth={screenWidth}
           screenHeight={screenHeight}
           alignSelf={'center'}
           position={'absolute'}
-          bottom={80}
+          bottom={30}
           sendDebugColor={'#339DDF'}
         />
-        <TouchableOpacity
-          style={{
-            position: 'absolute',
-            bottom: 50,
-            left: 0,
-            right: 0,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-          onPress={this.handleResetSettings}>
-          <Text
-            style={{
-              color: '#339DDF',
-              fontFamily: 'Poppins-SemiBold',
-            }}>
-            Reset Settings
-          </Text>
-        </TouchableOpacity>
       </SplashComponent>
     );
   }

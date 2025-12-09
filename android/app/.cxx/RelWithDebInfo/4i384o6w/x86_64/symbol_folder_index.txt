@@ -1,1 +1,0 @@
-/Users/hf/Downloads/mobileapp4/android/app/build/intermediates/cxx/RelWithDebInfo/4i384o6w/obj/x86_64
