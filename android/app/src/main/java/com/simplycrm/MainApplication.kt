@@ -15,8 +15,9 @@ import com.facebook.soloader.SoLoader
 class MainApplication : Application(), ReactApplication {
 
   companion object {
+    // This will be set by the debug version of ReactNativeFlipper
     @JvmStatic
-    var networkFlipperPlugin: com.facebook.flipper.plugins.network.NetworkFlipperPlugin? = null
+    var networkFlipperPlugin: Any? = null
   }
 
   override val reactNativeHost: ReactNativeHost =

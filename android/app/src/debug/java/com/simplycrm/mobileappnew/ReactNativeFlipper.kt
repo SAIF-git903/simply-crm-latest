@@ -23,7 +23,7 @@ object ReactNativeFlipper {
 
     // Ensure a single shared network plugin instance so the interceptor can reuse it.
     val networkPlugin =
-      MainApplication.networkFlipperPlugin ?: NetworkFlipperPlugin().also {
+      (MainApplication.networkFlipperPlugin as? NetworkFlipperPlugin) ?: NetworkFlipperPlugin().also {
         MainApplication.networkFlipperPlugin = it
       }
 
