@@ -8,14 +8,56 @@ import moment from 'moment';
 class TimeType extends Component {
   constructor(props) {
     super(props);
+    // Format the currentValue if it exists
+    let initialValue = '';
+    if (this.props.obj.currentValue !== undefined && this.props.obj.currentValue !== null && this.props.obj.currentValue !== '') {
+      // Handle different time formats (HH:mm, HH:mm:ss, hh:mm A, etc.)
+      try {
+        if (typeof this.props.obj.currentValue === 'string') {
+          // Try to parse and format the time
+          const timeStr = this.props.obj.currentValue.trim();
+          if (timeStr.match(/^\d{1,2}:\d{2}(:\d{2})?(\s?[AP]M)?$/i)) {
+            // If it's already a time string, use it directly or convert to HH:mm
+            initialValue = moment(timeStr, ['HH:mm:ss', 'HH:mm', 'hh:mm A', 'h:mm A']).format('HH:mm');
+          } else {
+            initialValue = this.props.obj.currentValue;
+          }
+        } else {
+          initialValue = this.props.obj.currentValue;
+        }
+      } catch (e) {
+        initialValue = this.props.obj.currentValue;
+      }
+    }
     this.state = {
-      saveValue:
-        this.props.obj.currentValue !== undefined
-          ? this.props.obj.currentValue
-          : new Date() && '',
+      saveValue: initialValue,
       fieldName: this.props.obj.name,
       visible: false,
     };
+  }
+
+  componentDidUpdate(prevProps) {
+    // Update state if currentValue changes
+    if (prevProps.obj.currentValue !== this.props.obj.currentValue) {
+      let newValue = '';
+      if (this.props.obj.currentValue !== undefined && this.props.obj.currentValue !== null && this.props.obj.currentValue !== '') {
+        try {
+          if (typeof this.props.obj.currentValue === 'string') {
+            const timeStr = this.props.obj.currentValue.trim();
+            if (timeStr.match(/^\d{1,2}:\d{2}(:\d{2})?(\s?[AP]M)?$/i)) {
+              newValue = moment(timeStr, ['HH:mm:ss', 'HH:mm', 'hh:mm A', 'h:mm A']).format('HH:mm');
+            } else {
+              newValue = this.props.obj.currentValue;
+            }
+          } else {
+            newValue = this.props.obj.currentValue;
+          }
+        } catch (e) {
+          newValue = this.props.obj.currentValue;
+        }
+      }
+      this.setState({saveValue: newValue});
+    }
   }
 
   render() {
@@ -84,7 +126,8 @@ class TimeType extends Component {
                     </Text>
                   </TouchableOpacity>
                 ) : (
-                  <View
+                  <TouchableOpacity
+                    activeOpacity={0.5}
                     style={{
                       //paddingTop: 9,
                       borderColor: '#ABABAB',
@@ -97,11 +140,12 @@ class TimeType extends Component {
                       height: 38,
                       width: '80%',
                       justifyContent: 'center',
-                    }}>
+                    }}
+                    onPress={() => this.setState({visible: true})}>
                     <Text style={{paddingLeft: 10, fontSize: 17}}>
                       {this.state.saveValue ? this.state.saveValue : ''}
                     </Text>
-                  </View>
+                  </TouchableOpacity>
                 )}
                 {/* <View
                   style={{
@@ -157,7 +201,19 @@ class TimeType extends Component {
                 modal
                 open={this.state.visible}
                 mode="time"
-                date={this.state.saveValue?new Date(moment(this.state.saveValue, 'HH:mm:ss').toDate()): new Date()}
+                date={
+                  this.state.saveValue
+                    ? (() => {
+                        try {
+                          // Try to parse the time string
+                          const parsed = moment(this.state.saveValue, ['HH:mm:ss', 'HH:mm', 'hh:mm A', 'h:mm A']);
+                          return parsed.isValid() ? parsed.toDate() : new Date();
+                        } catch (e) {
+                          return new Date();
+                        }
+                      })()
+                    : new Date()
+                }
                 onConfirm={(date) => {
                   this.setState({
                     saveValue: moment(new Date(date)).format('HH:mm'),

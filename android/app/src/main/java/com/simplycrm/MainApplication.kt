@@ -46,9 +46,19 @@ class MainApplication : Application(), ReactApplication {
     // Initialize Flipper (network + inspector) only for debug builds
     if (BuildConfig.DEBUG) {
       try {
-        ReactNativeFlipper.initializeFlipper(this, reactNativeHost.reactInstanceManager)
-      } catch (_: Exception) {
+        // Use reflection to avoid compile-time dependency on debug-only class
+        val flipperClass = Class.forName("com.simplycrm.mobileappnew.ReactNativeFlipper")
+        val contextClass = Class.forName("android.content.Context")
+        val reactInstanceManagerClass = Class.forName("com.facebook.react.ReactInstanceManager")
+        val initializeMethod = flipperClass.getMethod(
+          "initializeFlipper",
+          contextClass,
+          reactInstanceManagerClass
+        )
+        initializeMethod.invoke(null, this, reactNativeHost.reactInstanceManager)
+      } catch (e: Exception) {
         // Flipper is non-critical; ignore failures to keep app running
+        // This will catch ClassNotFoundException in release builds
       }
     }
   
