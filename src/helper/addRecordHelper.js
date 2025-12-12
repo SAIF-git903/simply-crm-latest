@@ -184,18 +184,7 @@ console.log('calanderTypecalanderType',currentInstance.props)
 
           // console.log('fieldObj', fieldObj);
 
-          let dataField = dataResponseJson?.result?.record[fArr.name];
-          
-          // Handle field name mismatch for time fields (time_start/time_end vs timestart/timeend)
-          if (dataField === undefined && (fArr.name === 'time_start' || fArr.name === 'time_end')) {
-            // Try alternative naming convention without underscore
-            const altName = fArr.name.replace('_', '');
-            dataField = dataResponseJson?.result?.record[altName];
-          } else if (dataField === undefined && (fArr.name === 'timestart' || fArr.name === 'timeend')) {
-            // Try alternative naming convention with underscore
-            const altName = fArr.name === 'timestart' ? 'time_start' : 'time_end';
-            dataField = dataResponseJson?.result?.record[altName];
-          }
+          const dataField = dataResponseJson?.result?.record[fArr.name];
 
           console.log('----line----');
           console.log('fArr.name');

@@ -19,27 +19,9 @@ class DateType extends Component {
     //   this.props.obj.currentValue !== undefined
     //     ? this.props.obj.currentValue
     //     : this.props.obj.default;
-    // Initialize saveValue from currentValue if available, otherwise use default
-    let initialSaveValue = null;
-    if (this.props.obj.currentValue !== undefined && this.props.obj.currentValue !== null && this.props.obj.currentValue !== '') {
-      try {
-        if (this.props.submodule === 'Events') {
-          initialSaveValue = new Date();
-        } else {
-          // Try to parse the date value using the formatDate
-          const parsedDate = moment(this.props.obj.currentValue, formatedDate);
-          initialSaveValue = parsedDate.isValid() ? parsedDate.toDate() : null;
-        }
-      } catch (e) {
-        initialSaveValue = this.props.submodule === 'Events' ? new Date() : null;
-      }
-    } else {
-      initialSaveValue = this.props.submodule === 'Events' ? new Date() : null;
-    }
-
     this.state = {
       pickDate: null,
-      saveValue: initialSaveValue,
+      saveValue: this.props.submodule === 'Events' ? new Date() : null,
       fieldName: this.props.obj.name,
       formatDate: formatDate !== undefined ? formatedDate : formatedDate,
       visible: false,
@@ -64,31 +46,11 @@ class DateType extends Component {
 
     if (this.props.submodule === 'Tasks') {
       if (this.state.fieldName === 'date_start') {
-        // If editing, use currentValue if available, otherwise use current date
-        if (this.props.obj.currentValue !== undefined && this.props.obj.currentValue !== null && this.props.obj.currentValue !== '') {
-          try {
-            const dateValue = moment(this.props.obj.currentValue, this.state.formatDate).toDate();
-            this.setState({saveValue: dateValue});
-          } catch (e) {
-            this.setState({saveValue: new Date()});
-          }
-        } else {
-          this.setState({saveValue: new Date()});
-        }
+        this.setState({saveValue: new Date()});
       }
 
       if (this.state.fieldName === 'due_date') {
-        // If editing, use currentValue if available, otherwise use current date
-        if (this.props.obj.currentValue !== undefined && this.props.obj.currentValue !== null && this.props.obj.currentValue !== '') {
-          try {
-            const dateValue = moment(this.props.obj.currentValue, this.state.formatDate).toDate();
-            this.setState({saveValue: dateValue});
-          } catch (e) {
-            this.setState({saveValue: new Date()});
-          }
-        } else {
-          this.setState({saveValue: new Date()});
-        }
+        this.setState({saveValue: new Date()});
       }
     }
 
@@ -103,38 +65,6 @@ class DateType extends Component {
       this.setState({
         saveValue: moment(new Date()).format(this.state.formatDate),
       });
-    }
-    
-    // If currentValue is available and saveValue is null, update it
-    if (this.props.obj.currentValue !== undefined && this.props.obj.currentValue !== null && this.props.obj.currentValue !== '' && !this.state.saveValue) {
-      try {
-        if (this.props.submodule !== 'Events') {
-          const parsedDate = moment(this.props.obj.currentValue, this.state.formatDate);
-          if (parsedDate.isValid()) {
-            this.setState({saveValue: parsedDate.toDate()});
-          }
-        }
-      } catch (e) {
-        // Ignore errors
-      }
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    // Update state if currentValue changes
-    if (prevProps.obj.currentValue !== this.props.obj.currentValue) {
-      if (this.props.obj.currentValue !== undefined && this.props.obj.currentValue !== null && this.props.obj.currentValue !== '') {
-        try {
-          if (this.props.submodule !== 'Events') {
-            const parsedDate = moment(this.props.obj.currentValue, this.state.formatDate);
-            if (parsedDate.isValid()) {
-              this.setState({saveValue: parsedDate.toDate()});
-            }
-          }
-        } catch (e) {
-          // Ignore errors
-        }
-      }
     }
   }
 

@@ -57,11 +57,10 @@ export default function Calendar(props) {
   // console.log('time_zone', time_zone);
 
   let moduleTitle = props?.route?.params?.moduleLable;
-  const [currentDate, setCurrentDate] = useState(new moment());
+  const [currentDate, setCurrentDate] = useState(moment().format('YYYY-MM-DD'));
   const [showCalendar, setShowCalendar] = useState(false);
   const [page, setPage] = useState(1);
   const [data, setData] = useState([]);
-  const [newData, setNewData] = useState([]);
   const [visible, setVisible] = useState(false);
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [typesVisible, setTypesVisible] = useState(false);
@@ -71,14 +70,13 @@ export default function Calendar(props) {
   const [assignedUser, setAssignUsers] = useState(user_ID); // Store user ID instead of username
   const [userID, setuserID] = useState(user_ID);
   const [activitytype, setActivitytype] = useState();
-  const [adminData, setAdminData] = useState();
 
   const dispatch = useDispatch();
   const {records, isLoading, isRefreshing, recordsLoading} = useSelector(
     (state) => state.calendar,
   );
   const getweekdays = () => {
-    const todaydate = new Date(currentDate);
+    const todaydate = moment(currentDate).toDate();
 
     // helper: format as DD-MM-YYYY
     const formatDate = (date) => {
@@ -113,19 +111,7 @@ export default function Calendar(props) {
 
   const new_Data = mapItemsToAgendaList(data);
 
-  let modifyData = [];
-
-  let date = moment(new Date()).format('YYYY-MM-DD');
-
-  modifyData = new_Data;
-  // modifyData = new_Data.filter((val) => val.title >= date);
-
-  //  modifyData = new_Data.filter((val) => {
-  //   const eventDate = moment(val.title); // or val.date if your date field is different
-  //   return eventDate.isBetween(weekStart, weekEnd, 'day', '[]'); // [] means inclusive
-  // });
-
-  const dates = modifyData.sort((a, b) => {
+  const dates = new_Data.sort((a, b) => {
     const dateA = new Date(a.title);
     const dateB = new Date(b.title);
     return dateA - dateB;
@@ -133,8 +119,6 @@ export default function Calendar(props) {
 
   useFocusEffect(
     React.useCallback(() => {
-      // fetchData();
-      fetchData(true, 1, [['assigned_user_id', 'e', assignedUser]]);
       getData();
       setTypesVisible(false);
       setUsersVisible(false);
@@ -168,21 +152,17 @@ export default function Calendar(props) {
         ['due_date', 'bw', `${weekStart},${weekEnd}`],
       ],
     ];
-  }, [activitytype, assignedUser]);
-
-  console.log('searchValuessearchValuessearchValuessearchValues', searchValues);
+  }, [activitytype, assignedUser, currentDate]);
 
   useEffect(() => {
-    const shouldApplyFilter = activitytype || assignedUser;
-
     const timeout = setTimeout(() => {
       fetchData(
         true,
         1,
-        shouldApplyFilter ? searchValues : undefined,
+        searchValues,
         activitytype?.fieldType,
       );
-    }, 500); // reduced delay
+    }, 500);
 
     return () => clearTimeout(timeout);
   }, [searchValues]);
@@ -696,8 +676,8 @@ export default function Calendar(props) {
     });
 
     // set current date selected
-    const dateObj = marked[new moment(currentDate).format('YYYY-MM-DD')];
-    marked[new moment(currentDate).format('YYYY-MM-DD')] = {
+    const dateObj = marked[currentDate];
+    marked[currentDate] = {
       ...dateObj,
       selected: true,
     };
@@ -745,7 +725,7 @@ export default function Calendar(props) {
             fontFamily: 'Poppins-Medium',
             color: '#62717C',
           }}>
-          {new moment(currentDate).format('Y MMMM D')}
+          {moment(currentDate).format('Y MMMM D')}
         </Text>
         <TouchableOpacity
           onPress={() => setShowCalendar(true)}
@@ -812,22 +792,22 @@ export default function Calendar(props) {
       />
       <View style={styles.wrapper}>
         <CalendarProvider
-          date={currentDate.format('YYYY-MM-DD')}
+          date={currentDate}
           disabledOpacity={0.6}
           showTodayButton
           onDateChanged={(date) => {
-            setCurrentDate(new moment(date));
+            setCurrentDate(date);
           }}
           //TODO set me ?? for prevent width: 100%
           // todayButtonStyle={}
         >
           {showCalendar ? (
             <CalendarList
-              current={currentDate.format('YYYY-MM-DD')}
+              current={currentDate}
               firstDay={1}
               markedDates={getMarkedDates()}
               onDayPress={(date) => {
-                setCurrentDate(new moment(date.dateString));
+                setCurrentDate(date.dateString);
                 setShowCalendar(false);
               }}
             />
