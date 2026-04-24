@@ -64,5 +64,25 @@ target 'simplycrm' do
       config[:reactNativePath],
       :mac_catalyst_enabled => false
     )
+
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        # Fix non-modular include errors with Xcode 26+ Clang
+        config.build_settings['CLANG_WARN_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES'] = 'NO'
+        # Fix fmt consteval errors with Xcode 26+ Clang
+        if target.name == 'fmt'
+          xcconfig_path = config.base_configuration_reference&.real_path
+          if xcconfig_path
+            content = File.read(xcconfig_path.to_s)
+            unless content.include?('FMT_USE_CONSTEVAL')
+              content.gsub!(/GCC_PREPROCESSOR_DEFINITIONS = (.*)/) do |match|
+                "#{match} FMT_USE_CONSTEVAL=0"
+              end
+              File.write(xcconfig_path.to_s, content)
+            end
+          end
+        end
+      end
+    end
   end
 end
