@@ -733,6 +733,7 @@ export default function RecordDetails({route}) {
           assigned_user_id: '19x' + loginDetails?.userId,
           filename: filedata?.name,
           inputImgFieldval: filedata?.name,
+          folderid: 1,
         };
 
         let trimmedUrl = await get_Url();
