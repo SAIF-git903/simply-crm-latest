@@ -983,6 +983,7 @@ export default function RecordDetails({route}) {
           mediaType: 'photo',
           cropping: false,
           multiple: true,
+          maxFiles: 500,
           includeBase64: true,
           compressImageQuality: 1,
           includeExif: true,
@@ -1186,31 +1187,38 @@ export default function RecordDetails({route}) {
 
     const pickFile = async () => {
       try {
-        const res = await DocumentPicker.pick({
+        const results = await DocumentPicker.pick({
           type: [DocumentPicker.types.allFiles],
+          allowMultiSelection: true,
         });
-
-        const file = {
-          uri: res[0]?.uri,
-          name: res[0]?.name,
-          filename: res[0]?.name,
-          type: res[0]?.type,
-        };
 
         setUploadProgress({
           current: 0,
-          total: 1,
+          total: results.length,
         });
 
-        console.log('save file called');
-        await saveFile(file);
+        for (const res of results) {
+          const file = {
+            uri: res?.uri,
+            name: res?.name,
+            filename: res?.name,
+            type: res?.type,
+          };
+
+          console.log('save file called');
+          await saveFile(file);
+          setUploadProgress((prev) => ({
+            ...prev,
+            current: prev.current + 1,
+          }));
+        }
 
         setUploadProgress({
           current: 0,
           total: 0,
         });
         Alert.alert('Document added successfully.');
-        console.log('✅ File saved successfully');
+        console.log('✅ File(s) saved successfully');
       } catch (err) {
         if (DocumentPicker.isCancel(err)) {
           console.log('User cancelled file picker');
