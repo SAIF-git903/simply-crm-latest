@@ -1,4 +1,3 @@
-import {Alert} from 'react-native';
 import {
   API_listModuleRecords,
   API_fetchRecordsWithGrouping,
@@ -75,7 +74,6 @@ export default function reducer(state = initialState, action = {}) {
 
 export const getCalendarRecords =
   (isRefreshing, page, searchValues, type) => async (dispatch, getState) => {
-    console.log('type', type);
     const getCalendarRecordsFulfilled = (records) => {
       return {
         type: GET_CALENDAR_RECORDS_FULFILLED,
@@ -224,6 +222,13 @@ export const getCalendarRecords =
         case 'projecttasktype':
           for (const module of modules) {
             if (module === 'ProjectTask') {
+              const projectTaskSearchValues = searchValues.map(group => {
+                const filtered = group.filter(c => c[0] !== 'due_date');
+                if (filtered.length > 0 && filtered[filtered.length - 1][3] === 'and') {
+                  filtered[filtered.length - 1] = filtered[filtered.length - 1].slice(0, 3);
+                }
+                return filtered;
+              });
               const response = await API_listModuleRecords(
                 module,
                 page,
@@ -233,7 +238,7 @@ export const getCalendarRecords =
                 '',
                 '',
                 '',
-                searchValues,
+                projectTaskSearchValues,
               );
 
               // const requiredFields = [
@@ -303,11 +308,16 @@ export const getCalendarRecords =
                   'Events',
                   eventIds,
                 );
-              if (taskIds?.length)
-                tasksResponse = await API_fetchRecordsWithGrouping(
-                  'Calendar',
-                  taskIds,
-                );
+              if (taskIds?.length) {
+                try {
+                  tasksResponse = await API_fetchRecordsWithGrouping(
+                    'Calendar',
+                    taskIds,
+                  );
+                } catch (taskErr) {
+                  console.log('Tasks fetch error:', taskErr?.message);
+                }
+              }
 
               const success = eventsResponse || tasksResponse;
 
@@ -381,17 +391,30 @@ export const getCalendarRecords =
                 });
               }
             } else {
-              const response = await API_listModuleRecords(
-                module,
-                page,
-                '',
-                '',
-                '',
-                '',
-                '',
-                '',
-                searchValues,
-              );
+              const projectTaskSearchValues = searchValues.map(group => {
+                const filtered = group.filter(c => c[0] !== 'due_date');
+                if (filtered.length > 0 && filtered[filtered.length - 1][3] === 'and') {
+                  filtered[filtered.length - 1] = filtered[filtered.length - 1].slice(0, 3);
+                }
+                return filtered;
+              });
+              let response;
+              try {
+                response = await API_listModuleRecords(
+                  module,
+                  page,
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  projectTaskSearchValues,
+                );
+              } catch (ptErr) {
+                console.log('ProjectTask fetch error:', ptErr?.message);
+                response = {result: {records: []}};
+              }
 
               // const requiredFields = [
               //   'startdate',

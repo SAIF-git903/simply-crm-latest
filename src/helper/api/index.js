@@ -405,12 +405,7 @@ async function doFetch(request_url, method, headers, body_data) {
       throw error;
     });
 
-    let requestLog = JSON.parse(await AsyncStorage.getItem('requestLog')) || [];
-
-    // Ensure we don't exceed 25 records
-    if (requestLog.length >= 25) {
-      requestLog.shift(); // Remove the oldest record (first element)
-    }
+    // requestLog disabled
 
     // Parse response JSON safely
     // let parsedResponse =
@@ -428,16 +423,7 @@ async function doFetch(request_url, method, headers, body_data) {
     //   }
     // }
 
-    requestLog.push({
-      operation: body_data?._operation,
-      bodyData: JSON.stringify(body_data),
-      requesturl: request_url,
-      method: method,
-      status: response?.status,
-      time: new Date().toISOString(),
-      responseJson: JSON.stringify(responseJson),
-    });
-    await AsyncStorage.setItem('requestLog', JSON.stringify(requestLog));
+    // requestLog disabled
 
     console.log('responseJson---->', responseJson);
 
@@ -483,9 +469,8 @@ async function doFetch(request_url, method, headers, body_data) {
       // await AsyncStorage.removeItem('UID');
       // removeAllDatabase();
     }
+    throw error;
   }
-  throw error;
-  // }
 }
 
 export function API_locateInstance(email, password) {

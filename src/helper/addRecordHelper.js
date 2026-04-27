@@ -544,7 +544,9 @@ const doSaveRecord = async (
     currentInstance.props.moduleName === 'Calendar'
   ) {
     const roundTimeToNearestDuration = (currentTime) => {
-      const date = new Date(currentTime);
+      const [h, m] = currentTime.split(':').map(Number);
+      const date = new Date();
+      date.setHours(h, m, 0, 0);
       const minutes = date.getMinutes();
 
       let dynamicDuration;
@@ -580,10 +582,10 @@ const doSaveRecord = async (
     newobj.date_start = moment(newobj.date_start).format('YYYY-MM-DD');
     newobj.due_date = moment(newobj.due_date).format('YYYY-MM-DD');
     newobj.time_end = newobj?.time_end
-      ? moment(newobj.time_end).format('HH:mm')
+      ? moment(newobj.time_end instanceof Date ? newobj.time_end : moment(newobj.time_end, 'HH:mm').toDate()).format('HH:mm')
       : null;
-    newobj.time_start = newobj?.time_end
-      ? moment(newobj.time_start).format('HH:mm')
+    newobj.time_start = newobj?.time_start
+      ? moment(newobj.time_start, 'HH:mm').format('HH:mm')
       : null;
 
     function calculateDuration(startDate, startTime, endDate, endTime) {
