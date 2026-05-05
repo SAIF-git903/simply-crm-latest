@@ -91,7 +91,9 @@ console.log('calanderTypecalanderType',currentInstance.props)
     
     //get empty inputs
     const responseJson = await API_structure(
-      calanderType === 'Events' ? 'Events' : moduleName,
+      calanderType === 'Events' ? 'Events' :
+      calanderType === 'Tasks' ? 'Calendar' :
+      moduleName,
     );
     
     console.log('getRecordStructureHelper: Structure API response:', {
@@ -110,6 +112,8 @@ console.log('calanderTypecalanderType',currentInstance.props)
         module: vtigerSeven
           ? calanderType === 'Events'
             ? 'Events'
+            : calanderType === 'Tasks'
+            ? 'Calendar'
             : moduleName
           : undefined,
       };
@@ -129,8 +133,11 @@ console.log('calanderTypecalanderType',currentInstance.props)
     if (responseJson.success) {
       const content = [];
       const structures = responseJson.result.structure;
-      for (let k = 0; k < structures.length; k++) {
-        const structure = structures[k];
+      const structureBlocks = Array.isArray(structures)
+        ? structures
+        : Object.values(structures).flat();
+      for (let k = 0; k < structureBlocks.length; k++) {
+        const structure = structureBlocks[k];
         const {fields, label, visible, sequence} = structure;
     
 

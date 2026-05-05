@@ -156,12 +156,7 @@ export default function Calendar(props) {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      fetchData(
-        true,
-        1,
-        searchValues,
-        activitytype?.fieldType,
-      );
+      fetchData(true, 1, searchValues, activitytype?.fieldType);
     }, 500);
 
     return () => clearTimeout(timeout);
@@ -612,24 +607,35 @@ export default function Calendar(props) {
   //   return mappedItems;
   // }
 
+  // API returns dates as DD-MM-YYYY; AgendaList requires YYYY-MM-DD
+  function toISODate(dateStr) {
+    if (!dateStr) return dateStr;
+    const parts = dateStr.split('-');
+    if (parts.length === 3 && parts[2].length === 4) {
+      return `${parts[2]}-${parts[1]}-${parts[0]}`;
+    }
+    return dateStr;
+  }
+
   function mapItemsToAgendaList(items) {
     let mappedItems = [];
 
-    // Create a Set to keep track of unique dates
     const uniqueDates = new Set();
 
     const sortedItems = items.sort((a, b) => {
-      let aNumber = a?.date_start?.replace(/-/g, '');
-      let bNumber = b?.date_start?.replace(/-/g, '');
-      return aNumber - bNumber;
+      const aISO = toISODate(a?.date_start)?.replace(/-/g, '') || '';
+      const bISO = toISODate(b?.date_start)?.replace(/-/g, '') || '';
+      return aISO.localeCompare(bISO);
     });
 
     for (const item of sortedItems) {
       const {date_start, subject, type, time_start, time_end, id, module} =
         item;
 
+      const isoDate = toISODate(date_start);
+
       const itemData = {
-        title: date_start,
+        title: isoDate,
         subject,
         type,
         time_start,
@@ -638,27 +644,20 @@ export default function Calendar(props) {
         moduleFromCalender: module,
       };
 
-      // Check if the date is already in uniqueDates
-
       if (!uniqueDates.has(itemData.id)) {
-        // Add the date to uniqueDates
         uniqueDates.add(itemData.id);
 
-        // Find if there's an existing date in mappedItems
         const existingDateIndex = mappedItems.findIndex(
           (x) => x.title === itemData.title,
         );
 
         if (existingDateIndex !== -1) {
-          // If the date exists, push the itemData into its data array
           mappedItems[existingDateIndex].data.push(itemData);
         } else {
-          // If the date doesn't exist, create a new entry
-          const date = {
-            title: item.date_start,
+          mappedItems.push({
+            title: isoDate,
             data: [itemData],
-          };
-          mappedItems.push(date);
+          });
         }
       }
     }
