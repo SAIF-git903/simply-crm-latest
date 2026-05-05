@@ -846,7 +846,6 @@ export default function RecordDetails({route}) {
         const image = await ImageCropPicker.openCamera({
           mediaType: 'photo',
           cropping: false,
-          includeBase64: true,
           compressImageQuality: 1,
           includeExif: true,
         });
@@ -984,7 +983,6 @@ export default function RecordDetails({route}) {
           cropping: false,
           multiple: true,
           maxFiles: 500,
-          includeBase64: true,
           compressImageQuality: 1,
           includeExif: true,
         });
@@ -999,7 +997,11 @@ export default function RecordDetails({route}) {
         });
         // Process each image sequentially
         for (const image of images) {
-          const fileName = await getFileName(image.path);
+          const pathFileName = getFileName(image.path);
+          let fileName = image.filename || pathFileName;
+          if (image.mime === 'image/jpeg' && !fileName.toLowerCase().match(/\.(jpg|jpeg)$/)) {
+            fileName = fileName.replace(/\.[^.]+$/, '.jpg');
+          }
           const file = {
             uri: image.path,
             name: fileName,
@@ -1007,8 +1009,6 @@ export default function RecordDetails({route}) {
             type: image.mime,
           };
 
-          // setInputImgFieldval({ filename: image?.filename });
-          console.log('save file called');
           // Wait until current file is saved before moving to next
           await saveFile(file);
           setUploadProgress((prev) => ({
