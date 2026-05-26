@@ -109,13 +109,14 @@ export default function Calendar(props) {
 
   const navigation = useNavigation();
 
-  const new_Data = mapItemsToAgendaList(data);
-
-  const dates = new_Data.sort((a, b) => {
-    const dateA = new Date(a.title);
-    const dateB = new Date(b.title);
-    return dateA - dateB;
-  });
+  const dates = useMemo(() => {
+    const new_Data = mapItemsToAgendaList(data);
+    return [...new_Data].sort((a, b) => {
+      const dateA = new Date(a.title);
+      const dateB = new Date(b.title);
+      return dateA - dateB;
+    });
+  }, [data]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -258,11 +259,8 @@ export default function Calendar(props) {
               setVisible(false);
               navigation.navigate('Add Record', {
                 lister: {
-                  // refreshData: () => fetchData(),
                   refreshData: () =>
-                    fetchData(true, 1, [
-                      ['assigned_user_id', 'e', assignedUser],
-                    ]),
+                    fetchData(true, 1, searchValues, activitytype?.fieldType),
                 },
                 submodule: 'Events',
               });
@@ -297,11 +295,8 @@ export default function Calendar(props) {
               setVisible(false);
               navigation.navigate('Add Record', {
                 lister: {
-                  // refreshData: () => fetchData(),
                   refreshData: () =>
-                    fetchData(true, 1, [
-                      ['assigned_user_id', 'e', assignedUser],
-                    ]),
+                    fetchData(true, 1, searchValues, activitytype?.fieldType),
                 },
                 submodule: 'Tasks',
               });
@@ -356,9 +351,8 @@ export default function Calendar(props) {
     });
     navigation.navigate('Record Details', {
       listerInstance: {
-        // refreshData: () => fetchData(true),
         refreshData: () =>
-          fetchData(true, 1, [['assigned_user_id', 'e', assignedUser]]),
+          fetchData(true, 1, searchValues, activitytype?.fieldType),
       },
     });
   }
@@ -370,8 +364,8 @@ export default function Calendar(props) {
       id: item.id,
       moduleFromCalender: item?.moduleFromCalender,
       lister: {
-        // refreshData: () => fetchData(true),
-        refreshData: () => fetchData(true, 1, []),
+        refreshData: () =>
+          fetchData(true, 1, searchValues, activitytype?.fieldType),
       },
     });
   }
@@ -388,8 +382,7 @@ export default function Calendar(props) {
             dispatch(deleteCalendarRecord(item.id, item?.moduleFromCalender));
             let newdatas = dates.filter((val) => val.id !== item.Id);
             setData(newdatas);
-            // fetchData(true);
-            fetchData(true, 1, []);
+            fetchData(true, 1, searchValues, activitytype?.fieldType);
           },
         },
       ],
@@ -622,7 +615,7 @@ export default function Calendar(props) {
 
     const uniqueDates = new Set();
 
-    const sortedItems = items.sort((a, b) => {
+    const sortedItems = [...items].sort((a, b) => {
       const aISO = toISODate(a?.date_start)?.replace(/-/g, '') || '';
       const bISO = toISODate(b?.date_start)?.replace(/-/g, '') || '';
       return aISO.localeCompare(bISO);
