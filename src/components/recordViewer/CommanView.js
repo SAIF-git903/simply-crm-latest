@@ -54,6 +54,7 @@ const CommanView = ({
   const [Blocks, setBlocks] = useState();
   const [visible, setVisible] = useState(false);
   const [index, setIndex] = useState();
+  const [loadingDocId, setLoadingDocId] = useState(null);
 
   useEffect(() => {
     getData();
@@ -351,45 +352,39 @@ const CommanView = ({
                           flexDirection: 'row',
                           marginRight: 15,
                         }}>
-                        {val?.downloadData[0]?.type?.includes('image/') ? (
+                        {loadingDocId === val.blockId ? (
+                          <ActivityIndicator
+                            size="small"
+                            color={headerIconColor}
+                            style={{padding: 8, width: 41}}
+                          />
+                        ) : (
                           <TouchableOpacity
                             activeOpacity={0.7}
-                            style={{marginHorizontal: 10}}
-                            onPress={() => {
-                              // onPress(val.downloadData)
-                              openFile(val.downloadData, filenameField?.value);
+                            style={{padding: 8}}
+                            disabled={loadingDocId !== null}
+                            onPress={async () => {
+                              setLoadingDocId(val.blockId);
+                              try {
+                                await openFile(
+                                  val.downloadData,
+                                  filenameField?.value,
+                                );
+                              } finally {
+                                setLoadingDocId(null);
+                              }
                             }}>
                             <FontAwesomeIcon
-                              // icon={'fa-regular fa-image'}
-                              icon={icoName ? icoName : 'fa-regular fa-image'}
+                              icon={'fa-regular fa-eye'}
                               size={25}
-                              color={headerIconColor}
+                              color={
+                                loadingDocId !== null
+                                  ? '#bbb'
+                                  : headerIconColor
+                              }
                             />
                           </TouchableOpacity>
-                        ) : val?.downloadData[0]?.type ? (
-                          <TouchableOpacity
-                            activeOpacity={0.7}
-                            style={{marginHorizontal: 10}}
-                            onPress={() =>
-                              openFile(val.downloadData, filenameField?.value)
-                            }>
-                            <FontAwesomeIcon
-                              // icon={'fa-regular fa-file'}
-                              icon={icoName ? icoName : 'fa-regular fa-file'}
-                              size={25}
-                              color={headerIconColor}
-                            />
-                          </TouchableOpacity>
-                        ) : null}
-                        <TouchableOpacity
-                          activeOpacity={0.7}
-                          onPress={() => setDataandModel(val?.blocks)}>
-                          <FontAwesomeIcon
-                            icon={'fa-regular fa-eye'}
-                            size={25}
-                            color={headerIconColor}
-                          />
-                        </TouchableOpacity>
+                        )}
                       </View>
                     </View>
                     {/* <View

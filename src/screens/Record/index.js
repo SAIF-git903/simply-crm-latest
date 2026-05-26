@@ -468,9 +468,7 @@ export default function RecordDetails({route}) {
                 onPress={(data) => {
                   getImageData(data);
                 }}
-                openFile={(data, fileName) => {
-                  openFile(data, fileName);
-                }}
+                openFile={(data, fileName) => openFile(data, fileName)}
               />
             ),
           };

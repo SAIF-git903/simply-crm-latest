@@ -21,7 +21,7 @@ import DatePicker from 'react-native-date-picker';
 
 import {headerIconColor} from '../variables/themeColors';
 import {commonStyles, fontStyles} from '../styles/common';
-import {API_structure} from '../helper/api';
+import {API_describe} from '../helper/api';
 import IconButton from '../components/IconButton';
 import store from '../store';
 
@@ -59,8 +59,8 @@ const RecordModal = ({
 
   const getData = async (fieldName) => {
     try {
-      let res = await API_structure(moduleName);
-      let getFields = res?.result?.structure?.flatMap((block) => block.fields);
+      let res = await API_describe(moduleName);
+      let getFields = res?.result?.describe?.fields;
       let filterData = getFields?.filter((val) => val?.name === fieldName);
 
       if (filterData) {
