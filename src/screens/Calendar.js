@@ -21,7 +21,6 @@ import Feather from 'react-native-vector-icons/Feather';
 import {
   WeekCalendar,
   CalendarProvider,
-  AgendaList,
   CalendarList,
 } from 'react-native-calendars';
 import {SwipeRow} from 'react-native-swipe-list-view';
@@ -810,19 +809,26 @@ export default function Calendar(props) {
             </View>
           )}
 
-          <AgendaList
+          <SectionList
+            style={{flex: 1}}
             sections={dates}
+            keyExtractor={(item) => item.id?.toString() ?? item.title}
             renderItem={renderItem}
-            sectionStyle={{
-              backgroundColor: '#B3BDCA',
-              color: 'white',
-              fontFamily: 'Poppins-Medium',
-              fontSize: 14,
-              paddingTop: 8,
-              paddingBottom: 8,
-              paddingLeft: 20,
-              textTransform: 'uppercase',
-            }}
+            renderSectionHeader={({section: {title}}) => (
+              <Text
+                style={{
+                  backgroundColor: '#B3BDCA',
+                  color: 'white',
+                  fontFamily: 'Poppins-Medium',
+                  fontSize: 14,
+                  paddingTop: 8,
+                  paddingBottom: 8,
+                  paddingLeft: 20,
+                  textTransform: 'uppercase',
+                }}>
+                {title}
+              </Text>
+            )}
             ListEmptyComponent={renderEmpty()}
             ListFooterComponent={renderFooter}
           />

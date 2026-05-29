@@ -27,6 +27,7 @@ export default function reducer(state = initialState, action = {}) {
     case GET_CALENDAR_RECORDS:
       return {
         ...state,
+        records: [],
         isLoading: true,
         isRefreshing: action.payload ? action.payload : state.isRefreshing,
       };
@@ -445,10 +446,10 @@ export const getCalendarRecords =
           break;
       }
 
-      dispatch(getCalendarRecordsFulfilled(mappedRecords));
+        dispatch(getCalendarRecordsFulfilled(mappedRecords));
     } catch (e) {
       console.log(e);
-      dispatch(getCalendarRecordsRejected());
+        dispatch(getCalendarRecordsRejected());
     }
   };
 
