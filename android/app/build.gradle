@@ -85,7 +85,7 @@ android {
         applicationId "com.simplycrm.mobileappnew"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 202605261
+        versionCode 202605291
         versionName "8.29"
         
         manifestPlaceholders = [
